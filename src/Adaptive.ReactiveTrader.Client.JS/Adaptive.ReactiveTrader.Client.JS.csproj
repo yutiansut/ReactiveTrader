@@ -72,6 +72,7 @@
     <TypeScriptCompile Include="UI\Connectivity\IConnectivityStatusViewModel.ts" />
     <TypeScriptCompile Include="UI\Shell\IShellViewModel.ts" />
     <TypeScriptCompile Include="UI\Shell\ShellViewModel.ts" />
+    <TypeScriptCompile Include="UI\SpotTiles\Affirmation\IAffirmationViewModel.ts" />
     <TypeScriptCompile Include="UI\SpotTiles\ISpotTilesViewModel.ts" />
     <TypeScriptCompile Include="UI\SpotTiles\ISpotTileViewModelFactory.ts" />
     <TypeScriptCompile Include="UI\SpotTiles\OneWayPriceViewModel.ts" />
@@ -80,6 +81,7 @@
     <TypeScriptCompile Include="UI\SpotTiles\ISpotTileViewModel.ts" />
     <TypeScriptCompile Include="UI\SpotTiles\PriceFormatter.ts" />
     <TypeScriptCompile Include="UI\SpotTiles\PriceMovement.ts" />
+    <TypeScriptCompile Include="UI\SpotTiles\Affirmation\AffirmationViewModel.ts" />
     <TypeScriptCompile Include="UI\SpotTiles\SpotTilesViewModel.ts" />
     <TypeScriptCompile Include="UI\SpotTiles\SpotTileViewModel.ts" />
     <TypeScriptCompile Include="IReactiveTrader.ts" />
