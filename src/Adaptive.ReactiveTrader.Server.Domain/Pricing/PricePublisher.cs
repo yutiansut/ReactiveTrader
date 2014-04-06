@@ -34,7 +34,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
             }
             catch (Exception e)
             {
-                Log.Error(string.Format("An error occured while publishing price to group {0}: {1}", groupName, price), e);
+                Log.Error(string.Format("An error occurred while publishing price to group {0}: {1}", groupName, price), e);
             }
         }
 

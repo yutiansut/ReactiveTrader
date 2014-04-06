@@ -117,7 +117,7 @@ namespace Adaptive.ReactiveTrader.Server
             }
             catch (Exception exception)
             {
-                Log.Error("An error occured while starting SignalR", exception);
+                Log.Error("An error occurred while starting SignalR", exception);
             }
             ServerStatus = "Started on " + Address;
             StartStopCommandText = "Stop";

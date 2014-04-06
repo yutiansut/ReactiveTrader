@@ -62,7 +62,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport
                 }
                 catch (Exception e)
                 {
-                    Log.Error("An error occured when starting SignalR connection", e);
+                    Log.Error("An error occurred when starting SignalR connection", e);
                     observer.OnError(e);
                 }
 
@@ -77,7 +77,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport
                     catch (Exception e)
                     {
                         // we must never throw in a disposable
-                        Log.Error("An error occured while stoping connection", e);
+                        Log.Error("An error occurred while stoping connection", e);
                     }
                 });
             })

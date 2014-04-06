@@ -44,7 +44,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.Blotter
                             .SubscribeOn(_concurrencyService.ThreadPool)
                             .Subscribe(
                                 AddTrades,
-                                ex => Log.Error("An error occured within the trade stream", ex));
+                                ex => Log.Error("An error occurred within the trade stream", ex));
         }
 
         private void AddTrades(IEnumerable<ITrade> trades)

@@ -9,7 +9,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles.Designer
         {
             get
             {
-                return "An error occured while executing the trade. Please check your blotter and if your position is unknown, contact your support representative.";
+                return "An error occurred while executing the trade. Please check your blotter and if your position is unknown, contact your support representative.";
             }
         }
         public ICommand DismissCommand { get; private set; }

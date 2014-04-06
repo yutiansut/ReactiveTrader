@@ -24,7 +24,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
                 .SubscribeOn(concurrencyService.ThreadPool)
                 .Subscribe(
                 OnStatusChange,
-                ex => Log.Error("An error occured within the connection status stream.", ex));
+                ex => Log.Error("An error occurred within the connection status stream.", ex));
 
             Observable
                 .Interval(StatsFrequency, concurrencyService.Dispatcher)

@@ -54,7 +54,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
             catch (Exception e)
             {
                 Log.Error(
-                    string.Format("An error occured while publishing currency pair update to group {0}: {1}", groupName,
+                    string.Format("An error occurred while publishing currency pair update to group {0}: {1}", groupName,
                         update), e);
             }
         }

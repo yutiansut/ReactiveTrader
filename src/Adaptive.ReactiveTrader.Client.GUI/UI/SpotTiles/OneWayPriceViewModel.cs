@@ -93,8 +93,8 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
             }
             else
             {
-                Log.Error("An error occured while processing the trade request.", exception);
-                _parent.OnExecutionError("An error occured while executing the trade. Please check your blotter and if your position is unknown, contact your support representative.");
+                Log.Error("An error occurred while processing the trade request.", exception);
+                _parent.OnExecutionError("An error occurred while executing the trade. Please check your blotter and if your position is unknown, contact your support representative.");
             }
             IsExecuting = false;
         }
