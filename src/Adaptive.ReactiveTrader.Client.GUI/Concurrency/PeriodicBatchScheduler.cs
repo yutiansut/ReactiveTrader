@@ -26,7 +26,7 @@ namespace Adaptive.ReactiveTrader.Client.Concurrency
                 _queuedWork.Add(work);
                 if (_queuedWork.Count == 1)
                 {
-                    _periodSchedulerDisposable = _scheduler.SchedulePeriodic<object>(null, TimeSpan.FromMilliseconds(150), _ => Run());
+                    _periodSchedulerDisposable = _scheduler.SchedulePeriodic<object>(null, TimeSpan.FromMilliseconds(125), _ => Run());
                 }
             }
 
