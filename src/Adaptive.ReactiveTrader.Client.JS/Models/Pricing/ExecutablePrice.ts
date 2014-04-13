@@ -7,13 +7,10 @@
         this.rate = rate;
     }
 
-    execute(notional: number, dealtCurrency: string) {
-        return this._executionRepository.execute(this, notional, dealtCurrency)
-            .take(1);
-        // TODO .cacheFirstResult();
+    execute(notional: number, dealtCurrency: string): Rx.Observable<ITrade> {
+        return this._executionRepository.execute(this, notional, dealtCurrency);
     }
 
-    // TODO encapsulate
     direction: Direction;
     rate: number;
     parent: IPrice;

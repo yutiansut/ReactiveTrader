@@ -135,9 +135,7 @@ var ServiceClientBase = (function () {
         // OnError when we get 1 or 2
         var disconnected = firstDisconnection.merge(subsequentConnection).select(function (_) {
             return Rx.Notification.createOnError(new TransportDisconnectedException("Connection was closed."));
-        }).dematerialize().do(function (_) {
-            return console.error("closed");
-        });
+        }).dematerialize();
 
         // create a stream which will OnError as soon as the connection drops
         return firstConnection.selectMany(function (connection) {
@@ -214,9 +212,6 @@ var ConnectionProvider = (function () {
         if (this._currentIndex == this._servers.length) {
             this._currentIndex = 0;
         }
-
-        console.info("Next connection will be " + connection);
-
         return connection;
     };
     return ConnectionProvider;
@@ -706,8 +701,7 @@ var ExecutablePrice = (function () {
         this.rate = rate;
     }
     ExecutablePrice.prototype.execute = function (notional, dealtCurrency) {
-        return this._executionRepository.execute(this, notional, dealtCurrency).take(1);
-        // TODO .cacheFirstResult();
+        return this._executionRepository.execute(this, notional, dealtCurrency);
     };
     return ExecutablePrice;
 })();

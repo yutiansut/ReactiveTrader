@@ -49,6 +49,6 @@
      requestUponConnection<T>(factory: (connection: IConnection) => Rx.Observable<T>, timeoutMs: number): Rx.Observable<T> {
          return this._connectionProvider.getActiveConnection().take(1).timeout(timeoutMs)
              .selectMany(c => factory(c))
-             .cacheFirstResult<T>();
+             .cacheFirstResult();
      }
  }

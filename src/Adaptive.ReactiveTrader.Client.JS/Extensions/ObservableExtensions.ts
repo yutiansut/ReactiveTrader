@@ -5,8 +5,8 @@
     }
 
     interface Observable<T> {
-        detectStale<T>(stalenessPeriodMs: number, scheduler: IScheduler): Observable<IStale<T>>;
-        cacheFirstResult<T>(): Observable<T>;
+        detectStale(stalenessPeriodMs: number, scheduler: IScheduler): Observable<IStale<T>>;
+        cacheFirstResult(): Observable<T>;
     }
 }
 
