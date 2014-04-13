@@ -79,7 +79,7 @@
     <Compile Include="Models\Direction.cs" />
     <Compile Include="Models\Pricing\ExecutablePrice.cs" />
     <Compile Include="Models\ReferenceData\ICurrencyPair.cs" />
-    <Compile Include="Models\ReferenceData\ICurrencyPairFactory.cs" />
+    <Compile Include="Models\ReferenceData\ICurrencyPairUpdateFactory.cs" />
     <Compile Include="Models\ReferenceData\ICurrencyPairUpdate.cs" />
     <Compile Include="Models\Pricing\IExecutablePrice.cs" />
     <Compile Include="Models\Pricing\IPrice.cs" />

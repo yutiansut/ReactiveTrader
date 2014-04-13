@@ -1,17 +1,15 @@
-﻿class PricingServiceClient implements IPricingServiceClient {
-    private _connection: IConnection;
-
-    constructor(connection: IConnection) {
-        this._connection = connection;
-    }
+﻿class PricingServiceClient extends ServiceClientBase implements IPricingServiceClient {
+     constructor(connectionProvider: IConnectionProvider) {
+         super(connectionProvider);
+     }
 
     public getSpotStream(currencyPair: string): Rx.Observable<PriceDto> {
-        return this.getSpotStreamForConnection(currencyPair, this._connection.pricingHubProxy);
+        return super.getResilientStream(connection=> this.getSpotStreamForConnection(currencyPair, connection), 5000);
     }
 
-    private getSpotStreamForConnection(currencyPair: string, pricingHub: HubProxy) : Rx.Observable<PriceDto> {
+    private getSpotStreamForConnection(currencyPair: string, connection: IConnection) : Rx.Observable<PriceDto> {
         return Rx.Observable.create<PriceDto>(observer=> {
-            var pricesSubscription = this._connection
+            var pricesSubscription = connection
                 .allPrices
                 .subscribe(price=> {
                     if (price.Symbol == currencyPair) {
@@ -24,12 +22,12 @@
             var subscriptionRequest = new PriceSubscriptionRequestDto();
             subscriptionRequest.CurrencyPair = currencyPair;
 
-            pricingHub.invoke("SubscribePriceStream", subscriptionRequest)
+            connection.pricingHubProxy.invoke("SubscribePriceStream", subscriptionRequest)
                 .done(_ => console.log("Subscribed to " + currencyPair))
                 .fail(ex => observer.onError(ex));
 
             var unsubsciptionDisposable =  Rx.Disposable.create(()=> {
-                pricingHub.invoke("UnsubscribePriceStream", subscriptionRequest)
+                connection.pricingHubProxy.invoke("UnsubscribePriceStream", subscriptionRequest)
                     .done(_ => console.log("Unsubscribed from " + currencyPair))
                     .fail(error => console.log("An error occured while sending unsubscription request for " + currencyPair + ":" + error));
             });

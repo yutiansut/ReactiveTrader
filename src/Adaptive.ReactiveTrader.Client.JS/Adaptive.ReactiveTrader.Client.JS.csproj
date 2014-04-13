@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app.ts" />
+    <TypeScriptCompile Include="Extensions\ObservableExtensions.ts" />
     <TypeScriptCompile Include="Instrumentation\IPriceLatencyRecorder.ts" />
     <TypeScriptCompile Include="Instrumentation\MaxLatency.ts" />
     <TypeScriptCompile Include="Instrumentation\PriceLatencyRecorder.ts" />

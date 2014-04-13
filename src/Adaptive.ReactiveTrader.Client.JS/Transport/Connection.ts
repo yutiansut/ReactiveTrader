@@ -53,13 +53,13 @@ class Connection implements IConnection {
                 });
 
             return Rx.Disposable.create(()=> {
-                console.log("Stoping connection...");
+                console.log("Stopping connection...");
                 this._hubConnection.stop();
                 console.log("Connection stopped.");
             });
-        });
-        //.publish()
-        //.refCount();
+        })
+        .publish()
+        .refCount();
     }
 
     public changeStatus(newStatus: ConnectionStatus): void {

@@ -3,5 +3,5 @@
      referenceDataRepository: IReferenceDataRepository;
 
      connectionStatusStream: Rx.Observable<ConnectionInfo>;
-     initialize(username: string, server: string): Rx.Observable<{}>;
+     initialize(username: string, servers: string[]): void;
  } 

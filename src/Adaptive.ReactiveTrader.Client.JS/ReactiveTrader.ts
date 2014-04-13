@@ -1,14 +1,14 @@
 ﻿ class ReactiveTrader implements IReactiveTrader {
      
-     private _connection: IConnection;
+     private _connectionProvider: IConnectionProvider;
 
-     initialize(username: string, server: string): Rx.Observable<{}> {
-         this._connection = new Connection(server, username);
+     initialize(username: string, servers: string[]): void {
+         this._connectionProvider = new ConnectionProvider(username, servers);
 
-         var referenceDataServiceClient = new ReferenceDataServiceClient(this._connection);
-         var executionServiceClient = new ExecutionServiceClient(this._connection);
-         var blotterServiceClient = new BlotterServiceClient(this._connection);
-         var pricingServiceClient = new PricingServiceClient(this._connection);
+         var referenceDataServiceClient = new ReferenceDataServiceClient(this._connectionProvider);
+         var executionServiceClient = new ExecutionServiceClient(this._connectionProvider);
+         var blotterServiceClient = new BlotterServiceClient(this._connectionProvider);
+         var pricingServiceClient = new PricingServiceClient(this._connectionProvider);
 
          var tradeFactory = new TradeFactory();
          var executionRepository = new ExecutionRepository(executionServiceClient, tradeFactory);
@@ -18,16 +18,15 @@
 
          this.tradeRepository = new TradeRepository(blotterServiceClient, tradeFactory);
          this.referenceDataRepository = new ReferenceDataRepository(referenceDataServiceClient, currencyPairUpdateFactory);
-
-         return this._connection.initialize();
      }
 
      tradeRepository: ITradeRepository;
      referenceDataRepository: IReferenceDataRepository;
 
      get connectionStatusStream(): Rx.Observable<ConnectionInfo> {
-         return this._connection
-             .status
+         return this._connectionProvider.getActiveConnection()
+             .select(c=>c.status)
+             .switchLatest()
              .publish()
              .refCount();
      }

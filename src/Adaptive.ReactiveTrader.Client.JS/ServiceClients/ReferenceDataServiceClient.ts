@@ -1,23 +1,20 @@
-﻿class ReferenceDataServiceClient implements IReferenceDataServiceClient
-{
-    private _connection: IConnection;
-
-    constructor(connection: IConnection){
-        this._connection = connection;
-    }
+﻿class ReferenceDataServiceClient extends ServiceClientBase implements IReferenceDataServiceClient  {
+     constructor(connectionProvider: IConnectionProvider) {
+         super(connectionProvider);
+     }
 
     getCurrencyPairUpdates() : Rx.Observable<CurrencyPairUpdateDto[]> {
-        return this.getTradesForConnection(this._connection.referenceDataHubProxy);
+        return this.requestUponConnection(connection => this.getTradesForConnection(connection), 500);
     }
 
-    private getTradesForConnection(referenceDataHubProxy: HubProxy) : Rx.Observable<CurrencyPairUpdateDto[]> {
+    private getTradesForConnection(connection: IConnection) : Rx.Observable<CurrencyPairUpdateDto[]> {
         return Rx.Observable.create<CurrencyPairUpdateDto[]>(observer => {
-            var currencyPairUpdateSubscription = this._connection.currencyPairUpdates.subscribe(
+            var currencyPairUpdateSubscription = connection.currencyPairUpdates.subscribe(
                 currencyPairUpdate=> observer.onNext([currencyPairUpdate]));
 
             console.log("Sending currency pair subscription...");
 
-            referenceDataHubProxy
+            connection.referenceDataHubProxy
                 .invoke("GetCurrencyPairs")
                 .done(currencyPairs => {
                     observer.onNext(currencyPairs);

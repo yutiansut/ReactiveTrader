@@ -1,12 +1,10 @@
-﻿class ExecutionServiceClient implements IExecutionServiceClient {
-    private _connection: IConnection;
-
-    constructor(connection: IConnection) {
-        this._connection = connection;
-    }
+﻿class ExecutionServiceClient extends ServiceClientBase implements IExecutionServiceClient {
+     constructor(connectionProvider: IConnectionProvider) {
+         super(connectionProvider);
+     }
 
     public execute(tradeRequest: TradeRequestDto): Rx.Observable<TradeDto> {
-        return this.executeForConnection(tradeRequest, this._connection.executionHubProxy);
+        return this.requestUponConnection(connection => this.executeForConnection(tradeRequest, connection.executionHubProxy), 500);
     }
 
     public executeForConnection(tradeRequest: TradeRequestDto, executionHub: HubProxy): Rx.Observable<TradeDto> {
