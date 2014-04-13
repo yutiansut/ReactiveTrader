@@ -3,11 +3,11 @@
          super(connectionProvider);
      }
 
-    getCurrencyPairUpdates() : Rx.Observable<CurrencyPairUpdateDto[]> {
-        return this.requestUponConnection(connection => this.getTradesForConnection(connection), 500);
+    getCurrencyPairUpdates(): Rx.Observable<CurrencyPairUpdateDto[]> {
+        return this.getResilientStream(connection => this.getCurrencyPairUpdatesForConnection(connection), 5000);
     }
 
-    private getTradesForConnection(connection: IConnection) : Rx.Observable<CurrencyPairUpdateDto[]> {
+    private getCurrencyPairUpdatesForConnection(connection: IConnection) : Rx.Observable<CurrencyPairUpdateDto[]> {
         return Rx.Observable.create<CurrencyPairUpdateDto[]>(observer => {
             var currencyPairUpdateSubscription = connection.currencyPairUpdates.subscribe(
                 currencyPairUpdate=> observer.onNext([currencyPairUpdate]));
@@ -17,8 +17,8 @@
             connection.referenceDataHubProxy
                 .invoke("GetCurrencyPairs")
                 .done(currencyPairs => {
+                    console.log("Subscribed to currency pairs and received " + currencyPairs.length + " currency pairs.");
                     observer.onNext(currencyPairs);
-                    console.log("Subscribed to currency pairs and received " + currencyPairs.length +" currency pairs.");
                 })
                 .fail(ex => observer.onError(ex));
 

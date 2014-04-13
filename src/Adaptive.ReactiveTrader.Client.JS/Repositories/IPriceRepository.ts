@@ -1,3 +1,3 @@
 ﻿interface IPriceRepository {
-    getPrices(currencyPair: ICurrencyPair) : Rx.Observable<IPrice>;
+    getPriceStream(currencyPair: ICurrencyPair) : Rx.Observable<IPrice>;
 } 

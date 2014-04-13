@@ -14,7 +14,7 @@
         return Rx.Observable.defer(()=> this._referenceDataServiceClient.getCurrencyPairUpdates())
             .where(updates=> updates.length > 0)
             .select(updates=> this.createCurrencyPairUpdates(updates))
-            .catch(()=> Rx.Observable.return([]))
+            .catch(Rx.Observable.return([]))
             .repeat()
             .publish()
             .refCount();

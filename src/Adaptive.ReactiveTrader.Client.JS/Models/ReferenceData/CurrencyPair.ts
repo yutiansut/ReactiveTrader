@@ -14,7 +14,7 @@
         this.counterCurrency = symbol.substring(3, 6);
 
         this.prices =
-            Rx.Observable.defer<IPrice>(()=> priceRespository.getPrices(<ICurrencyPair>this))
+            Rx.Observable.defer<IPrice>(()=> priceRespository.getPriceStream(<ICurrencyPair>this))
             .publish()
             .refCount();
     }

@@ -9,12 +9,13 @@
         this._pricingServiceClient = pricingServiceClient;
     }
     
-    getPrices(currencyPair: ICurrencyPair): Rx.Observable<IPrice> {
+    getPriceStream(currencyPair: ICurrencyPair): Rx.Observable<IPrice> {
         return Rx.Observable.defer(()=> this._pricingServiceClient.getSpotStream(currencyPair.symbol))
             .select(p=> this._priceFactory.create(p, currencyPair))
             .catch(Rx.Observable.return(new StalePrice(currencyPair)))
             .repeat()
-            // TODO detect stale 
+            .detectStale(4000, Rx.Scheduler.timeout)
+            .select(s => <IPrice>(s.isStale ? new StalePrice(currencyPair) : s.update))
             .publish()
             .refCount();
     }

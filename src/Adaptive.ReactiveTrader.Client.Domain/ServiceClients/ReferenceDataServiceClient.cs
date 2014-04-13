@@ -22,10 +22,10 @@ namespace Adaptive.ReactiveTrader.Client.Domain.ServiceClients
 
         public IObservable<IEnumerable<CurrencyPairUpdateDto>> GetCurrencyPairUpdatesStream()
         {
-            return GetResilientStream(connection => GetTradesForConnection(connection.ReferenceDataHubProxy), TimeSpan.FromSeconds(5));
+            return GetResilientStream(connection => GetCurrencyPairsForConnection(connection.ReferenceDataHubProxy), TimeSpan.FromSeconds(5));
         }
 
-        private static IObservable<IEnumerable<CurrencyPairUpdateDto>> GetTradesForConnection(IHubProxy referenceDataHubProxy)
+        private static IObservable<IEnumerable<CurrencyPairUpdateDto>> GetCurrencyPairsForConnection(IHubProxy referenceDataHubProxy)
         {
             return Observable.Create<IEnumerable<CurrencyPairUpdateDto>>(observer =>
             {

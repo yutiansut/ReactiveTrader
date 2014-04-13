@@ -281,7 +281,8 @@ declare module Rx {
 		filter(predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): Observable<T>; // alias for where
 	}
 
-	interface ObservableStatic {
+    interface ObservableStatic {
+        new <T>(): Observable<T>;
 		create<T>(subscribe: (observer: Observer<T>) => void): Observable<T>;
 		create<T>(subscribe: (observer: Observer<T>) => () => void): Observable<T>;
 		createWithDisposable<T>(subscribe: (observer: Observer<T>) => IDisposable): Observable<T>;

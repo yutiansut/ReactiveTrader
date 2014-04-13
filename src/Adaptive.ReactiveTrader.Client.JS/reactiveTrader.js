@@ -15,12 +15,45 @@
 
     ko.applyBindings(shellViewModel);
 });
+Rx.Observable.prototype.detectStale = function (stalenessPeriodMs, scheduler) {
+    var _this = this;
+    return Rx.Observable.create(function (observer) {
+        var timerSubscription = new Rx.SerialDisposable();
+
+        var scheduleStale = function () {
+            timerSubscription.setDisposable(Rx.Observable.timer(stalenessPeriodMs, scheduler).subscribe(function (_) {
+                observer.onNext(new Stale(true, null));
+            }));
+        };
+
+        var sourceSubscription = _this.subscribe(function (x) {
+            // cancel any scheduled stale update
+            timerSubscription.getDisposable().dispose();
+
+            observer.onNext(new Stale(false, x));
+
+            scheduleStale();
+        }, function (ex) {
+            return observer.onError(ex);
+        }, function () {
+            return observer.onCompleted();
+        });
+
+        scheduleStale();
+
+        return new Rx.CompositeDisposable(sourceSubscription, timerSubscription);
+    });
+};
+
+Rx.Observable.prototype.cacheFirstResult = function () {
+    return this.take(1).publishLast().lazyConnect(new Rx.SingleAssignmentDisposable());
+};
+
 Rx.ConnectableObservable.prototype.lazyConnect = function (futureDisposable) {
     var _this = this;
     var connected = false;
     return Rx.Observable.create(function (observer) {
         var subscription = _this.subscribe(observer);
-        console.info("Boom");
         if (!connected) {
             connected = true;
             if (!futureDisposable.isDisposed) {
@@ -30,6 +63,13 @@ Rx.ConnectableObservable.prototype.lazyConnect = function (futureDisposable) {
         return subscription;
     }).asObservable();
 };
+var Stale = (function () {
+    function Stale(stale, update) {
+        this.isStale = stale;
+        this.update = update;
+    }
+    return Stale;
+})();
 var MaxLatency = (function () {
     function MaxLatency(count, priceWithMaxLatency) {
         this.count = count;
@@ -95,7 +135,9 @@ var ServiceClientBase = (function () {
         // OnError when we get 1 or 2
         var disconnected = firstDisconnection.merge(subsequentConnection).select(function (_) {
             return Rx.Notification.createOnError(new TransportDisconnectedException("Connection was closed."));
-        }).dematerialize();
+        }).dematerialize().do(function (_) {
+            return console.error("closed");
+        });
 
         // create a stream which will OnError as soon as the connection drops
         return firstConnection.selectMany(function (connection) {
@@ -106,7 +148,7 @@ var ServiceClientBase = (function () {
     ServiceClientBase.prototype.requestUponConnection = function (factory, timeoutMs) {
         return this._connectionProvider.getActiveConnection().take(1).timeout(timeoutMs).selectMany(function (c) {
             return factory(c);
-        }).take(1).publishLast().refCount();
+        }).cacheFirstResult();
     };
     return ServiceClientBase;
 })();
@@ -172,6 +214,9 @@ var ConnectionProvider = (function () {
         if (this._currentIndex == this._servers.length) {
             this._currentIndex = 0;
         }
+
+        console.info("Next connection will be " + connection);
+
         return connection;
     };
     return ConnectionProvider;
@@ -725,7 +770,7 @@ var CurrencyPair = (function () {
         this.counterCurrency = symbol.substring(3, 6);
 
         this.prices = Rx.Observable.defer(function () {
-            return priceRespository.getPrices(_this);
+            return priceRespository.getPriceStream(_this);
         }).publish().refCount();
     }
     return CurrencyPair;
@@ -921,13 +966,15 @@ var PriceRepository = (function () {
         this._priceFactory = priceFactory;
         this._pricingServiceClient = pricingServiceClient;
     }
-    PriceRepository.prototype.getPrices = function (currencyPair) {
+    PriceRepository.prototype.getPriceStream = function (currencyPair) {
         var _this = this;
         return Rx.Observable.defer(function () {
             return _this._pricingServiceClient.getSpotStream(currencyPair.symbol);
         }).select(function (p) {
             return _this._priceFactory.create(p, currencyPair);
-        }).catch(Rx.Observable.return(new StalePrice(currencyPair))).repeat().publish().refCount();
+        }).catch(Rx.Observable.return(new StalePrice(currencyPair))).repeat().detectStale(4000, Rx.Scheduler.timeout).select(function (s) {
+            return (s.isStale ? new StalePrice(currencyPair) : s.update);
+        }).publish().refCount();
     };
     return PriceRepository;
 })();
@@ -944,9 +991,7 @@ var ReferenceDataRepository = (function () {
             return updates.length > 0;
         }).select(function (updates) {
             return _this.createCurrencyPairUpdates(updates);
-        }).catch(function () {
-            return Rx.Observable.return([]);
-        }).repeat().publish().refCount();
+        }).catch(Rx.Observable.return([])).repeat().publish().refCount();
     };
 
     ReferenceDataRepository.prototype.createCurrencyPairUpdates = function (updates) {
@@ -1064,12 +1109,12 @@ var ReferenceDataServiceClient = (function (_super) {
     }
     ReferenceDataServiceClient.prototype.getCurrencyPairUpdates = function () {
         var _this = this;
-        return this.requestUponConnection(function (connection) {
-            return _this.getTradesForConnection(connection);
-        }, 500);
+        return this.getResilientStream(function (connection) {
+            return _this.getCurrencyPairUpdatesForConnection(connection);
+        }, 5000);
     };
 
-    ReferenceDataServiceClient.prototype.getTradesForConnection = function (connection) {
+    ReferenceDataServiceClient.prototype.getCurrencyPairUpdatesForConnection = function (connection) {
         return Rx.Observable.create(function (observer) {
             var currencyPairUpdateSubscription = connection.currencyPairUpdates.subscribe(function (currencyPairUpdate) {
                 return observer.onNext([currencyPairUpdate]);
@@ -1078,8 +1123,8 @@ var ReferenceDataServiceClient = (function (_super) {
             console.log("Sending currency pair subscription...");
 
             connection.referenceDataHubProxy.invoke("GetCurrencyPairs").done(function (currencyPairs) {
-                observer.onNext(currencyPairs);
                 console.log("Subscribed to currency pairs and received " + currencyPairs.length + " currency pairs.");
+                observer.onNext(currencyPairs);
             }).fail(function (ex) {
                 return observer.onError(ex);
             });
