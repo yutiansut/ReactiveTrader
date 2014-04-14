@@ -620,7 +620,7 @@ var SpotTilesViewModel = (function () {
 
     SpotTilesViewModel.prototype.loadSpotTiles = function () {
         var _this = this;
-        this._referenceDataRepository.getCurrencyPairs().subscribe(function (currencyPairs) {
+        this._referenceDataRepository.getCurrencyPairsStream().subscribe(function (currencyPairs) {
             return currencyPairs.forEach(function (cp) {
                 return _this.handleCurrencyPairUpdate(cp);
             });
@@ -681,14 +681,6 @@ var PricingViewModel = (function () {
             this._priceSubscription.dispose();
             this._disposed = true;
         }
-    };
-
-    PricingViewModel.prototype.executeBid = function () {
-        this.bid.onExecute();
-    };
-
-    PricingViewModel.prototype.executeAsk = function () {
-        this.ask.onExecute();
     };
 
     PricingViewModel.prototype.onTrade = function (trade) {
@@ -1058,7 +1050,7 @@ var ReferenceDataRepository = (function () {
         this._currencyPairUpdateFactory = currencyPairUpdateFactory;
         this._referenceDataServiceClient = referenceDataServiceClient;
     }
-    ReferenceDataRepository.prototype.getCurrencyPairs = function () {
+    ReferenceDataRepository.prototype.getCurrencyPairsStream = function () {
         var _this = this;
         return Rx.Observable.defer(function () {
             return _this._referenceDataServiceClient.getCurrencyPairUpdates();
