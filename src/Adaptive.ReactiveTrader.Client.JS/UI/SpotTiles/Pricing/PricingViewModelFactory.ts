@@ -5,7 +5,7 @@
         this._priceLatencyRecorder = priceLatencyRecorder;
     }
 
-    create(currencyPair: ICurrencyPair): IPricingViewModel {
-        return new PricingViewModel(currencyPair, this._priceLatencyRecorder);
+    create(currencyPair: ICurrencyPair, parent: ISpotTileViewModel): IPricingViewModel {
+        return new PricingViewModel(currencyPair, this._priceLatencyRecorder, parent);
     }
 }

@@ -445,7 +445,7 @@ var OneWayPriceViewModel = (function () {
 
     OneWayPriceViewModel.prototype.onExecutionError = function (ex) {
         // TODO
-        console.error(ex);
+        this._parent.onExecutionError("Execution error");
     };
     return OneWayPriceViewModel;
 })();
@@ -603,11 +603,11 @@ var SpotTilesViewModel = (function () {
         this._config.toConfig();
 
         // TODO this.spotTiles.push(this._config);
-        this._subscriptionModeDisposable = this._config.config.subscriptionMode.subscribe(function (subscriptionMode) {
+        this._subscriptionModeDisposable = this._config.config().subscriptionMode.subscribe(function (subscriptionMode) {
             // TODO
         });
 
-        this._executionModeDisposable = this._config.config.executionMode.subscribe(function (executionMode) {
+        this._executionModeDisposable = this._config.config().executionMode.subscribe(function (executionMode) {
             // TODO
         });
 
@@ -640,7 +640,7 @@ var SpotTilesViewModel = (function () {
                 return;
             }
 
-            var spotTile = new SpotTileViewModel(update.currencyPair, this._config.config.subscriptionMode(), this._pricingViewModelFactory);
+            var spotTile = new SpotTileViewModel(update.currencyPair, this._config.config().subscriptionMode(), this._pricingViewModelFactory);
             this.spotTiles.push(spotTile);
         } else {
             if (spotTileViewModel != null) {
@@ -652,11 +652,12 @@ var SpotTilesViewModel = (function () {
     return SpotTilesViewModel;
 })();
 var PricingViewModel = (function () {
-    function PricingViewModel(currencyPair, priceLatencyRecorder) {
+    function PricingViewModel(currencyPair, priceLatencyRecorder, parent) {
         this._priceLatencyRecorder = priceLatencyRecorder;
         this.symbol = currencyPair.baseCurrency + " / " + currencyPair.counterCurrency;
         this._priceSubscription = new Rx.SerialDisposable();
         this._currencyPair = currencyPair;
+        this._parent = parent;
         this.bid = new OneWayPriceViewModel(this, 1 /* Sell */);
         this.ask = new OneWayPriceViewModel(this, 0 /* Buy */);
         this.notional = ko.observable(1000000);
@@ -684,7 +685,7 @@ var PricingViewModel = (function () {
     };
 
     PricingViewModel.prototype.onTrade = function (trade) {
-        // TODO
+        this._parent.onTrade(trade);
     };
 
     PricingViewModel.prototype.subscribeForPrices = function () {
@@ -731,7 +732,7 @@ var PricingViewModel = (function () {
     };
 
     PricingViewModel.prototype.onExecutionError = function (message) {
-        // TODO
+        this._parent.onExecutionError(message);
     };
     return PricingViewModel;
 })();
@@ -1371,50 +1372,55 @@ var PricingViewModelFactory = (function () {
     function PricingViewModelFactory(priceLatencyRecorder) {
         this._priceLatencyRecorder = priceLatencyRecorder;
     }
-    PricingViewModelFactory.prototype.create = function (currencyPair) {
-        return new PricingViewModel(currencyPair, this._priceLatencyRecorder);
+    PricingViewModelFactory.prototype.create = function (currencyPair, parent) {
+        return new PricingViewModel(currencyPair, this._priceLatencyRecorder, parent);
     };
     return PricingViewModelFactory;
 })();
 var SpotTileViewModel = (function () {
     function SpotTileViewModel(currencyPair, subscriptionMode, pricingFactory) {
+        this.pricing = ko.observable(null);
+        this.affirmation = ko.observable(null);
+        this.error = ko.observable(null);
+        this.config = ko.observable(null);
+        this.state = ko.observable(0 /* Pricing */);
         this._disposed = false;
         if (currencyPair != null) {
-            this.pricing = pricingFactory.create(currencyPair);
+            this.pricing(pricingFactory.create(currencyPair, this));
             this.currencyPair = currencyPair.symbol;
         }
     }
     SpotTileViewModel.prototype.dispose = function () {
         if (!this._disposed) {
-            this.pricing.dispose();
+            this.pricing().dispose();
             this._disposed = true;
         }
     };
 
     SpotTileViewModel.prototype.onTrade = function (trade) {
-        this.affirmation = new AffirmationViewModel(trade, this);
-        this.state = 1 /* Affirmation */;
+        this.affirmation(new AffirmationViewModel(trade, this));
+        this.state(1 /* Affirmation */);
         this.error = null;
     };
 
     SpotTileViewModel.prototype.onExecutionError = function (message) {
-        this.error = new ErrorViewModel(this, message);
-        this.state = 2 /* Error */;
+        this.error(new ErrorViewModel(this, message));
+        this.state(2 /* Error */);
     };
 
     SpotTileViewModel.prototype.dismissAffirmation = function () {
-        this.state = 0 /* Pricing */;
-        this.affirmation = null;
+        this.state(0 /* Pricing */);
+        this.affirmation(null);
     };
 
     SpotTileViewModel.prototype.dismissError = function () {
-        this.state = 0 /* Pricing */;
-        this.error = null;
+        this.state(0 /* Pricing */);
+        this.error(null);
     };
 
     SpotTileViewModel.prototype.toConfig = function () {
-        this.state = 3 /* Config */;
-        this.config = new ConfigViewModel();
+        this.state(3 /* Config */);
+        this.config(new ConfigViewModel());
     };
     return SpotTileViewModel;
 })();

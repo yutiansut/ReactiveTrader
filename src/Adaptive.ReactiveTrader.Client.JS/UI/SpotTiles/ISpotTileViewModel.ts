@@ -1,10 +1,10 @@
 ﻿interface ISpotTileViewModel extends  Rx.IDisposable
 {
-    pricing: IPricingViewModel;
-    affirmation: IAffirmationViewModel;
-    error: IErrorViewModel;
-    config: IConfigViewModel;
-    state: TileState;
+    pricing: KnockoutObservable<IPricingViewModel>;
+    affirmation: KnockoutObservable<IAffirmationViewModel>;
+    error: KnockoutObservable<IErrorViewModel>;
+    config: KnockoutObservable<IConfigViewModel>;
+    state: KnockoutObservable<TileState>;
     currencyPair: string;
     onTrade(trade: ITrade): void;
     onExecutionError(message: string);

@@ -3,12 +3,14 @@
     private _currencyPair: ICurrencyPair;
     private _previousRate: number;
     private _priceLatencyRecorder: IPriceLatencyRecorder;
+    private _parent: ISpotTileViewModel;
 
-    constructor(currencyPair: ICurrencyPair, priceLatencyRecorder: IPriceLatencyRecorder) {
+    constructor(currencyPair: ICurrencyPair, priceLatencyRecorder: IPriceLatencyRecorder, parent: ISpotTileViewModel) {
         this._priceLatencyRecorder = priceLatencyRecorder;
         this.symbol = currencyPair.baseCurrency + " / " + currencyPair.counterCurrency;
         this._priceSubscription = new Rx.SerialDisposable();
         this._currencyPair = currencyPair;
+        this._parent = parent;
         this.bid = new OneWayPriceViewModel(this, Direction.Sell);
         this.ask = new OneWayPriceViewModel(this, Direction.Buy);
         this.notional = ko.observable(1000000);
@@ -45,7 +47,7 @@
     }
 
     onTrade(trade: ITrade): void {
-        // TODO
+        this._parent.onTrade(trade);
     }
 
     private subscribeForPrices(): void {
@@ -92,7 +94,7 @@
     }
 
     public onExecutionError(message: string): void {
-        // TODO
+        this._parent.onExecutionError(message);
     }
 } 
 

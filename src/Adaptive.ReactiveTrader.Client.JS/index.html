@@ -39,8 +39,34 @@
     <!-- SPOT TILE TEMPLATE -->
     <script type="text/html" id="spot-tile-template">
         <li style="padding: 12px 15px">
-            <div data-bind="template: { name: 'pricing-template', data: pricing }"></div>
+            <div data-bind="if: state() == 0">
+                <div data-bind="template: { name: 'pricing-template', data: pricing }"></div>
+            </div>
+            <div data-bind="if: state() == 1">
+                <div data-bind="template: { name: 'affirmation-template', data: affirmation }"></div>
+            </div>
+            <div data-bind="if: state() == 2">
+                <div data-bind="template: { name: 'error-template', data: affirmation }"></div>
+            </div>
+            <div data-bind="if: state() == 3">
+                <div data-bind="template: { name: 'config-template', data: affirmation }"></div>
+            </div>
         </li>
+    </script>
+
+    <!-- AFFIRMATION TILE TEMPLATE -->
+    <script type="text/html" id="affirmation-template">
+        AFFIRMATION
+    </script>
+    
+    <!-- ERROR TILE TEMPLATE -->
+    <script type="text/html" id="error-template">
+        ERROR
+    </script>
+    
+    <!-- CONFIG TILE TEMPLATE -->
+    <script type="text/html" id="config-template">
+        CONFIG
     </script>
 
     <!-- PRICING TILE TEMPLATE -->
@@ -76,6 +102,7 @@
                 <td></td>
             </tr>
         </table>
+
     </script>
 </head>
 

@@ -60,7 +60,7 @@
 
     private onExecutionError(ex: Error) {
         // TODO
-        console.error(ex);
+        this._parent.onExecutionError("Execution error");
     }
 
     direction: string;

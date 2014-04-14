@@ -1,3 +1,3 @@
 ﻿interface IPricingViewModelFactory {
-    create(currencyPair: ICurrencyPair): IPricingViewModel;
+    create(currencyPair: ICurrencyPair, parent: ISpotTileViewModel): IPricingViewModel;
 }  

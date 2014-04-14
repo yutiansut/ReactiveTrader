@@ -18,12 +18,12 @@
 
         // TODO this.spotTiles.push(this._config);
 
-        this._subscriptionModeDisposable = this._config.config.subscriptionMode
+        this._subscriptionModeDisposable = this._config.config().subscriptionMode
             .subscribe(subscriptionMode => {
                 // TODO
             });
 
-        this._executionModeDisposable = this._config.config.executionMode
+        this._executionModeDisposable = this._config.config().executionMode
             .subscribe(executionMode => {
                 // TODO
             });
@@ -53,7 +53,7 @@
                 return;
             }
 
-            var spotTile = new SpotTileViewModel(update.currencyPair, this._config.config.subscriptionMode(), this._pricingViewModelFactory);
+            var spotTile = new SpotTileViewModel(update.currencyPair, this._config.config().subscriptionMode(), this._pricingViewModelFactory);
             this.spotTiles.push(spotTile);
         } else {
             if (spotTileViewModel != null) {
