@@ -1,4 +1,4 @@
 ﻿interface IReferenceDataRepository {
-    getCurrencyPairs(): Rx.Observable<ICurrencyPairUpdate[]>;
+    getCurrencyPairsStream(): Rx.Observable<ICurrencyPairUpdate[]>;
 } 
 
