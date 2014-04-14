@@ -1,8 +1,8 @@
 ﻿class OneWayPriceViewModel implements IOneWayPriceViewModel {
-    private _parent: ISpotTileViewModel;
+    private _parent: IPricingViewModel;
     private _executablePrice: IExecutablePrice;
 
-    constructor(parent: ISpotTileViewModel, direction: Direction) {
+    constructor(parent: IPricingViewModel, direction: Direction) {
         this._parent = parent;
         this.direction = direction == Direction.Buy ? "BUY" : "SELL";
 
@@ -42,10 +42,20 @@
         this.isStale(true);
     }
 
-    private onExecuted(trade: ITrade) {
-        console.log("Trade executed.");
-        this._parent.onTrade(trade);
-        this.isExecuting(true);
+    private onExecuted(trade: IStale<ITrade>) {
+        if (trade.isStale) {
+            this.onExecutionTimeout();
+        }
+        else {
+            console.log("Trade executed.");
+            this._parent.onTrade(trade.update);    
+        }
+        this.isExecuting(false);
+    }
+
+    private onExecutionTimeout() {
+        console.error("Trade execution request timed out.");
+        this._parent.onExecutionError("No response was received from the server, the execution status is unknown. Please contact your sales representative.");
     }
 
     private onExecutionError(ex: Error) {

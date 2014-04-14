@@ -80,12 +80,4 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
             Config = _configFactory();
         }
     }
-
-    public enum TileState
-    {
-        Pricing,
-        Affirmation,
-        Error,
-        Config
-    }
 }

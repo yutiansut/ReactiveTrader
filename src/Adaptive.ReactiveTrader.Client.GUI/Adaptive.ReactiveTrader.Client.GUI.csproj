@@ -177,6 +177,7 @@
       <DependentUpon>SpotTileView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\SpotTiles\SpotTileViewModel.cs" />
+    <Compile Include="UI\SpotTiles\TileState.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

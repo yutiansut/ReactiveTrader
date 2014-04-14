@@ -22,7 +22,6 @@
         this._receivedTimestamp = performance.now();
     }
 
-    // TODO encapsulate as fields
     bid: IExecutablePrice;
     ask: IExecutablePrice;
     mid: number; 

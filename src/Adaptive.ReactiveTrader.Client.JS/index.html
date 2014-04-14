@@ -1,26 +1,43 @@
 ﻿<!DOCTYPE html>
 
 <html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>Adaptive's Reactive Trader</title>
-    <link rel="icon" type="image/ico" href="favicon.ico">
+    <head>
+        <meta charset="utf-8" />
+        <title>Adaptive's Reactive Trader</title>
+        <link rel="icon" type="image/ico" href="favicon.ico">
 
-    <link rel="stylesheet" href="app.css" type="text/css" />
+        <link rel="stylesheet" href="app.css" type="text/css" />
 
-    <script src="Scripts/jquery-2.1.0.min.js"></script>
-    <script src="Scripts/jquery.signalR-2.0.2.min.js"></script>
-    <script src="Scripts/rx.js"></script>
-    <script src="Scripts/rx.binding.js"></script>
-    <script src="Scripts/rx.aggregates.js"></script>
-    <script src="Scripts/rx.coincidence.js"></script>
-    <script src="Scripts/rx.joinpatterns.js"></script>
-    <script src="Scripts/rx.time.js"></script>
-    <script src="Scripts/rx.virtualtime.js"></script>
-    <script src="Scripts/knockout-3.1.0.js"></script>
-    <script src="reactiveTrader.js"></script>
-</head>
-<body style="height: 100%">
+        <script src="Scripts/jquery-2.1.0.min.js"></script>
+        <script src="Scripts/jquery.signalR-2.0.2.min.js"></script>
+        <script src="Scripts/rx.js"></script>
+        <script src="Scripts/rx.binding.js"></script>
+        <script src="Scripts/rx.aggregates.js"></script>
+        <script src="Scripts/rx.coincidence.js"></script>
+        <script src="Scripts/rx.joinpatterns.js"></script>
+        <script src="Scripts/rx.time.js"></script>
+        <script src="Scripts/rx.virtualtime.js"></script>
+        <script src="Scripts/knockout-3.1.0.js"></script>
+        <script src="reactiveTrader.js"></script>
+        
+        <script type="text/html" id="one-way=price-template">
+            <table data-bind="click: onExecute">
+                <tr>
+                    <td class="secondary-foreground" style="font-size: 16px" data-bind="text: direction"></td>
+                </tr>
+                <tr>
+                    <td style="width: 100%">
+                        <span data-bind="text: bigFigures" class="secondary-foreground" style="font-size: 18px"></span>
+                        <span data-bind="text: pips" class="primary-foreground" style="font-size: 48px"></span>
+                        <span data-bind="text: tenthOfPips" class="secondary-foreground" style="font-size: 18px"></span>
+                    </td>
+                </tr>
+            </table>
+        </script>
+    </head>
+
+
+    <body style="height: 100%">
     <table class="shell">
         <tr style="height: 65%">
             <td class="tiles-background">
@@ -30,7 +47,7 @@
                         <table style="height: 100%;">
                             <tr>
                                 <!-- SYMBOL -->
-                                <td data-bind="text: symbol" class="tile-symbol"></td>
+                                <td data-bind="text: pricing.symbol" class="tile-symbol"></td>
                                 <td></td>
                             </tr>
                             <tr>
@@ -38,38 +55,16 @@
                                     <table style="text-align: center">
                                         <tr>
                                             <!-- BID -->
-                                            <td class="one-way-price" data-bind="click: executeBid">
-                                                <table>
-                                                    <tr>
-                                                        <td class="secondary-foreground" style="font-size: 16px">SELL</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="width: 100%">
-                                                            <span data-bind="text: bid.bigFigures" class="secondary-foreground" style="font-size: 18px"></span>
-                                                            <span data-bind="text: bid.pips" class="primary-foreground" style="font-size: 48px"></span>
-                                                            <span data-bind="text: bid.tenthOfPips" class="secondary-foreground" style="font-size: 18px"></span>
-                                                        </td>
-                                                    </tr>
-                                                </table>
+                                            <td class="one-way-price">
+                                                <div data-bind="template: { name: 'one-way=price-template', data: pricing.bid }"></div>
                                             </td>
                                             <!-- SPREAD -->
                                             <td>
-                                                <span data-bind="text: spread" class="primary-foreground" style="font-size: 16px; margin: 3px"></span>
+                                                <span data-bind="text: pricing.spread" class="primary-foreground" style="font-size: 16px; margin: 3px"></span>
                                             </td>
                                             <!-- ASK -->
-                                            <td class="one-way-price" data-bind="click: executeAsk">
-                                                <table>
-                                                    <tr>
-                                                        <td class="secondary-foreground" style="font-size: 16px">BUY</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="width: 100%">
-                                                            <span data-bind="text: ask.bigFigures" class="secondary-foreground" style="font-size: 18px"></span>
-                                                            <span data-bind="text: ask.pips" class="primary-foreground" style="font-size: 48px"></span>
-                                                            <span data-bind="text: ask.tenthOfPips" class="secondary-foreground" style="font-size: 18px"></span>
-                                                        </td>
-                                                    </tr>
-                                                </table>
+                                            <td class="one-way-price">
+                                                <div data-bind="template: { name: 'one-way=price-template', data: pricing.ask }"></div>
                                             </td>
                                         </tr>
                                     </table>
@@ -79,8 +74,8 @@
                             <tr>
                                 <!-- NOTIONAL -->
                                 <td>
-                                    <span data-bind="text: dealtCurrency" class="secondary-foreground" style="font-size: 16px"></span>
-                                    <input data-bind="value: notional" class="notional" style="font-size: 16px" />
+                                    <span data-bind="text: pricing.dealtCurrency" class="secondary-foreground" style="font-size: 16px"></span>
+                                    <input data-bind="value: pricing.notional" class="notional" style="font-size: 16px" />
                                 </td>
                                 <td></td>
                             </tr>

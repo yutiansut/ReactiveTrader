@@ -5,8 +5,8 @@
     reactiveTrader.connectionStatusStream.subscribe(s=> console.log("Connection status: " + s));
 
     var priceLatencyRecorder = new PriceLatencyRecorder();
-    var spotTileViewModelFactory = new SpotTileViewModelFactory(priceLatencyRecorder);
-    var spotTilesViewModel = new SpotTilesViewModel(reactiveTrader.referenceDataRepository, spotTileViewModelFactory);
+    var pricingViewModelFactory = new PricingViewModelFactory(priceLatencyRecorder);
+    var spotTilesViewModel = new SpotTilesViewModel(reactiveTrader.referenceDataRepository, pricingViewModelFactory);
     var blotterViewModel = new BlotterViewModel(reactiveTrader.tradeRepository);
     var connectivityStatusViewModel = new ConnectivityStatusViewModel(reactiveTrader, priceLatencyRecorder);
     var shellViewModel = new ShellViewModel(spotTilesViewModel, blotterViewModel, connectivityStatusViewModel);

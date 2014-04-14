@@ -7,8 +7,8 @@
     });
 
     var priceLatencyRecorder = new PriceLatencyRecorder();
-    var spotTileViewModelFactory = new SpotTileViewModelFactory(priceLatencyRecorder);
-    var spotTilesViewModel = new SpotTilesViewModel(reactiveTrader.referenceDataRepository, spotTileViewModelFactory);
+    var pricingViewModelFactory = new PricingViewModelFactory(priceLatencyRecorder);
+    var spotTilesViewModel = new SpotTilesViewModel(reactiveTrader.referenceDataRepository, pricingViewModelFactory);
     var blotterViewModel = new BlotterViewModel(reactiveTrader.tradeRepository);
     var connectivityStatusViewModel = new ConnectivityStatusViewModel(reactiveTrader, priceLatencyRecorder);
     var shellViewModel = new ShellViewModel(spotTilesViewModel, blotterViewModel, connectivityStatusViewModel);
@@ -335,6 +335,58 @@ var ShellViewModel = (function () {
     }
     return ShellViewModel;
 })();
+var ConfigViewModel = (function () {
+    function ConfigViewModel() {
+        this.subscriptionMode = ko.observable(0 /* OnDispatcher */);
+        this.executionMode = ko.observable(0 /* Async */);
+    }
+    ConfigViewModel.prototype.standard = function () {
+        this.subscriptionMode(0 /* OnDispatcher */);
+    };
+
+    ConfigViewModel.prototype.dropFrame = function () {
+        this.subscriptionMode(1 /* ObserveLatestOnDispatcher */);
+    };
+
+    ConfigViewModel.prototype.conflate = function () {
+        this.subscriptionMode(2 /* Conflate */);
+    };
+
+    ConfigViewModel.prototype.constantRate = function () {
+        this.subscriptionMode(3 /* ConstantRate */);
+    };
+
+    ConfigViewModel.prototype.async = function () {
+        this.executionMode(0 /* Async */);
+    };
+
+    ConfigViewModel.prototype.sync = function () {
+        this.executionMode(1 /* Sync */);
+    };
+    return ConfigViewModel;
+})();
+var ExecutionMode;
+(function (ExecutionMode) {
+    ExecutionMode[ExecutionMode["Async"] = 0] = "Async";
+    ExecutionMode[ExecutionMode["Sync"] = 1] = "Sync";
+})(ExecutionMode || (ExecutionMode = {}));
+var SubscriptionMode;
+(function (SubscriptionMode) {
+    SubscriptionMode[SubscriptionMode["OnDispatcher"] = 0] = "OnDispatcher";
+    SubscriptionMode[SubscriptionMode["ObserveLatestOnDispatcher"] = 1] = "ObserveLatestOnDispatcher";
+    SubscriptionMode[SubscriptionMode["Conflate"] = 2] = "Conflate";
+    SubscriptionMode[SubscriptionMode["ConstantRate"] = 3] = "ConstantRate";
+})(SubscriptionMode || (SubscriptionMode = {}));
+var ErrorViewModel = (function () {
+    function ErrorViewModel(parent, message) {
+        this._parent = parent;
+        this.errorMessage = ko.observable(message);
+    }
+    ErrorViewModel.prototype.dismiss = function () {
+        this._parent.dismissError();
+    };
+    return ErrorViewModel;
+})();
 var OneWayPriceViewModel = (function () {
     function OneWayPriceViewModel(parent, direction) {
         this._parent = parent;
@@ -377,9 +429,18 @@ var OneWayPriceViewModel = (function () {
     };
 
     OneWayPriceViewModel.prototype.onExecuted = function (trade) {
-        console.log("Trade executed.");
-        this._parent.onTrade(trade);
-        this.isExecuting(true);
+        if (trade.isStale) {
+            this.onExecutionTimeout();
+        } else {
+            console.log("Trade executed.");
+            this._parent.onTrade(trade.update);
+        }
+        this.isExecuting(false);
+    };
+
+    OneWayPriceViewModel.prototype.onExecutionTimeout = function () {
+        console.error("Trade execution request timed out.");
+        this._parent.onExecutionError("No response was received from the server, the execution status is unknown. Please contact your sales representative.");
     };
 
     OneWayPriceViewModel.prototype.onExecutionError = function (ex) {
@@ -533,13 +594,30 @@ var AffirmationViewModel = (function () {
     return AffirmationViewModel;
 })();
 var SpotTilesViewModel = (function () {
-    function SpotTilesViewModel(referenceDataRepository, spotTileViewModelFactory) {
+    function SpotTilesViewModel(referenceDataRepository, pricingViewModelFactory) {
         this._referenceDataRepository = referenceDataRepository;
-        this._spotTileViewModelFactory = spotTileViewModelFactory;
+        this._pricingViewModelFactory = pricingViewModelFactory;
         this.spotTiles = ko.observableArray([]);
+
+        this._config = new SpotTileViewModel(null, 2 /* Conflate */, this._pricingViewModelFactory);
+        this._config.toConfig();
+
+        // TODO this.spotTiles.push(this._config);
+        this._subscriptionModeDisposable = this._config.config.subscriptionMode.subscribe(function (subscriptionMode) {
+            // TODO
+        });
+
+        this._executionModeDisposable = this._config.config.executionMode.subscribe(function (executionMode) {
+            // TODO
+        });
 
         this.loadSpotTiles();
     }
+    SpotTilesViewModel.prototype.dispose = function () {
+        this._executionModeDisposable.dispose();
+        this._subscriptionModeDisposable.dispose();
+    };
+
     SpotTilesViewModel.prototype.loadSpotTiles = function () {
         var _this = this;
         this._referenceDataRepository.getCurrencyPairs().subscribe(function (currencyPairs) {
@@ -553,7 +631,7 @@ var SpotTilesViewModel = (function () {
 
     SpotTilesViewModel.prototype.handleCurrencyPairUpdate = function (update) {
         var spotTileViewModel = ko.utils.arrayFirst(this.spotTiles(), function (stvm) {
-            return stvm.currencyPair.symbol == update.currencyPair.symbol;
+            return stvm.currencyPair == update.currencyPair.symbol;
         });
 
         if (update.updateType == 0 /* Add */) {
@@ -562,7 +640,7 @@ var SpotTilesViewModel = (function () {
                 return;
             }
 
-            var spotTile = this._spotTileViewModelFactory.create(update.currencyPair);
+            var spotTile = new SpotTileViewModel(update.currencyPair, this._config.config.subscriptionMode(), this._pricingViewModelFactory);
             this.spotTiles.push(spotTile);
         } else {
             if (spotTileViewModel != null) {
@@ -573,8 +651,8 @@ var SpotTilesViewModel = (function () {
     };
     return SpotTilesViewModel;
 })();
-var SpotTileViewModel = (function () {
-    function SpotTileViewModel(currencyPair, priceLatencyRecorder) {
+var PricingViewModel = (function () {
+    function PricingViewModel(currencyPair, priceLatencyRecorder) {
         this._priceLatencyRecorder = priceLatencyRecorder;
         this.symbol = currencyPair.baseCurrency + " / " + currencyPair.counterCurrency;
         this._priceSubscription = new Rx.SerialDisposable();
@@ -590,7 +668,7 @@ var SpotTileViewModel = (function () {
 
         this.subscribeForPrices();
     }
-    Object.defineProperty(SpotTileViewModel.prototype, "currencyPair", {
+    Object.defineProperty(PricingViewModel.prototype, "currencyPair", {
         get: function () {
             return this._currencyPair;
         },
@@ -598,26 +676,26 @@ var SpotTileViewModel = (function () {
         configurable: true
     });
 
-    SpotTileViewModel.prototype.dispose = function () {
+    PricingViewModel.prototype.dispose = function () {
         if (!this._disposed) {
             this._priceSubscription.dispose();
             this._disposed = true;
         }
     };
 
-    SpotTileViewModel.prototype.executeBid = function () {
+    PricingViewModel.prototype.executeBid = function () {
         this.bid.onExecute();
     };
 
-    SpotTileViewModel.prototype.executeAsk = function () {
+    PricingViewModel.prototype.executeAsk = function () {
         this.ask.onExecute();
     };
 
-    SpotTileViewModel.prototype.onTrade = function (trade) {
+    PricingViewModel.prototype.onTrade = function (trade) {
         // TODO
     };
 
-    SpotTileViewModel.prototype.subscribeForPrices = function () {
+    PricingViewModel.prototype.subscribeForPrices = function () {
         var _this = this;
         var subscription = this._currencyPair.prices.subscribe(function (price) {
             return _this.onPrice(price);
@@ -628,7 +706,7 @@ var SpotTileViewModel = (function () {
         this._priceSubscription.setDisposable(subscription);
     };
 
-    SpotTileViewModel.prototype.onPrice = function (price) {
+    PricingViewModel.prototype.onPrice = function (price) {
         this.isSubscribing(false);
 
         if (price.isStale) {
@@ -659,7 +737,11 @@ var SpotTileViewModel = (function () {
             this._priceLatencyRecorder.record(price);
         }
     };
-    return SpotTileViewModel;
+
+    PricingViewModel.prototype.onExecutionError = function (message) {
+        // TODO
+    };
+    return PricingViewModel;
 })();
 var Direction;
 (function (Direction) {
@@ -948,10 +1030,9 @@ var ExecutionRepository = (function () {
         request.ValueDate = price.valueDate;
         request.DealtCurrency = dealtCurrency;
 
-        return this._executionServiceClient.execute(request).timeout(2000).select(function (tradeDto) {
+        return this._executionServiceClient.execute(request).select(function (tradeDto) {
             return _this._tradeFactory.create(tradeDto);
-        }).take(1);
-        // TODO .CacheFirstResult();
+        }).detectStale(2000, Rx.Scheduler.timeout);
     };
     return ExecutionRepository;
 })();
@@ -1294,13 +1375,62 @@ var Connection = (function () {
     };
     return Connection;
 })();
-var SpotTileViewModelFactory = (function () {
-    function SpotTileViewModelFactory(priceLatencyRecorder) {
+var PricingViewModelFactory = (function () {
+    function PricingViewModelFactory(priceLatencyRecorder) {
         this._priceLatencyRecorder = priceLatencyRecorder;
     }
-    SpotTileViewModelFactory.prototype.create = function (currencyPair) {
-        return new SpotTileViewModel(currencyPair, this._priceLatencyRecorder);
+    PricingViewModelFactory.prototype.create = function (currencyPair) {
+        return new PricingViewModel(currencyPair, this._priceLatencyRecorder);
     };
-    return SpotTileViewModelFactory;
+    return PricingViewModelFactory;
 })();
+var SpotTileViewModel = (function () {
+    function SpotTileViewModel(currencyPair, subscriptionMode, pricingFactory) {
+        this._disposed = false;
+        if (currencyPair != null) {
+            this.pricing = pricingFactory.create(currencyPair);
+            this.currencyPair = currencyPair.symbol;
+        }
+    }
+    SpotTileViewModel.prototype.dispose = function () {
+        if (!this._disposed) {
+            this.pricing.dispose();
+            this._disposed = true;
+        }
+    };
+
+    SpotTileViewModel.prototype.onTrade = function (trade) {
+        this.affirmation = new AffirmationViewModel(trade, this);
+        this.state = 1 /* Affirmation */;
+        this.error = null;
+    };
+
+    SpotTileViewModel.prototype.onExecutionError = function (message) {
+        this.error = new ErrorViewModel(this, message);
+        this.state = 2 /* Error */;
+    };
+
+    SpotTileViewModel.prototype.dismissAffirmation = function () {
+        this.state = 0 /* Pricing */;
+        this.affirmation = null;
+    };
+
+    SpotTileViewModel.prototype.dismissError = function () {
+        this.state = 0 /* Pricing */;
+        this.error = null;
+    };
+
+    SpotTileViewModel.prototype.toConfig = function () {
+        this.state = 3 /* Config */;
+        this.config = new ConfigViewModel();
+    };
+    return SpotTileViewModel;
+})();
+var TileState;
+(function (TileState) {
+    TileState[TileState["Pricing"] = 0] = "Pricing";
+    TileState[TileState["Affirmation"] = 1] = "Affirmation";
+    TileState[TileState["Error"] = 2] = "Error";
+    TileState[TileState["Config"] = 3] = "Config";
+})(TileState || (TileState = {}));
 //# sourceMappingURL=reactiveTrader.js.map

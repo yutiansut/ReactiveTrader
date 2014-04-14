@@ -9,7 +9,7 @@
         this._executionServiceClient = executionServiceClient;
     }
 
-    execute(executablePrice: IExecutablePrice, notional: number, dealtCurrency: string) {
+    execute(executablePrice: IExecutablePrice, notional: number, dealtCurrency: string): Rx.Observable<IStale<ITrade>> {
         var price = executablePrice.parent;
 
         var request = new TradeRequestDto();
@@ -22,9 +22,7 @@
         request.DealtCurrency = dealtCurrency;
 
         return this._executionServiceClient.execute(request)
-            .timeout(2000)
-            .select(tradeDto=> this._tradeFactory.create(tradeDto))
-            .take(1);
-            // TODO .CacheFirstResult();
+            .select(tradeDto => this._tradeFactory.create(tradeDto))
+            .detectStale(2000, Rx.Scheduler.timeout);
     }
 } 

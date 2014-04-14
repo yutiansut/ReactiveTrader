@@ -1,15 +1,14 @@
-﻿interface ISpotTileViewModel {
-    symbol: string;
-    bid: IOneWayPriceViewModel;
-    ask: IOneWayPriceViewModel;
-    notional: KnockoutObservable<number>;
-    spread: KnockoutObservable<string>;
-    dealtCurrency: string;
-    movement: KnockoutObservable<PriceMovement>;
-    spotDate: KnockoutObservable<string>;
-    isSubscribing: KnockoutObservable<boolean>;
-    currencyPair: ICurrencyPair;
-
+﻿interface ISpotTileViewModel extends  Rx.IDisposable
+{
+    pricing: IPricingViewModel;
+    affirmation: IAffirmationViewModel;
+    error: IErrorViewModel;
+    config: IConfigViewModel;
+    state: TileState;
+    currencyPair: string;
     onTrade(trade: ITrade): void;
-    dispose(): void;
+    onExecutionError(message: string);
+    toConfig(): void;
+    dismissAffirmation(): void;
+    dismissError(): void;
 } 

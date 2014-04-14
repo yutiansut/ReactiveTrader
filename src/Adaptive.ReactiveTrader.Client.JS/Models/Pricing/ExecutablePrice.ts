@@ -7,7 +7,7 @@
         this.rate = rate;
     }
 
-    execute(notional: number, dealtCurrency: string): Rx.Observable<ITrade> {
+    execute(notional: number, dealtCurrency: string): Rx.Observable<IStale<ITrade>> {
         return this._executionRepository.execute(this, notional, dealtCurrency);
     }
 
