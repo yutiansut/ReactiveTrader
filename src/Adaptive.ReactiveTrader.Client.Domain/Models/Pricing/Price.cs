@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Adaptive.ReactiveTrader.Client.Domain.Instrumentation;
 using Adaptive.ReactiveTrader.Client.Domain.Models.ReferenceData;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.Models.Pricing
@@ -46,7 +47,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Models.Pricing
         {
             get { return GetElapsedMs(_serverTimestamp, _receivedTimestamp); }
         }
-
+        
         public double UiProcessingTimeMs
         {
             get { return GetElapsedMs(_receivedTimestamp, _renderedTimestamp); }
