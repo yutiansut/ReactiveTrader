@@ -18,7 +18,7 @@
     }
 
     get direction(): string {
-        return this._trade.direction == Direction.Buy ? "Buy" : "Sell";
+        return this._trade.direction == Direction.Buy ? "Bought" : "Sold";
     }
 
     get notional(): string {
@@ -58,6 +58,6 @@
     }
 
     dismiss(): void {
-        //this._parent.dismissAffirmation();
+        this._parent.dismissAffirmation();
     }
 } 

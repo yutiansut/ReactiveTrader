@@ -38,7 +38,7 @@
 
     <!-- SPOT TILE TEMPLATE -->
     <script type="text/html" id="spot-tile-template">
-        <li style="padding: 12px 15px">
+        <li style="padding:12px 15px" data-bind="css: { error: state() == 2 }">
             <div data-bind="if: state() == 0">
                 <div data-bind="template: { name: 'pricing-template', data: pricing }"></div>
             </div>
@@ -46,24 +46,65 @@
                 <div data-bind="template: { name: 'affirmation-template', data: affirmation }"></div>
             </div>
             <div data-bind="if: state() == 2">
-                <div data-bind="template: { name: 'error-template', data: affirmation }"></div>
+                <div data-bind="template: { name: 'error-template', data: error }"></div>
             </div>
             <div data-bind="if: state() == 3">
-                <div data-bind="template: { name: 'config-template', data: affirmation }"></div>
+                <div data-bind="template: { name: 'config-template', data: config }"></div>
             </div>
         </li>
     </script>
 
     <!-- AFFIRMATION TILE TEMPLATE -->
     <script type="text/html" id="affirmation-template">
-        AFFIRMATION
+        <table style="height: 100%;">
+            <tr>
+                <td data-bind="text: currencyPair" class="tile-symbol"></td>
+            </tr>
+            <tr>
+                <td style="font-size: 16px">
+                    <span data-bind="text: direction" class="secondary-foreground"></span>
+                    <span data-bind="text: dealtCurrency" class="primary-foreground"></span>
+                    <span data-bind="text: notional" class="primary-foreground"></span>
+                    <br />
+                    <span class="secondary-foreground">vs</span>
+                    <span data-bind="text: otherCurrency" class="primary-foreground"></span>
+                    <span class="secondary-foreground">at</span>
+                    <span data-bind="text: spotRate" class="primary-foreground"></span>
+                    <br />
+                    <span class="secondary-foreground">Spot</span>
+                    <span data-bind="text: valueDate" class="primary-foreground"></span>
+                    <br />
+                    <span class="secondary-foreground">Trade ID</span>
+                    <span data-bind="text: tradeId" class="primary-foreground"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="javascript:void(0)" data-bind="click: dismiss">Done</a>
+                </td>
+            </tr>
+        </table>
     </script>
-    
+
     <!-- ERROR TILE TEMPLATE -->
     <script type="text/html" id="error-template">
-        ERROR
+        <table style="height: 100%;">
+            <tr>
+                <td class="tile-symbol">Error</td>
+            </tr>
+            <tr>
+                <td style="font-size: 16px">
+                    <span data-bind="text: errorMessage" class="secondary-foreground"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="javascript:void(0)" data-bind="click: dismiss">Done</a>
+                </td>
+            </tr>
+        </table>
     </script>
-    
+
     <!-- CONFIG TILE TEMPLATE -->
     <script type="text/html" id="config-template">
         CONFIG
@@ -102,7 +143,6 @@
                 <td></td>
             </tr>
         </table>
-
     </script>
 </head>
 

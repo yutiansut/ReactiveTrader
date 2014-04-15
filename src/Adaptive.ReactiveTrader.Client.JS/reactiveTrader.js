@@ -444,8 +444,7 @@ var OneWayPriceViewModel = (function () {
     };
 
     OneWayPriceViewModel.prototype.onExecutionError = function (ex) {
-        // TODO
-        this._parent.onExecutionError("Execution error");
+        this._parent.onExecutionError(ex.message);
     };
     return OneWayPriceViewModel;
 })();
@@ -510,7 +509,7 @@ var AffirmationViewModel = (function () {
 
     Object.defineProperty(AffirmationViewModel.prototype, "direction", {
         get: function () {
-            return this._trade.direction == 0 /* Buy */ ? "Buy" : "Sell";
+            return this._trade.direction == 0 /* Buy */ ? "Bought" : "Sold";
         },
         enumerable: true,
         configurable: true
@@ -589,7 +588,7 @@ var AffirmationViewModel = (function () {
     });
 
     AffirmationViewModel.prototype.dismiss = function () {
-        //this._parent.dismissAffirmation();
+        this._parent.dismissAffirmation();
     };
     return AffirmationViewModel;
 })();
@@ -1121,8 +1120,7 @@ var ExecutionServiceClient = (function (_super) {
             });
 
             return Rx.Disposable.empty;
-        }).take(1).timeout(2000);
-        // TODO cachefirstresult
+        });
     };
     return ExecutionServiceClient;
 })(ServiceClientBase);

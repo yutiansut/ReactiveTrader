@@ -59,8 +59,7 @@
     }
 
     private onExecutionError(ex: Error) {
-        // TODO
-        this._parent.onExecutionError("Execution error");
+        this._parent.onExecutionError(ex.message);
     }
 
     direction: string;

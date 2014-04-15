@@ -8,15 +8,12 @@
     }
 
     public executeForConnection(tradeRequest: TradeRequestDto, executionHub: HubProxy): Rx.Observable<TradeDto> {
-        return Rx.Observable.create<TradeDto>(observer=> {
+        return Rx.Observable.create<TradeDto>(observer => {
             executionHub.invoke("Execute", tradeRequest)
-                .done(trade=> observer.onNext(trade))
-                .fail(error=> observer.onError(error));
+                .done(trade => observer.onNext(trade))
+                .fail(error => observer.onError(error));
 
             return Rx.Disposable.empty;
-        })
-        .take(1)
-        .timeout(2000);
-        // TODO cachefirstresult
+        });
     }
 }
