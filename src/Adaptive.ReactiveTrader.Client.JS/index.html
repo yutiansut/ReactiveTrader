@@ -38,7 +38,7 @@
 
     <!-- SPOT TILE TEMPLATE -->
     <script type="text/html" id="spot-tile-template">
-        <li style="padding:12px 15px" data-bind="css: { error: state() == 2 }">
+        <li style="padding:12px 15px" data-bind="style: { backgroundColor: state() == 2 ? '#CE3C1C' : '#293543'}">
             <div data-bind="if: state() == 0">
                 <div data-bind="template: { name: 'pricing-template', data: pricing }"></div>
             </div>
@@ -94,7 +94,7 @@
             </tr>
             <tr>
                 <td style="font-size: 16px">
-                    <span data-bind="text: errorMessage" class="secondary-foreground"></span>
+                    <span style="color:#e8c0bb" data-bind="text: errorMessage" class="secondary-foreground"></span>
                 </td>
             </tr>
             <tr>
