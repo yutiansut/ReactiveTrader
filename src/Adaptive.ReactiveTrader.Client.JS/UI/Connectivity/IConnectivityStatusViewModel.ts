@@ -1,7 +1,8 @@
 ﻿interface IConnectivityStatusViewModel {
     status: KnockoutObservable<string>;
-    uiLatency: KnockoutObservable<number>;
-    throughput: KnockoutObservable<number>;
+    uiUpdates: KnockoutObservable<number>;
+    ticksReceived: KnockoutObservable<number>;
+    uiLatency: KnockoutObservable<string>;
     disconnected: KnockoutObservable<boolean>;
-    statusText: KnockoutObservable<string>;
+
 } 

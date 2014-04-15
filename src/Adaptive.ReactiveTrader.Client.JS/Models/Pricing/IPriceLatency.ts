@@ -1,4 +1,5 @@
 ﻿interface IPriceLatency {
     uiProcessingTimeMs: number;
-    displayedOnUi():void;
+    displayedOnUi(): void;
+    receivedInGuiProcess(): void;
 } 

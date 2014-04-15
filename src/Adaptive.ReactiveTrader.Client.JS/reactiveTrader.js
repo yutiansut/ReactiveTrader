@@ -1,16 +1,15 @@
 ﻿$(document).ready(function () {
     var reactiveTrader = new ReactiveTrader();
 
-    reactiveTrader.initialize("olivier", ["http://localhost:800"]);
+    reactiveTrader.initialize("Mike Trader", ["http://localhost:800"]);
     reactiveTrader.connectionStatusStream.subscribe(function (s) {
         return console.log("Connection status: " + s);
     });
 
-    var priceLatencyRecorder = new PriceLatencyRecorder();
-    var pricingViewModelFactory = new PricingViewModelFactory(priceLatencyRecorder);
+    var pricingViewModelFactory = new PricingViewModelFactory(reactiveTrader.priceLatencyRecorder);
     var spotTilesViewModel = new SpotTilesViewModel(reactiveTrader.referenceDataRepository, pricingViewModelFactory);
     var blotterViewModel = new BlotterViewModel(reactiveTrader.tradeRepository);
-    var connectivityStatusViewModel = new ConnectivityStatusViewModel(reactiveTrader, priceLatencyRecorder);
+    var connectivityStatusViewModel = new ConnectivityStatusViewModel(reactiveTrader, reactiveTrader.priceLatencyRecorder);
     var shellViewModel = new ShellViewModel(spotTilesViewModel, blotterViewModel, connectivityStatusViewModel);
 
     ko.applyBindings(shellViewModel);
@@ -70,31 +69,44 @@ var Stale = (function () {
     }
     return Stale;
 })();
-var MaxLatency = (function () {
-    function MaxLatency(count, priceWithMaxLatency) {
-        this.count = count;
-        this.priceWithMaxLatency = priceWithMaxLatency;
+var Statistics = (function () {
+    function Statistics(uiLatency, receivedCount, renderedCount) {
+        this.receivedCount = receivedCount;
+        this.uiLatencyMax = uiLatency;
+        this.renderedCount = renderedCount;
     }
-    return MaxLatency;
+    return Statistics;
 })();
 var PriceLatencyRecorder = (function () {
     function PriceLatencyRecorder() {
     }
-    PriceLatencyRecorder.prototype.record = function (price) {
+    PriceLatencyRecorder.prototype.onRendered = function (price) {
         var priceLatency = price;
         if (priceLatency != null) {
             priceLatency.displayedOnUi();
 
-            this._count++;
+            this._renderedCount++;
             if (this._maxLatency == null || priceLatency.uiProcessingTimeMs > this._maxLatency.uiProcessingTimeMs) {
                 this._maxLatency = priceLatency;
             }
         }
     };
 
-    PriceLatencyRecorder.prototype.getMaxLatencyAndReset = function () {
-        var result = new MaxLatency(this._count, this._maxLatency);
-        this._count = 0;
+    PriceLatencyRecorder.prototype.onReceived = function (price) {
+        var priceLatency = price;
+        if (priceLatency != null) {
+            priceLatency.receivedInGuiProcess();
+            this._receivedCount++;
+        }
+    };
+
+    PriceLatencyRecorder.prototype.calculateAndReset = function () {
+        if (!this._maxLatency)
+            return null;
+
+        var result = new Statistics(this._maxLatency.uiProcessingTimeMs, this._receivedCount, this._renderedCount);
+        this._renderedCount = 0;
+        this._receivedCount = 0;
         this._maxLatency = null;
         return result;
     };
@@ -271,8 +283,9 @@ var ConnectivityStatusViewModel = (function () {
         var _this = this;
         this._priceLatencyRecorder = priceLatencyRecorder;
 
-        this.uiLatency = ko.observable(0);
-        this.throughput = ko.observable(0);
+        this.uiLatency = ko.observable("-");
+        this.uiUpdates = ko.observable(0);
+        this.ticksReceived = ko.observable(0);
         this.disconnected = ko.observable(false);
         this.status = ko.observable("Disconnected");
 
@@ -285,18 +298,15 @@ var ConnectivityStatusViewModel = (function () {
         Rx.Observable.timer(1000, Rx.Scheduler.timeout).repeat().subscribe(function (_) {
             return _this.onTimerTick();
         });
-
-        this.statusText = ko.computed(function () {
-            return _this.status() + " - UI Latency: " + _this.uiLatency().toFixed(2) + "ms - Throughput: " + _this.throughput() + "ticks/sec";
-        });
     }
     ConnectivityStatusViewModel.prototype.onTimerTick = function () {
-        var current = this._priceLatencyRecorder.getMaxLatencyAndReset();
-        if (current == null || current.priceWithMaxLatency == null)
+        var stats = this._priceLatencyRecorder.calculateAndReset();
+        if (stats == null)
             return;
 
-        this.uiLatency(current.priceWithMaxLatency.uiProcessingTimeMs);
-        this.throughput(current.count);
+        this.uiLatency(stats.uiLatencyMax.toFixed(2));
+        this.uiUpdates(stats.renderedCount);
+        this.ticksReceived(stats.receivedCount);
     };
 
     ConnectivityStatusViewModel.prototype.onStatusChanged = function (connectionInfo) {
@@ -318,12 +328,20 @@ var ConnectivityStatusViewModel = (function () {
             case 3 /* Reconnecting */:
                 this.status("Reconnecting to " + connectionInfo.server + "...");
                 this.disconnected(true);
+                this.clearStatistics();
                 break;
             case 5 /* Closed */:
                 this.status("Disconnected from " + connectionInfo.server);
                 this.disconnected(true);
+                this.clearStatistics();
                 break;
         }
+    };
+
+    ConnectivityStatusViewModel.prototype.clearStatistics = function () {
+        this.uiLatency("-");
+        this.uiUpdates(0);
+        this.ticksReceived(0);
     };
     return ConnectivityStatusViewModel;
 })();
@@ -726,7 +744,7 @@ var PricingViewModel = (function () {
             this.spread(PriceFormatter.getFormattedSpread(price.spread, this._currencyPair.ratePrecision, this._currencyPair.pipsPosition));
             this.spotDate("SP."); //TODO
 
-            this._priceLatencyRecorder.record(price);
+            this._priceLatencyRecorder.onRendered(price);
         }
     };
 
@@ -793,7 +811,6 @@ var Price = (function () {
         ask.parent = this;
 
         this.spread = (ask.rate - bid.rate) * Math.pow(10, currencyPair.pipsPosition);
-        this._receivedTimestamp = performance.now();
     }
     Object.defineProperty(Price.prototype, "uiProcessingTimeMs", {
         get: function () {
@@ -806,16 +823,23 @@ var Price = (function () {
     Price.prototype.displayedOnUi = function () {
         this._renderTimestamp = performance.now();
     };
+
+    Price.prototype.receivedInGuiProcess = function () {
+        this._receivedTimestamp = performance.now();
+    };
     return Price;
 })();
 var PriceFactory = (function () {
-    function PriceFactory(executionRepository) {
+    function PriceFactory(executionRepository, priceLatencyRecored) {
         this._executionRepository = executionRepository;
+        this._priceLatencyRecored = priceLatencyRecored;
     }
     PriceFactory.prototype.create = function (priceDto, currencyPair) {
         var bid = new ExecutablePrice(1 /* Sell */, priceDto.Bid, this._executionRepository);
         var ask = new ExecutablePrice(0 /* Buy */, priceDto.Ask, this._executionRepository);
         var price = new Price(bid, ask, priceDto.Mid, priceDto.QuoteId, priceDto.ValueDate, currencyPair);
+
+        this._priceLatencyRecored.onReceived(price);
 
         return price;
     };
@@ -934,6 +958,7 @@ var ReactiveTrader = (function () {
     ReactiveTrader.prototype.initialize = function (username, servers) {
         this._connectionProvider = new ConnectionProvider(username, servers);
 
+        this.priceLatencyRecorder = new PriceLatencyRecorder();
         var referenceDataServiceClient = new ReferenceDataServiceClient(this._connectionProvider);
         var executionServiceClient = new ExecutionServiceClient(this._connectionProvider);
         var blotterServiceClient = new BlotterServiceClient(this._connectionProvider);
@@ -941,7 +966,7 @@ var ReactiveTrader = (function () {
 
         var tradeFactory = new TradeFactory();
         var executionRepository = new ExecutionRepository(executionServiceClient, tradeFactory);
-        var priceFactory = new PriceFactory(executionRepository);
+        var priceFactory = new PriceFactory(executionRepository, this.priceLatencyRecorder);
         var priceRepository = new PriceRepository(pricingServiceClient, priceFactory);
         var currencyPairUpdateFactory = new CurrencyPairUpdateFactory(priceRepository);
 

@@ -1,10 +1,12 @@
-﻿class MaxLatency {
-    count: number;
-    priceWithMaxLatency: IPriceLatency;
+﻿class Statistics {
+    uiLatencyMax: number;
+    receivedCount: number;
+    renderedCount: number;
 
-    constructor(count: number, priceWithMaxLatency: IPriceLatency) {
-         this.count = count;
-         this.priceWithMaxLatency = priceWithMaxLatency;
-     }
+    constructor(uiLatency: number, receivedCount: number, renderedCount: number) {
+        this.receivedCount = receivedCount;
+        this.uiLatencyMax = uiLatency;
+        this.renderedCount = renderedCount;
+    }
  }
  

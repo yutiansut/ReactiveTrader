@@ -187,6 +187,22 @@
             </td>
         </tr>
     </table>
-    <div class="connection-status" data-bind="text: connectivityStatus.statusText"></div>
+    <table class="connection-status" data-bind="style: { backgroundColor: connectivityStatus.disconnected() ? '#CE3C1C' : '#DEE3E8', color: connectivityStatus.disconnected() ? 'white' : 'black' }">
+        <tr>
+            <td>
+                <span data-bind="text: connectivityStatus.status"></span>
+                <span> | UI Upd.:</span>
+                <span data-bind="text: connectivityStatus.uiUpdates"></span>
+                <span>/sec | Server Upd.:</span>
+                <span data-bind="text: connectivityStatus.ticksReceived"></span>
+                <span>/sec | UI Lat.:</span>
+                <span data-bind="text: connectivityStatus.uiLatency"></span>
+                <span>ms</span>
+            </td>
+            <td>
+                <img style="float:right; margin-right: 5px" src="statusbar_logo.png" />
+            </td>
+        </tr>
+    </table>
 </body>
 </html>

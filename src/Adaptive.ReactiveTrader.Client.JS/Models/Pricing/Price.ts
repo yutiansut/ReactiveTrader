@@ -19,7 +19,6 @@
         ask.parent = this;
 
         this.spread = (ask.rate - bid.rate) * Math.pow(10, currencyPair.pipsPosition);
-        this._receivedTimestamp = performance.now();
     }
 
     bid: IExecutablePrice;
@@ -42,5 +41,9 @@
 
     displayedOnUi(): void {
         this._renderTimestamp = performance.now();
+    }
+
+    receivedInGuiProcess(): void {
+        this._receivedTimestamp = performance.now();
     }
 } 

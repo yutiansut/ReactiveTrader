@@ -89,7 +89,7 @@
             this.spread(PriceFormatter.getFormattedSpread(price.spread, this._currencyPair.ratePrecision, this._currencyPair.pipsPosition));
             this.spotDate("SP."); //TODO
 
-            this._priceLatencyRecorder.record(price);
+            this._priceLatencyRecorder.onRendered(price);
         }
     }
 

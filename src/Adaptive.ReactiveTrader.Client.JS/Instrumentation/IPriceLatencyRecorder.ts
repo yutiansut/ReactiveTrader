@@ -1,6 +1,7 @@
 ﻿ interface IPriceLatencyRecorder {
-     record(price: IPrice);
-     getMaxLatencyAndReset(): MaxLatency;
+     onRendered(price: IPrice);
+     onReceived(price: IPrice);
+     calculateAndReset(): Statistics;
  }
 
  

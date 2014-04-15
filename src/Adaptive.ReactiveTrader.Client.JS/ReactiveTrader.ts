@@ -5,6 +5,7 @@
      initialize(username: string, servers: string[]): void {
          this._connectionProvider = new ConnectionProvider(username, servers);
 
+         this.priceLatencyRecorder = new PriceLatencyRecorder();
          var referenceDataServiceClient = new ReferenceDataServiceClient(this._connectionProvider);
          var executionServiceClient = new ExecutionServiceClient(this._connectionProvider);
          var blotterServiceClient = new BlotterServiceClient(this._connectionProvider);
@@ -12,7 +13,7 @@
 
          var tradeFactory = new TradeFactory();
          var executionRepository = new ExecutionRepository(executionServiceClient, tradeFactory);
-         var priceFactory = new PriceFactory(executionRepository);
+         var priceFactory = new PriceFactory(executionRepository, this.priceLatencyRecorder);
          var priceRepository = new PriceRepository(pricingServiceClient, priceFactory);
          var currencyPairUpdateFactory = new CurrencyPairUpdateFactory(priceRepository);
 
@@ -21,6 +22,7 @@
      }
 
      tradeRepository: ITradeRepository;
+     priceLatencyRecorder: IPriceLatencyRecorder;
      referenceDataRepository: IReferenceDataRepository;
 
      get connectionStatusStream(): Rx.Observable<ConnectionInfo> {

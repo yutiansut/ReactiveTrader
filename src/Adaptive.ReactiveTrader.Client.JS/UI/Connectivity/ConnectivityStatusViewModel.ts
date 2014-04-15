@@ -2,16 +2,17 @@
     private _priceLatencyRecorder: IPriceLatencyRecorder;
 
     status: KnockoutObservable<string>;
-    uiLatency: KnockoutObservable<number>;
-    throughput: KnockoutObservable<number>;
+    uiUpdates: KnockoutObservable<number>;
+    ticksReceived: KnockoutObservable<number>;
+    uiLatency: KnockoutObservable<string>;
     disconnected: KnockoutObservable<boolean>;
-    statusText: KnockoutObservable<string>;
 
     constructor(reactiveTrader: IReactiveTrader, priceLatencyRecorder: IPriceLatencyRecorder) {
         this._priceLatencyRecorder = priceLatencyRecorder;
 
-        this.uiLatency = ko.observable(0);
-        this.throughput = ko.observable(0);
+        this.uiLatency = ko.observable("-");
+        this.uiUpdates = ko.observable(0);
+        this.ticksReceived = ko.observable(0);
         this.disconnected = ko.observable(false);
         this.status = ko.observable("Disconnected");
 
@@ -24,18 +25,15 @@
             .timer(1000, Rx.Scheduler.timeout)
             .repeat()
             .subscribe(_=> this.onTimerTick());
-
-        this.statusText = ko.computed(()=> {
-            return this.status() + " - UI Latency: " + this.uiLatency().toFixed(2) + "ms - Throughput: " + this.throughput() + "ticks/sec";
-        });
     }
 
     private onTimerTick() {
-        var current = this._priceLatencyRecorder.getMaxLatencyAndReset();
-        if (current == null || current.priceWithMaxLatency == null) return;
+        var stats = this._priceLatencyRecorder.calculateAndReset();
+        if (stats == null) return;
 
-        this.uiLatency(current.priceWithMaxLatency.uiProcessingTimeMs);
-        this.throughput(current.count);
+        this.uiLatency(stats.uiLatencyMax.toFixed(2));
+        this.uiUpdates(stats.renderedCount);
+        this.ticksReceived(stats.receivedCount);
     }
 
     private onStatusChanged(connectionInfo: ConnectionInfo) {
@@ -57,12 +55,19 @@
             case ConnectionStatus.Reconnecting:
                 this.status("Reconnecting to " + connectionInfo.server + "...");
                 this.disconnected(true);
+                this.clearStatistics();
                 break;
             case ConnectionStatus.Closed:
                 this.status("Disconnected from " + connectionInfo.server);
                 this.disconnected(true);
+                this.clearStatistics();
                 break;
-
         }
+    }
+
+    private clearStatistics(): void {
+        this.uiLatency("-");
+        this.uiUpdates(0);
+        this.ticksReceived(0);
     }
 } 
