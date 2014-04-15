@@ -50,7 +50,7 @@ Steps:
 
 Requirements:
  - Visual Studio 2012/13
- - the [TypeScript Visual Studio plugin](http://www.microsoft.com/en-us/download/details.aspx?id=34790) - if you want to play with the JavaScript version of ReactiveTrader.
+ - the [TypeScript Visual Studio plugin](http://www.typescriptlang.org/) - if you want to play with the JavaScript version of ReactiveTrader. We are using TypeScript 1.0.
 
 Steps:
 
