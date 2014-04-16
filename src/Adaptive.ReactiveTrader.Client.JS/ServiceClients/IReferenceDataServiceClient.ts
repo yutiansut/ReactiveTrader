@@ -1,4 +1,4 @@
 ﻿interface IReferenceDataServiceClient
 {
-    getCurrencyPairUpdates() : Rx.Observable<CurrencyPairUpdateDto[]>;
+    getCurrencyPairUpdatesStream() : Rx.Observable<CurrencyPairUpdateDto[]>;
 }

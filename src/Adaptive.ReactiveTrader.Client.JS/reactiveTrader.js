@@ -265,7 +265,7 @@ var BlotterViewModel = (function () {
     }
     BlotterViewModel.prototype.loadTrades = function () {
         var _this = this;
-        this._tradeRepository.getTrades().subscribe(function (trades) {
+        this._tradeRepository.getTradesStream().subscribe(function (trades) {
             return _this.addTrades(trades);
         }, function (ex) {
             return console.error("an error occured within the trade stream", ex);
@@ -829,7 +829,7 @@ var ExecutablePrice = (function () {
         this.rate = rate;
     }
     ExecutablePrice.prototype.execute = function (notional, dealtCurrency) {
-        return this._executionRepository.execute(this, notional, dealtCurrency);
+        return this._executionRepository.executeRequest(this, notional, dealtCurrency);
     };
     return ExecutablePrice;
 })();
@@ -1070,7 +1070,7 @@ var ExecutionRepository = (function () {
         this._tradeFactory = tradeFactory;
         this._executionServiceClient = executionServiceClient;
     }
-    ExecutionRepository.prototype.execute = function (executablePrice, notional, dealtCurrency) {
+    ExecutionRepository.prototype.executeRequest = function (executablePrice, notional, dealtCurrency) {
         var _this = this;
         var price = executablePrice.parent;
 
@@ -1083,7 +1083,7 @@ var ExecutionRepository = (function () {
         request.ValueDate = price.valueDate.toISOString();
         request.DealtCurrency = dealtCurrency;
 
-        return this._executionServiceClient.execute(request).select(function (tradeDto) {
+        return this._executionServiceClient.executeRequest(request).select(function (tradeDto) {
             return _this._tradeFactory.create(tradeDto);
         }).detectStale(2000, Rx.Scheduler.timeout);
     };
@@ -1114,7 +1114,7 @@ var ReferenceDataRepository = (function () {
     ReferenceDataRepository.prototype.getCurrencyPairsStream = function () {
         var _this = this;
         return Rx.Observable.defer(function () {
-            return _this._referenceDataServiceClient.getCurrencyPairUpdates();
+            return _this._referenceDataServiceClient.getCurrencyPairUpdatesStream();
         }).where(function (updates) {
             return updates.length > 0;
         }).select(function (updates) {
@@ -1138,7 +1138,7 @@ var TradeRepository = (function () {
         this._tradeFactory = tradeFactory;
         this._blotterServiceClient = blotterServiceClient;
     }
-    TradeRepository.prototype.getTrades = function () {
+    TradeRepository.prototype.getTradesStream = function () {
         var _this = this;
         return Rx.Observable.defer(function () {
             return _this._blotterServiceClient.getTradesStream();
@@ -1165,7 +1165,7 @@ var ExecutionServiceClient = (function (_super) {
     function ExecutionServiceClient(connectionProvider) {
         _super.call(this, connectionProvider);
     }
-    ExecutionServiceClient.prototype.execute = function (tradeRequest) {
+    ExecutionServiceClient.prototype.executeRequest = function (tradeRequest) {
         var _this = this;
         return this.requestUponConnection(function (connection) {
             return _this.executeForConnection(tradeRequest, connection.executionHubProxy);
@@ -1234,7 +1234,7 @@ var ReferenceDataServiceClient = (function (_super) {
     function ReferenceDataServiceClient(connectionProvider) {
         _super.call(this, connectionProvider);
     }
-    ReferenceDataServiceClient.prototype.getCurrencyPairUpdates = function () {
+    ReferenceDataServiceClient.prototype.getCurrencyPairUpdatesStream = function () {
         var _this = this;
         return this.getResilientStream(function (connection) {
             return _this.getCurrencyPairUpdatesForConnection(connection);

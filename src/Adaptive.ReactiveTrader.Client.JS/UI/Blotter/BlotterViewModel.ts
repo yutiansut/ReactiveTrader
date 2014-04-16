@@ -12,7 +12,7 @@
     }
 
     private loadTrades(): void {
-        this._tradeRepository.getTrades()
+        this._tradeRepository.getTradesStream()
             .subscribe(
                 trades => this.addTrades(trades),
                 ex=> console.error("an error occured within the trade stream", ex));

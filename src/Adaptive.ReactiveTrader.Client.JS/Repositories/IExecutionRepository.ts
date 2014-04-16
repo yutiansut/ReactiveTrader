@@ -1,4 +1,4 @@
 ﻿interface IExecutionRepository {
-    execute(executablePrice: IExecutablePrice, notional: number, dealtCurrency: string)
+    executeRequest(executablePrice: IExecutablePrice, notional: number, dealtCurrency: string)
         : Rx.Observable<IStale<ITrade>>;
 } 

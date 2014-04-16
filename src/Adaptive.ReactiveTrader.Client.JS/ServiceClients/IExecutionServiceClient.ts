@@ -1,3 +1,3 @@
 ﻿interface IExecutionServiceClient {
-    execute(tradeRequest: TradeRequestDto): Rx.Observable<TradeDto>;
+    executeRequest(tradeRequest: TradeRequestDto): Rx.Observable<TradeDto>;
 } 

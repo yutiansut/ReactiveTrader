@@ -1,3 +1,3 @@
 ﻿interface ITradeRepository {
-    getTrades() : Rx.Observable<ITrade[]>;
+    getTradesStream() : Rx.Observable<ITrade[]>;
 }

@@ -3,7 +3,7 @@
          super(connectionProvider);
      }
 
-    getCurrencyPairUpdates(): Rx.Observable<CurrencyPairUpdateDto[]> {
+    getCurrencyPairUpdatesStream(): Rx.Observable<CurrencyPairUpdateDto[]> {
         return this.getResilientStream(connection => this.getCurrencyPairUpdatesForConnection(connection), 5000);
     }
 

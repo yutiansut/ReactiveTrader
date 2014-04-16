@@ -3,7 +3,7 @@
          super(connectionProvider);
      }
 
-    public execute(tradeRequest: TradeRequestDto): Rx.Observable<TradeDto> {
+    public executeRequest(tradeRequest: TradeRequestDto): Rx.Observable<TradeDto> {
         return this.requestUponConnection(connection => this.executeForConnection(tradeRequest, connection.executionHubProxy), 500);
     }
 

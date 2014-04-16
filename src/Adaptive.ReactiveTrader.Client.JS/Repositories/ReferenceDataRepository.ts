@@ -11,7 +11,7 @@
     }
     
     getCurrencyPairsStream(): Rx.Observable<ICurrencyPairUpdate[]> {
-        return Rx.Observable.defer(()=> this._referenceDataServiceClient.getCurrencyPairUpdates())
+        return Rx.Observable.defer(()=> this._referenceDataServiceClient.getCurrencyPairUpdatesStream())
             .where(updates=> updates.length > 0)
             .select(updates=> this.createCurrencyPairUpdates(updates))
             .catch(Rx.Observable.return([]))

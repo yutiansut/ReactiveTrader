@@ -8,7 +8,7 @@
     }
 
     execute(notional: number, dealtCurrency: string): Rx.Observable<IStale<ITrade>> {
-        return this._executionRepository.execute(this, notional, dealtCurrency);
+        return this._executionRepository.executeRequest(this, notional, dealtCurrency);
     }
 
     direction: Direction;

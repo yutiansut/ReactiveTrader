@@ -9,7 +9,7 @@
         this._blotterServiceClient = blotterServiceClient;
     }
 
-    public getTrades() {
+    public getTradesStream() {
         return Rx.Observable.defer(()=> this._blotterServiceClient.getTradesStream())
             .select(trades=> this.createTrades(trades))
             .catch(()=> Rx.Observable.return([]))
