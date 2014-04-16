@@ -59,6 +59,7 @@
     <TypeScriptCompile Include="app.ts" />
     <TypeScriptCompile Include="Extensions\DateUtils.ts" />
     <TypeScriptCompile Include="Extensions\IStale.ts" />
+    <TypeScriptCompile Include="Extensions\NumberFormatter.ts" />
     <TypeScriptCompile Include="Extensions\ObservableExtensions.ts" />
     <TypeScriptCompile Include="Extensions\Stale.ts" />
     <TypeScriptCompile Include="Instrumentation\IPriceLatencyRecorder.ts" />

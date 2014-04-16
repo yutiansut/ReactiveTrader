@@ -12,7 +12,7 @@
 
      constructor(trade: ITrade) {
          this.spotRate = trade.spotRate;
-         this.notional = trade.notional + " " + trade.dealtCurrency;
+         this.notional = NumberFormatter.format(trade.notional) + " " + trade.dealtCurrency;
          this.direction = trade.direction == Direction.Buy ? "Buy" : "Sell";
          this.currencyPair = trade.currencyPair.substring(0, 3) + " / " + trade.currencyPair.substring(3, 6);
          this.tradeId = trade.tradeId.toFixed(0);

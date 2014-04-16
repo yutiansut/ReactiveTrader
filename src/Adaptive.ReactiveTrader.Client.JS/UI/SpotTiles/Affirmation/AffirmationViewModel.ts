@@ -22,7 +22,7 @@
     }
 
     get notional(): string {
-        return this._trade.notional.toFixed(0);
+        return NumberFormatter.format(this._trade.notional);
     }
 
     get spotRate(): string {

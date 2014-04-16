@@ -34,6 +34,14 @@ var DateUtils = (function () {
     };
     return DateUtils;
 })();
+var NumberFormatter = (function () {
+    function NumberFormatter() {
+    }
+    NumberFormatter.format = function (value) {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+    return NumberFormatter;
+})();
 Rx.Observable.prototype.detectStale = function (stalenessPeriodMs, scheduler) {
     var _this = this;
     return Rx.Observable.create(function (observer) {
@@ -286,7 +294,7 @@ var BlotterViewModel = (function () {
 var TradeViewModel = (function () {
     function TradeViewModel(trade) {
         this.spotRate = trade.spotRate;
-        this.notional = trade.notional + " " + trade.dealtCurrency;
+        this.notional = NumberFormatter.format(trade.notional) + " " + trade.dealtCurrency;
         this.direction = trade.direction == 0 /* Buy */ ? "Buy" : "Sell";
         this.currencyPair = trade.currencyPair.substring(0, 3) + " / " + trade.currencyPair.substring(3, 6);
         this.tradeId = trade.tradeId.toFixed(0);
@@ -553,7 +561,7 @@ var AffirmationViewModel = (function () {
 
     Object.defineProperty(AffirmationViewModel.prototype, "notional", {
         get: function () {
-            return this._trade.notional.toFixed(0);
+            return NumberFormatter.format(this._trade.notional);
         },
         enumerable: true,
         configurable: true
