@@ -13,4 +13,6 @@
     onTrade(trade: ITrade): void;
     dispose(): void;
     onExecutionError(message: string): void;
+    executing(value: boolean): void;
+    stale(value: boolean): void;
 } 

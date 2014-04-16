@@ -7,6 +7,4 @@
     bigFigures: KnockoutObservable<string>;
     pips: KnockoutObservable<string>;
     tenthOfPips: KnockoutObservable<string>;
-    isExecuting: KnockoutObservable<boolean>;
-    isStale: KnockoutObservable<boolean>;
 } 

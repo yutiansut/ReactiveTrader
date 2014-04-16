@@ -19,6 +19,8 @@
         this.movement = ko.observable(PriceMovement.None);
         this.spotDate = ko.observable("SP");
         this.isSubscribing = ko.observable(true);
+        this.isStale = ko.observable(false);
+        this.isExecuting = ko.observable(false);
 
         this.subscribeForPrices();
     }
@@ -32,6 +34,8 @@
     movement: KnockoutObservable<PriceMovement>;
     spotDate: KnockoutObservable<string>;
     isSubscribing: KnockoutObservable<boolean>;
+    isStale: KnockoutObservable<boolean>;
+    isExecuting: KnockoutObservable<boolean>;
     
     get currencyPair(): ICurrencyPair {
         return this._currencyPair;
@@ -95,6 +99,14 @@
 
     public onExecutionError(message: string): void {
         this._parent.onExecutionError(message);
+    }
+
+    public stale(value: boolean): void {
+        this.isStale(value);
+    }
+
+    public executing(value: boolean): void {
+        this.isExecuting(value);
     }
 } 
 

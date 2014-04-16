@@ -413,12 +413,10 @@ var OneWayPriceViewModel = (function () {
         this.bigFigures = ko.observable("");
         this.pips = ko.observable("");
         this.tenthOfPips = ko.observable("");
-        this.isExecuting = ko.observable(false);
-        this.isStale = ko.observable(true);
     }
     OneWayPriceViewModel.prototype.onExecute = function () {
         var _this = this;
-        this.isExecuting(true);
+        this._parent.executing(true);
 
         this._executablePrice.execute(this._parent.notional(), this._parent.dealtCurrency).subscribe(function (trade) {
             return _this.onExecuted(trade);
@@ -435,7 +433,7 @@ var OneWayPriceViewModel = (function () {
         this.bigFigures(formattedPrice.bigFigures);
         this.pips(formattedPrice.pips);
         this.tenthOfPips(formattedPrice.tenthOfPips);
-        this.isStale(false);
+        this._parent.stale(false);
     };
 
     OneWayPriceViewModel.prototype.onStalePrice = function () {
@@ -443,7 +441,7 @@ var OneWayPriceViewModel = (function () {
         this.bigFigures("");
         this.pips("");
         this.tenthOfPips("");
-        this.isStale(true);
+        this._parent.stale(true);
     };
 
     OneWayPriceViewModel.prototype.onExecuted = function (trade) {
@@ -453,7 +451,7 @@ var OneWayPriceViewModel = (function () {
             console.log("Trade executed.");
             this._parent.onTrade(trade.update);
         }
-        this.isExecuting(false);
+        this._parent.executing(false);
     };
 
     OneWayPriceViewModel.prototype.onExecutionTimeout = function () {
@@ -683,6 +681,8 @@ var PricingViewModel = (function () {
         this.movement = ko.observable(0 /* None */);
         this.spotDate = ko.observable("SP");
         this.isSubscribing = ko.observable(true);
+        this.isStale = ko.observable(false);
+        this.isExecuting = ko.observable(false);
 
         this.subscribeForPrices();
     }
@@ -750,6 +750,14 @@ var PricingViewModel = (function () {
 
     PricingViewModel.prototype.onExecutionError = function (message) {
         this._parent.onExecutionError(message);
+    };
+
+    PricingViewModel.prototype.stale = function (value) {
+        this.isStale(value);
+    };
+
+    PricingViewModel.prototype.executing = function (value) {
+        this.isExecuting(value);
     };
     return PricingViewModel;
 })();

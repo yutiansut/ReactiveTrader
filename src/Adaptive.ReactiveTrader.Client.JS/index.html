@@ -38,7 +38,7 @@
 
     <!-- SPOT TILE TEMPLATE -->
     <script type="text/html" id="spot-tile-template">
-        <li style="padding:12px 15px" data-bind="style: { backgroundColor: state() == 2 ? '#CE3C1C' : '#293543'}">
+        <li style="padding:12px 15px" data-bind="style: { backgroundColor: state() == 2 || (state() == 0 && pricing().isStale()) ? '#CE3C1C' : '#293543'}">
             <div data-bind="if: state() == 0">
                 <div data-bind="template: { name: 'pricing-template', data: pricing }"></div>
             </div>
@@ -115,11 +115,11 @@
         <table style="height: 100%;">
             <tr>
                 <td data-bind="text: symbol" class="tile-symbol"></td>
-                <td></td>
+                <td data-bind="if: isExecuting" class="tile-symbol">EXECUTING</td>
             </tr>
             <tr>
-                <td colspan="2">
-                    <table style="text-align: center">
+                <td colspan="2" >
+                    <table style="text-align: center" data-bind="if: !isStale()">
                         <tr>
                             <td class="one-way-price">
                                 <div data-bind="template: { name: 'one-way=price-template', data: bid }"></div>
@@ -132,10 +132,10 @@
                             </td>
                         </tr>
                     </table>
-
+                    <div style="color:white;text-align: left" data-bind="if: isStale()">Pricing currently unavailable</div>
                 </td>
             </tr>
-            <tr>
+            <tr data-bind="if: !isStale()">
                 <td>
                     <span data-bind="text: dealtCurrency" class="secondary-foreground" style="font-size: 16px"></span>
                     <input data-bind="value: notional" class="notional" style="font-size: 16px" />
