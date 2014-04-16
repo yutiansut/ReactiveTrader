@@ -68,25 +68,25 @@ table {
 .tile a:link {
     float: right;
     text-decoration:none;
-    color: white;
+    color: #90AFC1;
 }
 
 .tile a:visited {
     float: right;
     text-decoration:none;
-    color: white;
+    color: #90AFC1;
 }
 
 .tile a:hover {
     float: right;
     text-decoration:underline;
-    color: white;
+    color: #90AFC1;
 }
 
 .tile a:active {
     float: right;
     text-decoration:none;
-    color: white;
+    color: #90AFC1;
 }
 
 .arrow-up {
