@@ -18,7 +18,7 @@
         request.QuoteId = price.quoteId;
         request.SpotRate = executablePrice.rate;
         request.Symbol = price.currencyPair.symbol;
-        request.ValueDate = price.valueDate;
+        request.ValueDate = price.valueDate.toISOString();
         request.DealtCurrency = dealtCurrency;
 
         return this._executionServiceClient.execute(request)

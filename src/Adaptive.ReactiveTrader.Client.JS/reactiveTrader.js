@@ -14,6 +14,26 @@
 
     ko.applyBindings(shellViewModel);
 });
+var DateUtils = (function () {
+    function DateUtils() {
+    }
+    DateUtils.formatDateDayMonth = function (date) {
+        // example date: Fri Apr 18 2014 01:00:00 GMT+0100 (GMT Summer Time)
+        var tokens = date.toString().split(" ");
+        return tokens[2] + " " + tokens[1];
+    };
+
+    DateUtils.formatDateDayMonthYear = function (date) {
+        var tokens = date.toString().split(" ");
+        return tokens[2] + " " + tokens[1] + " " + tokens[3].substr(0, 2);
+    };
+
+    DateUtils.formatDateDayMonthYearHour = function (date) {
+        var tokens = date.toString().split(" ");
+        return tokens[2] + " " + tokens[1] + " " + tokens[3].substr(0, 2) + " " + tokens[4].substr(0, 5);
+    };
+    return DateUtils;
+})();
 Rx.Observable.prototype.detectStale = function (stalenessPeriodMs, scheduler) {
     var _this = this;
     return Rx.Observable.create(function (observer) {
@@ -270,10 +290,10 @@ var TradeViewModel = (function () {
         this.direction = trade.direction == 0 /* Buy */ ? "Buy" : "Sell";
         this.currencyPair = trade.currencyPair.substring(0, 3) + " / " + trade.currencyPair.substring(3, 6);
         this.tradeId = trade.tradeId.toFixed(0);
-        this.tradeDate = trade.tradeDate.toString();
+        this.tradeDate = DateUtils.formatDateDayMonthYearHour(trade.tradeDate);
         this.tradeStatus = trade.tradeStatus == 0 /* Done */ ? "Done" : "REJECTED";
         this.traderName = trade.traderName;
-        this.valueDate = trade.valueDate.toString();
+        this.valueDate = "SP. " + DateUtils.formatDateDayMonthYear(trade.tradeDate);
         this.dealtCurrency = trade.dealtCurrency;
     }
     return TradeViewModel;
@@ -573,7 +593,7 @@ var AffirmationViewModel = (function () {
 
     Object.defineProperty(AffirmationViewModel.prototype, "valueDate", {
         get: function () {
-            return this._trade.valueDate.toString();
+            return DateUtils.formatDateDayMonth(this._trade.valueDate);
         },
         enumerable: true,
         configurable: true
@@ -742,7 +762,7 @@ var PricingViewModel = (function () {
             this.ask.onPrice(price.ask);
 
             this.spread(PriceFormatter.getFormattedSpread(price.spread, this._currencyPair.ratePrecision, this._currencyPair.pipsPosition));
-            this.spotDate("SP."); //TODO
+            this.spotDate("SP. " + DateUtils.formatDateDayMonth(price.valueDate));
 
             this._priceLatencyRecorder.onRendered(price);
         }
@@ -773,10 +793,10 @@ var Trade = (function () {
         this.notional = notional;
         this.spotRate = spotRate;
         this.tradeStatus = tradeStatus;
-        this.tradeDate = tradeDate;
+        this.tradeDate = new Date(tradeDate);
         this.tradeId = tradeId;
         this.traderName = traderName;
-        this.valueDate = valueDate;
+        this.valueDate = new Date(valueDate);
         this.dealtCurrency = dealtCurrency;
     }
     return Trade;
@@ -811,7 +831,7 @@ var Price = (function () {
         this.ask = ask;
         this.mid = mid;
         this.quoteId = quoteId;
-        this.valueDate = valueDate;
+        this.valueDate = new Date(valueDate);
         this.currencyPair = currencyPair;
         this.isStale = false;
 
@@ -1052,7 +1072,7 @@ var ExecutionRepository = (function () {
         request.QuoteId = price.quoteId;
         request.SpotRate = executablePrice.rate;
         request.Symbol = price.currencyPair.symbol;
-        request.ValueDate = price.valueDate;
+        request.ValueDate = price.valueDate.toISOString();
         request.DealtCurrency = dealtCurrency;
 
         return this._executionServiceClient.execute(request).select(function (tradeDto) {

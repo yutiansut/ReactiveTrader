@@ -3,6 +3,6 @@
     QuoteId: number;
     Bid: number;
     Ask: number;
-    ValueDate: Date;
+    ValueDate: string;
     Mid: number;
 }

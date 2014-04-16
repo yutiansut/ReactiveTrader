@@ -38,7 +38,7 @@
 
     <!-- SPOT TILE TEMPLATE -->
     <script type="text/html" id="spot-tile-template">
-        <li style="padding:12px 15px" data-bind="style: { backgroundColor: state() == 2 || (state() == 0 && pricing().isStale()) ? '#CE3C1C' : '#293543'}">
+        <li style="padding:12px 15px" data-bind="css: { 'error-tile': state() == 2 || (state() == 0 && pricing().isStale()), 'normal-tile': !( state() == 2 || (state() == 0 && pricing().isStale()))}">
             <div data-bind="if: state() == 0">
                 <div data-bind="template: { name: 'pricing-template', data: pricing }"></div>
             </div>
@@ -140,7 +140,7 @@
                     <span data-bind="text: dealtCurrency" class="secondary-foreground" style="font-size: 16px"></span>
                     <input data-bind="value: notional" class="notional" style="font-size: 16px" />
                 </td>
-                <td></td>
+                <td><span data-bind="text: spotDate" class="secondary-foreground" style="font-size: 16px;float: right;"></span></td>
             </tr>
         </table>
     </script>

@@ -2,7 +2,7 @@
     Symbol: string;
     QuoteId: number;
     SpotRate: number;
-    ValueDate: Date;
+    ValueDate: string;
     Direction: DirectionDto;
     Notional:number;
     DealtCurrency:string;    

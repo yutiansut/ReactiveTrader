@@ -4,14 +4,14 @@
         ask: ExecutablePrice,
         mid: number,
         quoteId: number,
-        valueDate: Date,
+        valueDate: string,
         currencyPair: ICurrencyPair) {
 
         this.bid = bid;
         this.ask = ask;
         this.mid = mid;
         this.quoteId = quoteId;
-        this.valueDate = valueDate;
+        this.valueDate = new Date(valueDate);
         this.currencyPair = currencyPair;
         this.isStale = false;
 

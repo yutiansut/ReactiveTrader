@@ -42,7 +42,7 @@
     }
 
     get valueDate(): string {
-        return this._trade.valueDate.toString();
+        return DateUtils.formatDateDayMonth(this._trade.valueDate);
     }
 
     get dealtCurrency(): string {

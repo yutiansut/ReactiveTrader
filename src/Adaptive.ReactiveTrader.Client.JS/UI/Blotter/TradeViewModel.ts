@@ -16,10 +16,10 @@
          this.direction = trade.direction == Direction.Buy ? "Buy" : "Sell";
          this.currencyPair = trade.currencyPair.substring(0, 3) + " / " + trade.currencyPair.substring(3, 6);
          this.tradeId = trade.tradeId.toFixed(0);
-         this.tradeDate = trade.tradeDate.toString();
+         this.tradeDate = DateUtils.formatDateDayMonthYearHour(trade.tradeDate);
          this.tradeStatus = trade.tradeStatus == TradeStatus.Done ? "Done" : "REJECTED";
          this.traderName = trade.traderName;
-         this.valueDate = trade.valueDate.toString();
+         this.valueDate = "SP. " + DateUtils.formatDateDayMonthYear(trade.tradeDate);
          this.dealtCurrency = trade.dealtCurrency;
      }
  }

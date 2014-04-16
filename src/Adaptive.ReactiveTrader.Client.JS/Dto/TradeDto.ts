@@ -6,7 +6,7 @@
     DealtCurrency: string;
     Direction: DirectionDto;
     SpotRate: number;
-    TradeDate: Date;
-    ValueDate:Date;
+    TradeDate: string;
+    ValueDate: string;
     Status:TradeStatusDto;
 }

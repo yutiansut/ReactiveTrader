@@ -91,7 +91,7 @@
             this.ask.onPrice(price.ask);
 
             this.spread(PriceFormatter.getFormattedSpread(price.spread, this._currencyPair.ratePrecision, this._currencyPair.pipsPosition));
-            this.spotDate("SP."); //TODO
+            this.spotDate("SP. " + DateUtils.formatDateDayMonth(price.valueDate));
 
             this._priceLatencyRecorder.onRendered(price);
         }
