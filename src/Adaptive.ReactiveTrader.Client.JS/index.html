@@ -29,7 +29,7 @@
             <tr>
                 <td style="width: 100%">
                     <span data-bind="text: bigFigures" class="secondary-foreground" style="font-size: 18px"></span>
-                    <span data-bind="text: pips" class="primary-foreground" style="font-size: 48px"></span>
+                    <span data-bind="text: pips" class="primary-foreground" style="font-size: 48px; "></span>
                     <span data-bind="text: tenthOfPips" class="secondary-foreground" style="font-size: 18px"></span>
                 </td>
             </tr>
@@ -124,8 +124,18 @@
                             <td class="one-way-price">
                                 <div data-bind="template: { name: 'one-way=price-template', data: bid }"></div>
                             </td>
-                            <td>
-                                <span data-bind="text: spread" class="primary-foreground" style="font-size: 16px; margin: 3px"></span>
+                            <td style="width: 20px;">
+                                <table style="height: 100%">
+                                    <tr style="height: 30%">
+                                        <td><div class="arrow-up" data-bind="visible: movement() === 2"></div></td>
+                                    </tr>
+                                    <tr style="height: 40%">
+                                        <td><span data-bind="text: spread" class="primary-foreground" style="font-size: 16px; margin: 3px"></span></td>
+                                    </tr>
+                                    <tr style="height: 30%">
+                                        <td><div class="arrow-down" data-bind="visible: movement() === 1"></div></td>
+                                    </tr>
+                                </table>
                             </td>
                             <td class="one-way-price">
                                 <div data-bind="template: { name: 'one-way=price-template', data: ask }"></div>

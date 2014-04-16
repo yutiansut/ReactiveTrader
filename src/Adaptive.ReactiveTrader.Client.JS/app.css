@@ -89,6 +89,24 @@ table {
     color: white;
 }
 
+.arrow-up {
+	width: 0; 
+	height: 0;
+    margin: auto;
+	border-left: 6px solid transparent;
+	border-right: 6px solid transparent;
+	border-bottom: 8px solid #3FCF1E;
+}
+
+.arrow-down {
+	width: 0; 
+	height: 0;
+    margin: auto;
+	border-left: 6px solid transparent;
+	border-right: 6px solid transparent;
+	border-top: 8px solid #CC3350;
+}
+
 .error {
     color: #FFFFFF;
     background-color: #CE3C1C;

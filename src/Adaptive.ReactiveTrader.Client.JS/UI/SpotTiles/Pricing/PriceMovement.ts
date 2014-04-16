@@ -1,6 +1,6 @@
 ﻿enum PriceMovement
 {
-    None,
-    Down,
-    Up
+    None = 0,
+    Down = 1,
+    Up = 2
 } 
