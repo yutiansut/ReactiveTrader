@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30324.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.ReactiveTrader.Client.GUI", "Adaptive.ReactiveTrader.Client.GUI\Adaptive.ReactiveTrader.Client.GUI.csproj", "{CA35010F-7F38-4DCF-828E-A825F1E8D525}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.ReactiveTrader.Server.Domain", "Adaptive.ReactiveTrader.Server.Domain\Adaptive.ReactiveTrader.Server.Domain.csproj", "{1348ACC4-D5B2-4328-9C80-7EC813E82CE4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B3E5C36D-61DB-4710-A43C-71E97D6D32E4}"
@@ -14,11 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B3E5C3
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.ReactiveTrader.Shared", "Adaptive.ReactiveTrader.Shared\Adaptive.ReactiveTrader.Shared.csproj", "{918ED78D-1E46-4305-B9FC-FAD07B582AFF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.ReactiveTrader.Server.GUI", "Adaptive.ReactiveTrader.Server.GUI\Adaptive.ReactiveTrader.Server.GUI.csproj", "{70579FD7-DAC6-41D0-87CD-BB7D25EDA137}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.ReactiveTrader.Client.Domain", "Adaptive.ReactiveTrader.Client.Domain\Adaptive.ReactiveTrader.Client.Domain.csproj", "{8E9D2733-A4EF-4BDA-A89A-6F9EA87C91E7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{45C3AFE6-745A-4C4D-B999-5619B22DDF0E}"
 EndProject
@@ -39,32 +33,26 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.ReactiveTrader.Web
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{898C6D44-74AD-4EC0-84A2-A154DFD30B25}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.ReactiveTrader.Shared", "Adaptive.ReactiveTrader.Shared\Adaptive.ReactiveTrader.Shared.csproj", "{B954B5A9-ABD0-469B-9397-039675BEC8F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.ReactiveTrader.Client.Domain", "Adaptive.ReactiveTrader.Client.Domain\Adaptive.ReactiveTrader.Client.Domain.csproj", "{B6C8FD41-866D-4992-BB11-AD6984C25564}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.ReactiveTrader.Client.GUI", "Adaptive.ReactiveTrader.Client.GUI\Adaptive.ReactiveTrader.Client.GUI.csproj", "{CA35010F-7F38-4DCF-828E-A825F1E8D525}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CA35010F-7F38-4DCF-828E-A825F1E8D525}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CA35010F-7F38-4DCF-828E-A825F1E8D525}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CA35010F-7F38-4DCF-828E-A825F1E8D525}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CA35010F-7F38-4DCF-828E-A825F1E8D525}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1348ACC4-D5B2-4328-9C80-7EC813E82CE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1348ACC4-D5B2-4328-9C80-7EC813E82CE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1348ACC4-D5B2-4328-9C80-7EC813E82CE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1348ACC4-D5B2-4328-9C80-7EC813E82CE4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{918ED78D-1E46-4305-B9FC-FAD07B582AFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{918ED78D-1E46-4305-B9FC-FAD07B582AFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{918ED78D-1E46-4305-B9FC-FAD07B582AFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{918ED78D-1E46-4305-B9FC-FAD07B582AFF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{70579FD7-DAC6-41D0-87CD-BB7D25EDA137}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{70579FD7-DAC6-41D0-87CD-BB7D25EDA137}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70579FD7-DAC6-41D0-87CD-BB7D25EDA137}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70579FD7-DAC6-41D0-87CD-BB7D25EDA137}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8E9D2733-A4EF-4BDA-A89A-6F9EA87C91E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8E9D2733-A4EF-4BDA-A89A-6F9EA87C91E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8E9D2733-A4EF-4BDA-A89A-6F9EA87C91E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8E9D2733-A4EF-4BDA-A89A-6F9EA87C91E7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BCD71EB3-CED6-476C-BE6C-0B4931BCB014}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BCD71EB3-CED6-476C-BE6C-0B4931BCB014}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCD71EB3-CED6-476C-BE6C-0B4931BCB014}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -73,15 +61,27 @@ Global
 		{6420729B-9168-44CF-BD25-849FAB7C81E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6420729B-9168-44CF-BD25-849FAB7C81E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6420729B-9168-44CF-BD25-849FAB7C81E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B954B5A9-ABD0-469B-9397-039675BEC8F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B954B5A9-ABD0-469B-9397-039675BEC8F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B954B5A9-ABD0-469B-9397-039675BEC8F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B954B5A9-ABD0-469B-9397-039675BEC8F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6C8FD41-866D-4992-BB11-AD6984C25564}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6C8FD41-866D-4992-BB11-AD6984C25564}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6C8FD41-866D-4992-BB11-AD6984C25564}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6C8FD41-866D-4992-BB11-AD6984C25564}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA35010F-7F38-4DCF-828E-A825F1E8D525}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA35010F-7F38-4DCF-828E-A825F1E8D525}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA35010F-7F38-4DCF-828E-A825F1E8D525}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA35010F-7F38-4DCF-828E-A825F1E8D525}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{CA35010F-7F38-4DCF-828E-A825F1E8D525} = {45C3AFE6-745A-4C4D-B999-5619B22DDF0E}
 		{1348ACC4-D5B2-4328-9C80-7EC813E82CE4} = {45F076B4-7668-4889-BC7C-053165AE47DE}
 		{70579FD7-DAC6-41D0-87CD-BB7D25EDA137} = {45F076B4-7668-4889-BC7C-053165AE47DE}
-		{8E9D2733-A4EF-4BDA-A89A-6F9EA87C91E7} = {45C3AFE6-745A-4C4D-B999-5619B22DDF0E}
 		{6420729B-9168-44CF-BD25-849FAB7C81E8} = {898C6D44-74AD-4EC0-84A2-A154DFD30B25}
+		{B6C8FD41-866D-4992-BB11-AD6984C25564} = {45C3AFE6-745A-4C4D-B999-5619B22DDF0E}
+		{CA35010F-7F38-4DCF-828E-A825F1E8D525} = {45C3AFE6-745A-4C4D-B999-5619B22DDF0E}
 	EndGlobalSection
 EndGlobal

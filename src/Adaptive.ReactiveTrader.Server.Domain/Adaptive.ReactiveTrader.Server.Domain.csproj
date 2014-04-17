@@ -126,8 +126,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Client.Domain\Adaptive.ReactiveTrader.Client.Domain.csproj">
+      <Project>{b6c8fd41-866d-4992-bb11-ad6984c25564}</Project>
+      <Name>Adaptive.ReactiveTrader.Client.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Adaptive.ReactiveTrader.Shared\Adaptive.ReactiveTrader.Shared.csproj">
-      <Project>{918ED78D-1E46-4305-B9FC-FAD07B582AFF}</Project>
+      <Project>{b954b5a9-abd0-469b-9397-039675bec8f0}</Project>
       <Name>Adaptive.ReactiveTrader.Shared</Name>
     </ProjectReference>
   </ItemGroup>

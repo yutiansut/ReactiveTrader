@@ -6,7 +6,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Concurrency
     {
         public IScheduler ThreadPool
         {
-            get { return ThreadPoolScheduler.Instance; }
+            get { return TaskPoolScheduler.Default; }
         }
     }
 }
