@@ -112,14 +112,11 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Bootstrapper.cs" />
     <Compile Include="Concurrency\ConcurrencyService.cs" />
-    <Compile Include="Concurrency\IConcurrencyService.cs" />
-    <Compile Include="Concurrency\PeriodicBatchScheduler.cs" />
-    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Configuration\ConfigurationProvider.cs" />
-    <Compile Include="Configuration\IConfigurationProvider.cs" />
-    <Compile Include="Configuration\IUserProvider.cs" />
     <Compile Include="Configuration\UserProvider.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="UI\Behaviors\CloseWindowButtonBehavior.cs" />
     <Compile Include="UI\Behaviors\MaximizeWindowButtonBehavior.cs" />
     <Compile Include="UI\Behaviors\MinimizeWindowButtonBehavior.cs" />
@@ -199,7 +196,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Bootstrapper.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -304,6 +300,10 @@
     <ProjectReference Include="..\Adaptive.ReactiveTrader.Client.Domain\Adaptive.ReactiveTrader.Client.Domain.csproj">
       <Project>{8E9D2733-A4EF-4BDA-A89A-6F9EA87C91E7}</Project>
       <Name>Adaptive.ReactiveTrader.Client.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Client\Adaptive.ReactiveTrader.Client.csproj">
+      <Project>{a894c01a-d326-40df-babc-0f807eb63a21}</Project>
+      <Name>Adaptive.ReactiveTrader.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\Adaptive.ReactiveTrader.Shared\Adaptive.ReactiveTrader.Shared.csproj">
       <Project>{918ED78D-1E46-4305-B9FC-FAD07B582AFF}</Project>
