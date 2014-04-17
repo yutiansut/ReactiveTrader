@@ -1,7 +1,7 @@
 ﻿<Application
-    x:Class="Adaptive.ReactiveTrader.Client.WindowsStoreApp.App"
+    x:Class="Adaptive.ReactiveTrader.Client.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Adaptive.ReactiveTrader.Client.WindowsStoreApp">
+    RequestedTheme="Dark">
 
 </Application>

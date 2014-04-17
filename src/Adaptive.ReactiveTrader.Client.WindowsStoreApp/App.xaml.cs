@@ -1,9 +1,12 @@
 ﻿using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+using Adaptive.ReactiveTrader.Client.Configuration;
+using Adaptive.ReactiveTrader.Client.Domain;
+using Adaptive.ReactiveTrader.Client.UI.Shell;
+using Autofac;
 
-namespace Adaptive.ReactiveTrader.Client.WindowsStoreApp
+namespace Adaptive.ReactiveTrader.Client
 {
     sealed partial class App : Application
     {
@@ -22,25 +25,21 @@ namespace Adaptive.ReactiveTrader.Client.WindowsStoreApp
             }
 #endif
 
-            var rootFrame = Window.Current.Content as Frame;
-            if (rootFrame == null)
+            var shellView = Window.Current.Content as ShellView;
+            if (shellView == null)
             {
-                // Create a Frame to act as the navigation context and navigate to the first page
-                rootFrame = new Frame();
-                // Set the default language
-                rootFrame.Language = Windows.Globalization.ApplicationLanguages.Languages[0];
+                var bootstrapper = new Bootstrapper();
+                var container = bootstrapper.Build();
 
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    //TODO: Load state from previously suspended application
-                }
+                var reactiveTraderApi = container.Resolve<IReactiveTrader>();
 
-                Window.Current.Content = rootFrame;
-            }
+                var username = container.Resolve<IUserProvider>().Username;
+                reactiveTraderApi.Initialize(username, container.Resolve<IConfigurationProvider>().Servers);
 
-            if (rootFrame.Content == null)
-            {
-                rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                shellView = new ShellView();
+                shellView.DataContext = container.Resolve<IShellViewModel>();
+
+                Window.Current.Content = shellView;
             }
 
             Window.Current.Activate();
