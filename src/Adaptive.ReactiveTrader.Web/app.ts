@@ -1,4 +1,10 @@
-﻿ $(document).ready(()=> {
+﻿$(document).ready(() => {
+    this.fadeTrade = function(element, index, data) {
+        $(element)
+            .animate({ backgroundColor: '#7A9EFF' }, 200)
+            .animate({ backgroundColor: 'white' }, 800);
+    };
+
     var reactiveTrader = <IReactiveTrader> new ReactiveTrader();
 
     reactiveTrader.initialize("Mike Trader", [""]);
@@ -13,7 +19,7 @@
     var spotTilesViewModel = new SpotTilesViewModel(reactiveTrader.referenceDataRepository, pricingViewModelFactory);
     var blotterViewModel = new BlotterViewModel(reactiveTrader.tradeRepository);
     var connectivityStatusViewModel = new ConnectivityStatusViewModel(reactiveTrader, reactiveTrader.priceLatencyRecorder);
-    var shellViewModel = new ShellViewModel(spotTilesViewModel, blotterViewModel, connectivityStatusViewModel);
+     var shellViewModel = new ShellViewModel(spotTilesViewModel, blotterViewModel, connectivityStatusViewModel);
 
     ko.applyBindings(shellViewModel);
 });

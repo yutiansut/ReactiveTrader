@@ -1,4 +1,9 @@
-﻿$(document).ready(function () {
+﻿var _this = this;
+$(document).ready(function () {
+    _this.fadeTrade = function (element, index, data) {
+        $(element).animate({ backgroundColor: '#7A9EFF' }, 200).animate({ backgroundColor: 'white' }, 800);
+    };
+
     var reactiveTrader = new ReactiveTrader();
 
     reactiveTrader.initialize("Mike Trader", [""]);
@@ -948,7 +953,7 @@ var BlotterViewModel = (function () {
 
         trades.forEach(function (t) {
             var tradeViewModel = new TradeViewModel(t);
-            _this.trades.push(tradeViewModel);
+            _this.trades.unshift(tradeViewModel);
         });
     };
     return BlotterViewModel;

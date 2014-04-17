@@ -34,7 +34,7 @@
 
         trades.forEach(t=> {
             var tradeViewModel = new TradeViewModel(t);
-            this.trades.push(tradeViewModel);
+            this.trades.unshift(tradeViewModel);
         });
     }
 } 

@@ -106,6 +106,10 @@
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />
+    <Content Include="Scripts\jquery.color-2.1.2.js" />
+    <Content Include="Scripts\jquery.color-2.1.2.min.js" />
+    <Content Include="Scripts\jquery.color.svg-names-2.1.2.js" />
+    <Content Include="Scripts\jquery.color.svg-names-2.1.2.min.js" />
     <Content Include="Scripts\jquery.signalR-2.0.3.js" />
     <Content Include="Scripts\jquery.signalR-2.0.3.min.js" />
     <Content Include="Scripts\knockout-3.1.0.debug.js" />
@@ -221,20 +225,20 @@
     <TypeScriptCompile Include="Client\Transport\ConnectionStatus.ts" />
     <TypeScriptCompile Include="Client\Transport\IConnection.ts" />
     <TypeScriptCompile Include="Client\Transport\IConnectionProvider.ts" />
-    <TypeScriptCompile Include="Client\typings\jquery\jquery.d.ts" />
-    <TypeScriptCompile Include="Client\typings\knockout\knockout.d.ts" />
-    <TypeScriptCompile Include="Client\typings\rx.js\rx.aggregates.d.ts" />
-    <TypeScriptCompile Include="Client\typings\rx.js\rx.async.d.ts" />
-    <TypeScriptCompile Include="Client\typings\rx.js\rx.binding.d.ts" />
-    <TypeScriptCompile Include="Client\typings\rx.js\rx.coincidence.d.ts" />
-    <TypeScriptCompile Include="Client\typings\rx.js\rx.d.ts" />
-    <TypeScriptCompile Include="Client\typings\rx.js\rx.experimental.d.ts" />
-    <TypeScriptCompile Include="Client\typings\rx.js\rx.joinpatterns.d.ts" />
-    <TypeScriptCompile Include="Client\typings\rx.js\rx.jquery.d.ts" />
-    <TypeScriptCompile Include="Client\typings\rx.js\rx.testing.d.ts" />
-    <TypeScriptCompile Include="Client\typings\rx.js\rx.time.d.ts" />
-    <TypeScriptCompile Include="Client\typings\rx.js\rx.virtualtime.d.ts" />
-    <TypeScriptCompile Include="Client\typings\signalr\signalr.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\knockout\knockout.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\rx.js\rx.aggregates.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\rx.js\rx.async.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\rx.js\rx.binding.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\rx.js\rx.coincidence.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\rx.js\rx.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\rx.js\rx.experimental.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\rx.js\rx.joinpatterns.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\rx.js\rx.jquery.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\rx.js\rx.testing.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\rx.js\rx.time.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\rx.js\rx.virtualtime.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\signalr\signalr.d.ts" />
     <TypeScriptCompile Include="Client\UI\Blotter\BlotterViewModel.ts" />
     <TypeScriptCompile Include="Client\UI\Blotter\IBlotterViewModel.ts" />
     <TypeScriptCompile Include="Client\UI\Blotter\ITradeViewModel.ts" />
@@ -267,6 +271,7 @@
     <TypeScriptCompile Include="Client\UI\SpotTiles\TileState.ts" />
     <TypeScriptCompile Include="IReactiveTrader.ts" />
     <TypeScriptCompile Include="ReactiveTrader.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jquery.color\jquery.color.d.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
