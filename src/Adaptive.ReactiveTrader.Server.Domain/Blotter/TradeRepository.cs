@@ -6,13 +6,19 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
 {
     public class TradeRepository : ITradeRepository
     {
-        private readonly List<TradeDto> _allTrades = new List<TradeDto>();
+        private readonly Queue<TradeDto> _trades = new Queue<TradeDto>();
+        private const int MaxTrades = 50;
 
         public void StoreTrade(TradeDto trade)
         {
-            lock (_allTrades)
+            lock (_trades)
             {
-                _allTrades.Add(trade);
+                _trades.Enqueue(trade);
+
+                if (_trades.Count > MaxTrades)
+                {
+                    _trades.Dequeue();
+                }
             }
         }
 
@@ -20,9 +26,9 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
         {
             IList<TradeDto> trades;
 
-            lock (_allTrades)
+            lock (_trades)
             {
-                trades = _allTrades.ToList();
+                trades = _trades.ToList();
             }
 
             return trades;

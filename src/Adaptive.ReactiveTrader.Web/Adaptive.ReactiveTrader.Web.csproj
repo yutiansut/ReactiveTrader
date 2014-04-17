@@ -102,6 +102,7 @@
     <Content Include="index.html" />
     <Content Include="packages.config" />
     <Content Include="generated.js.map" />
+    <None Include="Properties\PublishProfiles\reactivetrader.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />
