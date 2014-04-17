@@ -29,8 +29,12 @@
          this.affirmation(new AffirmationViewModel(trade, this));
          this.state(TileState.Affirmation);
          this.error = null;
-     }
 
+         Rx.Observable.timer(3000, Rx.Scheduler.timeout)
+             .subscribe(
+                 _ => this.dismissAffirmation());
+     }
+      
      onExecutionError(message: string): void {
          this.error(new ErrorViewModel(this, message));
          this.state(TileState.Error);

@@ -2,12 +2,13 @@
 $(document).ready(function () {
     var reactiveTrader = new ReactiveTrader();
 
+    var username = "Anonymous (web)";
     if (location.search.indexOf("?server=local") == -1) {
         // no override of server url detected, connect to origins
-        reactiveTrader.initialize("Mike Trader", [""]);
+        reactiveTrader.initialize(username, [""]);
     } else {
         // connect to local reactive trader server
-        reactiveTrader.initialize("Mike Trader", ["http://localhost:8080"]);
+        reactiveTrader.initialize(username, ["http://localhost:8080"]);
     }
 
     reactiveTrader.connectionStatusStream.subscribe(function (s) {
@@ -1491,9 +1492,14 @@ var SpotTileViewModel = (function () {
     };
 
     SpotTileViewModel.prototype.onTrade = function (trade) {
+        var _this = this;
         this.affirmation(new AffirmationViewModel(trade, this));
         this.state(1 /* Affirmation */);
         this.error = null;
+
+        Rx.Observable.timer(3000, Rx.Scheduler.timeout).subscribe(function (_) {
+            return _this.dismissAffirmation();
+        });
     };
 
     SpotTileViewModel.prototype.onExecutionError = function (message) {

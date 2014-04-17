@@ -1,5 +1,6 @@
 ﻿$(document).ready(() => {
     var reactiveTrader = <IReactiveTrader> new ReactiveTrader();
+
     var username = "Anonymous (web)";
     if (location.search.indexOf("?server=local") == -1) {
         // no override of server url detected, connect to origins
