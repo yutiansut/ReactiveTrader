@@ -84,6 +84,10 @@
       <Project>{ca35010f-7f38-4dcf-828e-a825f1e8d525}</Project>
       <Name>Adaptive.ReactiveTrader.Client.GUI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Client\Adaptive.ReactiveTrader.Client.csproj">
+      <Project>{a894c01a-d326-40df-babc-0f807eb63a21}</Project>
+      <Name>Adaptive.ReactiveTrader.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Adaptive.ReactiveTrader.Shared\Adaptive.ReactiveTrader.Shared.csproj">
       <Project>{b954b5a9-abd0-469b-9397-039675bec8f0}</Project>
       <Name>Adaptive.ReactiveTrader.Shared</Name>
