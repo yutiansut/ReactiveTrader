@@ -1,15 +1,15 @@
 ﻿var _this = this;
 $(document).ready(function () {
-    _this.fadeTrade = function (element, index, data) {
-        $(element).animate({ backgroundColor: '#7A9EFF' }, 200).animate({ backgroundColor: 'white' }, 800);
-    };
-
     var reactiveTrader = new ReactiveTrader();
 
-    reactiveTrader.initialize("Mike Trader", [""]);
+    if (location.search.indexOf("?server=local") == -1) {
+        // no override of server url detected, connect to origins
+        reactiveTrader.initialize("Mike Trader", [""]);
+    } else {
+        // connect to local reactive trader server
+        reactiveTrader.initialize("Mike Trader", ["http://localhost:8080"]);
+    }
 
-    // uncomment the following line to test with reactive trader Server GUI
-    //reactiveTrader.initialize("Mike Trader", ["http://localhost:8080"]);
     reactiveTrader.connectionStatusStream.subscribe(function (s) {
         return console.log("Connection status: " + s);
     });
@@ -19,6 +19,11 @@ $(document).ready(function () {
     var blotterViewModel = new BlotterViewModel(reactiveTrader.tradeRepository);
     var connectivityStatusViewModel = new ConnectivityStatusViewModel(reactiveTrader, reactiveTrader.priceLatencyRecorder);
     var shellViewModel = new ShellViewModel(spotTilesViewModel, blotterViewModel, connectivityStatusViewModel);
+
+    // TODO this should be moved somewhere else
+    _this.fadeTrade = function (element, index, data) {
+        $(element).animate({ backgroundColor: '#7A9EFF' }, 200).animate({ backgroundColor: 'white' }, 800);
+    };
 
     ko.applyBindings(shellViewModel);
 });

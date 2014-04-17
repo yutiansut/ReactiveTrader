@@ -1,11 +1,14 @@
 ﻿$(document).ready(() => {
     var reactiveTrader = <IReactiveTrader> new ReactiveTrader();
-
-    reactiveTrader.initialize("Mike Trader", [""]);
-
-    // uncomment the following line to test with reactive trader Server GUI
-
-    //reactiveTrader.initialize("Mike Trader", ["http://localhost:8080"]);
+    var username = "Anonymous (web)";
+    if (location.search.indexOf("?server=local") == -1) {
+        // no override of server url detected, connect to origins
+        reactiveTrader.initialize(username, [""]);
+    }
+    else {
+        // connect to local reactive trader server
+        reactiveTrader.initialize(username, ["http://localhost:8080"]);
+    }
 
      reactiveTrader.connectionStatusStream.subscribe(s=> console.log("Connection status: " + s));
 
