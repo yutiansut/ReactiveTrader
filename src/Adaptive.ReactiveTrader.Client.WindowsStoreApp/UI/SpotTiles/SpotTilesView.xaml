@@ -8,20 +8,18 @@
     xmlns:spotTiles="using:Adaptive.ReactiveTrader.Client.UI.SpotTiles"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance designer:DesignTimeSpotTilesViewModel, IsDesignTimeCreatable=True}">
-    
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <ItemsControl ItemsSource="{Binding SpotTiles}" Margin="7,7,0,0">
-            <!--<ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>-->
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <spotTiles:SpotTileView />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </ScrollViewer>
+
+    <ListView ItemsSource="{Binding SpotTiles}" Margin="7,7,0,0">
+        <ListView.ItemsPanel>
+            <ItemsPanelTemplate>
+                <WrapGrid Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+        </ListView.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <spotTiles:SpotTileView />
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ListView>
     
 </UserControl>

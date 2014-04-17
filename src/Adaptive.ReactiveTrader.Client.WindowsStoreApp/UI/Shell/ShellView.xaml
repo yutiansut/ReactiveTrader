@@ -14,8 +14,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
+            <!--<RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />-->
         </Grid.RowDefinitions>
 
         <spotTiles:SpotTilesView DataContext="{Binding SpotTiles}" />
