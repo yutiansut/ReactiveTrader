@@ -56,7 +56,7 @@
 
     <!-- AFFIRMATION TILE TEMPLATE -->
     <script type="text/html" id="affirmation-template">
-        <table style="height: 100%;">
+        <table style="height: 144px;">
             <tr>
                 <td data-bind="text: currencyPair" class="tile-symbol"></td>
             </tr>
@@ -88,7 +88,7 @@
 
     <!-- ERROR TILE TEMPLATE -->
     <script type="text/html" id="error-template">
-        <table style="height: 100%;">
+        <table style="height: 144px;">
             <tr>
                 <td class="tile-symbol">Error</td>
             </tr>
@@ -97,9 +97,9 @@
                     <span style="color:#e8c0bb" data-bind="text: errorMessage" class="secondary-foreground"></span>
                 </td>
             </tr>
-            <tr>
+            <tr style="height: 20px;">
                 <td>
-                    <a href="javascript:void(0)" data-bind="click: dismiss">Done</a>
+                    <a style="color: white;" href="javascript:void(0)" data-bind="click: dismiss">Done</a>
                 </td>
             </tr>
         </table>
