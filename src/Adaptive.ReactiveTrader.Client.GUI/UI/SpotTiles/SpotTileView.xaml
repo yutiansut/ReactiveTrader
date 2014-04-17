@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:spotTiles="clr-namespace:Adaptive.ReactiveTrader.Client.UI.SpotTiles"
-             xmlns:designer="clr-namespace:Adaptive.ReactiveTrader.Client.UI.SpotTiles.Designer"
+             xmlns:spotTiles="clr-namespace:Adaptive.ReactiveTrader.Client.UI.SpotTiles;assembly=Adaptive.ReactiveTrader.Client"
+             xmlns:designer="clr-namespace:Adaptive.ReactiveTrader.Client.UI.SpotTiles.Designer;assembly=Adaptive.ReactiveTrader.Client"
+             xmlns:spotTiles1="clr-namespace:Adaptive.ReactiveTrader.Client.UI.SpotTiles"
              mc:Ignorable="d" 
              Height="150"
              Width="328"
@@ -17,7 +18,7 @@
                 <ContentPresenter x:Name="TileContentPresenter" Content="{Binding Pricing, Mode=OneTime}">
                     <ContentPresenter.ContentTemplate>
                         <DataTemplate>
-                            <spotTiles:SpotTilePricingView />
+                            <spotTiles1:SpotTilePricingView />
                         </DataTemplate>
                     </ContentPresenter.ContentTemplate>
                 </ContentPresenter>
@@ -25,7 +26,7 @@
                 <ContentPresenter x:Name="AffirmationContentPresenter" Content="{Binding Affirmation}" Visibility="Collapsed">
                     <ContentPresenter.ContentTemplate>
                         <DataTemplate>
-                            <spotTiles:SpotTileAffirmationView />
+                            <spotTiles1:SpotTileAffirmationView />
                         </DataTemplate>
                     </ContentPresenter.ContentTemplate>
                 </ContentPresenter>
@@ -33,7 +34,7 @@
                 <ContentPresenter x:Name="ErrorContentPresenter" Content="{Binding Error}" Visibility="Collapsed">
                     <ContentPresenter.ContentTemplate>
                         <DataTemplate>
-                            <spotTiles:SpotTileErrorView />
+                            <spotTiles1:SpotTileErrorView />
                         </DataTemplate>
                     </ContentPresenter.ContentTemplate>
                 </ContentPresenter>
@@ -41,7 +42,7 @@
                 <ContentPresenter x:Name="ConfigContentPresenter" Content="{Binding Config}" Visibility="Collapsed">
                     <ContentPresenter.ContentTemplate>
                         <DataTemplate>
-                            <spotTiles:SpotTileConfigView />
+                            <spotTiles1:SpotTileConfigView />
                         </DataTemplate>
                     </ContentPresenter.ContentTemplate>
                 </ContentPresenter>

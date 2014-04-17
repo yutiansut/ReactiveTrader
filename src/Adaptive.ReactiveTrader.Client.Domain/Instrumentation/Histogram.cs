@@ -292,11 +292,11 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Instrumentation
         /// <returns></returns>
         public override string ToString()
         {
-            var culture = Thread.CurrentThread.CurrentCulture;
+            //var culture = Thread.CurrentThread.CurrentCulture;
 
             try
             {
-                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+              //  Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
                 var sb = new StringBuilder();
 
@@ -326,7 +326,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Instrumentation
             }
             finally
             {
-                Thread.CurrentThread.CurrentCulture = culture;
+              //  Thread.CurrentThread.CurrentCulture = culture;
             }
         }
     }

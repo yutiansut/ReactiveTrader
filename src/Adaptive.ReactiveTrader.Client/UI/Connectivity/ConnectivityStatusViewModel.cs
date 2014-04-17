@@ -9,7 +9,7 @@ using log4net;
 
 namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
 {
-    class ConnectivityStatusViewModel : ViewModelBase, IConnectivityStatusViewModel
+    public class ConnectivityStatusViewModel : ViewModelBase, IConnectivityStatusViewModel
     {
         private static readonly TimeSpan StatsFrequency = TimeSpan.FromSeconds(1);
 

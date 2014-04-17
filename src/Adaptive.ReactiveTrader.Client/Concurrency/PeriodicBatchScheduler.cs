@@ -64,7 +64,10 @@ namespace Adaptive.ReactiveTrader.Client.Concurrency
                 work = _queuedWork.ToArray();
             }
 
-            Array.ForEach(work, item => item());
+            foreach (var item in work)
+            {
+                item();
+            }
         }
     }
 }
