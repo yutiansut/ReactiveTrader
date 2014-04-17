@@ -15,7 +15,12 @@ class Connection implements IConnection {
     constructor(address: string, username: string) {
         this._status = new Rx.BehaviorSubject(new ConnectionInfo(ConnectionStatus.Uninitialized, address));
         this._address = address;
-        this._hubConnection = $.hubConnection("http://localhost:8080/signalr");
+
+        if (address != "") {
+            this._hubConnection = $.hubConnection(address);
+        } else {
+            this._hubConnection = $.hubConnection();
+        }
 
         // TODO set username header 
         this._hubConnection
