@@ -58,7 +58,7 @@
     <script type="text/html" id="affirmation-template">
         <table style="height: 144px;">
             <tr>
-                <td >
+                <td>
                     <span data-bind="text: currencyPair" class="tile-symbol"></span>
                     <span data-bind="if: rejected" class="tile-symbol" style="float: right; margin-right: 10px; font-weight: 500;">REJECTED</span>
                 </td>
@@ -123,7 +123,7 @@
                 <td data-bind="if: isExecuting" class="tile-symbol">EXECUTING</td>
             </tr>
             <tr>
-                <td colspan="2" >
+                <td colspan="2">
                     <table style="text-align: center" data-bind="if: !isStale()">
                         <tr>
                             <td class="one-way-price">
@@ -162,40 +162,50 @@
 </head>
 
 
+
+
 <body style="height: 100%">
     <table class="shell">
-        <tr style="height: 65%">
+        <tr style="height: auto">
             <td class="tiles-background">
                 <!-- TILES -->
                 <ul class="tile" data-bind="template: { name: 'spot-tile-template', foreach: spotTiles.spotTiles }" style="padding: 2px;"></ul>
             </td>
         </tr>
-        <tr style="height: 35%">
+        <tr style="height: 230px">
             <td style="vertical-align: top">
                 <!-- BLOTTER -->
                 <table>
                     <thead>
                         <tr style="color: #787878; border-bottom: 1px solid #E8E9EA">
-                            <th style="text-align: left; padding: 0px 10px">Date</th>
-                            <th style="text-align: center; padding: 2px 10px">Dir.</th>
-                            <th style="text-align: left; padding: 2px 10px">CCY</th>
+                            <th style="width:200px;text-align: left; padding: 0 10px">Date</th>
+                            <th style="width:100px;text-align: center; padding: 2px 10px">Dir.</th>
+                            <th style="width:100px;text-align: left; padding: 2px 10px">CCY</th>
                             <th style="text-align: right; padding: 2px 10px">Notional</th>
-                            <th style="text-align: right; padding: 2px 10px">Rate</th>
-                            <th style="text-align: left; padding: 2px 10px">Status</th>
-                            <th style="text-align: center; padding: 2px 10px">Value Date</th>
-                            <th style="text-align: left; padding: 2px 10px">Trader</th>
+                            <th style="width:100px;text-align: right; padding: 2px 10px">Rate</th>
+                            <th style="width:100px;text-align: left; padding: 2px 10px">Status</th>
+                            <th style="width:200px;text-align: center; padding: 2px 10px">Value Date</th>
+                            <th style="width:100px;text-align: left; padding: 2px 10px">Trader</th>
                         </tr>
                     </thead>
-                    <tbody data-bind="foreach: blotter.trades">
-                        <tr style="border-bottom: 1px dashed #E8E9EA">
-                            <td data-bind="text: tradeDate, style: {textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : ''}" style="width:200px; text-align: left;; padding: 2px 10px"></td>
-                            <td data-bind="text: direction, style: {textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : ''}" style="width:100px; font-weight: 600; text-align: center; padding: 2px 10px"></td>
-                            <td data-bind="text: currencyPair, style: {textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : ''}" style="width:100px; font-weight: 600; text-align: left; padding: 2px 10px"></td>
-                            <td data-bind="text: notional, style: {textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : ''}" style="font-weight: 600; text-align: right; padding: 2px 10px"></td>
-                            <td data-bind="text: spotRate, style: {textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : ''}" style="width:100px; font-weight: 600; text-align: right; padding: 2px 10px"></td>
-                            <td data-bind="text: tradeStatus, style: {color: tradeStatus == 'REJECTED' ? 'red' : '', fontWeight: tradeStatus == 'REJECTED' ? '600' : ''}" style="width:100px; text-align: left; padding: 2px 10px"></td>
-                            <td data-bind="text: valueDate, style: {textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : ''}" style="width:200px; text-align: center; padding: 2px 10px"></td>
-                            <td data-bind="text: traderName, style: {textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : ''}" style="width:100px; text-align: left; padding: 2px 10px"></td>
+                    <tbody>
+                        <tr>
+                            <td colspan="8">
+                                <div style="overflow:auto; height: 180px">
+                                    <table data-bind="foreach: blotter.trades">
+                                        <tr style="border-bottom: 1px dashed #E8E9EA">
+                                            <td data-bind="text: tradeDate, style: {textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : ''}" style="width:200px;text-align: left;; padding: 2px 10px"></td>
+                                            <td data-bind="text: direction, style: {textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : ''}" style="width:100px;font-weight: 600; text-align: center; padding: 2px 10px"></td>
+                                            <td data-bind="text: currencyPair, style: {textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : ''}" style="width:100px;font-weight: 600; text-align: left; padding: 2px 10px"></td>
+                                            <td data-bind="text: notional, style: {textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : ''}" style="font-weight: 600; text-align: right; padding: 2px 10px"></td>
+                                            <td data-bind="text: spotRate, style: {textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : ''}" style="width:100px;font-weight: 600; text-align: right; padding: 2px 10px"></td>
+                                            <td data-bind="text: tradeStatus, style: {color: tradeStatus == 'REJECTED' ? 'red' : '', fontWeight: tradeStatus == 'REJECTED' ? '600' : ''}" style="width:100px;text-align: left; padding: 2px 10px"></td>
+                                            <td data-bind="text: valueDate, style: {textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : ''}" style="width:200px;text-align: center; padding: 2px 10px"></td>
+                                            <td data-bind="text: traderName, style: {textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : ''}" style="width:100px;text-align: left; padding: 2px 10px"></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
