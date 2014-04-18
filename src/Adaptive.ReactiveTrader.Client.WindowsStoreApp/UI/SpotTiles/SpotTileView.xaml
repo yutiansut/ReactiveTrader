@@ -6,13 +6,46 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:designer="using:Adaptive.ReactiveTrader.Client.UI.SpotTiles.Designer"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:converters="using:Adaptive.ReactiveTrader.Client.Converters"
     mc:Ignorable="d"
     Height="150"
     Width="328"
     Margin="0,0,3,3"
     d:DataContext="{d:DesignInstance designer:DesignTimeSpotTileViewModel, IsDesignTimeCreatable=True}">
-
+    <UserControl.Resources>
+        <converters:EnumAsStringToBooleanConverter x:Key="EnumAsStringToBooleanConverter" />
+    </UserControl.Resources>
+    
     <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="TileStatesGroup">
+                <VisualState x:Name="Pricing" />
+                <VisualState x:Name="Affirmation">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="AffirmationView">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <interactivity:Interaction.Behaviors>
+            <core:DataTriggerBehavior Binding="{Binding State, Converter={StaticResource EnumAsStringToBooleanConverter}, ConverterParameter=Affirmation}" Value="True">
+                <core:GoToStateAction StateName="Affirmation"/>
+            </core:DataTriggerBehavior>
+            <core:DataTriggerBehavior Binding="{Binding State, Converter={StaticResource EnumAsStringToBooleanConverter}, ConverterParameter=Affirmation}" Value="False">
+                <core:GoToStateAction StateName="Pricing"/>
+            </core:DataTriggerBehavior>
+        </interactivity:Interaction.Behaviors>
+
         <local:SpotTilePricingView DataContext="{Binding Pricing}" />
+
+        <local:SpotTileAffirmationView x:Name="AffirmationView" DataContext="{Binding Affirmation}" Visibility="Collapsed" />
     </Grid>
 </UserControl>
