@@ -9,17 +9,23 @@
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance designer:DesignTimeSpotTilesViewModel, IsDesignTimeCreatable=True}">
 
-    <ListView ItemsSource="{Binding SpotTiles}" Margin="7,7,0,0">
+    <ListView ItemsSource="{Binding SpotTiles}" Margin="7,7,0,0" 
+              SelectionMode="None" IsSwipeEnabled="False" IsItemClickEnabled="False">
         <ListView.ItemsPanel>
             <ItemsPanelTemplate>
                 <WrapGrid Orientation="Horizontal" />
             </ItemsPanelTemplate>
         </ListView.ItemsPanel>
-        <ItemsControl.ItemTemplate>
+        <ListView.ItemTemplate>
             <DataTemplate>
                 <spotTiles:SpotTileView />
             </DataTemplate>
-        </ItemsControl.ItemTemplate>
+        </ListView.ItemTemplate>
+        <ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem">
+                <Setter Property="Margin" Value="0" />
+            </Style>
+        </ListView.ItemContainerStyle>
     </ListView>
     
 </UserControl>
