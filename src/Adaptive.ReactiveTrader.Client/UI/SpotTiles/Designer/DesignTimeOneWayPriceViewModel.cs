@@ -7,6 +7,10 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles.Designer
 {
     public class DesignTimeOneWayPriceViewModel : ViewModelBase, IOneWayPriceViewModel
     {
+        public DesignTimeOneWayPriceViewModel()
+        {
+        }
+
         public DesignTimeOneWayPriceViewModel(Direction direction, string bigFigures, string pips, string tenthOfPip)
         {
             Direction = direction;
