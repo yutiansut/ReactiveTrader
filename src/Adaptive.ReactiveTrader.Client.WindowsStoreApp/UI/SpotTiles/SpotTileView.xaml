@@ -33,6 +33,17 @@
                         </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
+                <VisualState x:Name="Error">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ErrorView">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <interactivity:Interaction.Behaviors>
@@ -42,10 +53,19 @@
             <core:DataTriggerBehavior Binding="{Binding State, Converter={StaticResource EnumAsStringToBooleanConverter}, ConverterParameter=Affirmation}" Value="False">
                 <core:GoToStateAction StateName="Pricing"/>
             </core:DataTriggerBehavior>
+            <core:DataTriggerBehavior Binding="{Binding State, Converter={StaticResource EnumAsStringToBooleanConverter}, ConverterParameter=Error}" Value="True">
+                <core:GoToStateAction StateName="Error"/>
+            </core:DataTriggerBehavior>
+            <core:DataTriggerBehavior Binding="{Binding State, Converter={StaticResource EnumAsStringToBooleanConverter}, ConverterParameter=Error}" Value="False">
+                <core:GoToStateAction StateName="Pricing"/>
+            </core:DataTriggerBehavior>
         </interactivity:Interaction.Behaviors>
 
         <local:SpotTilePricingView DataContext="{Binding Pricing}" />
 
         <local:SpotTileAffirmationView x:Name="AffirmationView" DataContext="{Binding Affirmation}" Visibility="Collapsed" />
+
+        <local:SpotTileErrorView x:Name="ErrorView" DataContext="{Binding Error}" Visibility="Collapsed" />
+
     </Grid>
 </UserControl>
