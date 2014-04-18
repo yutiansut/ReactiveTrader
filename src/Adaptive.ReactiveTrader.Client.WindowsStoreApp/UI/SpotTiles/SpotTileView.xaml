@@ -15,49 +15,24 @@
     Margin="0,0,3,3"
     d:DataContext="{d:DesignInstance designer:DesignTimeSpotTileViewModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
-        <converters:EnumAsStringToBooleanConverter x:Key="EnumAsStringToBooleanConverter" />
+        <converters:ToStringConverter x:Key="ToStringConverter" />
     </UserControl.Resources>
-    
+
     <Grid>
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="TileStatesGroup">
-                <VisualState x:Name="Pricing" />
-                <VisualState x:Name="Affirmation">
-                    <Storyboard>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="AffirmationView">
-                            <DiscreteObjectKeyFrame KeyTime="0">
-                                <DiscreteObjectKeyFrame.Value>
-                                    <Visibility>Visible</Visibility>
-                                </DiscreteObjectKeyFrame.Value>
-                            </DiscreteObjectKeyFrame>
-                        </ObjectAnimationUsingKeyFrames>
-                    </Storyboard>
-                </VisualState>
-                <VisualState x:Name="Error">
-                    <Storyboard>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ErrorView">
-                            <DiscreteObjectKeyFrame KeyTime="0">
-                                <DiscreteObjectKeyFrame.Value>
-                                    <Visibility>Visible</Visibility>
-                                </DiscreteObjectKeyFrame.Value>
-                            </DiscreteObjectKeyFrame>
-                        </ObjectAnimationUsingKeyFrames>
-                    </Storyboard>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
         <interactivity:Interaction.Behaviors>
-            <core:DataTriggerBehavior Binding="{Binding State, Converter={StaticResource EnumAsStringToBooleanConverter}, ConverterParameter=Affirmation}" Value="True">
-                <core:GoToStateAction StateName="Affirmation"/>
+            <core:DataTriggerBehavior Binding="{Binding State, Converter={StaticResource ToStringConverter}}" Value="Affirmation">
+                <core:ChangePropertyAction TargetObject="{Binding ElementName=AffirmationView}" PropertyName="Visibility" Value="Visible" />
             </core:DataTriggerBehavior>
-            <core:DataTriggerBehavior Binding="{Binding State, Converter={StaticResource EnumAsStringToBooleanConverter}, ConverterParameter=Affirmation}" Value="False">
-                <core:GoToStateAction StateName="Pricing"/>
+            <core:DataTriggerBehavior Binding="{Binding State, Converter={StaticResource ToStringConverter}}" Value="Error">
+                <core:ChangePropertyAction TargetObject="{Binding ElementName=ErrorView}" PropertyName="Visibility" Value="Visible" />
             </core:DataTriggerBehavior>
-            <core:DataTriggerBehavior Binding="{Binding State, Converter={StaticResource EnumAsStringToBooleanConverter}, ConverterParameter=Error}" Value="True">
-                <core:GoToStateAction StateName="Error"/>
+            <core:DataTriggerBehavior Binding="{Binding State, Converter={StaticResource ToStringConverter}}" Value="Config">
+                <core:ChangePropertyAction TargetObject="{Binding ElementName=ConfigView}" PropertyName="Visibility" Value="Visible" />
             </core:DataTriggerBehavior>
-            <core:DataTriggerBehavior Binding="{Binding State, Converter={StaticResource EnumAsStringToBooleanConverter}, ConverterParameter=Error}" Value="False">
-                <core:GoToStateAction StateName="Pricing"/>
+            <core:DataTriggerBehavior Binding="{Binding State, Converter={StaticResource ToStringConverter}}" Value="Pricing">
+                <core:ChangePropertyAction TargetObject="{Binding ElementName=AffirmationView}" PropertyName="Visibility" Value="Collapsed" />
+                <core:ChangePropertyAction TargetObject="{Binding ElementName=ErrorView}" PropertyName="Visibility" Value="Collapsed" />
+                <core:ChangePropertyAction TargetObject="{Binding ElementName=ConfigView}" PropertyName="Visibility" Value="Collapsed" />
             </core:DataTriggerBehavior>
         </interactivity:Interaction.Behaviors>
 
@@ -67,5 +42,6 @@
 
         <local:SpotTileErrorView x:Name="ErrorView" DataContext="{Binding Error}" Visibility="Collapsed" />
 
+        <local:SpotTileConfigView x:Name="ConfigView" DataContext="{Binding Config}" Visibility="Collapsed" />
     </Grid>
 </UserControl>

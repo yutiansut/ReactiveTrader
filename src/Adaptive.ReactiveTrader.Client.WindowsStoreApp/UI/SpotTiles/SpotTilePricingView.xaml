@@ -94,7 +94,7 @@
                 </Setter>
             </Style>
 
-            <converters:EnumAsStringToBooleanConverter x:Key="EnumAsStringToBooleanConverter" />
+            <converters:ToStringConverter x:Key="ToStringConverter" />
         </ResourceDictionary>
 
     </UserControl.Resources>
@@ -223,11 +223,11 @@
             <core:DataTriggerBehavior Binding="{Binding Ask.IsExecuting}" Value="False">
                 <core:GoToStateAction StateName="Streaming" />
             </core:DataTriggerBehavior>
-            <core:DataTriggerBehavior Binding="{Binding Movement, Converter={StaticResource EnumAsStringToBooleanConverter}, ConverterParameter=Up}" Value="True">
-                <core:GoToStateAction StateName="Up"/>
+            <core:DataTriggerBehavior Binding="{Binding Movement, Converter={StaticResource ToStringConverter}}" Value="Up">
+                <core:GoToStateAction StateName="Up" />
             </core:DataTriggerBehavior>
-            <core:DataTriggerBehavior Binding="{Binding Movement, Converter={StaticResource EnumAsStringToBooleanConverter}, ConverterParameter=Down}" Value="True">
-                <core:GoToStateAction StateName="Down"/>
+            <core:DataTriggerBehavior Binding="{Binding Movement, Converter={StaticResource ToStringConverter}}" Value="Down">
+                <core:GoToStateAction StateName="Down" />
             </core:DataTriggerBehavior>
         </i:Interaction.Behaviors>
         <Grid>

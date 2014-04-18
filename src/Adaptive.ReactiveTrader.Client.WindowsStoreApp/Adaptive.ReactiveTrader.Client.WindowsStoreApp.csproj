@@ -128,8 +128,8 @@
     <Compile Include="Concurrency\ConcurrencyService.cs" />
     <Compile Include="Configuration\ConfigurationProvider.cs" />
     <Compile Include="Configuration\UserProvider.cs" />
-    <Compile Include="Converters\EnumAsStringToBooleanConverter.cs" />
     <Compile Include="Converters\StringFormatConverter.cs" />
+    <Compile Include="Converters\ToStringConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\Connectivity\ConnectivityStatus.xaml.cs">
       <DependentUpon>ConnectivityStatus.xaml</DependentUpon>
@@ -139,6 +139,9 @@
     </Compile>
     <Compile Include="UI\SpotTiles\SpotTileAffirmationView.xaml.cs">
       <DependentUpon>SpotTileAffirmationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\SpotTiles\SpotTileConfigView.xaml.cs">
+      <DependentUpon>SpotTileConfigView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\SpotTiles\SpotTileErrorView.xaml.cs">
       <DependentUpon>SpotTileErrorView.xaml</DependentUpon>
@@ -202,6 +205,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\SpotTiles\SpotTileAffirmationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\SpotTiles\SpotTileConfigView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
