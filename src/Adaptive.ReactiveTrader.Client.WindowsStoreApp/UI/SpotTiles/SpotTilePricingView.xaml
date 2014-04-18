@@ -65,14 +65,83 @@
                     </Storyboard>
                 </VisualState>
             </VisualStateGroup>
+            <VisualStateGroup x:Name="SubscriptionStatusGroup">
+                <VisualState x:Name="Streaming"/>
+                <VisualState x:Name="Subscribing">
+            		<Storyboard>
+            			<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="PriceButtonsPanel">
+            				<DiscreteObjectKeyFrame KeyTime="0">
+            					<DiscreteObjectKeyFrame.Value>
+            						<Visibility>Collapsed</Visibility>
+            					</DiscreteObjectKeyFrame.Value>
+            				</DiscreteObjectKeyFrame>
+            			</ObjectAnimationUsingKeyFrames>
+            			<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="NotionalPanel">
+            				<DiscreteObjectKeyFrame KeyTime="0">
+            					<DiscreteObjectKeyFrame.Value>
+            						<Visibility>Collapsed</Visibility>
+            					</DiscreteObjectKeyFrame.Value>
+            				</DiscreteObjectKeyFrame>
+            			</ObjectAnimationUsingKeyFrames>
+            			<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="SubscribingTextBlock">
+            				<DiscreteObjectKeyFrame KeyTime="0">
+            					<DiscreteObjectKeyFrame.Value>
+            						<Visibility>Visible</Visibility>
+            					</DiscreteObjectKeyFrame.Value>
+            				</DiscreteObjectKeyFrame>
+            			</ObjectAnimationUsingKeyFrames>
+            		</Storyboard>
+            	</VisualState>
+                <VisualState x:Name="Stale">
+                	<Storyboard>
+                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="PriceButtonsPanel">
+                			<DiscreteObjectKeyFrame KeyTime="0">
+                				<DiscreteObjectKeyFrame.Value>
+                					<Visibility>Collapsed</Visibility>
+                				</DiscreteObjectKeyFrame.Value>
+                			</DiscreteObjectKeyFrame>
+                		</ObjectAnimationUsingKeyFrames>
+                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="NotionalPanel">
+                			<DiscreteObjectKeyFrame KeyTime="0">
+                				<DiscreteObjectKeyFrame.Value>
+                					<Visibility>Collapsed</Visibility>
+                				</DiscreteObjectKeyFrame.Value>
+                			</DiscreteObjectKeyFrame>
+                		</ObjectAnimationUsingKeyFrames>
+                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="StaleTextBlock">
+                			<DiscreteObjectKeyFrame KeyTime="0">
+                				<DiscreteObjectKeyFrame.Value>
+                					<Visibility>Visible</Visibility>
+                				</DiscreteObjectKeyFrame.Value>
+                			</DiscreteObjectKeyFrame>
+                		</ObjectAnimationUsingKeyFrames>
+                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.Background)" Storyboard.TargetName="RootBorder">
+                			<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ErrorBackgroundBrush}"/>
+                		</ObjectAnimationUsingKeyFrames>
+                	</Storyboard>
+                </VisualState>
+            </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <Interactivity:Interaction.Behaviors>
+            <Core:EventTriggerBehavior EventName="Loaded">
+                <Core:GoToStateAction StateName="Subscribing"/>
+            </Core:EventTriggerBehavior>
+            <Core:DataTriggerBehavior Binding="{Binding IsSubscribing}" Value="False">
+                <Core:GoToStateAction StateName="Streaming"/>
+            </Core:DataTriggerBehavior>
+            <Core:DataTriggerBehavior Binding="{Binding IsStale}" Value="True">
+                <Core:GoToStateAction StateName="Stale"/>
+            </Core:DataTriggerBehavior>
+            <Core:DataTriggerBehavior Binding="{Binding IsStale}" Value="False">
+                <Core:GoToStateAction StateName="Streaming"/>
+            </Core:DataTriggerBehavior>
             <Core:DataTriggerBehavior Binding="{Binding Movement, Converter={StaticResource EnumAsStringToBooleanConverter}, ConverterParameter=Up}" Value="True">
                 <Core:GoToStateAction StateName="Up"/>
             </Core:DataTriggerBehavior>
             <Core:DataTriggerBehavior Binding="{Binding Movement, Converter={StaticResource EnumAsStringToBooleanConverter}, ConverterParameter=Down}" Value="True">
                 <Core:GoToStateAction StateName="Down"/>
             </Core:DataTriggerBehavior>
+
         </Interactivity:Interaction.Behaviors>
         <Grid>
             <Grid.RowDefinitions>
