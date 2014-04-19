@@ -8,6 +8,7 @@
     xmlns:converters="using:Adaptive.ReactiveTrader.Client.Converters"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:behaviors="using:Adaptive.ReactiveTrader.Client.Behaviors"
     mc:Ignorable="d"
     d:DesignHeight="300" 
     d:DesignWidth="1200"
@@ -193,9 +194,9 @@
                                         </VisualStateGroup>
                                     </VisualStateManager.VisualStateGroups>
                                     <i:Interaction.Behaviors>
-                                        <core:DataTriggerBehavior Binding="{Binding IsNewTrade}" Value="True">
+                                        <behaviors:InitialValueDataTriggerBehavior Binding="{Binding IsNewTrade}" Value="True">
                                             <core:GoToStateAction StateName="NewRow" />
-                                        </core:DataTriggerBehavior>
+                                        </behaviors:InitialValueDataTriggerBehavior>
                                     </i:Interaction.Behaviors>
 
                                     <Grid>
