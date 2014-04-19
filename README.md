@@ -5,6 +5,7 @@
 5. Introduction to Reactive Trader
 6. Features
 7. Architecture
+8. Blog posts
 
 ## 1. Overview
 
@@ -122,3 +123,8 @@ The server can also notify the client when a currency pair is added or removed (
 The following architecture diagram provides a view of the main components and layering within the client and server. Note that the focus of reactive trader is reactive UI design, so we kept the server as dumb and simple as possible here.
 
 ![image](https://f.cloud.github.com/assets/1256913/2321883/421d7f48-a3aa-11e3-8a4c-22bf0858a085.png)
+
+## 8. Blog posts
+
+[ReactConf 2014: video & slides](http://weareadaptive.com/blog/2014/04/12/reactconf-2014-reactive-ui/)
+[Reactive Trader 1: Concurrency and Asynchrony](http://weareadaptive.com/blog/2014/04/18/asynchrony-concurrency/)
