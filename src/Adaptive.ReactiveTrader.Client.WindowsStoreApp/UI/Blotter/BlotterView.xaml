@@ -176,7 +176,28 @@
                                                 </Storyboard>
                                             </VisualState>
                                         </VisualStateGroup>
+                                        <VisualStateGroup x:Name="NewRowGroup">
+                                            <VisualState x:Name="ExistingRow"/>
+                                            <VisualState x:Name="NewRow">
+                                                <Storyboard FillBehavior="Stop">
+                                                    <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="InnerGrid">
+                                                        <EasingColorKeyFrame KeyTime="0:0:0.75" Value="#FF7A9EFF">
+                                                            <EasingColorKeyFrame.EasingFunction>
+                                                                <PowerEase EasingMode="EaseInOut"/>
+                                                            </EasingColorKeyFrame.EasingFunction>
+                                                        </EasingColorKeyFrame>
+                                                        <EasingColorKeyFrame KeyTime="0:0:1.2" Value="Transparent"/>
+                                                    </ColorAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </VisualState>
+                                        </VisualStateGroup>
                                     </VisualStateManager.VisualStateGroups>
+                                    <i:Interaction.Behaviors>
+                                        <core:DataTriggerBehavior Binding="{Binding IsNewTrade}" Value="True">
+                                            <core:GoToStateAction StateName="NewRow" />
+                                        </core:DataTriggerBehavior>
+                                    </i:Interaction.Behaviors>
+
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="*" />
