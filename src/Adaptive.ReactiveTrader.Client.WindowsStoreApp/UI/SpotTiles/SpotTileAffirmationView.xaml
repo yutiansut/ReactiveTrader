@@ -22,7 +22,7 @@
                 <Setter Property="Margin" Value="0,0,3,0" />
             </Style>
 
-            <converters:StringFormatConverter x:Key="StringFormatConverter" />
+            <converters:ToStringConverter x:Key="ToStringConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -42,7 +42,7 @@
                     <TextBlock Text="Sold " Foreground="{StaticResource SecondaryForeground}" />
                     <TextBlock Text="{Binding DealtCurrency}" Foreground="{StaticResource PrimaryForeground}" />
                     <TextBlock Text=" " Foreground="{StaticResource PrimaryForeground}" />
-                    <TextBlock Text="{Binding Notional, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:#,0}'}" Foreground="{StaticResource PrimaryForeground}" />
+                    <TextBlock Text="{Binding Notional, Converter={StaticResource ToStringConverter}, ConverterParameter='{}{0:#,0}'}" Foreground="{StaticResource PrimaryForeground}" />
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
@@ -54,7 +54,7 @@
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Spot " Foreground="{StaticResource SecondaryForeground}" />
-                    <TextBlock Text="{Binding TradeDate, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:d MMMM}'}" Foreground="{StaticResource PrimaryForeground}" />
+                    <TextBlock Text="{Binding TradeDate, Converter={StaticResource ToStringConverter}, ConverterParameter='{}{0:d MMMM}'}" Foreground="{StaticResource PrimaryForeground}" />
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">

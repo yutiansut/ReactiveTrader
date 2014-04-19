@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:spotTiles="using:Adaptive.ReactiveTrader.Client.UI.SpotTiles"
     xmlns:connectivity="using:Adaptive.ReactiveTrader.Client.UI.Connectivity"
+    xmlns:blotter="using:Adaptive.ReactiveTrader.Client.UI.Blotter"
     mc:Ignorable="d">
     <UserControl.Resources>
         <SolidColorBrush x:Key="BackgroundBrush" Color="#FF212A35" />
@@ -20,6 +21,8 @@
         </Grid.RowDefinitions>
 
         <spotTiles:SpotTilesView Grid.Row="0" DataContext="{Binding SpotTiles}" />
+        
+        <blotter:BlotterView Grid.Row="2" DataContext="{Binding Blotter}" />
 
         <connectivity:ConnectivityStatusView Grid.Row="3" DataContext="{Binding ConnectivityStatus}" />
 

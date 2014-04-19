@@ -7,7 +7,16 @@ namespace Adaptive.ReactiveTrader.Client.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return value != null ? value.ToString() : null;
+            if (value != null)
+            {
+                var stringFormat = parameter as string;
+                if (stringFormat != null)
+                {
+                    return string.Format(stringFormat, value);
+                }
+                return value.ToString();
+            }
+            return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
