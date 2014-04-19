@@ -54,7 +54,7 @@
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Spot " Foreground="{StaticResource SecondaryForeground}" />
-                    <TextBlock Text="{Binding TradeDate, Converter={StaticResource StringFormatConverter}, ConverterParameter='d MMMM'}" Foreground="{StaticResource PrimaryForeground}" />
+                    <TextBlock Text="{Binding TradeDate, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:d MMMM}'}" Foreground="{StaticResource PrimaryForeground}" />
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
