@@ -7,6 +7,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity" 
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:converters="using:Adaptive.ReactiveTrader.Client.Converters"
+    xmlns:behaviors="using:Adaptive.ReactiveTrader.Client.Behaviors"
     x:Class="Adaptive.ReactiveTrader.Client.UI.SpotTiles.SpotTilePricingView"
     mc:Ignorable="d"
     d:DesignHeight="150"
@@ -199,12 +200,12 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <i:Interaction.Behaviors>
-            <core:EventTriggerBehavior EventName="Loaded">
+            <behaviors:InitialValueDataTriggerBehavior Binding="{Binding IsSubscribing}" Value="True">
                 <core:GoToStateAction StateName="Subscribing"/>
-            </core:EventTriggerBehavior>
-            <core:DataTriggerBehavior Binding="{Binding IsSubscribing}" Value="False">
+            </behaviors:InitialValueDataTriggerBehavior>
+            <behaviors:InitialValueDataTriggerBehavior Binding="{Binding IsSubscribing}" Value="False">
                 <core:GoToStateAction StateName="Streaming"/>
-            </core:DataTriggerBehavior>
+            </behaviors:InitialValueDataTriggerBehavior>
             <core:DataTriggerBehavior Binding="{Binding IsStale}" Value="True">
                 <core:GoToStateAction StateName="Stale"/>
             </core:DataTriggerBehavior>
