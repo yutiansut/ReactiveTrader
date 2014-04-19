@@ -6,42 +6,43 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:designer="using:Adaptive.ReactiveTrader.Client.UI.SpotTiles.Designer"
-    xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:converters="using:Adaptive.ReactiveTrader.Client.Converters"
+    xmlns:controls="using:Adaptive.ReactiveTrader.Client.Controls"
     mc:Ignorable="d"
     Height="150"
     Width="328"
     Margin="0,0,3,3"
     d:DataContext="{d:DesignInstance designer:DesignTimeSpotTileViewModel, IsDesignTimeCreatable=True}">
-    <UserControl.Resources>
-        <converters:ToStringConverter x:Key="ToStringConverter" />
-    </UserControl.Resources>
-
     <Grid>
-        <i:Interaction.Behaviors>
-            <core:DataTriggerBehavior Binding="{Binding State, Converter={StaticResource ToStringConverter}}" Value="Affirmation">
-                <core:ChangePropertyAction TargetObject="{Binding ElementName=AffirmationView}" PropertyName="Visibility" Value="Visible" />
-            </core:DataTriggerBehavior>
-            <core:DataTriggerBehavior Binding="{Binding State, Converter={StaticResource ToStringConverter}}" Value="Error">
-                <core:ChangePropertyAction TargetObject="{Binding ElementName=ErrorView}" PropertyName="Visibility" Value="Visible" />
-            </core:DataTriggerBehavior>
-            <core:DataTriggerBehavior Binding="{Binding State, Converter={StaticResource ToStringConverter}}" Value="Config">
-                <core:ChangePropertyAction TargetObject="{Binding ElementName=ConfigView}" PropertyName="Visibility" Value="Visible" />
-            </core:DataTriggerBehavior>
-            <core:DataTriggerBehavior Binding="{Binding State, Converter={StaticResource ToStringConverter}}" Value="Pricing">
-                <core:ChangePropertyAction TargetObject="{Binding ElementName=AffirmationView}" PropertyName="Visibility" Value="Collapsed" />
-                <core:ChangePropertyAction TargetObject="{Binding ElementName=ErrorView}" PropertyName="Visibility" Value="Collapsed" />
-                <core:ChangePropertyAction TargetObject="{Binding ElementName=ConfigView}" PropertyName="Visibility" Value="Collapsed" />
-            </core:DataTriggerBehavior>
-        </i:Interaction.Behaviors>
+        <controls:LazyContentControl Content="{Binding Pricing}">
+            <controls:LazyContentControl.LazyContentTemplate>
+                <DataTemplate>
+                    <local:SpotTilePricingView />
+                </DataTemplate>
+            </controls:LazyContentControl.LazyContentTemplate>
+        </controls:LazyContentControl>
 
-        <local:SpotTilePricingView DataContext="{Binding Pricing}" />
+        <controls:LazyContentControl Content="{Binding Affirmation}">
+            <controls:LazyContentControl.LazyContentTemplate>
+                <DataTemplate>
+                    <local:SpotTileAffirmationView />
+                </DataTemplate>
+            </controls:LazyContentControl.LazyContentTemplate>
+        </controls:LazyContentControl>
 
-        <local:SpotTileAffirmationView x:Name="AffirmationView" DataContext="{Binding Affirmation}" Visibility="Collapsed" />
+        <controls:LazyContentControl Content="{Binding Error}">
+            <controls:LazyContentControl.LazyContentTemplate>
+                <DataTemplate>
+                    <local:SpotTileErrorView />
+                </DataTemplate>
+            </controls:LazyContentControl.LazyContentTemplate>
+        </controls:LazyContentControl>
 
-        <local:SpotTileErrorView x:Name="ErrorView" DataContext="{Binding Error}" Visibility="Collapsed" />
-
-        <local:SpotTileConfigView x:Name="ConfigView" DataContext="{Binding Config}" Visibility="Collapsed" />
+        <controls:LazyContentControl Content="{Binding Config}">
+            <controls:LazyContentControl.LazyContentTemplate>
+                <DataTemplate>
+                    <local:SpotTileConfigView />
+                </DataTemplate>
+            </controls:LazyContentControl.LazyContentTemplate>
+        </controls:LazyContentControl>
     </Grid>
 </UserControl>

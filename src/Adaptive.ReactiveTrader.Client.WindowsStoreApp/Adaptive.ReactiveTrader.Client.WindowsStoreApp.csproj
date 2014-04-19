@@ -130,6 +130,7 @@
     <Compile Include="Configuration\UserProvider.cs" />
     <Compile Include="Controls\FrameworkElementExtensions.cs" />
     <Compile Include="Controls\GridSplitter.cs" />
+    <Compile Include="Controls\LazyContentControl.cs" />
     <Compile Include="Converters\ToStringConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\Blotter\BlotterView.xaml.cs">
