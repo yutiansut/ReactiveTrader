@@ -116,6 +116,7 @@
     <Compile Include="Concurrency\ConcurrencyService.cs" />
     <Compile Include="Configuration\ConfigurationProvider.cs" />
     <Compile Include="Configuration\UserProvider.cs" />
+    <Compile Include="Controls\LazyContentControl.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="UI\Behaviors\CloseWindowButtonBehavior.cs" />
     <Compile Include="UI\Behaviors\MaximizeWindowButtonBehavior.cs" />

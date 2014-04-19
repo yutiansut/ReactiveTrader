@@ -1,4 +1,4 @@
-﻿using Windows.ApplicationModel.Core;
+﻿using System;
 
 namespace Adaptive.ReactiveTrader.Client.Configuration
 {
@@ -6,10 +6,7 @@ namespace Adaptive.ReactiveTrader.Client.Configuration
     {
         public string Username
         {
-            get
-            {
-                return "Trader-" + CoreApplication.Id;
-            }
+            get { return "Trader-" + new Random().Next(100000); }
         }
     }
 }
