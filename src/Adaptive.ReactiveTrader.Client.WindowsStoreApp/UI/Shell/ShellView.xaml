@@ -7,6 +7,7 @@
     xmlns:spotTiles="using:Adaptive.ReactiveTrader.Client.UI.SpotTiles"
     xmlns:connectivity="using:Adaptive.ReactiveTrader.Client.UI.Connectivity"
     xmlns:blotter="using:Adaptive.ReactiveTrader.Client.UI.Blotter"
+    xmlns:controls="using:Adaptive.ReactiveTrader.Client.Controls"
     mc:Ignorable="d">
     <UserControl.Resources>
         <SolidColorBrush x:Key="BackgroundBrush" Color="#FF212A35" />
@@ -21,6 +22,8 @@
         </Grid.RowDefinitions>
 
         <spotTiles:SpotTilesView Grid.Row="0" DataContext="{Binding SpotTiles}" />
+        
+        <controls:GridSplitter Grid.Row="1" Background="{StaticResource BackgroundBrush}" />
         
         <blotter:BlotterView Grid.Row="2" DataContext="{Binding Blotter}" />
 

@@ -128,6 +128,8 @@
     <Compile Include="Concurrency\ConcurrencyService.cs" />
     <Compile Include="Configuration\ConfigurationProvider.cs" />
     <Compile Include="Configuration\UserProvider.cs" />
+    <Compile Include="Controls\FrameworkElementExtensions.cs" />
+    <Compile Include="Controls\GridSplitter.cs" />
     <Compile Include="Converters\ToStringConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\Blotter\BlotterView.xaml.cs">
@@ -199,6 +201,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Styles\TextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\GridSplitter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
