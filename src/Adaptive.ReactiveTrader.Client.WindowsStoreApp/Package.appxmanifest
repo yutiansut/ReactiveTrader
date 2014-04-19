@@ -16,7 +16,7 @@
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Adaptive.ReactiveTrader.Client.WindowsStoreApp.App">
       <m2:VisualElements DisplayName="Reactive Trader" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="Adaptive Reactive Trader" ForegroundText="light" BackgroundColor="#464646">
-        <m2:SplashScreen Image="Assets\SplashScreen.png" />
+        <m2:SplashScreen Image="Styles\splash_logo.png" BackgroundColor="#294464" />
       </m2:VisualElements>
     </Application>
   </Applications>
