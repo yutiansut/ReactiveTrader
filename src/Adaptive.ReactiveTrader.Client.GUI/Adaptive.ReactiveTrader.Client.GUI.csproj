@@ -124,8 +124,8 @@
     <Compile Include="UI\Blotter\BlotterView.xaml.cs">
       <DependentUpon>BlotterView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Connectivity\ConnectivityStatus.xaml.cs">
-      <DependentUpon>ConnectivityStatus.xaml</DependentUpon>
+    <Compile Include="UI\Connectivity\ConnectivityStatusView.xaml.cs">
+      <DependentUpon>ConnectivityStatusView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Shell\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
@@ -191,7 +191,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UI\Connectivity\ConnectivityStatus.xaml">
+    <Page Include="UI\Connectivity\ConnectivityStatusView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

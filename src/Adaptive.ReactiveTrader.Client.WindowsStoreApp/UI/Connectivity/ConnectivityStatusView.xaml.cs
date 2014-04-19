@@ -1,8 +1,8 @@
 ﻿namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
 {
-    public sealed partial class ConnectivityStatus
+    public sealed partial class ConnectivityStatusView
     {
-        public ConnectivityStatus()
+        public ConnectivityStatusView()
         {
             InitializeComponent();
         }
