@@ -62,7 +62,7 @@
 
             <StackPanel Orientation="Horizontal" Grid.Column="1">
                 <HyperlinkButton NavigateUri="http://www.weareadaptive.com">
-                    <Image Source="ms-appx:///Styles/statusbar_logo.png" Stretch="None" />
+                    <Image Source="ms-appx:///Assets/statusbar_logo.png" Stretch="None" />
                 </HyperlinkButton>
             </StackPanel>
         </Grid>
