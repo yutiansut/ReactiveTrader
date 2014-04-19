@@ -10,6 +10,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.Blotter
     [ImplementPropertyChanged]
     public class TradeViewModel : ViewModelBase, ITradeViewModel
     {
+        private readonly DateTimeOffset _createdTime = DateTimeOffset.UtcNow;
         private readonly bool _isStowTrade;
         private bool _isStowTradePropertyRead;
 
@@ -44,7 +45,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.Blotter
         {
             get
             {
-                var value = !_isStowTrade && !_isStowTradePropertyRead;
+                var value = !_isStowTrade && !_isStowTradePropertyRead && _createdTime.AddMinutes(1) > DateTimeOffset.UtcNow;
                 _isStowTradePropertyRead = true;
                 return value;
             }
