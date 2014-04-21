@@ -8,9 +8,10 @@
     }
 
     create(priceDto: PriceDto, currencyPair: ICurrencyPair) {
-        var bid = new ExecutablePrice(Direction.Sell, priceDto.Bid, this._executionRepository);
-        var ask = new ExecutablePrice(Direction.Buy, priceDto.Ask, this._executionRepository);
-        var price = new Price(bid, ask, priceDto.Mid, priceDto.QuoteId, priceDto.ValueDate, currencyPair);
+        var bid = new ExecutablePrice(Direction.Sell, priceDto.b, this._executionRepository);
+        var ask = new ExecutablePrice(Direction.Buy, priceDto.a, this._executionRepository);
+        var valueDate = new Date(priceDto.d);
+        var price = new Price(bid, ask, valueDate, currencyPair);
 
         this._priceLatencyRecored.onReceived(price);
 

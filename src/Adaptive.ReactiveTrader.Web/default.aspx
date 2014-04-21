@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="default.aspx.cs" Inherits="Adaptive.ReactiveTrader.Web._default" %>
+
+<!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -8,17 +10,13 @@
 
     <link rel="stylesheet" href="app.css" type="text/css" />
 
-    <script src="Scripts/jquery-2.1.0.min.js"></script>
-    <script src="Scripts/jquery.signalR-2.0.3.min.js"></script>
-    <script src="Scripts/jquery.color-2.1.2.min.js"></script>
-    <script src="Scripts/rx.js"></script>
-    <script src="Scripts/rx.binding.js"></script>
-    <script src="Scripts/rx.aggregates.js"></script>
-    <script src="Scripts/rx.coincidence.js"></script>
-    <script src="Scripts/rx.joinpatterns.js"></script>
-    <script src="Scripts/rx.time.js"></script>
-    <script src="Scripts/rx.virtualtime.js"></script>
-    <script src="Scripts/knockout-3.1.0.js"></script>
+    <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script src="//ajax.aspnetcdn.com/ajax/signalr/jquery.signalr-2.0.2.min.js"></script>
+    <script src="//code.jquery.com/color/jquery.color-2.1.0.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/rxjs/2.2.20/rx.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/rxjs/2.2.20/rx.binding.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/rxjs/2.2.20/rx.time.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
     <script src="generated.js"></script>
     
     <!-- TWITTER -->
@@ -246,3 +244,4 @@
     </table>
 </body>
 </html>
+

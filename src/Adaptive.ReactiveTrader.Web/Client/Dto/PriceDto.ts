@@ -1,8 +1,10 @@
 ﻿class PriceDto {
-    Symbol: string;
-    QuoteId: number;
-    Bid: number;
-    Ask: number;
-    ValueDate: string;
-    Mid: number;
+    // symbol
+    s: string;
+    // bid
+    b: number;
+    // ask
+    a: number;
+    // value date
+    d: number;
 }

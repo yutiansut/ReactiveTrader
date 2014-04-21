@@ -9,7 +9,6 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Models.Pricing
         IExecutablePrice Ask { get; }
         decimal Mid { get; }
         ICurrencyPair CurrencyPair { get; }
-        long QuoteId { get; }
         DateTime ValueDate { get; }
         decimal Spread { get; }
         bool IsStale { get; }
