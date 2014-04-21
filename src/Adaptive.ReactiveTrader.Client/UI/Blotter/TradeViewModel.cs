@@ -12,7 +12,6 @@ namespace Adaptive.ReactiveTrader.Client.UI.Blotter
     {
         private readonly DateTimeOffset _createdTime = DateTimeOffset.UtcNow;
         private readonly bool _isStowTrade;
-        private bool _isStowTradePropertyRead;
 
         public TradeViewModel(ITrade trade, bool isStowTrade)
         {
@@ -40,14 +39,11 @@ namespace Adaptive.ReactiveTrader.Client.UI.Blotter
         public DateTime ValueDate { get; private set; }
         public string DealtCurrency { get; private set; }
 
-
         public bool IsNewTrade
         {
             get
             {
-                var value = !_isStowTrade && !_isStowTradePropertyRead && _createdTime.AddMinutes(1) > DateTimeOffset.UtcNow;
-                _isStowTradePropertyRead = true;
-                return value;
+                return !_isStowTrade && (_createdTime.AddSeconds(2) > DateTimeOffset.UtcNow);
             }
         }
     }
