@@ -129,6 +129,7 @@
     <Compile Include="Concurrency\ConcurrencyService.cs" />
     <Compile Include="Configuration\ConfigurationProvider.cs" />
     <Compile Include="Configuration\UserProvider.cs" />
+    <Compile Include="Controls\CursorHelper.cs" />
     <Compile Include="Controls\FrameworkElementExtensions.cs" />
     <Compile Include="Controls\GridSplitter.cs" />
     <Compile Include="Controls\LazyContentControl.cs" />

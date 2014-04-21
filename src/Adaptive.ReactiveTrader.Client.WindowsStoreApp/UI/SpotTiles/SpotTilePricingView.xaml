@@ -8,6 +8,7 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:converters="using:Adaptive.ReactiveTrader.Client.Converters"
     xmlns:behaviors="using:Adaptive.ReactiveTrader.Client.Behaviors"
+    xmlns:controls="using:Adaptive.ReactiveTrader.Client.Controls"
     x:Class="Adaptive.ReactiveTrader.Client.UI.SpotTiles.SpotTilePricingView"
     mc:Ignorable="d"
     d:DesignHeight="150"
@@ -28,6 +29,7 @@
             <Style x:Key="PriceButtonStyle" TargetType="Button">
                 <Setter Property="HorizontalAlignment" Value="Stretch" />
                 <Setter Property="VerticalAlignment" Value="Stretch" />
+                <Setter Property="controls:CursorHelper.Cursor" Value="Hand" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
