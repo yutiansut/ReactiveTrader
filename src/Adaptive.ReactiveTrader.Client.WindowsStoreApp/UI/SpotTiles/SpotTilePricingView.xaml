@@ -22,9 +22,11 @@
                 <ResourceDictionary Source="/Styles/TextBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <SolidColorBrush x:Key="TileBackgroundBrush" Color="#FF293543" />
-            <SolidColorBrush x:Key="MouseOverBrush" Color="#FF2F5078" />
-            <SolidColorBrush x:Key="MousePressedBrush" Color="#FF345C8B" />
+            <SolidColorBrush x:Key="PriceButtonMouseOverBrush" Color="#FF2F5078" />
+            <SolidColorBrush x:Key="PriceButtonMousePressedBrush" Color="#FF345C8B" />
+
+            <Color x:Key="RootBackgroundColor">#FF293543</Color>
+            <SolidColorBrush x:Key="RootBackgroundBrush" Color="{StaticResource RootBackgroundColor}" />
 
             <Style x:Key="PriceButtonStyle" TargetType="Button">
                 <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -40,14 +42,14 @@
                                         <VisualState x:Name="PointerOver">
                                             <Storyboard>
                                                 <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="Border">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource MouseOverBrush}"/>
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PriceButtonMouseOverBrush}"/>
                                                 </ObjectAnimationUsingKeyFrames>
                                             </Storyboard>
                                         </VisualState>
                                         <VisualState x:Name="Pressed">
                                             <Storyboard>
                                                 <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="Border">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource MousePressedBrush}"/>
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PriceButtonMousePressedBrush}"/>
                                                 </ObjectAnimationUsingKeyFrames>
                                             </Storyboard>
                                         </VisualState>
@@ -64,7 +66,7 @@
                                         <VisualState x:Name="PriceExecuting">
                                             <Storyboard>
                                                 <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="Border">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource MouseOverBrush}"/>
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PriceButtonMouseOverBrush}"/>
                                                 </ObjectAnimationUsingKeyFrames>
                                             </Storyboard>
                                         </VisualState>
@@ -102,17 +104,17 @@
 
     </UserControl.Resources>
 
-    <Border x:Name="RootBorder" Padding="15,12" Background="{StaticResource TileBackgroundBrush}">
+    <Border x:Name="RootBorder" Padding="15,12" Background="{StaticResource RootBackgroundBrush}">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="DirectionGroup">
                 <VisualState x:Name="Up">
-                    <Storyboard>
-                        <ColorAnimation Duration="0:0:0.250" To="#FF3FCF1E" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="UpMovementIcon" d:IsOptimized="True"/>
-                    </Storyboard>
+                	<Storyboard>
+                		<DoubleAnimation Duration="0:0:0.3" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="UpMovementIcon" d:IsOptimized="True"/>
+                	</Storyboard>
                 </VisualState>
                 <VisualState x:Name="Down">
                     <Storyboard>
-                        <ColorAnimation Duration="0:0:0.250" To="#FFCC3350" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="DownMovementIcon" d:IsOptimized="True"/>
+                        <DoubleAnimation Duration="0:0:0.3" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="DownMovementIcon" d:IsOptimized="True"/>
                     </Storyboard>
                 </VisualState>
             </VisualStateGroup>
@@ -200,6 +202,32 @@
                     </Storyboard>
                 </VisualState>
             </VisualStateGroup>
+            <VisualStateGroup x:Name="PointerGroup">
+                <VisualState x:Name="NotPointerOver">
+				    <Storyboard>
+                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="SpotDateTextBlock">
+                			<DiscreteObjectKeyFrame KeyTime="0">
+                				<DiscreteObjectKeyFrame.Value>
+                					<Visibility>Visible</Visibility>
+                				</DiscreteObjectKeyFrame.Value>
+                			</DiscreteObjectKeyFrame>
+                		</ObjectAnimationUsingKeyFrames>
+                        <ColorAnimation Duration="0:0:0.250" To="{StaticResource RootBackgroundColor}" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Storyboard.TargetName="RootBorder" d:IsOptimized="True"/>
+                	</Storyboard>
+					</VisualState>
+                <VisualState x:Name="PointerOver">
+            		<Storyboard>
+                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="SpotDateTextBlock">
+                			<DiscreteObjectKeyFrame KeyTime="0">
+                				<DiscreteObjectKeyFrame.Value>
+                					<Visibility>Visible</Visibility>
+                				</DiscreteObjectKeyFrame.Value>
+                			</DiscreteObjectKeyFrame>
+                		</ObjectAnimationUsingKeyFrames>
+                		<ColorAnimation Duration="0:0:0.150" To="#FF294464" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Storyboard.TargetName="RootBorder" d:IsOptimized="True"/>
+                	</Storyboard>
+            	</VisualState>
+            </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <i:Interaction.Behaviors>
             <behaviors:OnLoadedRefreshDataTriggersBehavior />
@@ -219,13 +247,13 @@
                 <core:GoToStateAction StateName="Executing"/>
             </core:DataTriggerBehavior>
             <core:DataTriggerBehavior Binding="{Binding Bid.IsExecuting}" Value="False">
-                <core:GoToStateAction StateName="Streaming" />
+                <core:GoToStateAction StateName="Streaming"/>
             </core:DataTriggerBehavior>
             <core:DataTriggerBehavior Binding="{Binding Ask.IsExecuting}" Value="True">
                 <core:GoToStateAction StateName="Executing"/>
             </core:DataTriggerBehavior>
             <core:DataTriggerBehavior Binding="{Binding Ask.IsExecuting}" Value="False">
-                <core:GoToStateAction StateName="Streaming" />
+                <core:GoToStateAction StateName="Streaming"/>
             </core:DataTriggerBehavior>
             <core:DataTriggerBehavior Binding="{Binding Movement, Converter={StaticResource ToStringConverter}}" Value="Up">
                 <core:GoToStateAction StateName="Up" />
@@ -233,6 +261,12 @@
             <core:DataTriggerBehavior Binding="{Binding Movement, Converter={StaticResource ToStringConverter}}" Value="Down">
                 <core:GoToStateAction StateName="Down" />
             </core:DataTriggerBehavior>
+            <core:EventTriggerBehavior EventName="PointerEntered">
+                <core:GoToStateAction StateName="PointerOver"/>
+            </core:EventTriggerBehavior>
+            <core:EventTriggerBehavior EventName="PointerExited">
+                <core:GoToStateAction StateName="NotPointerOver"/>
+            </core:EventTriggerBehavior>
         </i:Interaction.Behaviors>
         <Grid>
             <Grid.RowDefinitions>
@@ -272,9 +306,9 @@
 					Margin="0,0,5,0" />
 
                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                    <Path x:Name="UpMovementIcon" Data="M6,0L12,12 0,12z" Fill="Transparent" Height="12" Width="12" />
+                    <Path x:Name="UpMovementIcon" Data="M6,0L12,12 0,12z" Fill="#FF3FCF1E" Opacity="0" Height="12" Width="12" />
                     <TextBlock x:Name="SpreadTextBlock"  Text="{Binding Spread}" FontSize="16" Foreground="{StaticResource PrimaryForeground}" Margin="3,5" />
-                    <Path x:Name="DownMovementIcon" Data="M6,12L0,0 12,0z" Fill="Transparent" Height="12" Width="12" />
+                    <Path x:Name="DownMovementIcon" Data="M6,12L0,0 12,0z" Fill="#FFCC3350" Opacity="0" Height="12" Width="12" />
                 </StackPanel>
 
                 <Button x:Name="AskButton" Grid.Column="2" 
@@ -304,7 +338,7 @@
                 <Border Grid.Column="1" BorderThickness="0,0,0,1" HorizontalAlignment="Left" Width="146">
                     <TextBox x:Name="NotionalTextBox" Text="{Binding Notional, Mode=TwoWay}" 
                             TextAlignment="Left"
-                            VerticalContentAlignment="Center" Margin="5,0" AcceptsReturn="False" 
+                            Margin="5,0" AcceptsReturn="False" 
                             FontSize="16"
                             Style="{StaticResource ChromelessTextBoxStyle}"
                             Foreground="{StaticResource SecondaryForeground}">
@@ -313,8 +347,7 @@
                     </TextBox>
                 </Border>
 
-
-                <TextBlock x:Name="SpotDateTextBlock" Grid.Column="1" Text="{Binding SpotDate}" Foreground="{StaticResource SecondaryForeground}" FontSize="16" Visibility="Collapsed" />
+                <TextBlock x:Name="SpotDateTextBlock" Grid.Column="2" Text="{Binding SpotDate}" Foreground="{StaticResource SecondaryForeground}" FontSize="16" Visibility="Collapsed" />
             </Grid>
         </Grid>
     </Border>
