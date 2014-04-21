@@ -155,8 +155,10 @@
     <TypeScriptCompile Include="Client\Extensions\ObservableExtensions.ts" />
     <TypeScriptCompile Include="Client\Extensions\Stale.ts" />
     <TypeScriptCompile Include="Client\Instrumentation\IPriceLatencyRecorder.ts" />
+    <TypeScriptCompile Include="Client\Instrumentation\IProfiler.ts" />
     <TypeScriptCompile Include="Client\Instrumentation\MaxLatency.ts" />
     <TypeScriptCompile Include="Client\Instrumentation\PriceLatencyRecorder.ts" />
+    <TypeScriptCompile Include="Client\Instrumentation\Profiler.ts" />
     <TypeScriptCompile Include="Client\Models\Direction.ts" />
     <TypeScriptCompile Include="Client\Models\Execution\ITrade.ts" />
     <TypeScriptCompile Include="Client\Models\Execution\ITradeFactory.ts" />

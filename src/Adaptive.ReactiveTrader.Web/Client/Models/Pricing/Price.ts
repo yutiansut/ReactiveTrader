@@ -1,15 +1,19 @@
 ﻿class Price implements IPrice, IPriceLatency {
+    private _profiler: IProfiler;
+
     constructor(
         bid: ExecutablePrice,
         ask: ExecutablePrice,
         valueDate: Date,
-        currencyPair: ICurrencyPair) {
+        currencyPair: ICurrencyPair,
+        profiler: IProfiler) {
 
         this.bid = bid;
         this.ask = ask;
         this.valueDate = valueDate;
         this.currencyPair = currencyPair;
         this.isStale = false;
+        this._profiler = profiler;
 
         bid.parent = this;
         ask.parent = this;
@@ -38,18 +42,13 @@
     }
 
     displayedOnUi(): void {
-        if (performance) {
-            this._renderTimestamp = performance.now();
-        } else {
-            this._renderTimestamp = Date.now();
-        }
+        this._renderTimestamp = this._profiler.now();
     }
 
     receivedInGuiProcess(): void {
-        if (performance) {
-            this._receivedTimestamp = performance.now();
-        } else {
-            this._receivedTimestamp = Date.now();
-        }
+        this._receivedTimestamp = this._profiler.now();
     }
 } 
+
+
+

@@ -5,6 +5,7 @@ using Adaptive.ReactiveTrader.Client.Domain.Models.Pricing;
 using Adaptive.ReactiveTrader.Client.Domain.Models.ReferenceData;
 using Adaptive.ReactiveTrader.Client.Domain.ServiceClients;
 using Adaptive.ReactiveTrader.Shared.Extensions;
+using log4net;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.Repositories
 {
@@ -12,6 +13,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Repositories
     {
         private readonly IPricingServiceClient _pricingServiceClient;
         private readonly IPriceFactory _priceFactory;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(PriceRepository));
 
         public PriceRepository(IPricingServiceClient pricingServiceClient, IPriceFactory priceFactory)
         {
@@ -23,7 +25,12 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Repositories
         {
             return Observable.Defer(() => _pricingServiceClient.GetSpotStream(currencyPair.Symbol))
                 .Select(p => _priceFactory.Create(p, currencyPair))
-                .Catch(Observable.Return(new StalePrice(currencyPair))) // if the stream errors (server disconnected), we push a stale price 
+                .Catch<IPrice, Exception>(ex =>
+                {
+                    Log.Error("Error thrown in stream " + currencyPair.Symbol, ex);
+                    // if the stream errors (server disconnected), we push a stale price 
+                    return Observable.Return<IPrice>(new StalePrice(currencyPair));
+                }) 
                 .Repeat()                                               // and resubscribe
                 .DetectStale(TimeSpan.FromSeconds(4),  Scheduler.Default)
                 .Select(s => s.IsStale ? new StalePrice(currencyPair) : s.Update)

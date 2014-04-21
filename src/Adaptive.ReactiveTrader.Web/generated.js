@@ -248,6 +248,21 @@ var PriceLatencyRecorder = (function () {
     };
     return PriceLatencyRecorder;
 })();
+var Profiler = (function () {
+    function Profiler() {
+        if (typeof window.performance != "undefined") {
+            this._now = window.performance.now;
+        } else {
+            this._now = function () {
+                return new Date().getTime();
+            };
+        }
+    }
+    Profiler.prototype.now = function () {
+        return this._now();
+    };
+    return Profiler;
+})();
 var Direction;
 (function (Direction) {
     Direction[Direction["Buy"] = 0] = "Buy";
@@ -293,12 +308,13 @@ var ExecutablePrice = (function () {
     return ExecutablePrice;
 })();
 var Price = (function () {
-    function Price(bid, ask, valueDate, currencyPair) {
+    function Price(bid, ask, valueDate, currencyPair, profiler) {
         this.bid = bid;
         this.ask = ask;
         this.valueDate = valueDate;
         this.currencyPair = currencyPair;
         this.isStale = false;
+        this._profiler = profiler;
 
         bid.parent = this;
         ask.parent = this;
@@ -322,32 +338,25 @@ var Price = (function () {
     });
 
     Price.prototype.displayedOnUi = function () {
-        if (performance) {
-            this._renderTimestamp = performance.now();
-        } else {
-            this._renderTimestamp = Date.now();
-        }
+        this._renderTimestamp = this._profiler.now();
     };
 
     Price.prototype.receivedInGuiProcess = function () {
-        if (performance) {
-            this._receivedTimestamp = performance.now();
-        } else {
-            this._receivedTimestamp = Date.now();
-        }
+        this._receivedTimestamp = this._profiler.now();
     };
     return Price;
 })();
 var PriceFactory = (function () {
-    function PriceFactory(executionRepository, priceLatencyRecored) {
+    function PriceFactory(executionRepository, priceLatencyRecored, profiler) {
         this._executionRepository = executionRepository;
         this._priceLatencyRecored = priceLatencyRecored;
+        this._profiler = profiler;
     }
     PriceFactory.prototype.create = function (priceDto, currencyPair) {
         var bid = new ExecutablePrice(1 /* Sell */, priceDto.b, this._executionRepository);
         var ask = new ExecutablePrice(0 /* Buy */, priceDto.a, this._executionRepository);
         var valueDate = new Date(priceDto.d);
-        var price = new Price(bid, ask, valueDate, currencyPair);
+        var price = new Price(bid, ask, valueDate, currencyPair, this._profiler);
 
         this._priceLatencyRecored.onReceived(price);
 
@@ -451,7 +460,10 @@ var PriceRepository = (function () {
             return _this._pricingServiceClient.getSpotStream(currencyPair.symbol);
         }).select(function (p) {
             return _this._priceFactory.create(p, currencyPair);
-        }).catch(Rx.Observable.return(new StalePrice(currencyPair))).repeat().detectStale(4000, Rx.Scheduler.timeout).select(function (s) {
+        }).catch(function (ex) {
+            console.error("Error thrown in stream " + currencyPair.symbol + ": " + ex);
+            return Rx.Observable.return(new StalePrice(currencyPair));
+        }).repeat().detectStale(4000, Rx.Scheduler.timeout).select(function (s) {
             return (s.isStale ? new StalePrice(currencyPair) : s.update);
         }).publish().refCount();
     };
@@ -1558,7 +1570,8 @@ var ReactiveTrader = (function () {
 
         var tradeFactory = new TradeFactory();
         var executionRepository = new ExecutionRepository(executionServiceClient, tradeFactory);
-        var priceFactory = new PriceFactory(executionRepository, this.priceLatencyRecorder);
+        var profiler = new Profiler();
+        var priceFactory = new PriceFactory(executionRepository, this.priceLatencyRecorder, profiler);
         var priceRepository = new PriceRepository(pricingServiceClient, priceFactory);
         var currencyPairUpdateFactory = new CurrencyPairUpdateFactory(priceRepository);
 
