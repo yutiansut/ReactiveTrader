@@ -200,12 +200,13 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <i:Interaction.Behaviors>
-            <behaviors:InitialValueDataTriggerBehavior Binding="{Binding IsSubscribing}" Value="True">
+            <behaviors:OnLoadedRefreshDataTriggersBehavior />
+            <core:DataTriggerBehavior Binding="{Binding IsSubscribing}" Value="True">
                 <core:GoToStateAction StateName="Subscribing"/>
-            </behaviors:InitialValueDataTriggerBehavior>
-            <behaviors:InitialValueDataTriggerBehavior Binding="{Binding IsSubscribing}" Value="False">
+            </core:DataTriggerBehavior>
+            <core:DataTriggerBehavior Binding="{Binding IsSubscribing}" Value="False">
                 <core:GoToStateAction StateName="Streaming"/>
-            </behaviors:InitialValueDataTriggerBehavior>
+            </core:DataTriggerBehavior>
             <core:DataTriggerBehavior Binding="{Binding IsStale}" Value="True">
                 <core:GoToStateAction StateName="Stale"/>
             </core:DataTriggerBehavior>

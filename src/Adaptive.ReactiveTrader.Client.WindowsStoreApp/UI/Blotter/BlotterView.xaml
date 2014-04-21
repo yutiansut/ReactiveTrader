@@ -194,9 +194,10 @@
                                         </VisualStateGroup>
                                     </VisualStateManager.VisualStateGroups>
                                     <i:Interaction.Behaviors>
-                                        <behaviors:InitialValueDataTriggerBehavior Binding="{Binding IsNewTrade}" Value="True">
+                                        <behaviors:OnLoadedRefreshDataTriggersBehavior />
+                                        <core:DataTriggerBehavior Binding="{Binding IsNewTrade}" Value="True">
                                             <core:GoToStateAction StateName="NewRow" />
-                                        </behaviors:InitialValueDataTriggerBehavior>
+                                        </core:DataTriggerBehavior>
                                     </i:Interaction.Behaviors>
 
                                     <Grid>
