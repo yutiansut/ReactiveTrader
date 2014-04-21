@@ -38,10 +38,18 @@
     }
 
     displayedOnUi(): void {
-        this._renderTimestamp = performance.now();
+        if (performance) {
+            this._renderTimestamp = performance.now();
+        } else {
+            this._renderTimestamp = Date.now();
+        }
     }
 
     receivedInGuiProcess(): void {
-        this._receivedTimestamp = performance.now();
+        if (performance) {
+            this._receivedTimestamp = performance.now();
+        } else {
+            this._receivedTimestamp = Date.now();
+        }
     }
 } 
