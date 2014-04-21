@@ -9,17 +9,39 @@
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance designer:DesignTimeSpotTilesViewModel, IsDesignTimeCreatable=True}">
 
-    <ListView ItemsSource="{Binding SpotTiles}" Margin="7,7,0,0">
+    <ListView ItemsSource="{Binding SpotTiles}" Margin="7,7,0,0" 
+              SelectionMode="None" IsSwipeEnabled="False" IsItemClickEnabled="False">
         <ListView.ItemsPanel>
             <ItemsPanelTemplate>
                 <WrapGrid Orientation="Horizontal" />
             </ItemsPanelTemplate>
         </ListView.ItemsPanel>
-        <ItemsControl.ItemTemplate>
+        <ListView.ItemTemplate>
             <DataTemplate>
                 <spotTiles:SpotTileView />
             </DataTemplate>
-        </ItemsControl.ItemTemplate>
+        </ListView.ItemTemplate>
+        <ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem">
+                <Setter Property="Margin" Value="0" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListViewItem">
+                            <ListViewItemPresenter ContentMargin="0" 
+                                                   ContentTransitions="{TemplateBinding ContentTransitions}"
+                                                   DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}" 
+                                                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                   Padding="{TemplateBinding Padding}" 
+                                                   PointerOverBackgroundMargin="1" 
+                                                   PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
+                                                   ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}" 
+                                                   SelectionCheckMarkVisualEnabled="False"
+                                                   VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ListView.ItemContainerStyle>
     </ListView>
-    
+
 </UserControl>

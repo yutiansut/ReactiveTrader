@@ -51,9 +51,9 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
 
         public void OnTrade(ITrade trade)
         {
+            DismissError();
             Affirmation = _affirmationFactory(trade, this);
             State = TileState.Affirmation;
-            Error = null;
         }
 
         public void OnExecutionError(string message)

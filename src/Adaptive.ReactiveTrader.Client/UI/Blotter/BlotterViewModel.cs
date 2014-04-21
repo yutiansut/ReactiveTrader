@@ -67,7 +67,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.Blotter
             allTrades.ForEach(trade =>
                 {
                     var tradeViewModel = _tradeViewModelFactory(trade, !_stowReceived);
-                    Trades.Add(tradeViewModel);
+                    Trades.Insert(0, tradeViewModel);
                 });
 
             _stowReceived = true;

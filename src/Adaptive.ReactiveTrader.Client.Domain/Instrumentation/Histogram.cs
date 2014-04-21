@@ -292,42 +292,32 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Instrumentation
         /// <returns></returns>
         public override string ToString()
         {
-            //var culture = Thread.CurrentThread.CurrentCulture;
+            var culture = CultureInfo.InvariantCulture;
+            var sb = new StringBuilder();
 
-            try
+            sb.Append("Histogram{");
+
+            sb.Append("min=").Append(Min.ToString(culture)).Append(", ");
+            sb.Append("max=").Append(Max.ToString(culture)).Append(", ");
+            sb.Append("mean=").Append(Mean.ToString(culture)).Append(", ");
+            sb.Append("99%=").Append(TwoNinesUpperBound.ToString(culture)).Append(", ");
+            sb.Append("99.99%=").Append(FourNinesUpperBound.ToString(culture)).AppendLine(", ");
+
+            sb.Append('[');
+            for (var i = 0; i < _counts.Length; i++)
             {
-              //  Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-
-                var sb = new StringBuilder();
-
-                sb.Append("Histogram{");
-
-                sb.Append("min=").Append(Min).Append(", ");
-                sb.Append("max=").Append(Max).Append(", ");
-                sb.Append("mean=").Append(Mean).Append(", ");
-                sb.Append("99%=").Append(TwoNinesUpperBound).Append(", ");
-                sb.Append("99.99%=").Append(FourNinesUpperBound).AppendLine(", ");
-
-                sb.Append('[');
-                for (var i = 0; i < _counts.Length; i++)
-                {
-                    sb.Append(_upperBounds[i]).Append('=').Append(_counts[i]).AppendLine();
-                }
-
-                if (_counts.Length > 0)
-                {
-                    sb.Length = (sb.Length - 2);
-                }
-                sb.Append(']');
-
-                sb.Append('}');
-
-                return sb.ToString();
+                sb.Append(_upperBounds[i]).Append('=').Append(_counts[i].ToString(culture)).AppendLine();
             }
-            finally
+
+            if (_counts.Length > 0)
             {
-              //  Thread.CurrentThread.CurrentCulture = culture;
+                sb.Length = (sb.Length - 2);
             }
+            sb.Append(']');
+
+            sb.Append('}');
+
+            return sb.ToString();
         }
     }
 }

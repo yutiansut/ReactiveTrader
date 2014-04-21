@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 
@@ -64,10 +65,7 @@ namespace Adaptive.ReactiveTrader.Client.Concurrency
                 work = _queuedWork.ToArray();
             }
 
-            foreach (var item in work)
-            {
-                item();
-            }
+            work.ForEach(item => item());
         }
     }
 }
