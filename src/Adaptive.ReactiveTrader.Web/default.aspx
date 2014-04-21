@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="default.aspx.cs" Inherits="Adaptive.ReactiveTrader.Web._default" %>
+
+<!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -8,18 +10,17 @@
 
     <link rel="stylesheet" href="app.css" type="text/css" />
 
-    <script src="Scripts/jquery-2.1.0.min.js"></script>
-    <script src="Scripts/jquery.signalR-2.0.3.min.js"></script>
-    <script src="Scripts/jquery.color-2.1.2.min.js"></script>
-    <script src="Scripts/rx.js"></script>
-    <script src="Scripts/rx.binding.js"></script>
-    <script src="Scripts/rx.aggregates.js"></script>
-    <script src="Scripts/rx.coincidence.js"></script>
-    <script src="Scripts/rx.joinpatterns.js"></script>
-    <script src="Scripts/rx.time.js"></script>
-    <script src="Scripts/rx.virtualtime.js"></script>
-    <script src="Scripts/knockout-3.1.0.js"></script>
+    <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script src="//ajax.aspnetcdn.com/ajax/signalr/jquery.signalr-2.0.2.min.js"></script>
+    <script src="//code.jquery.com/color/jquery.color-2.1.0.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/rxjs/2.2.20/rx.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/rxjs/2.2.20/rx.binding.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/rxjs/2.2.20/rx.time.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
     <script src="generated.js"></script>
+    
+    <!-- TWITTER -->
+    <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = "//platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs); } }(document, "script", "twitter-wjs");</script>
 
     <!-- ONE WAY PRICE TEMPLATE -->
     <script type="text/html" id="one-way=price-template">
@@ -215,7 +216,7 @@
     </table>
     <table class="connection-status" data-bind="style: { backgroundColor: connectivityStatus.disconnected() ? '#CE3C1C' : '#DEE3E8', color: connectivityStatus.disconnected() ? 'white' : 'black' }">
         <tr>
-            <td style="font-size: 14px; padding: 3px 10px">
+            <td style="font-size: 14px; padding: 3px 10px; width: 100%">
                 <span data-bind="text: connectivityStatus.status"></span>
                 <span> | UI Upd.:</span>
                 <span data-bind="text: connectivityStatus.uiUpdates"></span>
@@ -225,10 +226,22 @@
                 <span data-bind="text: connectivityStatus.uiLatency"></span>
                 <span>ms</span>
             </td>
-            <td>
+
+            <td style="padding: 3px">
                 <a href="http://www.weareadaptive.com" target="_blank"><img style="float:right; margin-right: 5px" src="statusbar_logo.png" /></a>
+            </td>
+            <td style="padding: 3px">
+                <iframe src="http://ghbtns.com/github-btn.html?user=AdaptiveConsulting&repo=ReactiveTrader&type=watch&count=false"
+                        allowtransparency="true" frameborder="0" scrolling="0" width="55" height="20"></iframe>
+            </td>
+            <td style="padding: 3px">
+                <a href="https://twitter.com/adaptivelimited" class="twitter-follow-button" data-show-count="false" data-lang="en">Follow us</a>
+            </td>
+            <td style="padding: 3px">
+                <a href="https://twitter.com/share" class="twitter-share-button" data-text="Checkout this Reactive UI build with #TypeScript, #RxJS and #SignalR" data-via="AdaptiveLimited" data-hashtags="ReactiveTrader">Tweet</a>
             </td>
         </tr>
     </table>
 </body>
 </html>
+

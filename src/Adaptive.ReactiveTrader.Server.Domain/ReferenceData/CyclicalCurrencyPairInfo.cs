@@ -40,8 +40,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
             return new PriceDto
             {
                 Symbol = previousPrice.Symbol,
-                QuoteId = previousPrice.QuoteId + 1,
-                ValueDate = DateTime.UtcNow.AddDays(2).Date,
+                SpotDate = DateTime.UtcNow.AddDays(2).Date,
                 Mid = newMid,
                 Ask = newMid + 5 / pow,
                 Bid = newMid - 5 / pow,

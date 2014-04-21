@@ -66,7 +66,6 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
                 var initialQuote = new PriceDto
                 {
                     Symbol = currencyPairInfo.CurrencyPair.Symbol,
-                    QuoteId = 0,
                     Mid = mid
                 };
 

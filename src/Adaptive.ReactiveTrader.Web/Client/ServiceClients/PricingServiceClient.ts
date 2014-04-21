@@ -12,7 +12,7 @@
             var pricesSubscription = connection
                 .allPrices
                 .subscribe(price=> {
-                    if (price.Symbol == currencyPair) {
+                    if (price.s == currencyPair) {
                         observer.onNext(price);
                     }
                 });

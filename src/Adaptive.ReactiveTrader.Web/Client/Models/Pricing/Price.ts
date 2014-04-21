@@ -2,16 +2,12 @@
     constructor(
         bid: ExecutablePrice,
         ask: ExecutablePrice,
-        mid: number,
-        quoteId: number,
-        valueDate: string,
+        valueDate: Date,
         currencyPair: ICurrencyPair) {
 
         this.bid = bid;
         this.ask = ask;
-        this.mid = mid;
-        this.quoteId = quoteId;
-        this.valueDate = new Date(valueDate);
+        this.valueDate = valueDate;
         this.currencyPair = currencyPair;
         this.isStale = false;
 
@@ -23,12 +19,14 @@
 
     bid: IExecutablePrice;
     ask: IExecutablePrice;
-    mid: number; 
     currencyPair: ICurrencyPair;
-    quoteId: number;
     valueDate: Date;
     spread: number;
     isStale: boolean; 
+
+    get mid(): number {
+        return (this.bid.rate + this.ask.rate) / 2;
+    }
 
     // IPriceLatency implementation
 

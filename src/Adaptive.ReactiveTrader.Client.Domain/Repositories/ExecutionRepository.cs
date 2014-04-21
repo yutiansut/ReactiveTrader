@@ -31,7 +31,6 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Repositories
             {
                 Direction = executablePrice.Direction == Direction.BUY ? DirectionDto.Buy : DirectionDto.Sell,
                 Notional = notional,
-                QuoteId = price.QuoteId,
                 SpotRate = executablePrice.Rate,
                 Symbol = price.CurrencyPair.Symbol,
                 ValueDate = price.ValueDate,

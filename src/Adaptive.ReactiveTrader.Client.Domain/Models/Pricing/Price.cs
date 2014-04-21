@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
-using Adaptive.ReactiveTrader.Client.Domain.Instrumentation;
 using Adaptive.ReactiveTrader.Client.Domain.Models.ReferenceData;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.Models.Pricing
 {
     internal class Price : IPrice, IPriceLatency
     {
-        public Price(ExecutablePrice bid, ExecutablePrice ask, decimal mid, long quoteId, DateTime valueDate, ICurrencyPair currencyPair, long serverTimestamp)
+        public Price(ExecutablePrice bid, ExecutablePrice ask, DateTime valueDate, ICurrencyPair currencyPair, long serverTimestamp)
         {
             _serverTimestamp = serverTimestamp;
             Bid = bid;
             Ask = ask;
-            QuoteId = quoteId;
             ValueDate = valueDate;
             CurrencyPair = currencyPair;
-            Mid = mid;
 
             bid.Parent = this;
             ask.Parent = this;
@@ -25,9 +22,13 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Models.Pricing
 
         public IExecutablePrice Bid { get; private set; }
         public IExecutablePrice Ask { get; private set; }
-        public decimal Mid { get; private set; }
+
+        public decimal Mid
+        {
+            get { return (Ask.Rate + Bid.Rate)/2; }
+        }
+
         public ICurrencyPair CurrencyPair { get; private set; }
-        public long QuoteId { get; private set; }
         public DateTime ValueDate { get; private set; }
         public decimal Spread { get; private set; }
         public bool IsStale { get { return false; } }

@@ -293,12 +293,10 @@ var ExecutablePrice = (function () {
     return ExecutablePrice;
 })();
 var Price = (function () {
-    function Price(bid, ask, mid, quoteId, valueDate, currencyPair) {
+    function Price(bid, ask, valueDate, currencyPair) {
         this.bid = bid;
         this.ask = ask;
-        this.mid = mid;
-        this.quoteId = quoteId;
-        this.valueDate = new Date(valueDate);
+        this.valueDate = valueDate;
         this.currencyPair = currencyPair;
         this.isStale = false;
 
@@ -307,6 +305,14 @@ var Price = (function () {
 
         this.spread = (ask.rate - bid.rate) * Math.pow(10, currencyPair.pipsPosition);
     }
+    Object.defineProperty(Price.prototype, "mid", {
+        get: function () {
+            return (this.bid.rate + this.ask.rate) / 2;
+        },
+        enumerable: true,
+        configurable: true
+    });
+
     Object.defineProperty(Price.prototype, "uiProcessingTimeMs", {
         get: function () {
             return this._renderTimestamp - this._receivedTimestamp;
@@ -330,9 +336,10 @@ var PriceFactory = (function () {
         this._priceLatencyRecored = priceLatencyRecored;
     }
     PriceFactory.prototype.create = function (priceDto, currencyPair) {
-        var bid = new ExecutablePrice(1 /* Sell */, priceDto.Bid, this._executionRepository);
-        var ask = new ExecutablePrice(0 /* Buy */, priceDto.Ask, this._executionRepository);
-        var price = new Price(bid, ask, priceDto.Mid, priceDto.QuoteId, priceDto.ValueDate, currencyPair);
+        var bid = new ExecutablePrice(1 /* Sell */, priceDto.b, this._executionRepository);
+        var ask = new ExecutablePrice(0 /* Buy */, priceDto.a, this._executionRepository);
+        var valueDate = new Date(priceDto.d);
+        var price = new Price(bid, ask, valueDate, currencyPair);
 
         this._priceLatencyRecored.onReceived(price);
 
@@ -414,7 +421,6 @@ var ExecutionRepository = (function () {
         var request = new TradeRequestDto();
         request.Direction = executablePrice.direction == 0 /* Buy */ ? 0 /* Buy */ : 1 /* Sell */;
         request.Notional = notional;
-        request.QuoteId = price.quoteId;
         request.SpotRate = executablePrice.rate;
         request.Symbol = price.currencyPair.symbol;
         request.ValueDate = price.valueDate.toISOString();
@@ -631,7 +637,7 @@ var PricingServiceClient = (function (_super) {
     PricingServiceClient.prototype.getSpotStreamForConnection = function (currencyPair, connection) {
         return Rx.Observable.create(function (observer) {
             var pricesSubscription = connection.allPrices.subscribe(function (price) {
-                if (price.Symbol == currencyPair) {
+                if (price.s == currencyPair) {
                     observer.onNext(price);
                 }
             });
@@ -1563,3 +1569,4 @@ var ReactiveTrader = (function () {
     });
     return ReactiveTrader;
 })();
+//# sourceMappingURL=generated.js.map

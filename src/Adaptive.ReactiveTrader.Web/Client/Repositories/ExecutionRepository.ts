@@ -15,7 +15,6 @@
         var request = new TradeRequestDto();
         request.Direction = executablePrice.direction == Direction.Buy ? DirectionDto.Buy : DirectionDto.Sell;
         request.Notional = notional;
-        request.QuoteId = price.quoteId;
         request.SpotRate = executablePrice.rate;
         request.Symbol = price.currencyPair.symbol;
         request.ValueDate = price.valueDate.toISOString();

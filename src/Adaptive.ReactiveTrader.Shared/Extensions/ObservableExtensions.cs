@@ -258,32 +258,34 @@ namespace Adaptive.ReactiveTrader.Shared.Extensions
         {
             return Observable.Create<IStale<T>>(observer =>
             {
-                var timerSubscription = new MultipleAssignmentDisposable();
-                var gate = new object();
+                var timerSubscription = new SerialDisposable();
+                var observerLock = new object();
 
                 Action scheduleStale = () =>
                 {
-                    var disposable = Observable
-                                .Timer(stalenessPeriod, scheduler)
-                                .Subscribe(
-                                    _ => observer.OnNext(new Stale<T>()));
-
-                    lock (gate)
-                    {
-                        timerSubscription.Disposable = disposable;
-                    }
+                    timerSubscription.Disposable = Observable
+                            .Timer(stalenessPeriod, scheduler)
+                            .Subscribe(_ =>
+                            {
+                                lock (observerLock)
+                                {
+                                    observer.OnNext(new Stale<T>());
+                                }
+                            });
                 };
 
                 var sourceSubscription = source.Subscribe(
                     x =>
                     {
-                        lock (gate)
-                        {
-                            // cancel any scheduled stale update
-                            timerSubscription.Disposable.Dispose();
-                        }
+                        // cancel any scheduled stale update
+                        var disposable = timerSubscription.Disposable;
+                        if (disposable != null)
+                            disposable.Dispose();
 
-                        observer.OnNext(new Stale<T>(x));
+                        lock (observerLock)
+                        {
+                            observer.OnNext(new Stale<T>(x));
+                        }
 
                         scheduleStale();
                     },

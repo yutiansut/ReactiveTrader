@@ -20,7 +20,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Models.Pricing
         {
             var bid = new ExecutablePrice(Direction.SELL, priceDto.Bid, _executionRepository);
             var ask = new ExecutablePrice(Direction.BUY, priceDto.Ask, _executionRepository);
-            var price = new Price(bid, ask, priceDto.Mid, priceDto.QuoteId, priceDto.ValueDate, currencyPair, priceDto.CreationTimestamp);
+            var price = new Price(bid, ask, priceDto.SpotDate, currencyPair, priceDto.CreationTimestamp);
 
             _priceLatencyRecorder.OnReceived(price);
 
