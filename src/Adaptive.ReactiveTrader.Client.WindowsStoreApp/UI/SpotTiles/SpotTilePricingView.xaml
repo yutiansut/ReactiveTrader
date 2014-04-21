@@ -9,6 +9,7 @@
     xmlns:converters="using:Adaptive.ReactiveTrader.Client.Converters"
     xmlns:behaviors="using:Adaptive.ReactiveTrader.Client.Behaviors"
     xmlns:controls="using:Adaptive.ReactiveTrader.Client.Controls"
+    xmlns:spotTiles="using:Adaptive.ReactiveTrader.Client.UI.SpotTiles"
     x:Class="Adaptive.ReactiveTrader.Client.UI.SpotTiles.SpotTilePricingView"
     mc:Ignorable="d"
     d:DesignHeight="150"
@@ -21,12 +22,6 @@
                 <ResourceDictionary Source="/Styles/Brushes.xaml" />
                 <ResourceDictionary Source="/Styles/TextBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <SolidColorBrush x:Key="PriceButtonMouseOverBrush" Color="#FF2F5078" />
-            <SolidColorBrush x:Key="PriceButtonMousePressedBrush" Color="#FF345C8B" />
-
-            <Color x:Key="RootBackgroundColor">#FF293543</Color>
-            <SolidColorBrush x:Key="RootBackgroundBrush" Color="{StaticResource RootBackgroundColor}" />
 
             <Style x:Key="PriceButtonStyle" TargetType="Button">
                 <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -104,13 +99,13 @@
 
     </UserControl.Resources>
 
-    <Border x:Name="RootBorder" Padding="15,12" Background="{StaticResource RootBackgroundBrush}">
+    <Border x:Name="RootBorder" Padding="15,12" Background="{StaticResource TileRootBackgroundBrush}">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="DirectionGroup">
                 <VisualState x:Name="Up">
-                	<Storyboard>
-                		<DoubleAnimation Duration="0:0:0.3" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="UpMovementIcon" d:IsOptimized="True"/>
-                	</Storyboard>
+                    <Storyboard>
+                        <DoubleAnimation Duration="0:0:0.3" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="UpMovementIcon" d:IsOptimized="True"/>
+                    </Storyboard>
                 </VisualState>
                 <VisualState x:Name="Down">
                     <Storyboard>
@@ -204,29 +199,22 @@
             </VisualStateGroup>
             <VisualStateGroup x:Name="PointerGroup">
                 <VisualState x:Name="NotPointerOver">
-				    <Storyboard>
-                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="SpotDateTextBlock">
-                			<DiscreteObjectKeyFrame KeyTime="0">
-                				<DiscreteObjectKeyFrame.Value>
-                					<Visibility>Visible</Visibility>
-                				</DiscreteObjectKeyFrame.Value>
-                			</DiscreteObjectKeyFrame>
-                		</ObjectAnimationUsingKeyFrames>
-                        <ColorAnimation Duration="0:0:0.250" To="{StaticResource RootBackgroundColor}" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Storyboard.TargetName="RootBorder" d:IsOptimized="True"/>
-                	</Storyboard>
-					</VisualState>
+                    <Storyboard>
+                        <ColorAnimation Duration="0:0:0.25" To="{StaticResource TileRootBackgroundColor}" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Storyboard.TargetName="RootBorder" d:IsOptimized="True"/>
+                    </Storyboard>
+                </VisualState>
                 <VisualState x:Name="PointerOver">
-            		<Storyboard>
-                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="SpotDateTextBlock">
-                			<DiscreteObjectKeyFrame KeyTime="0">
-                				<DiscreteObjectKeyFrame.Value>
-                					<Visibility>Visible</Visibility>
-                				</DiscreteObjectKeyFrame.Value>
-                			</DiscreteObjectKeyFrame>
-                		</ObjectAnimationUsingKeyFrames>
-                		<ColorAnimation Duration="0:0:0.150" To="#FF294464" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Storyboard.TargetName="RootBorder" d:IsOptimized="True"/>
-                	</Storyboard>
-            	</VisualState>
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="SpotDateTextBlock">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ColorAnimation Duration="0:0:0.15" To="#FF294464" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Storyboard.TargetName="RootBorder" d:IsOptimized="True"/>
+                    </Storyboard>
+                </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <i:Interaction.Behaviors>
@@ -328,26 +316,13 @@
 
             <Grid x:Name="NotionalPanel" Grid.Row="2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock x:Name="DealtCcyTextBlock" Grid.Column="0" Text="{Binding DealtCurrency}" Foreground="{StaticResource SecondaryForeground}" FontSize="16" />
+                <spotTiles:SpotTileNotionalControl Grid.Column="0" />
 
-                <Border Grid.Column="1" BorderThickness="0,0,0,1" HorizontalAlignment="Left" Width="146">
-                    <TextBox x:Name="NotionalTextBox" Text="{Binding Notional, Mode=TwoWay}" 
-                            TextAlignment="Left"
-                            Margin="5,0" AcceptsReturn="False" 
-                            FontSize="16"
-                            Style="{StaticResource ChromelessTextBoxStyle}"
-                            Foreground="{StaticResource SecondaryForeground}">
-
-
-                    </TextBox>
-                </Border>
-
-                <TextBlock x:Name="SpotDateTextBlock" Grid.Column="2" Text="{Binding SpotDate}" Foreground="{StaticResource SecondaryForeground}" FontSize="16" Visibility="Collapsed" />
+                <TextBlock x:Name="SpotDateTextBlock" Grid.Column="1" Text="{Binding SpotDate}" Foreground="{StaticResource SecondaryForeground}" FontSize="16" Visibility="Collapsed" />
             </Grid>
         </Grid>
     </Border>

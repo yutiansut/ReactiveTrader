@@ -153,6 +153,9 @@
     <Compile Include="UI\SpotTiles\SpotTileErrorView.xaml.cs">
       <DependentUpon>SpotTileErrorView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\SpotTiles\SpotTileNotionalControl.xaml.cs">
+      <DependentUpon>SpotTileNotionalControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\SpotTiles\SpotTilePricingView.xaml.cs">
       <DependentUpon>SpotTilePricingView.xaml</DependentUpon>
     </Compile>
@@ -237,6 +240,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\SpotTiles\SpotTileErrorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\SpotTiles\SpotTileNotionalControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
