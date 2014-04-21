@@ -322,11 +322,19 @@ var Price = (function () {
     });
 
     Price.prototype.displayedOnUi = function () {
-        this._renderTimestamp = performance.now();
+        if (performance) {
+            this._renderTimestamp = performance.now();
+        } else {
+            this._renderTimestamp = Date.now();
+        }
     };
 
     Price.prototype.receivedInGuiProcess = function () {
-        this._receivedTimestamp = performance.now();
+        if (performance) {
+            this._receivedTimestamp = performance.now();
+        } else {
+            this._receivedTimestamp = Date.now();
+        }
     };
     return Price;
 })();
