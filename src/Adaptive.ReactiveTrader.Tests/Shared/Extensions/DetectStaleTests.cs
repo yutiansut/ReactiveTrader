@@ -49,6 +49,16 @@ namespace Adaptive.ReactiveTrader.Tests.Shared.Extensions
 
             Assert.IsTrue(results[1].Value.IsStale, "Second update should be a stale");
             Assert.AreEqual(15, results[1].Timestamp.Ticks, "Second update should happen after first update + stale period");
-        } 
+        }
+
+        [Test]
+        public void DetectStaleDoesNotThrowOnSynchronousStreams()
+        {
+            var result = Observable.Return(1)
+                    .DetectStale(TimeSpan.FromSeconds(1), new TestScheduler())
+                    .Wait();
+
+            Assert.AreEqual(1, result.Update);
+        }
     }
 }
