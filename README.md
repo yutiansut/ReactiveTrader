@@ -22,9 +22,10 @@ If you have questions or ideas, please get in touch with us:
 
 We will be blogging about specific aspects of Reactive Trader on [Adaptive's blog](http://weareadaptive.com/blog/) and new entries of the blog will be anounced on Twitter [@AdaptiveLimited](https://twitter.com/adaptivelimited) - Please subscribe!
 
-There are 2 falvors of ReactiveTrader:
+There are 3 falvors of ReactiveTrader at the moment:
  - a .NET client using WPF, [RxNET](http://www.introtorx.com/) and [SignalR](https://github.com/SignalR/SignalR)
  - a Web client using [TypeScript](http://www.typescriptlang.org/), [RxJS](https://github.com/Reactive-Extensions/RxJS) and [SignalR](https://github.com/SignalR/SignalR) (work in progress)
+ - a WinRT client (Win8), sharing most of the code with the WPF client using [PCL](http://msdn.microsoft.com/en-us/library/gg597391(v=vs.110).aspx)
 
 ## 2. Play with the app
 
