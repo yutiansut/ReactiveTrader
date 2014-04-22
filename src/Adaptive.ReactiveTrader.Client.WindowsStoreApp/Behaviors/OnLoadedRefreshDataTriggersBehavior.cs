@@ -7,23 +7,16 @@ using Microsoft.Xaml.Interactivity;
 
 namespace Adaptive.ReactiveTrader.Client.Behaviors
 {
-    public class OnLoadedRefreshDataTriggersBehavior : DependencyObject, IBehavior
+    public class OnLoadedRefreshDataTriggersBehavior : Behavior<FrameworkElement>
     {
-        public DependencyObject AssociatedObject { get; private set; }
-
-        public void Attach(DependencyObject associatedObject)
+        protected override void OnAttached()
         {
-            AssociatedObject = associatedObject;
-
-            var frameworkElement = (FrameworkElement)AssociatedObject;
-            frameworkElement.Loaded += FrameworkElementLoaded;
+            AssociatedObject.Loaded += FrameworkElementLoaded;
         }
 
-        public void Detach()
+        protected override void OnDetaching()
         {
-            var frameworkElement = (FrameworkElement)AssociatedObject;
-            frameworkElement.Loaded -= FrameworkElementLoaded;
-            AssociatedObject = null;
+            AssociatedObject.Loaded -= FrameworkElementLoaded;
         }
 
         private void FrameworkElementLoaded(object sender, RoutedEventArgs e)

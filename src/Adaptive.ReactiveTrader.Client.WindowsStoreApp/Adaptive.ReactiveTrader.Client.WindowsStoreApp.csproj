@@ -124,7 +124,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Behaviors\Behavior.cs" />
     <Compile Include="Behaviors\OnLoadedRefreshDataTriggersBehavior.cs" />
+    <Compile Include="Behaviors\MouseOverVisualStateBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Concurrency\ConcurrencyService.cs" />
     <Compile Include="Configuration\ConfigurationProvider.cs" />

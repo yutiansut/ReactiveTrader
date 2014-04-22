@@ -197,8 +197,8 @@
                     </Storyboard>
                 </VisualState>
             </VisualStateGroup>
-            <VisualStateGroup x:Name="PointerGroup">
-                <VisualState x:Name="NotPointerOver">
+            <VisualStateGroup x:Name="CommonStates">
+                <VisualState x:Name="Normal">
                     <Storyboard>
                         <ColorAnimation Duration="0:0:0.25" To="{StaticResource TileRootBackgroundColor}" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Storyboard.TargetName="RootBorder" d:IsOptimized="True"/>
                     </Storyboard>
@@ -219,6 +219,7 @@
         </VisualStateManager.VisualStateGroups>
         <i:Interaction.Behaviors>
             <behaviors:OnLoadedRefreshDataTriggersBehavior />
+            <behaviors:MouseOverVisualStateBehavior />
             <core:DataTriggerBehavior Binding="{Binding IsSubscribing}" Value="True">
                 <core:GoToStateAction StateName="Subscribing"/>
             </core:DataTriggerBehavior>
@@ -249,12 +250,6 @@
             <core:DataTriggerBehavior Binding="{Binding Movement, Converter={StaticResource ToStringConverter}}" Value="Down">
                 <core:GoToStateAction StateName="Down" />
             </core:DataTriggerBehavior>
-            <core:EventTriggerBehavior EventName="PointerEntered">
-                <core:GoToStateAction StateName="PointerOver"/>
-            </core:EventTriggerBehavior>
-            <core:EventTriggerBehavior EventName="PointerExited">
-                <core:GoToStateAction StateName="NotPointerOver"/>
-            </core:EventTriggerBehavior>
         </i:Interaction.Behaviors>
         <Grid>
             <Grid.RowDefinitions>
