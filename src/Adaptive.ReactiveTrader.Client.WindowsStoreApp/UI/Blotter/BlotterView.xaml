@@ -196,6 +196,7 @@
                                     <i:Interaction.Behaviors>
                                         <behaviors:OnLoadedRefreshDataTriggersBehavior />
                                         <core:DataTriggerBehavior Binding="{Binding IsNewTrade}" Value="True">
+                                            <core:GoToStateAction StateName="ExistingRow" />
                                             <core:GoToStateAction StateName="NewRow" />
                                         </core:DataTriggerBehavior>
                                     </i:Interaction.Behaviors>
@@ -216,11 +217,6 @@
                     </Setter>
                 </Style>
             </ListBox.ItemContainerStyle>
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
         </ListBox>
     </Grid>
 </UserControl>

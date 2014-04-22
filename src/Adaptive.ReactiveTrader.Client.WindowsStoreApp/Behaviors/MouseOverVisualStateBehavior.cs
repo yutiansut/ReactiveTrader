@@ -16,7 +16,6 @@ namespace Adaptive.ReactiveTrader.Client.Behaviors
         {
             AssociatedObject.PointerEntered += AssociatedObjectPointerEntered;
             AssociatedObject.PointerExited += AssociatedObjectPointerExited;
-
         }
 
         protected override void OnDetaching()
@@ -48,7 +47,6 @@ namespace Adaptive.ReactiveTrader.Client.Behaviors
             if (control != null)
             {
                 VisualStateManager.GoToState(control, stateName, true);
-
             }
         }
     }

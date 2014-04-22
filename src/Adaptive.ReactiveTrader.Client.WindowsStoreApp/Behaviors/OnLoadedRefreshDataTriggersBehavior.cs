@@ -23,15 +23,12 @@ namespace Adaptive.ReactiveTrader.Client.Behaviors
         {
             var frameworkElement = (FrameworkElement)sender;
             frameworkElement.Loaded -= FrameworkElementLoaded;
-            Dispatcher.RunAsync(CoreDispatcherPriority.High,
-                () =>
-                {
-                    var behaviors = Interaction.GetBehaviors(frameworkElement);
-                    foreach (var dataTriggerBehavior in behaviors.OfType<DataTriggerBehavior>())
-                    {
-                        RefreshBinding(dataTriggerBehavior, DataTriggerBehavior.BindingProperty);
-                    }
-                });
+
+            var behaviors = Interaction.GetBehaviors(frameworkElement);
+            foreach (var dataTriggerBehavior in behaviors.OfType<DataTriggerBehavior>())
+            {
+                RefreshBinding(dataTriggerBehavior, DataTriggerBehavior.BindingProperty);
+            }
         }
 
         private static void RefreshBinding(DependencyObject target, DependencyProperty property)
