@@ -9,7 +9,7 @@
 
 ## 1. Overview
 
-Reactive Trader is a client-server application demonstrating some of the problems needing to be dealt with when building reactive user interfaces. It was initially built as a demonstration app for a presentation we gave at [ReactConf 2014](http://reactconf.com/) and we have decided to open source it so the community can hopefully benefit.
+Reactive Trader is a client-server application demonstrating some of the problems needing to be dealt with when building reactive user interfaces. It was initially built as a demonstration app for a presentation we gave at [ReactConf 2014](http://reactconf.com/) and we have decided to open source it so the community can hopefully benefit. You can see the video of the talk on [YouTube](http://youtu.be/Tp5mRlHwZ7M).
 
 We have selected the requirements carefully for this app to highlight the 4 pillars of reactive applications as defined in the [reactive manifesto](http://www.reactivemanifesto.org/): resilient, event-driven, scalable and responsive.
 
@@ -126,5 +126,5 @@ The following architecture diagram provides a view of the main components and la
 
 ## 8. Blog posts
 
-[ReactConf 2014: video & slides](http://weareadaptive.com/blog/2014/04/12/reactconf-2014-reactive-ui/)
-[Reactive Trader 1: Concurrency and Asynchrony](http://weareadaptive.com/blog/2014/04/18/asynchrony-concurrency/)
+ - [ReactConf 2014: video & slides](http://weareadaptive.com/blog/2014/04/12/reactconf-2014-reactive-ui/)
+ - [Reactive Trader 1: Concurrency and Asynchrony](http://weareadaptive.com/blog/2014/04/18/asynchrony-concurrency/)
