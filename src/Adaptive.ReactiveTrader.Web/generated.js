@@ -737,6 +737,7 @@ var Connection = (function () {
             this._hubConnection = $.hubConnection(address);
         } else {
             this._hubConnection = $.hubConnection();
+            this._address = window.location.protocol + "//" + window.location.host;
         }
 
         // TODO set username header
