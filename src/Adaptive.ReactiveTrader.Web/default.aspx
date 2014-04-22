@@ -19,9 +19,6 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
     <script src="generated.js"></script>
     
-    <!-- TWITTER -->
-    <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = "//platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs); } }(document, "script", "twitter-wjs");</script>
-
     <!-- ONE WAY PRICE TEMPLATE -->
     <script type="text/html" id="one-way=price-template">
         <table data-bind="click: onExecute">
@@ -40,7 +37,7 @@
 
     <!-- SPOT TILE TEMPLATE -->
     <script type="text/html" id="spot-tile-template">
-        <li style="padding:12px 15px" data-bind="css: { 'error-tile': state() == 2 || (state() == 0 && pricing().isStale()), 'normal-tile': !( state() == 2 || (state() == 0 && pricing().isStale()))}">
+        <li style="padding:12px 15px" data-bind="css: { 'error-tile': state() == 2 || (state() == 0 && pricing().isStale()), 'normal-tile': !(state() == 2 || (state() == 0 && pricing().isStale())) }">
             <div data-bind="if: state() == 0">
                 <div data-bind="template: { name: 'pricing-template', data: pricing }"></div>
             </div>
@@ -163,58 +160,48 @@
     </script>
 </head>
 
-
-
-
-<body style="height: 100%">
-    <table class="shell">
-        <tr style="height: auto">
-            <td class="tiles-background">
-                <!-- TILES -->
-                <ul class="tile" data-bind="template: { name: 'spot-tile-template', foreach: spotTiles.spotTiles }" style="padding: 2px;"></ul>
-            </td>
-        </tr>
-        <tr style="height: 230px">
-            <td style="vertical-align: top">
-                <!-- BLOTTER -->
-                <table>
-                    <thead>
-                        <tr style="color: #787878; border-bottom: 1px solid #E8E9EA">
-                            <th style="width:200px;text-align: left; padding: 0 10px">Date</th>
-                            <th style="width:100px;text-align: center; padding: 2px 10px">Dir.</th>
-                            <th style="width:100px;text-align: left; padding: 2px 10px">CCY</th>
-                            <th style="text-align: right; padding: 2px 10px">Notional</th>
-                            <th style="width:100px;text-align: right; padding: 2px 10px">Rate</th>
-                            <th style="width:100px;text-align: left; padding: 2px 10px">Status</th>
-                            <th style="width:200px;text-align: center; padding: 2px 10px">Value Date</th>
-                            <th style="width:100px;text-align: left; padding: 2px 10px">Trader</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="8">
-                                <div style="overflow:auto; height: 180px">
-                                    <table data-bind="foreach: { data: blotter.trades, afterAdd: fadeTrade }">
-                                        <tr style="border-bottom: 1px dashed #E8E9EA">
-                                            <td data-bind="text: tradeDate, style: {textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : ''}" style="width:200px;text-align: left;; padding: 2px 10px"></td>
-                                            <td data-bind="text: direction, style: {textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : ''}" style="width:100px;font-weight: 600; text-align: center; padding: 2px 10px"></td>
-                                            <td data-bind="text: currencyPair, style: {textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : ''}" style="width:100px;font-weight: 600; text-align: left; padding: 2px 10px"></td>
-                                            <td data-bind="text: notional, style: {textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : ''}" style="font-weight: 600; text-align: right; padding: 2px 10px"></td>
-                                            <td data-bind="text: spotRate, style: {textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : ''}" style="width:100px;font-weight: 600; text-align: right; padding: 2px 10px"></td>
-                                            <td data-bind="text: tradeStatus, style: {color: tradeStatus == 'REJECTED' ? 'red' : '', fontWeight: tradeStatus == 'REJECTED' ? '600' : ''}" style="width:100px;text-align: left; padding: 2px 10px"></td>
-                                            <td data-bind="text: valueDate, style: {textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : ''}" style="width:200px;text-align: center; padding: 2px 10px"></td>
-                                            <td data-bind="text: traderName, style: {textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : ''}" style="width:100px;text-align: left; padding: 2px 10px"></td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </td>
-        </tr>
-    </table>
-    <table class="connection-status" data-bind="style: { backgroundColor: connectivityStatus.disconnected() ? '#CE3C1C' : '#DEE3E8', color: connectivityStatus.disconnected() ? 'white' : 'black' }">
+<body>
+    <div id="tiles-area">
+         <ul class="tile" data-bind="template: { name: 'spot-tile-template', foreach: spotTiles.spotTiles }" style="padding: 2px;"></ul>
+    </div>
+    <div id="blotter-area">
+        <table>
+            <thead>
+                <tr style="color: #787878; border-bottom: 1px solid #E8E9EA">
+                    <th style="width:200px;text-align: left; padding: 0 10px">Date</th>
+                    <th style="width:100px;text-align: center; padding: 2px 10px">Dir.</th>
+                    <th style="width:100px;text-align: left; padding: 2px 10px">CCY</th>
+                    <th style="text-align: right; padding: 2px 10px">Notional</th>
+                    <th style="width:100px;text-align: right; padding: 2px 10px">Rate</th>
+                    <th style="width:100px;text-align: left; padding: 2px 10px">Status</th>
+                    <th style="width:200px;text-align: center; padding: 2px 10px">Value Date</th>
+                    <th style="width:100px;text-align: left; padding: 2px 10px">Trader</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="8">
+                        <div style="overflow:auto; height: 204px">
+                            <table data-bind="foreach: { data: blotter.trades, afterAdd: fadeTrade }">
+                                <tr style="border-bottom: 1px dashed #E8E9EA">
+                                    <td data-bind="text: tradeDate, style: { textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : '' }" style="width:200px;text-align: left;; padding: 2px 10px"></td>
+                                    <td data-bind="text: direction, style: { textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : '' }" style="width:100px;font-weight: 600; text-align: center; padding: 2px 10px"></td>
+                                    <td data-bind="text: currencyPair, style: { textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : '' }" style="width:100px;font-weight: 600; text-align: left; padding: 2px 10px"></td>
+                                    <td data-bind="text: notional, style: { textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : '' }" style="font-weight: 600; text-align: right; padding: 2px 10px"></td>
+                                    <td data-bind="text: spotRate, style: { textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : '' }" style="width:100px;font-weight: 600; text-align: right; padding: 2px 10px"></td>
+                                    <td data-bind="text: tradeStatus, style: { color: tradeStatus == 'REJECTED' ? 'red' : '', fontWeight: tradeStatus == 'REJECTED' ? '600' : '' }" style="width:100px;text-align: left; padding: 2px 10px"></td>
+                                    <td data-bind="text: valueDate, style: { textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : '' }" style="width:200px;text-align: center; padding: 2px 10px"></td>
+                                    <td data-bind="text: traderName, style: { textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : '' }" style="width:100px;text-align: left; padding: 2px 10px"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="status-bar-area">
+        <table data-bind="style: { backgroundColor: connectivityStatus.disconnected() ? '#CE3C1C' : '#DEE3E8', color: connectivityStatus.disconnected() ? 'white' : 'black' }">
         <tr>
             <td style="font-size: 14px; padding: 3px 10px; width: 100%">
                 <span data-bind="text: connectivityStatus.status"></span>
@@ -230,18 +217,10 @@
             <td style="padding: 3px">
                 <a href="http://www.weareadaptive.com" target="_blank"><img style="float:right; margin-right: 5px" src="statusbar_logo.png" /></a>
             </td>
-            <td style="padding: 3px">
-                <iframe src="http://ghbtns.com/github-btn.html?user=AdaptiveConsulting&repo=ReactiveTrader&type=watch&count=false"
-                        allowtransparency="true" frameborder="0" scrolling="0" width="55" height="20"></iframe>
-            </td>
-            <td style="padding: 3px">
-                <a href="https://twitter.com/adaptivelimited" class="twitter-follow-button" data-show-count="false" data-lang="en">Follow us</a>
-            </td>
-            <td style="padding: 3px">
-                <a href="https://twitter.com/share" class="twitter-share-button" data-text="Checkout this Reactive UI build with #TypeScript, #RxJS and #SignalR" data-via="AdaptiveLimited" data-hashtags="ReactiveTrader">Tweet</a>
-            </td>
         </tr>
     </table>
+    </div>
+
 </body>
 </html>
 
