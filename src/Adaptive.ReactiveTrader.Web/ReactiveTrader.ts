@@ -13,7 +13,8 @@
 
          var tradeFactory = new TradeFactory();
          var executionRepository = new ExecutionRepository(executionServiceClient, tradeFactory);
-         var priceFactory = new PriceFactory(executionRepository, this.priceLatencyRecorder);
+         var profiler = new Profiler();
+         var priceFactory = new PriceFactory(executionRepository, this.priceLatencyRecorder, profiler);
          var priceRepository = new PriceRepository(pricingServiceClient, priceFactory);
          var currencyPairUpdateFactory = new CurrencyPairUpdateFactory(priceRepository);
 
