@@ -250,16 +250,14 @@ var PriceLatencyRecorder = (function () {
 })();
 var Profiler = (function () {
     function Profiler() {
-        if (typeof window.performance != "undefined") {
-            this._now = window.performance.now;
-        } else {
-            this._now = function () {
-                return new Date().getTime();
-            };
-        }
+        this._userPerformanceApi = typeof window.performance != "undefined";
     }
     Profiler.prototype.now = function () {
-        return this._now();
+        if (this._userPerformanceApi) {
+            return window.performance.now();
+        } else {
+            return new Date().getTime();
+        }
     };
     return Profiler;
 })();
@@ -462,7 +460,11 @@ var PriceRepository = (function () {
             return _this._priceFactory.create(p, currencyPair);
         }).catch(function (ex) {
             console.error("Error thrown in stream " + currencyPair.symbol + ": " + ex);
-            return Rx.Observable.return(new StalePrice(currencyPair));
+
+            // if the stream errors (server disconnected), we push a stale price
+            return Rx.Observable.return(new StalePrice(currencyPair)).concat(Rx.Observable.timer(3000, Rx.Scheduler.timeout).ignoreElements().select(function (_) {
+                return new StalePrice(currencyPair);
+            }));
         }).repeat().detectStale(4000, Rx.Scheduler.timeout).select(function (s) {
             return (s.isStale ? new StalePrice(currencyPair) : s.update);
         }).publish().refCount();

@@ -29,7 +29,10 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Repositories
                 {
                     Log.Error("Error thrown in stream " + currencyPair.Symbol, ex);
                     // if the stream errors (server disconnected), we push a stale price 
-                    return Observable.Return<IPrice>(new StalePrice(currencyPair));
+                    return Observable
+                            .Return<IPrice>(new StalePrice(currencyPair))
+                            // terminate the observable in 3sec so the repeat does not kick-off immediatly
+                            .Concat(Observable.Timer(TimeSpan.FromSeconds(3)).IgnoreElements().Select(_ => new StalePrice(currencyPair)));
                 }) 
                 .Repeat()                                               // and resubscribe
                 .DetectStale(TimeSpan.FromSeconds(4),  Scheduler.Default)

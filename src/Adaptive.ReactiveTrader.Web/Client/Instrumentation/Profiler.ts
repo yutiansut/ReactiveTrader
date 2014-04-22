@@ -1,16 +1,15 @@
 ﻿class Profiler implements IProfiler {
-    private _now: () => number;
+    private _userPerformanceApi: boolean;
 
     constructor() {
-        if (typeof window.performance != "undefined") {
-            this._now = window.performance.now;
-        }
-        else {
-            this._now = () => new Date().getTime();
-        }
+        this._userPerformanceApi = typeof window.performance != "undefined";
     }
 
     now(): number {
-        return this._now();
+        if (this._userPerformanceApi) {
+            return window.performance.now();
+        } else {
+            return new Date().getTime();
+        }
     }
 } 
