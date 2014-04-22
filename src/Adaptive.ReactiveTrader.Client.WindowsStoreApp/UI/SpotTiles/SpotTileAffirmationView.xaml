@@ -26,7 +26,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Border Padding="15,12" Background="{StaticResource TileBackgroundBrush}">
+    <Border Padding="15,12" Background="{StaticResource TileRootBackgroundBrush}">
         <Grid>
             <StackPanel>
                 <Grid>
