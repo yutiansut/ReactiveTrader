@@ -1,15 +1,12 @@
-﻿using System.Diagnostics;
+﻿using System;
 
 namespace Adaptive.ReactiveTrader.Client.Configuration
 {
-    class UserProvider : IUserProvider
+    internal class UserProvider : IUserProvider
     {
         public string Username
         {
-            get
-            {
-                return "Trader-" + Process.GetCurrentProcess().Id;
-            }
+            get { return "WPF-" + new Random().Next(1000); }
         }
     }
 }
