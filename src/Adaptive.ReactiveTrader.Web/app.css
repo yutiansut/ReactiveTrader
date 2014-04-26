@@ -43,10 +43,10 @@ table {
     margin: 1px;
 }
 
-/*
-.normal-tile li:hover {
+
+#tile:hover {
     background-color: #294464;
-}*/
+}
 
 .error-tile {
     display: inline-block;

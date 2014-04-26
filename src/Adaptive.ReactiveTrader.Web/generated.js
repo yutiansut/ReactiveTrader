@@ -3,18 +3,12 @@ $(document).ready(function () {
     // 5 minutes session, we disconnect users so they don't eat up too many websocket connections on Azure for too long
     var sessionExpirationSeconds = 5 * 60;
 
-    var reactiveTrader = new ReactiveTrader();
-
     // generate random username
-    var username = "WebTrader-" + Math.floor((Math.random() * 1000) + 1);
+    var username = "Web-" + Math.floor((Math.random() * 1000) + 1);
 
-    if (location.search.indexOf("?server=local") == -1) {
-        // no override of server url detected, connect to origins
-        reactiveTrader.initialize(username, [""]);
-    } else {
-        // connect to local reactive trader server
-        reactiveTrader.initialize(username, ["http://localhost:8080"]);
-    }
+    var reactiveTrader = new ReactiveTrader();
+    var servers = location.search.indexOf("?server=local") == -1 ? [""] : ["http://localhost:8080"];
+    reactiveTrader.initialize(username, servers);
 
     var pricingViewModelFactory = new PricingViewModelFactory(reactiveTrader.priceLatencyRecorder);
     var spotTilesViewModel = new SpotTilesViewModel(reactiveTrader.referenceDataRepository, pricingViewModelFactory);

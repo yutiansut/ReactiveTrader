@@ -26,9 +26,9 @@
                 <td class="secondary-foreground" style="font-size: 16px" data-bind="text: direction"></td>
             </tr>
             <tr>
-                <td style="width: 100%">
-                    <span data-bind="text: bigFigures" class="secondary-foreground" style="font-size: 18px"></span>
-                    <span data-bind="text: pips" class="primary-foreground" style="font-size: 48px; "></span>
+                <td style="width: 100%;">
+                    <span data-bind="text: bigFigures" class="secondary-foreground" style="font-size: 18px;"></span>
+                    <span data-bind="text: pips" class="primary-foreground" style="font-size: 48px;"></span>
                     <span data-bind="text: tenthOfPips" class="secondary-foreground" style="font-size: 18px"></span>
                 </td>
             </tr>
@@ -37,7 +37,7 @@
 
     <!-- SPOT TILE TEMPLATE -->
     <script type="text/html" id="spot-tile-template">
-        <li style="padding:12px 15px" data-bind="css: { 'error-tile': state() == 2 || (state() == 0 && pricing().isStale()), 'normal-tile': !(state() == 2 || (state() == 0 && pricing().isStale())) }">
+        <li id="tile" style="padding:12px 15px" data-bind="css: { 'error-tile': state() == 2 || (state() == 0 && pricing().isStale()), 'normal-tile': !(state() == 2 || (state() == 0 && pricing().isStale())) }">
             <div data-bind="if: state() == 0">
                 <div data-bind="template: { name: 'pricing-template', data: pricing }"></div>
             </div>
