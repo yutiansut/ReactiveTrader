@@ -204,6 +204,7 @@
     <TypeScriptCompile Include="Client\Transport\connectionInfo.ts" />
     <TypeScriptCompile Include="Client\Transport\ConnectionProvider.ts" />
     <TypeScriptCompile Include="Client\Transport\ConnectionStatus.ts" />
+    <TypeScriptCompile Include="Client\Transport\ConnectionType.ts" />
     <TypeScriptCompile Include="Client\Transport\IConnection.ts" />
     <TypeScriptCompile Include="Client\Transport\IConnectionProvider.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />

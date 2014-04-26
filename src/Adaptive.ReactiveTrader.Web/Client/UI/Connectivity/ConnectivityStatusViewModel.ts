@@ -47,11 +47,11 @@
                 break;
             case ConnectionStatus.Reconnected:
             case ConnectionStatus.Connected:
-                this.status("Connected to " + connectionInfo.server);
+                this.status("Connected to " + connectionInfo.server + " (" + this.formatConnectionType(connectionInfo.connectionType) + ")");
                 this.disconnected(false);
                 break;
             case ConnectionStatus.ConnectionSlow:
-                this.status("Slow connection detected with " + connectionInfo.server);
+                this.status("Slow connection detected with " + connectionInfo.server + " (" + this.formatConnectionType(connectionInfo.connectionType) + ")");
                 this.disconnected(false);
                 break;
             case ConnectionStatus.Reconnecting:
@@ -80,5 +80,20 @@
         this.status("Session expired, disconnected.");
         this.disconnected(true);
         this.clearStatistics();
+    }
+
+    private formatConnectionType(connectionType: ConnectionType): string {
+        switch (connectionType) {
+            case ConnectionType.WebScokets:
+                return "ws";
+            case ConnectionType.ServerSentEvents:
+                return "sse";
+            case ConnectionType.LongPolling:
+                return "lp";
+            case ConnectionType.ForeverFrame:
+                return "ff";
+            case ConnectionType.None:
+                return "?";
+        }
     }
 } 

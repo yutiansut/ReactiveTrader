@@ -745,7 +745,7 @@ var SessionExpirationService = (function () {
 var Connection = (function () {
     function Connection(address, username) {
         var _this = this;
-        this._status = new Rx.BehaviorSubject(new ConnectionInfo(6 /* Uninitialized */, address));
+        this._status = new Rx.BehaviorSubject(new ConnectionInfo(6 /* Uninitialized */, address, 4 /* None */));
         this._address = address;
 
         if (address != "") {
@@ -758,13 +758,13 @@ var Connection = (function () {
         this._hubConnection.qs = { "User": username };
 
         this._hubConnection.disconnected(function () {
-            return _this.changeStatus(5 /* Closed */);
+            return _this.changeStatus(5 /* Closed */, 4 /* None */);
         }).connectionSlow(function () {
-            return _this.changeStatus(2 /* ConnectionSlow */);
+            return _this.changeStatus(2 /* ConnectionSlow */, _this.getConnectionType());
         }).reconnected(function () {
-            return _this.changeStatus(4 /* Reconnected */);
+            return _this.changeStatus(4 /* Reconnected */, _this.getConnectionType());
         }).reconnecting(function () {
-            return _this.changeStatus(3 /* Reconnecting */);
+            return _this.changeStatus(3 /* Reconnecting */, 4 /* None */);
         }).error(function (error) {
             return console.log(error);
         });
@@ -779,15 +779,15 @@ var Connection = (function () {
     Connection.prototype.initialize = function () {
         var _this = this;
         return Rx.Observable.create(function (observer) {
-            _this.changeStatus(0 /* Connecting */);
+            _this.changeStatus(0 /* Connecting */, 4 /* None */);
 
             console.log("Connecting to " + _this._address + "...");
             _this._hubConnection.start().done(function () {
-                _this.changeStatus(1 /* Connected */);
+                _this.changeStatus(1 /* Connected */, _this.getConnectionType());
                 observer.onNext(true);
                 console.log("Connected to " + _this._address + ".");
             }).fail(function () {
-                _this.changeStatus(5 /* Closed */);
+                _this.changeStatus(5 /* Closed */, 4 /* None */);
                 var error = "An error occured when starting SignalR connection.";
                 console.log(error);
                 observer.onError(error);
@@ -801,8 +801,23 @@ var Connection = (function () {
         }).publish().refCount();
     };
 
-    Connection.prototype.changeStatus = function (newStatus) {
-        this._status.onNext(new ConnectionInfo(newStatus, this.address));
+    Connection.prototype.getConnectionType = function () {
+        switch (this._hubConnection.transport.name) {
+            case "webSockets":
+                return 0 /* WebScokets */;
+            case "foreverFrame":
+                return 1 /* ForeverFrame */;
+            case "serverSentEvents":
+                return 2 /* ServerSentEvents */;
+            case "longPolling":
+                return 3 /* LongPolling */;
+            default:
+                return 4 /* None */;
+        }
+    };
+
+    Connection.prototype.changeStatus = function (newStatus, connectionType) {
+        this._status.onNext(new ConnectionInfo(newStatus, this.address, connectionType));
     };
 
     Object.defineProperty(Connection.prototype, "status", {
@@ -896,12 +911,13 @@ var Connection = (function () {
     return Connection;
 })();
 var ConnectionInfo = (function () {
-    function ConnectionInfo(connectionStatus, server) {
+    function ConnectionInfo(connectionStatus, server, connectionType) {
         this.connectionStatus = connectionStatus;
         this.server = server;
+        this.connectionType = connectionType;
     }
     ConnectionInfo.prototype.toString = function () {
-        return "ConnectionStatus: " + this.connectionStatus + ", Server: " + this.server;
+        return "ConnectionStatus: " + this.connectionStatus + ", Server: " + this.server + ", Type: " + this.connectionType;
     };
     return ConnectionInfo;
 })();
@@ -974,6 +990,14 @@ var ConnectionStatus;
     ConnectionStatus[ConnectionStatus["Closed"] = 5] = "Closed";
     ConnectionStatus[ConnectionStatus["Uninitialized"] = 6] = "Uninitialized";
 })(ConnectionStatus || (ConnectionStatus = {}));
+var ConnectionType;
+(function (ConnectionType) {
+    ConnectionType[ConnectionType["WebScokets"] = 0] = "WebScokets";
+    ConnectionType[ConnectionType["ForeverFrame"] = 1] = "ForeverFrame";
+    ConnectionType[ConnectionType["ServerSentEvents"] = 2] = "ServerSentEvents";
+    ConnectionType[ConnectionType["LongPolling"] = 3] = "LongPolling";
+    ConnectionType[ConnectionType["None"] = 4] = "None";
+})(ConnectionType || (ConnectionType = {}));
 var BlotterViewModel = (function () {
     function BlotterViewModel(tradeRepository) {
         this._tradeRepository = tradeRepository;
@@ -1068,11 +1092,11 @@ var ConnectivityStatusViewModel = (function () {
                 break;
             case 4 /* Reconnected */:
             case 1 /* Connected */:
-                this.status("Connected to " + connectionInfo.server);
+                this.status("Connected to " + connectionInfo.server + " (" + this.formatConnectionType(connectionInfo.connectionType) + ")");
                 this.disconnected(false);
                 break;
             case 2 /* ConnectionSlow */:
-                this.status("Slow connection detected with " + connectionInfo.server);
+                this.status("Slow connection detected with " + connectionInfo.server + " (" + this.formatConnectionType(connectionInfo.connectionType) + ")");
                 this.disconnected(false);
                 break;
             case 3 /* Reconnecting */:
@@ -1101,6 +1125,21 @@ var ConnectivityStatusViewModel = (function () {
         this.status("Session expired, disconnected.");
         this.disconnected(true);
         this.clearStatistics();
+    };
+
+    ConnectivityStatusViewModel.prototype.formatConnectionType = function (connectionType) {
+        switch (connectionType) {
+            case 0 /* WebScokets */:
+                return "ws";
+            case 2 /* ServerSentEvents */:
+                return "sse";
+            case 3 /* LongPolling */:
+                return "lp";
+            case 1 /* ForeverFrame */:
+                return "ff";
+            case 4 /* None */:
+                return "?";
+        }
     };
     return ConnectivityStatusViewModel;
 })();

@@ -13,7 +13,7 @@ class Connection implements IConnection {
     private _allTrades: Rx.Subject<TradeDto[]>;
 
     constructor(address: string, username: string) {
-        this._status = new Rx.BehaviorSubject(new ConnectionInfo(ConnectionStatus.Uninitialized, address));
+        this._status = new Rx.BehaviorSubject(new ConnectionInfo(ConnectionStatus.Uninitialized, address, ConnectionType.None));
         this._address = address;
 
         if (address != "") {
@@ -26,10 +26,10 @@ class Connection implements IConnection {
         this._hubConnection.qs = { "User": username };
 
         this._hubConnection
-            .disconnected(() => this.changeStatus(ConnectionStatus.Closed))
-            .connectionSlow(() => this.changeStatus(ConnectionStatus.ConnectionSlow))
-            .reconnected(() => this.changeStatus(ConnectionStatus.Reconnected))
-            .reconnecting(() => this.changeStatus(ConnectionStatus.Reconnecting))
+            .disconnected(() => this.changeStatus(ConnectionStatus.Closed, ConnectionType.None))
+            .connectionSlow(() => this.changeStatus(ConnectionStatus.ConnectionSlow, this.getConnectionType()))
+            .reconnected(() => this.changeStatus(ConnectionStatus.Reconnected, this.getConnectionType()))
+            .reconnecting(() => this.changeStatus(ConnectionStatus.Reconnecting, ConnectionType.None))
             .error(error => console.log(error));
 
         this._referenceDataHubProxy = this._hubConnection.createHubProxy("ReferenceDataHub");
@@ -43,17 +43,17 @@ class Connection implements IConnection {
     public initialize(): Rx.Observable<{}> {
 
         return Rx.Observable.create<{}>(observer=> {
-            this.changeStatus(ConnectionStatus.Connecting);
+            this.changeStatus(ConnectionStatus.Connecting, ConnectionType.None);
 
             console.log("Connecting to " + this._address + "...");
             this._hubConnection.start()
                 .done(()=> {
-                    this.changeStatus(ConnectionStatus.Connected);
+                    this.changeStatus(ConnectionStatus.Connected, this.getConnectionType());
                     observer.onNext(true);
                     console.log("Connected to " + this._address + ".");
                 })
                 .fail(()=> {
-                    this.changeStatus(ConnectionStatus.Closed);
+                    this.changeStatus(ConnectionStatus.Closed, ConnectionType.None);
                     var error = "An error occured when starting SignalR connection.";
                     console.log(error);
                     observer.onError(error);
@@ -69,8 +69,24 @@ class Connection implements IConnection {
         .refCount();
     }
 
-    public changeStatus(newStatus: ConnectionStatus): void {
-        this._status.onNext(new ConnectionInfo(newStatus, this.address));
+    private getConnectionType(): ConnectionType {
+        switch(this._hubConnection.transport.name)
+        {
+            case "webSockets":
+                return ConnectionType.WebScokets;
+            case "foreverFrame":
+                return ConnectionType.ForeverFrame;
+            case "serverSentEvents":
+                return ConnectionType.ServerSentEvents;
+            case "longPolling":
+                return ConnectionType.LongPolling;
+            default:
+                return ConnectionType.None;
+        }
+    }
+
+    private changeStatus(newStatus: ConnectionStatus, connectionType: ConnectionType): void {
+        this._status.onNext(new ConnectionInfo(newStatus, this.address, connectionType));
     }
 
     public get status(): Rx.Observable<ConnectionInfo> {

@@ -30,6 +30,7 @@ interface SignalR {
     events: SignalREvents;
     connectionState: any;
     transports: any;
+    transport: any;
 
     hub: HubConnection;
     id: string;
