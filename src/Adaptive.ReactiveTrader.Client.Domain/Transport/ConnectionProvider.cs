@@ -2,7 +2,7 @@
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Shared.Extensions;
-using log4net;
+using Adaptive.ReactiveTrader.Shared.Logging;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.Transport
 {
@@ -16,16 +16,18 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport
         private readonly string _username;
         private readonly IObservable<IConnection> _connectionSequence;
         private readonly string[] _servers;
-
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ConnectionProvider));
+        private readonly ILoggerFactory _loggerFactory;
 
         private int _currentIndex;
+        private ILog _log;
 
-        public ConnectionProvider(string username, string[] servers)
+        public ConnectionProvider(string username, string[] servers, ILoggerFactory loggerFactory)
         {
             _username = username;
             _servers = servers;
+            _loggerFactory = loggerFactory;
             _servers.Shuffle();
+            _log = _loggerFactory.Create(typeof (ConnectionProvider));
 
             _connectionSequence = CreateConnectionSequence();
         }
@@ -44,7 +46,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport
         {
             return Observable.Create<IConnection>(o =>
             {
-                Log.Info("Creating new connection...");
+                _log.Info("Creating new connection...");
                 var connection = GetNextConnection();
 
                 var statusSubscription = connection.StatusStream.Subscribe(
@@ -52,7 +54,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport
                     ex => o.OnCompleted(),
                     () =>
                     {
-                        Log.Info("Status subscription completed");
+                        _log.Info("Status subscription completed");
                         o.OnCompleted();
                     });
 
@@ -71,7 +73,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport
 
         private IConnection GetNextConnection()
         {
-            var connection = new Connection(_servers[_currentIndex++], _username);
+            var connection = new Connection(_servers[_currentIndex++], _username, _loggerFactory);
             if (_currentIndex == _servers.Length)
             {
                 _currentIndex = 0;

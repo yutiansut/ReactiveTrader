@@ -4,8 +4,8 @@ using Adaptive.ReactiveTrader.Client.Concurrency;
 using Adaptive.ReactiveTrader.Client.Domain;
 using Adaptive.ReactiveTrader.Client.Domain.Instrumentation;
 using Adaptive.ReactiveTrader.Client.Domain.Transport;
+using Adaptive.ReactiveTrader.Shared.Logging;
 using Adaptive.ReactiveTrader.Shared.UI;
-using log4net;
 
 namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
 {
@@ -14,17 +14,18 @@ namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
         private static readonly TimeSpan StatsFrequency = TimeSpan.FromSeconds(1);
 
         private readonly IPriceLatencyRecorder _priceLatencyRecorder;
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ConnectivityStatusViewModel));
 
-        public ConnectivityStatusViewModel(IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService)
+        public ConnectivityStatusViewModel(IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService, ILoggerFactory loggerFactory)
         {
             _priceLatencyRecorder = reactiveTrader.PriceLatencyRecorder;
+            var log = loggerFactory.Create(typeof (ConnectivityStatusViewModel));
+
             reactiveTrader.ConnectionStatusStream
                 .ObserveOn(concurrencyService.Dispatcher)
                 .SubscribeOn(concurrencyService.ThreadPool)
                 .Subscribe(
                 OnStatusChange,
-                ex => Log.Error("An error occurred within the connection status stream.", ex));
+                ex => log.Error("An error occurred within the connection status stream.", ex));
 
             Observable
                 .Interval(StatsFrequency, concurrencyService.Dispatcher)

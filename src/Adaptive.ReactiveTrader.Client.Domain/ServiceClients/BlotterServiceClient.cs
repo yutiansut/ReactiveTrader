@@ -6,17 +6,18 @@ using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Client.Domain.Transport;
 using Adaptive.ReactiveTrader.Shared;
 using Adaptive.ReactiveTrader.Shared.DTO.Execution;
-using log4net;
+using Adaptive.ReactiveTrader.Shared.Logging;
 using Microsoft.AspNet.SignalR.Client;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.ServiceClients
 {
     internal class BlotterServiceClient : ServiceClientBase, IBlotterServiceClient
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(BlotterServiceClient));
+        private ILog _log;
 
-        public BlotterServiceClient(IConnectionProvider connectionProvider) : base(connectionProvider)
+        public BlotterServiceClient(IConnectionProvider connectionProvider, ILoggerFactory loggerFactory) : base(connectionProvider)
         {
+            _log = loggerFactory.Create(typeof (BlotterServiceClient));
         }
 
         public IObservable<IEnumerable<TradeDto>> GetTradesStream()
@@ -24,27 +25,27 @@ namespace Adaptive.ReactiveTrader.Client.Domain.ServiceClients
             return GetResilientStream(connection => GetTradesForConnection(connection.BlotterHubProxy), TimeSpan.FromSeconds(5));
         }
 
-        private static IObservable<IEnumerable<TradeDto>> GetTradesForConnection(IHubProxy blotterHubProxy)
+        private IObservable<IEnumerable<TradeDto>> GetTradesForConnection(IHubProxy blotterHubProxy)
         {
             return Observable.Create<IEnumerable<TradeDto>>(observer =>
             {
                 // subscribe to trade feed first, otherwise there is a race condition 
                 var spotTradeSubscription = blotterHubProxy.On<IEnumerable<TradeDto>>(ServiceConstants.Client.OnNewTrade, observer.OnNext);
 
-                Log.Info("Sending blotter subscription...");
+                _log.Info("Sending blotter subscription...");
                 var sendSubscriptionDisposable = SendSubscription(blotterHubProxy)
                     .Subscribe(
-                        _ => Log.InfoFormat("Subscribed to blotter."),
+                        _ => _log.InfoFormat("Subscribed to blotter."),
                         observer.OnError);
 
                 var unsubscriptionDisposable = Disposable.Create(() =>
                 {
                     // send unsubscription when the observable gets disposed
-                    Log.Info("Sending trades unsubscription...");
+                    _log.Info("Sending trades unsubscription...");
                     SendUnsubscription(blotterHubProxy)
                         .Subscribe(
-                            _ => Log.InfoFormat("Unsubscribed from blotter."),
-                            ex => Log.WarnFormat("An error occurred while unsubscribing from blotter: {0}", ex.Message));
+                            _ => _log.InfoFormat("Unsubscribed from blotter."),
+                            ex => _log.WarnFormat("An error occurred while unsubscribing from blotter: {0}", ex.Message));
                 });
                 return new CompositeDisposable { spotTradeSubscription, unsubscriptionDisposable, sendSubscriptionDisposable };
             })

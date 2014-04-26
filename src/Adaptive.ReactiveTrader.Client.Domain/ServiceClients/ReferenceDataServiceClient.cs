@@ -7,17 +7,18 @@ using Adaptive.ReactiveTrader.Client.Domain.Transport;
 using Adaptive.ReactiveTrader.Shared;
 using Adaptive.ReactiveTrader.Shared.DTO.ReferenceData;
 using Adaptive.ReactiveTrader.Shared.Extensions;
-using log4net;
+using Adaptive.ReactiveTrader.Shared.Logging;
 using Microsoft.AspNet.SignalR.Client;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.ServiceClients
 {
     class ReferenceDataServiceClient : ServiceClientBase, IReferenceDataServiceClient
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ReferenceDataServiceClient));
+        private readonly ILog _log;
 
-        public ReferenceDataServiceClient(IConnectionProvider connectionProvider) : base(connectionProvider)
+        public ReferenceDataServiceClient(IConnectionProvider connectionProvider, ILoggerFactory loggerFactory) : base(connectionProvider)
         {
+            _log = loggerFactory.Create(typeof (ReferenceDataServiceClient));
         }
 
         public IObservable<IEnumerable<CurrencyPairUpdateDto>> GetCurrencyPairUpdatesStream()
@@ -25,7 +26,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.ServiceClients
             return GetResilientStream(connection => GetCurrencyPairsForConnection(connection.ReferenceDataHubProxy), TimeSpan.FromSeconds(5));
         }
 
-        private static IObservable<IEnumerable<CurrencyPairUpdateDto>> GetCurrencyPairsForConnection(IHubProxy referenceDataHubProxy)
+        private IObservable<IEnumerable<CurrencyPairUpdateDto>> GetCurrencyPairsForConnection(IHubProxy referenceDataHubProxy)
         {
             return Observable.Create<IEnumerable<CurrencyPairUpdateDto>>(observer =>
             {
@@ -33,7 +34,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.ServiceClients
                 var currencyPairUpdateSubscription = referenceDataHubProxy.On<CurrencyPairUpdateDto>(ServiceConstants.Client.OnCurrencyPairUpdate,
                     dto => observer.OnNext(new[] {dto}));
 
-                Log.Info("Sending currency pair subscription...");
+                _log.Info("Sending currency pair subscription...");
                 var sendSubscriptionDisposable = GetCurrencyPairUpdatesForConnection(referenceDataHubProxy)
                     .Subscribe(
                         currencyPairs =>
@@ -41,7 +42,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.ServiceClients
                             var currencyPairUpdateDtos = currencyPairs as CurrencyPairUpdateDto[] ?? currencyPairs.ToArray();
                             observer.OnNext(currencyPairUpdateDtos);
 
-                            Log.InfoFormat("Subscribed to currency pairs and received {0} currency pairs.", currencyPairUpdateDtos.Count());
+                            _log.InfoFormat("Subscribed to currency pairs and received {0} currency pairs.", currencyPairUpdateDtos.Count());
                         },
                         observer.OnError);
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using Adaptive.ReactiveTrader.Client.Domain.Instrumentation;
 using Adaptive.ReactiveTrader.Client.Domain.Repositories;
+using Adaptive.ReactiveTrader.Shared.Logging;
 
 namespace Adaptive.ReactiveTrader.Client.Domain
 {
@@ -10,6 +11,6 @@ namespace Adaptive.ReactiveTrader.Client.Domain
         ITradeRepository TradeRepository { get; }
         IObservable<ConnectionInfo> ConnectionStatusStream { get; }
         IPriceLatencyRecorder PriceLatencyRecorder { get; }
-        void Initialize(string username, string[] servers);
+        void Initialize(string username, string[] servers, ILoggerFactory loggerFactory = null);
     }
 }

@@ -5,7 +5,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using Adaptive.ReactiveTrader.Shared;
 using Adaptive.ReactiveTrader.Shared.Extensions;
-using log4net;
+using Adaptive.ReactiveTrader.Shared.Logging;
 using Microsoft.AspNet.SignalR.Client;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.Transport
@@ -16,15 +16,15 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport
     /// </summary>
     internal class Connection : IConnection
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(Connection));
-
         private readonly ISubject<ConnectionInfo> _statusStream;
         private readonly HubConnection _hubConnection;
 
         private bool _initialized;
+        private readonly ILog _log;
 
-        public Connection(string address, string username)
+        public Connection(string address, string username, ILoggerFactory loggerFactory)
         {
+            _log = loggerFactory.Create(typeof (Connection));
             _statusStream = new BehaviorSubject<ConnectionInfo>(new ConnectionInfo(ConnectionStatus.Uninitialized, address));
             Address = address;
             _hubConnection = new HubConnection(address);
@@ -33,7 +33,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport
                 s => _statusStream.OnNext(new ConnectionInfo(s, address)),
                 _statusStream.OnError,
                 _statusStream.OnCompleted);
-            _hubConnection.Error += exception => Log.Error("There was a connection error with " + address, exception);
+            _hubConnection.Error += exception => _log.Error("There was a connection error with " + address, exception);
 
             BlotterHubProxy = _hubConnection.CreateHubProxy(ServiceConstants.Server.BlotterHub);
             ExecutionHubProxy = _hubConnection.CreateHubProxy(ServiceConstants.Server.ExecutionHub);
@@ -55,14 +55,14 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport
 
                 try
                 {
-                    Log.InfoFormat("Connecting to {0}", Address);
+                    _log.InfoFormat("Connecting to {0}", Address);
                     await _hubConnection.Start();
                     _statusStream.OnNext(new ConnectionInfo(ConnectionStatus.Connected, Address));
                     observer.OnNext(Unit.Default);
                 }
                 catch (Exception e)
                 {
-                    Log.Error("An error occurred when starting SignalR connection", e);
+                    _log.Error("An error occurred when starting SignalR connection", e);
                     observer.OnError(e);
                 }
 
@@ -70,14 +70,14 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport
                 {
                     try
                     {
-                        Log.Info("Stoping connection...");
+                        _log.Info("Stoping connection...");
                         _hubConnection.Stop();
-                        Log.Info("Connection stopped");
+                        _log.Info("Connection stopped");
                     }
                     catch (Exception e)
                     {
                         // we must never throw in a disposable
-                        Log.Error("An error occurred while stoping connection", e);
+                        _log.Error("An error occurred while stoping connection", e);
                     }
                 });
             })

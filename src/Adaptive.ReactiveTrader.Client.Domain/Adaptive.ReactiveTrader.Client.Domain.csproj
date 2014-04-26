@@ -53,8 +53,6 @@
     <Compile Include="Instrumentation\PriceLatencyRecorder.cs" />
     <Compile Include="Instrumentation\Statistics.cs" />
     <Compile Include="IReactiveTrader.cs" />
-    <Compile Include="Logging\ILog.cs" />
-    <Compile Include="Logging\LogManager.cs" />
     <Compile Include="Models\Direction.cs" />
     <Compile Include="Models\Execution\ITrade.cs" />
     <Compile Include="Models\Execution\ITradeFactory.cs" />

@@ -51,6 +51,10 @@
     <Compile Include="Extensions\IStale.cs" />
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="Extensions\Stale.cs" />
+    <Compile Include="Logging\DebugLogger.cs" />
+    <Compile Include="Logging\DebugLoggerFactory.cs" />
+    <Compile Include="Logging\ILog.cs" />
+    <Compile Include="Logging\ILoggerFactory.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceConstants.cs" />

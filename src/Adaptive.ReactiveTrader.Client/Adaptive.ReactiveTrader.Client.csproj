@@ -41,8 +41,6 @@
     <Compile Include="Concurrency\PeriodicBatchScheduler.cs" />
     <Compile Include="Configuration\IConfigurationProvider.cs" />
     <Compile Include="Configuration\IUserProvider.cs" />
-    <Compile Include="Logging\ILog.cs" />
-    <Compile Include="Logging\LogManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\Blotter\BlotterViewModel.cs" />
     <Compile Include="UI\Blotter\Designer\DesignerModeBlotterViewModel.cs" />

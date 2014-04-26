@@ -6,8 +6,8 @@ using Adaptive.ReactiveTrader.Client.Domain.Models;
 using Adaptive.ReactiveTrader.Client.Domain.Models.Execution;
 using Adaptive.ReactiveTrader.Client.Domain.Models.Pricing;
 using Adaptive.ReactiveTrader.Shared.Extensions;
+using Adaptive.ReactiveTrader.Shared.Logging;
 using Adaptive.ReactiveTrader.Shared.UI;
-using log4net;
 using PropertyChanged;
 
 namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
@@ -17,10 +17,10 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
     {
         private readonly ISpotTilePricingViewModel _parent;
         private readonly IConcurrencyService _concurrencyService;
-        private static readonly ILog Log = LogManager.GetLogger(typeof(OneWayPriceViewModel));
 
         private readonly DelegateCommand _executeCommand;
         private IExecutablePrice _executablePrice;
+        private ILog _log;
 
         public Direction Direction { get; private set; }
         public string BigFigures { get; private set; }
@@ -29,11 +29,12 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
         public bool IsExecuting { get; private set; }
         public SpotTileExecutionMode ExecutionMode { get; set; }
 
-        public OneWayPriceViewModel(Direction direction, ISpotTilePricingViewModel parent, IConcurrencyService concurrencyService)
+        public OneWayPriceViewModel(Direction direction, ISpotTilePricingViewModel parent, IConcurrencyService concurrencyService, ILoggerFactory loggerFactory)
         {
             _parent = parent;
             _concurrencyService = concurrencyService;
             Direction = direction;
+            _log = loggerFactory.Create(typeof (OneWayPriceViewModel));
 
             _executeCommand = new DelegateCommand(OnExecute, CanExecute);
         }
@@ -93,7 +94,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
             }
             else
             {
-                Log.Error("An error occurred while processing the trade request.", exception);
+                _log.Error("An error occurred while processing the trade request.", exception);
                 _parent.OnExecutionError("An error occurred while executing the trade. Please check your blotter and if your position is unknown, contact your support representative.");
             }
             IsExecuting = false;
@@ -134,7 +135,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
             }
             else
             {
-                Log.Info("Trade executed");
+                _log.Info("Trade executed");
                 _parent.OnTrade(trade.Update);
             }
             IsExecuting = false;
@@ -142,7 +143,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
 
         private void OnExecutionTimeout()
         {
-            Log.Error("Trade execution request timed out.");
+            _log.Error("Trade execution request timed out.");
             _parent.OnExecutionError(
                 "No response was received from the server, the execution status is unknown. Please contact your sales representative.");
         }

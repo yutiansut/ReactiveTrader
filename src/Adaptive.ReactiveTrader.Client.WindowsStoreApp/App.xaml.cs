@@ -4,6 +4,7 @@ using Windows.UI.Xaml;
 using Adaptive.ReactiveTrader.Client.Configuration;
 using Adaptive.ReactiveTrader.Client.Domain;
 using Adaptive.ReactiveTrader.Client.UI.Shell;
+using Adaptive.ReactiveTrader.Shared.Logging;
 using Autofac;
 
 namespace Adaptive.ReactiveTrader.Client
@@ -34,10 +35,9 @@ namespace Adaptive.ReactiveTrader.Client
                 var reactiveTraderApi = container.Resolve<IReactiveTrader>();
 
                 var username = container.Resolve<IUserProvider>().Username;
-                reactiveTraderApi.Initialize(username, container.Resolve<IConfigurationProvider>().Servers);
+                reactiveTraderApi.Initialize(username, container.Resolve<IConfigurationProvider>().Servers, container.Resolve<ILoggerFactory>()));
 
-                shellView = new ShellView();
-                shellView.DataContext = container.Resolve<IShellViewModel>();
+                shellView = new ShellView {DataContext = container.Resolve<IShellViewModel>()};
 
                 Window.Current.Content = shellView;
             }

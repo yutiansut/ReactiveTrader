@@ -10,8 +10,8 @@ using Adaptive.ReactiveTrader.Client.Domain.Models.Execution;
 using Adaptive.ReactiveTrader.Client.Domain.Models.Pricing;
 using Adaptive.ReactiveTrader.Client.Domain.Models.ReferenceData;
 using Adaptive.ReactiveTrader.Shared.Extensions;
+using Adaptive.ReactiveTrader.Shared.Logging;
 using Adaptive.ReactiveTrader.Shared.UI;
-using log4net;
 using PropertyChanged;
 
 namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
@@ -19,7 +19,6 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
     [ImplementPropertyChanged]
     public class SpotTilePricingViewModel : ViewModelBase, ISpotTilePricingViewModel
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(SpotTilePricingViewModel));
         public IOneWayPriceViewModel Bid { get; private set; }
         public IOneWayPriceViewModel Ask { get; private set; }
         public string Notional { get; set; }
@@ -41,18 +40,20 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
         
         private volatile IPrice _latestPrice;
         private IPrice _currentPrice;
+        private readonly ILog _log;
 
         public SpotTilePricingViewModel(ICurrencyPair currencyPair, SpotTileSubscriptionMode spotTileSubscriptionMode, ISpotTileViewModel parent,
             Func<Direction, ISpotTilePricingViewModel, IOneWayPriceViewModel> oneWayPriceFactory,
             IReactiveTrader reactiveTrader,
-            IConcurrencyService concurrencyService)
+            IConcurrencyService concurrencyService,
+            ILoggerFactory loggerFactory)
         {
             _currencyPair = currencyPair;
             _subscriptionMode = spotTileSubscriptionMode;
             _parent = parent;
             _priceLatencyRecorder = reactiveTrader.PriceLatencyRecorder;
             _concurrencyService = concurrencyService;
-
+            _log = loggerFactory.Create(typeof (SpotTilePricingViewModel));
             
             _priceSubscription = new SerialDisposable();
             Bid = oneWayPriceFactory(Direction.SELL, this);
@@ -204,7 +205,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
 
         private void OnError(Exception ex)
         {
-            Log.Error("Failed to get prices", ex);
+            _log.Error("Failed to get prices for " + _currencyPair.Symbol, ex);
         }
 
         public void OnTrade(ITrade trade)

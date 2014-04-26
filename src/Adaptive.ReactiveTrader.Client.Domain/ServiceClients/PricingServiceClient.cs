@@ -5,17 +5,18 @@ using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Client.Domain.Transport;
 using Adaptive.ReactiveTrader.Shared;
 using Adaptive.ReactiveTrader.Shared.DTO.Pricing;
-using log4net;
+using Adaptive.ReactiveTrader.Shared.Logging;
 using Microsoft.AspNet.SignalR.Client;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.ServiceClients
 {
     internal class PricingServiceClient : ServiceClientBase, IPricingServiceClient
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(PricingServiceClient));
+        private ILog _log;
 
-        public PricingServiceClient(IConnectionProvider connectionProvider) : base(connectionProvider)
+        public PricingServiceClient(IConnectionProvider connectionProvider, ILoggerFactory loggerFactory) : base(connectionProvider)
         {
+            _log = loggerFactory.Create(typeof (PricingServiceClient));
         }
 
         public IObservable<PriceDto> GetSpotStream(string currencyPair)
@@ -25,7 +26,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.ServiceClients
             return GetResilientStream(connection => GetSpotStreamForConnection(currencyPair, connection.PricingHubProxy), TimeSpan.FromSeconds(5));
         }
 
-        private static IObservable<PriceDto> GetSpotStreamForConnection(string currencyPair, IHubProxy pricingHubProxy)
+        private IObservable<PriceDto> GetSpotStreamForConnection(string currencyPair, IHubProxy pricingHubProxy)
         {
             return Observable.Create<PriceDto>(observer =>
             {
@@ -39,22 +40,22 @@ namespace Adaptive.ReactiveTrader.Client.Domain.ServiceClients
                 });
 
                 // send a subscription request
-                Log.InfoFormat("Sending price subscription for currency pair {0}", currencyPair);
+                _log.InfoFormat("Sending price subscription for currency pair {0}", currencyPair);
                 SendSubscription(currencyPair, pricingHubProxy)
                     .Subscribe(
-                        _ => Log.InfoFormat("Subscribed to {0}", currencyPair),
+                        _ => _log.InfoFormat("Subscribed to {0}", currencyPair),
                         observer.OnError);
 
 
                 var unsubscriptionDisposable = Disposable.Create(() =>
                 {
                     // send unsubscription when the observable gets disposed
-                    Log.InfoFormat("Sending price unsubscription for currency pair {0}", currencyPair);
+                    _log.InfoFormat("Sending price unsubscription for currency pair {0}", currencyPair);
                     SendUnsubscription(currencyPair, pricingHubProxy)
                         .Subscribe(
-                            _ => Log.InfoFormat("Unsubscribed from {0}", currencyPair),
+                            _ => _log.InfoFormat("Unsubscribed from {0}", currencyPair),
                             ex =>
-                                Log.WarnFormat("An error occurred while sending unsubscription request for {0}:{1}", currencyPair, ex.Message));
+                                _log.WarnFormat("An error occurred while sending unsubscription request for {0}:{1}", currencyPair, ex.Message));
                 });
 
                 return new CompositeDisposable {priceSubscription, unsubscriptionDisposable};

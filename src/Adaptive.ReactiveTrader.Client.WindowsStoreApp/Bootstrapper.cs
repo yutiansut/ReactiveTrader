@@ -5,6 +5,7 @@ using Adaptive.ReactiveTrader.Client.UI.Blotter;
 using Adaptive.ReactiveTrader.Client.UI.Connectivity;
 using Adaptive.ReactiveTrader.Client.UI.Shell;
 using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
+using Adaptive.ReactiveTrader.Shared.Logging;
 using Autofac;
 
 namespace Adaptive.ReactiveTrader.Client
@@ -16,6 +17,7 @@ namespace Adaptive.ReactiveTrader.Client
             var builder = new ContainerBuilder();
 
             builder.RegisterType<Domain.ReactiveTrader>().As<IReactiveTrader>().SingleInstance();
+            builder.RegisterType<DebugLoggerFactory>().As<ILoggerFactory>().SingleInstance();
             builder.RegisterType<ConfigurationProvider>().As<IConfigurationProvider>();
             builder.RegisterType<UserProvider>().As<IUserProvider>();
             builder.RegisterType<ConcurrencyService>().As<IConcurrencyService>();

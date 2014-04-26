@@ -1,17 +1,15 @@
 ﻿ using System;
 using System.Reactive;
 using System.Reactive.Linq;
-using Adaptive.ReactiveTrader.Client.Domain.Transport;
+ using Adaptive.ReactiveTrader.Client.Domain.Transport;
 using Adaptive.ReactiveTrader.Shared.Extensions;
-using log4net;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.ServiceClients
 {
     internal class ServiceClientBase
     {
         private readonly IConnectionProvider _connectionProvider;
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ServiceClientBase));
-        
+
         protected ServiceClientBase(IConnectionProvider connectionProvider)
         {
             _connectionProvider = connectionProvider;

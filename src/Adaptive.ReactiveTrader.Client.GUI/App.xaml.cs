@@ -7,8 +7,10 @@ using Adaptive.ReactiveTrader.Client.Configuration;
 using Adaptive.ReactiveTrader.Client.Domain;
 using Adaptive.ReactiveTrader.Client.UI.Shell;
 using Adaptive.ReactiveTrader.Client.UI.Splash;
+using Adaptive.ReactiveTrader.Shared.Logging;
 using Autofac;
 using log4net;
+using ILog = log4net.ILog;
 
 namespace Adaptive.ReactiveTrader.Client
 {
@@ -38,7 +40,7 @@ namespace Adaptive.ReactiveTrader.Client
             var reactiveTraderApi = container.Resolve<IReactiveTrader>();
 
             var username = container.Resolve<IUserProvider>().Username;
-            reactiveTraderApi.Initialize(username, container.Resolve<IConfigurationProvider>().Servers);
+            reactiveTraderApi.Initialize(username, container.Resolve<IConfigurationProvider>().Servers, container.Resolve<ILoggerFactory>());
             Log.InfoFormat("Reactive trader API initialized in {0}ms", sw.ElapsedMilliseconds);
 
             MainWindow = new MainWindow();

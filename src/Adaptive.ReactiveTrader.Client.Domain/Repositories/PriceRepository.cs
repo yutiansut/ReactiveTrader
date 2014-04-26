@@ -5,7 +5,7 @@ using Adaptive.ReactiveTrader.Client.Domain.Models.Pricing;
 using Adaptive.ReactiveTrader.Client.Domain.Models.ReferenceData;
 using Adaptive.ReactiveTrader.Client.Domain.ServiceClients;
 using Adaptive.ReactiveTrader.Shared.Extensions;
-using log4net;
+using Adaptive.ReactiveTrader.Shared.Logging;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.Repositories
 {
@@ -13,12 +13,13 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Repositories
     {
         private readonly IPricingServiceClient _pricingServiceClient;
         private readonly IPriceFactory _priceFactory;
-        private static readonly ILog Log = LogManager.GetLogger(typeof(PriceRepository));
+        private readonly ILog _log;
 
-        public PriceRepository(IPricingServiceClient pricingServiceClient, IPriceFactory priceFactory)
+        public PriceRepository(IPricingServiceClient pricingServiceClient, IPriceFactory priceFactory, ILoggerFactory loggerFactory)
         {
             _pricingServiceClient = pricingServiceClient;
             _priceFactory = priceFactory;
+            _log = loggerFactory.Create(typeof (PriceRepository));
         }
 
         public IObservable<IPrice> GetPriceStream(ICurrencyPair currencyPair)
@@ -27,7 +28,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Repositories
                 .Select(p => _priceFactory.Create(p, currencyPair))
                 .Catch<IPrice, Exception>(ex =>
                 {
-                    Log.Error("Error thrown in stream " + currencyPair.Symbol, ex);
+                    _log.Error("Error thrown in stream " + currencyPair.Symbol, ex);
                     // if the stream errors (server disconnected), we push a stale price 
                     return Observable
                             .Return<IPrice>(new StalePrice(currencyPair))

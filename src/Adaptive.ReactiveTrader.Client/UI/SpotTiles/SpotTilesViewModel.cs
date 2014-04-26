@@ -8,9 +8,9 @@ using Adaptive.ReactiveTrader.Client.Domain;
 using Adaptive.ReactiveTrader.Client.Domain.Models;
 using Adaptive.ReactiveTrader.Client.Domain.Models.ReferenceData;
 using Adaptive.ReactiveTrader.Shared.Extensions;
+using Adaptive.ReactiveTrader.Shared.Logging;
 using Adaptive.ReactiveTrader.Shared.UI;
 using Adaptive.ReactiveTrader.Client.Domain.Repositories;
-using log4net;
 using PropertyChanged;
 
 namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
@@ -18,22 +18,23 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
     [ImplementPropertyChanged]
     public class SpotTilesViewModel : ViewModelBase, ISpotTilesViewModel, IDisposable
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (SpotTilesViewModel));
-        
         public ObservableCollection<ISpotTileViewModel> SpotTiles { get; private set; }
         private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
         private readonly IReferenceDataRepository _referenceDataRepository;
         private readonly Func<ICurrencyPair, SpotTileSubscriptionMode, ISpotTileViewModel> _spotTileFactory;
         private readonly IConcurrencyService _concurrencyService;
         private readonly ISpotTileViewModel _config;
+        private readonly ILog _log;
 
         public SpotTilesViewModel(IReactiveTrader reactiveTrader,
             Func<ICurrencyPair, SpotTileSubscriptionMode, ISpotTileViewModel> spotTileFactory,
-            IConcurrencyService concurrencyService)
+            IConcurrencyService concurrencyService,
+            ILoggerFactory loggerFactory)
         {
             _referenceDataRepository = reactiveTrader.ReferenceData;
             _spotTileFactory = spotTileFactory;
             _concurrencyService = concurrencyService;
+            _log = loggerFactory.Create(typeof (SpotTilesViewModel));
 
             SpotTiles = new ObservableCollection<ISpotTileViewModel>();
 
@@ -65,7 +66,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
                 .SubscribeOn(_concurrencyService.ThreadPool)
                 .Subscribe(
                     currencyPairs => currencyPairs.ForEach(HandleCurrencyPairUpdate),
-                    error => Log.Error("Failed to get currencies", error));
+                    error => _log.Error("Failed to get currencies", error));
         }
 
         private void HandleCurrencyPairUpdate(ICurrencyPairUpdate update)

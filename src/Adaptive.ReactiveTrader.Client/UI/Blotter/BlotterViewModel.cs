@@ -7,8 +7,8 @@ using Adaptive.ReactiveTrader.Client.Concurrency;
 using Adaptive.ReactiveTrader.Client.Domain;
 using Adaptive.ReactiveTrader.Client.Domain.Models.Execution;
 using Adaptive.ReactiveTrader.Client.Domain.Repositories;
+using Adaptive.ReactiveTrader.Shared.Logging;
 using Adaptive.ReactiveTrader.Shared.UI;
-using log4net;
 using PropertyChanged;
 
 namespace Adaptive.ReactiveTrader.Client.UI.Blotter
@@ -21,18 +21,20 @@ namespace Adaptive.ReactiveTrader.Client.UI.Blotter
         private readonly IConcurrencyService _concurrencyService;
         public ObservableCollection<ITradeViewModel> Trades { get; private set; }
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(BlotterViewModel));
         private bool _stale;
         private bool _stowReceived;
+        private readonly ILog _log;
 
         public BlotterViewModel(IReactiveTrader reactiveTrader,
                                 Func<ITrade, bool, ITradeViewModel> tradeViewModelFactory,
-                                IConcurrencyService concurrencyService)
+                                IConcurrencyService concurrencyService,
+                                ILoggerFactory loggerFactory)
         {
             _tradeRepository = reactiveTrader.TradeRepository;
             _tradeViewModelFactory = tradeViewModelFactory;
             _concurrencyService = concurrencyService;
             Trades = new ObservableCollection<ITradeViewModel>();
+            _log = loggerFactory.Create(typeof (BlotterViewModel));
 
             LoadTrades();
         }
@@ -44,7 +46,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.Blotter
                             .SubscribeOn(_concurrencyService.ThreadPool)
                             .Subscribe(
                                 AddTrades,
-                                ex => Log.Error("An error occurred within the trade stream", ex));
+                                ex => _log.Error("An error occurred within the trade stream", ex));
         }
 
         private void AddTrades(IEnumerable<ITrade> trades)
