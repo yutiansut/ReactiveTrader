@@ -11,4 +11,5 @@
     toConfig(): void;
     dismissAffirmation(): void;
     dismissError(): void;
+    disconnect(): void;
 } 

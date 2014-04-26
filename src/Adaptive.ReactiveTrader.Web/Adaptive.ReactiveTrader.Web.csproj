@@ -198,6 +198,8 @@
     <TypeScriptCompile Include="Client\ServiceClients\PricingServiceClient.ts" />
     <TypeScriptCompile Include="Client\ServiceClients\ReferenceDataServiceClient.ts" />
     <TypeScriptCompile Include="Client\ServiceClients\TransportDisconnectedException.ts" />
+    <TypeScriptCompile Include="Client\Session\ISessionExpirationService.ts" />
+    <TypeScriptCompile Include="Client\Session\SessionExpirationService.ts" />
     <TypeScriptCompile Include="Client\Transport\Connection.ts" />
     <TypeScriptCompile Include="Client\Transport\connectionInfo.ts" />
     <TypeScriptCompile Include="Client\Transport\ConnectionProvider.ts" />

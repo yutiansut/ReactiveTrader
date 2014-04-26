@@ -20,7 +20,7 @@
                  console.log("Sending blotter unsubscription...");
 
                  connection.blotterHubProxy.invoke("UnsubscribeTrades")
-                     .done(_=> console.log("Unsubscribed from blotter"))
+                     .done(_=> console.log("Unsubscribed from blotter stream."))
                      .fail(ex=> console.error("An error occured while unsubscribing from blotter:" + ex));
              });
 

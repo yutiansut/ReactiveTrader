@@ -22,7 +22,11 @@
                 })
                 .fail(ex => observer.onError(ex));
 
-            return currencyPairUpdateSubscription;
+            var unsubsciptionDisposable = Rx.Disposable.create(() => {
+                console.log("Unsubscribed from currency pairs stream.");
+            });
+
+            return new Rx.CompositeDisposable(currencyPairUpdateSubscription, unsubsciptionDisposable);
         })
         .publish()
         .refCount();

@@ -161,9 +161,15 @@
 </head>
 
 <body>
-    <div id="tiles-area">
+    <div id="tiles-area" data-bind="if: !sessionExpired()">
          <ul class="tile" data-bind="template: { name: 'spot-tile-template', foreach: spotTiles.spotTiles }" style="padding: 2px;"></ul>
     </div>
+
+    <div id="session-expired-area" data-bind="visible: sessionExpired">
+        Your session expired, you are now disconnected from the server.<br />
+        <a id="reconnect-link" href="javascript:void(0)" data-bind="click: reconnect">Reconnect</a>
+    </div>
+
     <div id="blotter-area">
         <table>
             <thead>
@@ -202,23 +208,23 @@
     </div>
     <div id="status-bar-area">
         <table data-bind="style: { backgroundColor: connectivityStatus.disconnected() ? '#CE3C1C' : '#DEE3E8', color: connectivityStatus.disconnected() ? 'white' : 'black' }">
-        <tr>
-            <td style="font-size: 14px; padding: 3px 10px; width: 100%">
-                <span data-bind="text: connectivityStatus.status"></span>
-                <span> | UI Upd.:</span>
-                <span data-bind="text: connectivityStatus.uiUpdates"></span>
-                <span>/sec | Server Upd.:</span>
-                <span data-bind="text: connectivityStatus.ticksReceived"></span>
-                <span>/sec | UI Lat.:</span>
-                <span data-bind="text: connectivityStatus.uiLatency"></span>
-                <span>ms</span>
-            </td>
+            <tr>
+                <td style="font-size: 14px; padding: 3px 10px; width: 100%">
+                    <span data-bind="text: connectivityStatus.status"></span>
+                    <span data-bind="visible: !connectivityStatus.disconnected()"> | UI Upd.:</span>
+                    <span data-bind="text: connectivityStatus.uiUpdates, visible: !connectivityStatus.disconnected()"></span>
+                    <span data-bind="visible: !connectivityStatus.disconnected()">/sec | Server Upd.:</span>
+                    <span data-bind="text: connectivityStatus.ticksReceived, visible: !connectivityStatus.disconnected()"></span>
+                    <span data-bind="visible: !connectivityStatus.disconnected()">/sec | UI Lat.:</span>
+                    <span data-bind="text: connectivityStatus.uiLatency, visible: !connectivityStatus.disconnected()"></span>
+                    <span data-bind="visible: !connectivityStatus.disconnected()">ms</span>
+                </td>
 
-            <td style="padding: 3px">
-                <a href="http://www.weareadaptive.com" target="_blank"><img style="float:right; margin-right: 5px" src="statusbar_logo.png" /></a>
-            </td>
-        </tr>
-    </table>
+                <td style="padding: 3px">
+                    <a href="http://www.weareadaptive.com" target="_blank"><img style="float:right; margin-right: 5px" src="statusbar_logo.png" /></a>
+                </td>
+            </tr>
+        </table>
     </div>
 
 </body>

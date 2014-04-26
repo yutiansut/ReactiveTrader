@@ -1,6 +1,7 @@
 ﻿class BlotterViewModel implements IBlotterViewModel {
     private _tradeRepository : ITradeRepository;
     private _stale: boolean;
+    private _tradesSubscription: Rx.Disposable;
 
     trades: KnockoutObservableArray<ITradeViewModel>;
 
@@ -12,7 +13,7 @@
     }
 
     private loadTrades(): void {
-        this._tradeRepository.getTradesStream()
+        this._tradesSubscription = this._tradeRepository.getTradesStream()
             .subscribe(
                 trades => this.addTrades(trades),
                 ex=> console.error("an error occured within the trade stream", ex));
@@ -36,5 +37,9 @@
             var tradeViewModel = new TradeViewModel(t);
             this.trades.unshift(tradeViewModel);
         });
+    }
+
+    public disconnect(): void {
+        this._tradesSubscription.dispose();
     }
 } 

@@ -28,7 +28,7 @@
 
             var unsubsciptionDisposable =  Rx.Disposable.create(()=> {
                 connection.pricingHubProxy.invoke("UnsubscribePriceStream", subscriptionRequest)
-                    .done(_ => console.log("Unsubscribed from " + currencyPair))
+                    .done(_ => console.log("Unsubscribed from currency pair '" + currencyPair + "' stream."))
                     .fail(error => console.log("An error occured while sending unsubscription request for " + currencyPair + ":" + error));
             });
 

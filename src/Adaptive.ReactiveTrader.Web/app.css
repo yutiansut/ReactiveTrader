@@ -125,6 +125,38 @@ table {
     overflow: auto;
 }
 
+#session-expired-area {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 260px;
+    background-color: #212A35;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+}
+
+#reconnect-link:link {
+    text-decoration:none;
+    color: #90AFC1;
+}
+
+#reconnect-link:visited {
+    text-decoration:none;
+    color: #90AFC1;
+}
+
+#reconnect-link:hover {
+    text-decoration:underline;
+    color: #90AFC1;
+}
+
+#reconnect-link:active {
+    text-decoration:none;
+    color: #90AFC1;
+}
+
 #blotter-area {
     position: fixed;
     left: 0;

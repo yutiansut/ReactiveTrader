@@ -54,7 +54,6 @@
                 return new Rx.CompositeDisposable(statusSubscription, connectionSubscription);
             })
             .repeat()
-            
             .replay(null, 1)
             .lazyConnect(this._disposable);
     }

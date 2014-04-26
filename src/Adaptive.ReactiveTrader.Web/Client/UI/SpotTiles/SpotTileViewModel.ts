@@ -54,4 +54,8 @@
          this.state(TileState.Config);
          this.config(new ConfigViewModel());
      }
+
+     disconnect(): void {
+         this.pricing().dispose();
+     }
  }

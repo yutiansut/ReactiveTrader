@@ -4,7 +4,8 @@
     private _pricingViewModelFactory: IPricingViewModelFactory;
     private _config: ISpotTileViewModel;
     private _subscriptionModeDisposable : KnockoutSubscription;
-    private _executionModeDisposable : KnockoutSubscription;
+    private _executionModeDisposable: KnockoutSubscription;
+    private _currencyPairsSubscription: Rx.Disposable;
 
     constructor(
         referenceDataRepository: IReferenceDataRepository,
@@ -37,7 +38,7 @@
     }
 
     private loadSpotTiles(): void {
-        this._referenceDataRepository.getCurrencyPairsStream()
+        this._currencyPairsSubscription =  this._referenceDataRepository.getCurrencyPairsStream()
             .subscribe(
                 currencyPairs=> currencyPairs.forEach(cp=> this.handleCurrencyPairUpdate(cp)),
                 ex=> console.error("Failed to get currencies", ex));
@@ -61,5 +62,10 @@
                 spotTileViewModel.dispose();
             }                
         }
+    }
+
+    public disconnect(): void {
+        ko.utils.arrayForEach(this.spotTiles(), spotTile => spotTile.disconnect());
+        this._currencyPairsSubscription.dispose();
     }
 } 

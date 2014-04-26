@@ -1,5 +1,7 @@
 ﻿class ConnectivityStatusViewModel implements IConnectivityStatusViewModel {
     private _priceLatencyRecorder: IPriceLatencyRecorder;
+    private _connectionStatusSubscription: Rx.Disposable;
+    private _timerSubscription: Rx.Disposable;
 
     status: KnockoutObservable<string>;
     uiUpdates: KnockoutObservable<number>;
@@ -16,12 +18,12 @@
         this.disconnected = ko.observable(false);
         this.status = ko.observable("Disconnected");
 
-        reactiveTrader.connectionStatusStream
+        this._connectionStatusSubscription = reactiveTrader.connectionStatusStream
             .subscribe(
                 status=> this.onStatusChanged(status),
                 ex=> console.error("An error occured within the connection status stream", ex));
 
-        Rx.Observable
+        this._timerSubscription = Rx.Observable
             .timer(1000, Rx.Scheduler.timeout)
             .repeat()
             .subscribe(_=> this.onTimerTick());
@@ -69,5 +71,14 @@
         this.uiLatency("-");
         this.uiUpdates(0);
         this.ticksReceived(0);
+    }
+
+    public disconnect(): void {
+        this._connectionStatusSubscription.dispose();
+        this._timerSubscription.dispose();
+
+        this.status("Session expired, disconnected.");
+        this.disconnected(true);
+        this.clearStatistics();
     }
 } 

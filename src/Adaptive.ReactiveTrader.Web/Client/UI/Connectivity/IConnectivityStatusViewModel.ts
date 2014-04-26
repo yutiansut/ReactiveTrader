@@ -4,5 +4,5 @@
     ticksReceived: KnockoutObservable<number>;
     uiLatency: KnockoutObservable<string>;
     disconnected: KnockoutObservable<boolean>;
-
+    disconnect(): void;
 } 

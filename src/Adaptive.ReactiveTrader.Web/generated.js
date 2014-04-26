@@ -1,5 +1,8 @@
 ﻿var _this = this;
 $(document).ready(function () {
+    // 5 minutes session, we disconnect users so they don't eat up too many websocket connections on Azure for too long
+    var sessionExpirationSeconds = 5;
+
     var reactiveTrader = new ReactiveTrader();
 
     var username = "Anonymous (web)";
@@ -11,15 +14,12 @@ $(document).ready(function () {
         reactiveTrader.initialize(username, ["http://localhost:8080"]);
     }
 
-    reactiveTrader.connectionStatusStream.subscribe(function (s) {
-        return console.log("Connection status: " + s);
-    });
-
     var pricingViewModelFactory = new PricingViewModelFactory(reactiveTrader.priceLatencyRecorder);
     var spotTilesViewModel = new SpotTilesViewModel(reactiveTrader.referenceDataRepository, pricingViewModelFactory);
     var blotterViewModel = new BlotterViewModel(reactiveTrader.tradeRepository);
     var connectivityStatusViewModel = new ConnectivityStatusViewModel(reactiveTrader, reactiveTrader.priceLatencyRecorder);
-    var shellViewModel = new ShellViewModel(spotTilesViewModel, blotterViewModel, connectivityStatusViewModel);
+    var sessionExpirationService = new SessionExpirationService(sessionExpirationSeconds);
+    var shellViewModel = new ShellViewModel(spotTilesViewModel, blotterViewModel, connectivityStatusViewModel, sessionExpirationService, reactiveTrader);
 
     // TODO this should be moved somewhere else
     _this.fadeTrade = function (element, index, data) {
@@ -608,7 +608,7 @@ var BlotterServiceClient = (function (_super) {
                 console.log("Sending blotter unsubscription...");
 
                 connection.blotterHubProxy.invoke("UnsubscribeTrades").done(function (_) {
-                    return console.log("Unsubscribed from blotter");
+                    return console.log("Unsubscribed from blotter stream.");
                 }).fail(function (ex) {
                     return console.error("An error occured while unsubscribing from blotter:" + ex);
                 });
@@ -677,7 +677,7 @@ var PricingServiceClient = (function (_super) {
 
             var unsubsciptionDisposable = Rx.Disposable.create(function () {
                 connection.pricingHubProxy.invoke("UnsubscribePriceStream", subscriptionRequest).done(function (_) {
-                    return console.log("Unsubscribed from " + currencyPair);
+                    return console.log("Unsubscribed from currency pair '" + currencyPair + "' stream.");
                 }).fail(function (error) {
                     return console.log("An error occured while sending unsubscription request for " + currencyPair + ":" + error);
                 });
@@ -715,7 +715,11 @@ var ReferenceDataServiceClient = (function (_super) {
                 return observer.onError(ex);
             });
 
-            return currencyPairUpdateSubscription;
+            var unsubsciptionDisposable = Rx.Disposable.create(function () {
+                console.log("Unsubscribed from currency pairs stream.");
+            });
+
+            return new Rx.CompositeDisposable(currencyPairUpdateSubscription, unsubsciptionDisposable);
         }).publish().refCount();
     };
     return ReferenceDataServiceClient;
@@ -726,6 +730,15 @@ var TransportDisconnectedException = (function () {
         this.name = "TransportDisconnectedException";
     }
     return TransportDisconnectedException;
+})();
+var SessionExpirationService = (function () {
+    function SessionExpirationService(sessionDurationSeconds) {
+        this._sessionDurationSeconds = sessionDurationSeconds;
+    }
+    SessionExpirationService.prototype.getSessionExpiredStream = function () {
+        return Rx.Observable.timer(this._sessionDurationSeconds * 1000, Rx.Scheduler.timeout).publish().refCount();
+    };
+    return SessionExpirationService;
 })();
 var Connection = (function () {
     function Connection(address, username) {
@@ -967,7 +980,7 @@ var BlotterViewModel = (function () {
     }
     BlotterViewModel.prototype.loadTrades = function () {
         var _this = this;
-        this._tradeRepository.getTradesStream().subscribe(function (trades) {
+        this._tradesSubscription = this._tradeRepository.getTradesStream().subscribe(function (trades) {
             return _this.addTrades(trades);
         }, function (ex) {
             return console.error("an error occured within the trade stream", ex);
@@ -990,6 +1003,10 @@ var BlotterViewModel = (function () {
             var tradeViewModel = new TradeViewModel(t);
             _this.trades.unshift(tradeViewModel);
         });
+    };
+
+    BlotterViewModel.prototype.disconnect = function () {
+        this._tradesSubscription.dispose();
     };
     return BlotterViewModel;
 })();
@@ -1019,13 +1036,13 @@ var ConnectivityStatusViewModel = (function () {
         this.disconnected = ko.observable(false);
         this.status = ko.observable("Disconnected");
 
-        reactiveTrader.connectionStatusStream.subscribe(function (status) {
+        this._connectionStatusSubscription = reactiveTrader.connectionStatusStream.subscribe(function (status) {
             return _this.onStatusChanged(status);
         }, function (ex) {
             return console.error("An error occured within the connection status stream", ex);
         });
 
-        Rx.Observable.timer(1000, Rx.Scheduler.timeout).repeat().subscribe(function (_) {
+        this._timerSubscription = Rx.Observable.timer(1000, Rx.Scheduler.timeout).repeat().subscribe(function (_) {
             return _this.onTimerTick();
         });
     }
@@ -1073,14 +1090,45 @@ var ConnectivityStatusViewModel = (function () {
         this.uiUpdates(0);
         this.ticksReceived(0);
     };
+
+    ConnectivityStatusViewModel.prototype.disconnect = function () {
+        this._connectionStatusSubscription.dispose();
+        this._timerSubscription.dispose();
+
+        this.status("Session expired, disconnected.");
+        this.disconnected(true);
+        this.clearStatistics();
+    };
     return ConnectivityStatusViewModel;
 })();
 var ShellViewModel = (function () {
-    function ShellViewModel(spotTiles, blotter, connectivityStatus) {
+    function ShellViewModel(spotTiles, blotter, connectivityStatus, sessionExpirationService, reactiveTrader) {
+        var _this = this;
         this.spotTiles = spotTiles;
         this.blotter = blotter;
         this.connectivityStatus = connectivityStatus;
+        this.sessionExpired = ko.observable(false);
+        this._reactiveTrader = reactiveTrader;
+
+        sessionExpirationService.getSessionExpiredStream().subscribe(function () {
+            return _this.onSessionExpired();
+        });
     }
+    ShellViewModel.prototype.onSessionExpired = function () {
+        console.info("Expiring session...");
+
+        this.spotTiles.disconnect();
+        this.blotter.disconnect();
+        this.connectivityStatus.disconnect();
+        this.sessionExpired(true);
+        this._reactiveTrader.dispose();
+
+        console.info("session expired");
+    };
+
+    ShellViewModel.prototype.reconnect = function () {
+        location.reload();
+    };
     return ShellViewModel;
 })();
 var AffirmationViewModel = (function () {
@@ -1469,7 +1517,7 @@ var SpotTilesViewModel = (function () {
 
     SpotTilesViewModel.prototype.loadSpotTiles = function () {
         var _this = this;
-        this._referenceDataRepository.getCurrencyPairsStream().subscribe(function (currencyPairs) {
+        this._currencyPairsSubscription = this._referenceDataRepository.getCurrencyPairsStream().subscribe(function (currencyPairs) {
             return currencyPairs.forEach(function (cp) {
                 return _this.handleCurrencyPairUpdate(cp);
             });
@@ -1497,6 +1545,13 @@ var SpotTilesViewModel = (function () {
                 spotTileViewModel.dispose();
             }
         }
+    };
+
+    SpotTilesViewModel.prototype.disconnect = function () {
+        ko.utils.arrayForEach(this.spotTiles(), function (spotTile) {
+            return spotTile.disconnect();
+        });
+        this._currencyPairsSubscription.dispose();
     };
     return SpotTilesViewModel;
 })();
@@ -1550,6 +1605,10 @@ var SpotTileViewModel = (function () {
         this.state(3 /* Config */);
         this.config(new ConfigViewModel());
     };
+
+    SpotTileViewModel.prototype.disconnect = function () {
+        this.pricing().dispose();
+    };
     return SpotTileViewModel;
 })();
 var TileState;
@@ -1591,6 +1650,10 @@ var ReactiveTrader = (function () {
         enumerable: true,
         configurable: true
     });
+
+    ReactiveTrader.prototype.dispose = function () {
+        this._connectionProvider.dispose();
+    };
     return ReactiveTrader;
 })();
 //# sourceMappingURL=generated.js.map

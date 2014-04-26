@@ -1,5 +1,4 @@
 ﻿ class ReactiveTrader implements IReactiveTrader {
-     
      private _connectionProvider: IConnectionProvider;
 
      initialize(username: string, servers: string[]): void {
@@ -32,6 +31,10 @@
              .switchLatest()
              .publish()
              .refCount();
+     }
+
+     dispose(): void {
+         this._connectionProvider.dispose();
      }
  }
 
