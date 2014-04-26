@@ -43,7 +43,6 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
             var periodMs = 1000.0 / updatesPerSecond;
 
-
             if (periodMs < (MinPeriodMilliseconds + 1)) // Instead of trying to fire more often than timer resolution allows, start pushing more updates per tick.
             {
                 _updatesPerTick = (int)(MinPeriodMilliseconds / periodMs);
