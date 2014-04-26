@@ -4,7 +4,9 @@
 
     var reactiveTrader = <IReactiveTrader> new ReactiveTrader();
 
-    var username = "Anonymous (web)";
+    // generate random username
+    var username = "WebTrader-" + Math.floor((Math.random() * 1000) + 1);
+
     if (location.search.indexOf("?server=local") == -1) {
         // no override of server url detected, connect to origins
         reactiveTrader.initialize(username, [""]);

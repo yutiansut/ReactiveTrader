@@ -181,7 +181,7 @@
                     <th style="width:100px;text-align: right; padding: 2px 10px">Rate</th>
                     <th style="width:100px;text-align: left; padding: 2px 10px">Status</th>
                     <th style="width:200px;text-align: center; padding: 2px 10px">Value Date</th>
-                    <th style="width:100px;text-align: left; padding: 2px 10px">Trader</th>
+                    <th style="width:150px;text-align: left; padding: 2px 10px">Trader</th>
                 </tr>
             </thead>
             <tbody>
@@ -197,7 +197,7 @@
                                     <td data-bind="text: spotRate, style: { textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : '' }" style="width:100px;font-weight: 600; text-align: right; padding: 2px 10px"></td>
                                     <td data-bind="text: tradeStatus, style: { color: tradeStatus == 'REJECTED' ? 'red' : '', fontWeight: tradeStatus == 'REJECTED' ? '600' : '' }" style="width:100px;text-align: left; padding: 2px 10px"></td>
                                     <td data-bind="text: valueDate, style: { textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : '' }" style="width:200px;text-align: center; padding: 2px 10px"></td>
-                                    <td data-bind="text: traderName, style: { textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : '' }" style="width:100px;text-align: left; padding: 2px 10px"></td>
+                                    <td data-bind="text: traderName, style: { textDecoration: tradeStatus == 'REJECTED' ? 'line-through' : '' }" style="width:150px;text-align: left; padding: 2px 10px"></td>
                                 </tr>
                             </table>
                         </div>

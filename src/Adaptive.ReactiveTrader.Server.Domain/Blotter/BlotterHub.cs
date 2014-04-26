@@ -26,7 +26,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
         {
             _contextHolder.BlotterHubClients = Clients;
 
-            var user = UserName;
+            var user = ContextUtil.GetUserName(Context);
             Log.InfoFormat("Received trade subscription from user {0}", user);
 
             // add client to the trade notification group
@@ -46,11 +46,6 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
             // remove client from the blotter group
             await Groups.Remove(Context.ConnectionId, BlotterGroupName);
             Log.InfoFormat("Connection {0} removed from group '{1}'", Context.ConnectionId, BlotterGroupName);
-        }
-
-        private string UserName
-        {
-            get { return Context.Headers[ServiceConstants.Server.UsernameHeader]; }
         }
     }
 }

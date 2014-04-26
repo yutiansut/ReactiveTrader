@@ -1,11 +1,13 @@
 ﻿var _this = this;
 $(document).ready(function () {
     // 5 minutes session, we disconnect users so they don't eat up too many websocket connections on Azure for too long
-    var sessionExpirationSeconds = 5;
+    var sessionExpirationSeconds = 5 * 60;
 
     var reactiveTrader = new ReactiveTrader();
 
-    var username = "Anonymous (web)";
+    // generate random username
+    var username = "WebTrader-" + Math.floor((Math.random() * 1000) + 1);
+
     if (location.search.indexOf("?server=local") == -1) {
         // no override of server url detected, connect to origins
         reactiveTrader.initialize(username, [""]);
@@ -753,7 +755,8 @@ var Connection = (function () {
             this._address = window.location.protocol + "//" + window.location.host;
         }
 
-        // TODO set username header
+        this._hubConnection.qs = { "User": username };
+
         this._hubConnection.disconnected(function () {
             return _this.changeStatus(5 /* Closed */);
         }).connectionSlow(function () {

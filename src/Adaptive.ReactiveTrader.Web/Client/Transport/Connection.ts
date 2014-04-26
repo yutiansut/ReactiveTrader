@@ -23,7 +23,8 @@ class Connection implements IConnection {
             this._address = window.location.protocol + "//" + window.location.host;
         }
 
-        // TODO set username header 
+        this._hubConnection.qs = { "User": username };
+
         this._hubConnection
             .disconnected(() => this.changeStatus(ConnectionStatus.Closed))
             .connectionSlow(() => this.changeStatus(ConnectionStatus.ConnectionSlow))
