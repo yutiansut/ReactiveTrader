@@ -18,7 +18,7 @@ namespace Adaptive.ReactiveTrader.Client.Concurrency
             get { return _dispatcherScheduler; }
         }
 
-        public IScheduler ThreadPool
+        public IScheduler TaskPool
         {
             get { return TaskPoolScheduler.Default; }
         }

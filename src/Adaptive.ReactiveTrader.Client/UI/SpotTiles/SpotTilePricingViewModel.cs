@@ -123,7 +123,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
         private void SubscribeForPricesOnDispatcher()
         {
             _priceSubscription.Disposable = _currencyPair.PriceStream
-                                        .SubscribeOn(_concurrencyService.ThreadPool)
+                                        .SubscribeOn(_concurrencyService.TaskPool)
                                         .ObserveOn(_concurrencyService.Dispatcher)
                                         .Subscribe(OnPrice, OnError);
         }
@@ -131,7 +131,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
         private void SubscribeForPricesLatestOnDispatch()
         {
             _priceSubscription.Disposable = _currencyPair.PriceStream
-                                        .SubscribeOn(_concurrencyService.ThreadPool)
+                                        .SubscribeOn(_concurrencyService.TaskPool)
                                         .ObserveLatestOn(_concurrencyService.Dispatcher)
                                         .Subscribe(OnPrice, OnError);
         }
@@ -139,7 +139,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
         private void SubscribeForPricesConflate()
         {
             _priceSubscription.Disposable = _currencyPair.PriceStream
-                                        .SubscribeOn(_concurrencyService.ThreadPool)
+                                        .SubscribeOn(_concurrencyService.TaskPool)
                                         .Conflate(TimeSpan.FromMilliseconds(100), _concurrencyService.Dispatcher)
                                         .Subscribe(OnPrice, OnError);
         }
@@ -147,7 +147,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
         private void SubscribeForPricesConstantRate()
         {
             var ps = _currencyPair.PriceStream
-                                  .SubscribeOn(_concurrencyService.ThreadPool)
+                                  .SubscribeOn(_concurrencyService.TaskPool)
                                   .Subscribe(price =>
                                       {
                                           _latestPrice = price;

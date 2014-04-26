@@ -4,7 +4,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Concurrency
 {
     internal sealed class ConcurrencyService : IConcurrencyService
     {
-        public IScheduler ThreadPool
+        public IScheduler TaskPool
         {
             get { return TaskPoolScheduler.Default; }
         }

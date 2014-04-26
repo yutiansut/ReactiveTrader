@@ -4,6 +4,6 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Concurrency
 {
     internal interface IConcurrencyService
     {
-         IScheduler ThreadPool { get; }
+         IScheduler TaskPool { get; }
     }
 }

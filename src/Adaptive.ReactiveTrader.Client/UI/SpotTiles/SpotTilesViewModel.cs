@@ -63,7 +63,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
         {
             _referenceDataRepository.GetCurrencyPairsStream()
                 .ObserveOn(_concurrencyService.Dispatcher)
-                .SubscribeOn(_concurrencyService.ThreadPool)
+                .SubscribeOn(_concurrencyService.TaskPool)
                 .Subscribe(
                     currencyPairs => currencyPairs.ForEach(HandleCurrencyPairUpdate),
                     error => _log.Error("Failed to get currencies", error));

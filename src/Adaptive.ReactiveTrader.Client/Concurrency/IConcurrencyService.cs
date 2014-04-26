@@ -6,6 +6,6 @@ namespace Adaptive.ReactiveTrader.Client.Concurrency
     {
         IScheduler Dispatcher { get; }
         IScheduler DispatcherPeriodic { get; }
-        IScheduler ThreadPool { get; }
+        IScheduler TaskPool { get; }
     }
 }

@@ -22,7 +22,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
 
             reactiveTrader.ConnectionStatusStream
                 .ObserveOn(concurrencyService.Dispatcher)
-                .SubscribeOn(concurrencyService.ThreadPool)
+                .SubscribeOn(concurrencyService.TaskPool)
                 .Subscribe(
                 OnStatusChange,
                 ex => log.Error("An error occurred within the connection status stream.", ex));

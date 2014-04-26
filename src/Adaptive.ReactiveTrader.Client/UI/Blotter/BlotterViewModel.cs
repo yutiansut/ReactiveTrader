@@ -43,7 +43,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.Blotter
         {
             _tradeRepository.GetTradesStream()
                             .ObserveOn(_concurrencyService.Dispatcher)
-                            .SubscribeOn(_concurrencyService.ThreadPool)
+                            .SubscribeOn(_concurrencyService.TaskPool)
                             .Subscribe(
                                 AddTrades,
                                 ex => _log.Error("An error occurred within the trade stream", ex));
