@@ -45,8 +45,7 @@
             <Run Text="{Binding Status, Mode=OneWay}"  />
             <Run Text=" | "/>
             <Run Text="E2E Lat.:" />
-            <Run Text="{Binding ServerClientLatency, Mode=OneWay}"  />
-            <Run Text="ms"/>
+            <Run Text="{Binding TotalLatency, Mode=OneWay}"  />
             <Run Text=" | "/>
             <Run Text="UI Upd.:" />
             <Run Text="{Binding UiUpdates, Mode=OneWay}" />

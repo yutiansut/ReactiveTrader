@@ -8,7 +8,8 @@
         
         long UiUpdates { get; }
         long TicksReceived { get; }
-        long ServerClientLatency { get; }
+        string ServerClientLatency { get; }
+        string TotalLatency { get; }
         long UiLatency { get; }
         string Histogram { get; }
         

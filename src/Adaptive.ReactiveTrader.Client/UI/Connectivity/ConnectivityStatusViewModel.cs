@@ -52,12 +52,21 @@ namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
                 return;
 
             UiLatency = stats.UiLatencyMax;
-            ServerClientLatency = stats.ServerLatencyMax;
-            TotalLatency = stats.TotalLatencyMax;
             UiUpdates = stats.RenderedCount;
             TicksReceived = stats.ReceivedCount;
             
             Histogram = stats.Histogram;
+
+            if (!Disconnected && Server != null && Server.Contains("localhost"))
+            {
+                ServerClientLatency = stats.ServerLatencyMax + "ms";
+                TotalLatency = stats.TotalLatencyMax + "ms";
+            }
+            else
+            {
+                ServerClientLatency = "N/A";
+                TotalLatency = "N/A";
+            }
 
             if (_processorMonitor.IsAvailable)
             {
@@ -105,8 +114,8 @@ namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
         public bool Disconnected { get; private set; }
         public long UiUpdates { get; private set; }
         public long TicksReceived { get; private set; }
-        public long TotalLatency { get; set; }
-        public long ServerClientLatency { get; private set; }
+        public string TotalLatency { get; private set; }
+        public string ServerClientLatency { get; private set; }
         public long UiLatency { get; private set; }
         public string Histogram { get; private set; }
         public string CpuTime { get; private set; }
