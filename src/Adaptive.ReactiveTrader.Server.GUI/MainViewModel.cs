@@ -104,13 +104,6 @@ namespace Adaptive.ReactiveTrader.Server
         {
             ServerStatus = "Starting...";
 
-            //var options = new FileServerOptions
-            //{
-            //    EnableDirectoryBrowsing = true,
-            //    FileSystem = new PhysicalFileSystem(@".\StaticFiles"),
-            //    RequestPath = new PathString("/ReactiveTrader")
-            //};
-
             try
             {
                 _signalr = WebApp.Start(Address);
