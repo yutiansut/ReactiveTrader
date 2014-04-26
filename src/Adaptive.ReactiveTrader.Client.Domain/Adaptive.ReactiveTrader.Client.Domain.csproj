@@ -50,6 +50,8 @@
     <Compile Include="ConnectionInfo.cs" />
     <Compile Include="Instrumentation\Histogram.cs" />
     <Compile Include="Instrumentation\IPriceLatencyRecorder.cs" />
+    <Compile Include="Instrumentation\IProcessorMonitor.cs" />
+    <Compile Include="Instrumentation\NullProcessorMonitor.cs" />
     <Compile Include="Instrumentation\PriceLatencyRecorder.cs" />
     <Compile Include="Instrumentation\Statistics.cs" />
     <Compile Include="IReactiveTrader.cs" />

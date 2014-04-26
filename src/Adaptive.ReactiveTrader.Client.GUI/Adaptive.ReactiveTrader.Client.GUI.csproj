@@ -119,6 +119,7 @@
     <Compile Include="Configuration\ConfigurationProvider.cs" />
     <Compile Include="Configuration\UserProvider.cs" />
     <Compile Include="Controls\LazyContentControl.cs" />
+    <Compile Include="Instrumentation\ProcessorMonitor.cs" />
     <Compile Include="Logging\Log4NetLoggerFactory.cs" />
     <Compile Include="Logging\Log4NetLoggerWrapper.cs" />
     <Compile Include="Logging\LogImpl.cs" />

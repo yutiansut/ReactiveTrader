@@ -12,7 +12,7 @@
         long UiLatency { get; }
         string Histogram { get; }
         
-        double CpuTime { get; }
-        double CpuPercent { get; }
+        string CpuTime { get; }
+        string CpuPercent { get; }
     }
 }

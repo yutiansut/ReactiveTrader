@@ -11,14 +11,26 @@ namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
 {
     public class ConnectivityStatusViewModel : ViewModelBase, IConnectivityStatusViewModel
     {
+        private readonly IProcessorMonitor _processorMonitor;
         private static readonly TimeSpan StatsFrequency = TimeSpan.FromSeconds(1);
 
         private readonly IPriceLatencyRecorder _priceLatencyRecorder;
 
-        public ConnectivityStatusViewModel(IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService, ILoggerFactory loggerFactory)
+        public ConnectivityStatusViewModel(
+            IReactiveTrader reactiveTrader, 
+            IConcurrencyService concurrencyService, 
+            ILoggerFactory loggerFactory,
+            IProcessorMonitor processorMonitor)
         {
+            _processorMonitor = processorMonitor;
             _priceLatencyRecorder = reactiveTrader.PriceLatencyRecorder;
             var log = loggerFactory.Create(typeof (ConnectivityStatusViewModel));
+
+            if (!_processorMonitor.IsAvailable)
+            {
+                CpuPercent = "N/A";
+                CpuTime = "N/A";
+            }
 
             reactiveTrader.ConnectionStatusStream
                 .ObserveOn(concurrencyService.Dispatcher)
@@ -35,7 +47,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
         private void OnTimerTick(long _)
         {
             var stats = _priceLatencyRecorder.CalculateAndReset();
-
+            
             if (stats == null)
                 return;
 
@@ -44,9 +56,15 @@ namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
             TotalLatency = stats.TotalLatencyMax;
             UiUpdates = stats.RenderedCount;
             TicksReceived = stats.ReceivedCount;
-            CpuTime = Math.Round(stats.ProcessTime.TotalMilliseconds, 0);
-            CpuPercent = Math.Round(CpuTime/(Environment.ProcessorCount*StatsFrequency.TotalMilliseconds)*100, 0);
+            
             Histogram = stats.Histogram;
+
+            if (_processorMonitor.IsAvailable)
+            {
+                var cpuTime = _processorMonitor.CalculateProcessingAndReset();
+                CpuTime = Math.Round(cpuTime.TotalMilliseconds, 0).ToString();
+                CpuPercent = Math.Round(cpuTime.TotalMilliseconds / (Environment.ProcessorCount * StatsFrequency.TotalMilliseconds) * 100, 0).ToString();
+            }
         }
 
         private void OnStatusChange(ConnectionInfo connectionInfo)
@@ -91,7 +109,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
         public long ServerClientLatency { get; private set; }
         public long UiLatency { get; private set; }
         public string Histogram { get; private set; }
-        public double CpuTime { get; private set; }
-        public double CpuPercent { get; private set; }
+        public string CpuTime { get; private set; }
+        public string CpuPercent { get; private set; }
     }
 }

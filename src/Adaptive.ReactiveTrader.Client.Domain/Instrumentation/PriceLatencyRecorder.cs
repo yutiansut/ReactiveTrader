@@ -1,23 +1,16 @@
-﻿using System;
-using System.Diagnostics;
-using Adaptive.ReactiveTrader.Client.Domain.Models.Pricing;
+﻿using Adaptive.ReactiveTrader.Client.Domain.Models.Pricing;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.Instrumentation
 {
     public class PriceLatencyRecorder : IPriceLatencyRecorder
     {
-      //  private readonly Process _currentProcess;
         private readonly Histogram _uiLatency;
         private readonly Histogram _serverLatency;
         private readonly Histogram _combinedLatency;
         private readonly object _histogramLock = new object();
-        private TimeSpan _lastProcessTime;
 
         public PriceLatencyRecorder()
         {
-         //   _currentProcess = Process.GetCurrentProcess();
-         //   _lastProcessTime = _currentProcess.UserProcessorTime;
-
             _uiLatency = GetHistogram();
             _serverLatency = GetHistogram();
             _combinedLatency = GetHistogram();
@@ -59,11 +52,6 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Instrumentation
                 stats.UiLatencyMax = _uiLatency.Max;
                 stats.TotalLatencyMax = _combinedLatency.Max;
                 stats.Histogram = _combinedLatency.ToString();
-                
-            //    var currentProcessTime = _currentProcess.UserProcessorTime;
-            //    stats.ProcessTime = currentProcessTime.Subtract(_lastProcessTime);
-               // _lastProcessTime = currentProcessTime;
-
 
                 _uiLatency.Clear();
                 _combinedLatency.Clear();

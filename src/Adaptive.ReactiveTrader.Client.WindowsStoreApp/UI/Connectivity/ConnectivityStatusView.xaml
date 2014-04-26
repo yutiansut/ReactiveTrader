@@ -51,10 +51,6 @@
                 <Run Text="{Binding TicksReceived, Mode=OneWay}" />
                 <Run Text="/sec" />
                 <Run Text=" | "/>
-                <Run Text="CPU:" />
-                <Run Text="{Binding CpuPercent, Mode=OneWay}"/>
-                <Run Text="%"/>
-                <Run Text=" | "/>
                 <Run Text="UI Lat.:" />
                 <Run Text="{Binding UiLatency, Mode=OneWay}"  />
                 <Run Text="ms"/>

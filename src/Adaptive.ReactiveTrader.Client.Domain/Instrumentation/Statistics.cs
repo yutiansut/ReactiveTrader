@@ -10,6 +10,5 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Instrumentation
         public long ReceivedCount { get; set; }
         public long RenderedCount { get; set; }
         public string Histogram { get; set; }
-        public TimeSpan ProcessTime { get; set; }
     }
 }

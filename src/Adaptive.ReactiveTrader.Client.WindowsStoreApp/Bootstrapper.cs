@@ -1,6 +1,7 @@
 ﻿using Adaptive.ReactiveTrader.Client.Concurrency;
 using Adaptive.ReactiveTrader.Client.Configuration;
 using Adaptive.ReactiveTrader.Client.Domain;
+using Adaptive.ReactiveTrader.Client.Domain.Instrumentation;
 using Adaptive.ReactiveTrader.Client.UI.Blotter;
 using Adaptive.ReactiveTrader.Client.UI.Connectivity;
 using Adaptive.ReactiveTrader.Client.UI.Shell;
@@ -18,6 +19,7 @@ namespace Adaptive.ReactiveTrader.Client
 
             builder.RegisterType<Domain.ReactiveTrader>().As<IReactiveTrader>().SingleInstance();
             builder.RegisterType<DebugLoggerFactory>().As<ILoggerFactory>().SingleInstance();
+            builder.RegisterType<NullProcessorMonitor>().As<IProcessorMonitor>().SingleInstance();
             builder.RegisterType<ConfigurationProvider>().As<IConfigurationProvider>();
             builder.RegisterType<UserProvider>().As<IUserProvider>();
             builder.RegisterType<ConcurrencyService>().As<IConcurrencyService>();
