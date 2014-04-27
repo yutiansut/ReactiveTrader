@@ -1,7 +1,7 @@
 ﻿var _this = this;
 $(document).ready(function () {
-    // 5 minutes session, we disconnect users so they don't eat up too many websocket connections on Azure for too long
-    var sessionExpirationSeconds = 5 * 60;
+    // 15 minutes session, we disconnect users so they don't eat up too many websocket connections on Azure for too long
+    var sessionExpirationSeconds = 15;
 
     // generate random username
     var username = "Web-" + Math.floor((Math.random() * 1000) + 1);

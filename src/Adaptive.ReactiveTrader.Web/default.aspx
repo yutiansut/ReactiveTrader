@@ -182,7 +182,8 @@
     </div>
 
     <div id="session-expired-area" data-bind="visible: sessionExpired">
-        Your session expired, you are now disconnected from the server.<br />
+        Your 15 minutes session expired, you are now disconnected from the server. Click reconnect to start a new session.<br />
+        <i></i>
         <a id="reconnect-link" href="javascript:void(0)" data-bind="click: reconnect">Reconnect</a>
     </div>
 
