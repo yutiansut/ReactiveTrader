@@ -7,11 +7,11 @@
     
     public static formatDateDayMonthYear(date: Date): string {
         var tokens = date.toString().split(" ");
-        return tokens[2] + " " + tokens[1] + " " + tokens[3].substr(0, 2);
+        return tokens[2] + " " + tokens[1] + " " + tokens[3].substr(2, 2);
     }     
     
     public static formatDateDayMonthYearHour(date: Date): string {
         var tokens = date.toString().split(" ");
-        return tokens[2] + " " + tokens[1] + " " + tokens[3].substr(0, 2) + " " + tokens[4].substr(0, 5);
+        return tokens[2] + " " + tokens[1] + " " + tokens[3].substr(2, 2) + " " + tokens[4].substr(0, 5);
     }       
 } 

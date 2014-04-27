@@ -1,7 +1,7 @@
 ﻿var _this = this;
 $(document).ready(function () {
     // 15 minutes session, we disconnect users so they don't eat up too many websocket connections on Azure for too long
-    var sessionExpirationSeconds = 15;
+    var sessionExpirationSeconds = 15 * 60;
 
     // generate random username
     var username = "Web-" + Math.floor((Math.random() * 1000) + 1);
@@ -80,12 +80,12 @@ var DateUtils = (function () {
 
     DateUtils.formatDateDayMonthYear = function (date) {
         var tokens = date.toString().split(" ");
-        return tokens[2] + " " + tokens[1] + " " + tokens[3].substr(0, 2);
+        return tokens[2] + " " + tokens[1] + " " + tokens[3].substr(2, 2);
     };
 
     DateUtils.formatDateDayMonthYearHour = function (date) {
         var tokens = date.toString().split(" ");
-        return tokens[2] + " " + tokens[1] + " " + tokens[3].substr(0, 2) + " " + tokens[4].substr(0, 5);
+        return tokens[2] + " " + tokens[1] + " " + tokens[3].substr(2, 2) + " " + tokens[4].substr(0, 5);
     };
     return DateUtils;
 })();
