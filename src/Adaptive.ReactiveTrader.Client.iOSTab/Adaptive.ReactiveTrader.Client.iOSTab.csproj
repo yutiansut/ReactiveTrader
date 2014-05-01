@@ -133,6 +133,11 @@
     <Compile Include="LogViewController.designer.cs">
       <DependentUpon>LogViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Logging\LoggerFactory.cs" />
+    <Compile Include="Logging\Log.cs" />
+    <Compile Include="Logging\ILogSink.cs" />
+    <Compile Include="Logging\ILogSource.cs" />
+    <Compile Include="Logging\LogHub.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\first.png" />
@@ -166,5 +171,8 @@
       <Project>{B954B5A9-ABD0-469B-9397-039675BEC8F0}</Project>
       <Name>Adaptive.ReactiveTrader.Shared.Xamarin</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Logging\" />
   </ItemGroup>
 </Project>

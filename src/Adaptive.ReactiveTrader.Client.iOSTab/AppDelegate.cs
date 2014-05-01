@@ -5,6 +5,7 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Adaptive.ReactiveTrader.Client.Domain;
 using System.Diagnostics;
+using Adaptive.ReactiveTrader.Client.iOSTab.Logging;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
@@ -31,8 +32,16 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			// create a new window instance based on the screen size
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
 
+			var cs = new ConcurrencyService ();
+			var logSource = new LogHub ();
+			var logging = new LoggerFactory (logSource);
+
+			#if DEBUG
+			var logViewController = new LogViewController(cs, logSource);
+			#endif
+
 			_reactiveTrader = new Adaptive.ReactiveTrader.Client.Domain.ReactiveTrader ();
-			_reactiveTrader.Initialize ("iOS-" + Process.GetCurrentProcess ().Id, new [] { "https://reactivetrader.azurewebsites.net/signalr" });
+			_reactiveTrader.Initialize ("iOS-" + Process.GetCurrentProcess ().Id, new [] { "https://reactivetrader.azurewebsites.net/signalr" }, logging);
 			_reactiveTrader.ConnectionStatusStream
 				.Subscribe (ci => BeginInvokeOnMainThread (() => {
 				var view = new UIAlertView () {
@@ -43,13 +52,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 				view.Show ();
 			}));
 
-			var cs = new ConcurrencyService ();
-
 			var viewController1 = new TradesViewController (_reactiveTrader);
 			var viewController2 = new PricesViewController (_reactiveTrader, cs);
-			#if DEBUG
-			var logViewController = new LogViewController(_reactiveTrader, cs);
-			#endif
 			tabBarController = new UITabBarController ();
 			tabBarController.ViewControllers = new UIViewController [] {
 				viewController1,
