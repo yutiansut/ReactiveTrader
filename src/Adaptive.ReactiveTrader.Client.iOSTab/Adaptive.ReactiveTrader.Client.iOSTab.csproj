@@ -53,6 +53,7 @@
     <MtouchI18n>
     </MtouchI18n>
     <MtouchArch>ARMv7</MtouchArch>
+    <CodesignProvision>B7DF7B73-7753-4032-BEDE-656191686855</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>full</DebugType>
@@ -66,7 +67,6 @@
     <CodesignKey>iPhone Developer</CodesignKey>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
-    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\iPhone\Ad-Hoc</OutputPath>
     <DefineConstants>__MOBILE__;__IOS__;</DefineConstants>
@@ -150,21 +150,21 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\Adaptive.ReactiveTrader.Client\Adaptive.ReactiveTrader.Client.csproj">
-      <Project>{A894C01A-D326-40DF-BABC-0F807EB63A21}</Project>
-      <Name>Adaptive.ReactiveTrader.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Adaptive.ReactiveTrader.Client.Domain\Adaptive.ReactiveTrader.Client.Domain.csproj">
-      <Project>{B6C8FD41-866D-4992-BB11-AD6984C25564}</Project>
-      <Name>Adaptive.ReactiveTrader.Client.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Adaptive.ReactiveTrader.Shared\Adaptive.ReactiveTrader.Shared.csproj">
-      <Project>{B954B5A9-ABD0-469B-9397-039675BEC8F0}</Project>
-      <Name>Adaptive.ReactiveTrader.Shared</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Contents.json" />
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default-568h%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Client.Domain\Adaptive.ReactiveTrader.Client.Domain.Xamarin.csproj">
+      <Project>{B6C8FD41-866D-4992-BB11-AD6984C25564}</Project>
+      <Name>Adaptive.ReactiveTrader.Client.Domain.Xamarin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Client\Adaptive.ReactiveTrader.Client.Xamarin.csproj">
+      <Project>{A894C01A-D326-40DF-BABC-0F807EB63A21}</Project>
+      <Name>Adaptive.ReactiveTrader.Client.Xamarin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Shared\Adaptive.ReactiveTrader.Shared.Xamarin.csproj">
+      <Project>{B954B5A9-ABD0-469B-9397-039675BEC8F0}</Project>
+      <Name>Adaptive.ReactiveTrader.Shared.Xamarin</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
