@@ -53,7 +53,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			}));
 
 			var viewController1 = new TradesViewController (_reactiveTrader);
-			var viewController2 = new PricesViewController (_reactiveTrader, cs);
+			var viewController2 = new PriceTilesViewController (_reactiveTrader, cs);
 			tabBarController = new UITabBarController ();
 			tabBarController.ViewControllers = new UIViewController [] {
 				viewController1,
