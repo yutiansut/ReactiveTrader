@@ -31,15 +31,16 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			this.LeftSideAction.Text = "SELL";
 
 			this.RightSideAction.Text = "BUY";
+
+			this.LeftSideNumber.Text = model.LeftSideNumber;
+			this.LeftSideBigNumber.Text = model.LeftSideBigNumber;
+			this.LeftSidePips.Text = model.LeftSidePips;
+
+			this.RightSideNumber.Text = model.RightSideNumber;
+			this.RightSideBigNumber.Text = model.RightSideBigNumber;
+			this.RightSidePips.Text = model.RightSidePips;
+
 			/*
-			[Outlet]
-			MonoTouch.UIKit.UILabel LeftSideBigNumber { get; set; }
-
-			[Outlet]
-			MonoTouch.UIKit.UILabel LeftSideNumber { get; set; }
-
-			[Outlet]
-			MonoTouch.UIKit.UILabel LeftSidePips { get; set; }
 
 			[Outlet]
 			MonoTouch.UIKit.UITextField Notional { get; set; }
@@ -52,18 +53,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			[Outlet]
 			MonoTouch.UIKit.UIImageView PriceMovementUp { get; set; }
-
-			[Outlet]
-			MonoTouch.UIKit.UILabel RightSideAction { get; set; }
-
-			[Outlet]
-			MonoTouch.UIKit.UILabel RightSideBigNumber { get; set; }
-
-			[Outlet]
-			MonoTouch.UIKit.UILabel RightSideNumber { get; set; }
-
-			[Outlet]
-			MonoTouch.UIKit.UILabel RightSidePips { get; set; }
 
 			[Outlet]
 			MonoTouch.UIKit.UILabel SpotDate { get; set; }
