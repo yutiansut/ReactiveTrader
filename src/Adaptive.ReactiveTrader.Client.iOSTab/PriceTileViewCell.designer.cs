@@ -16,6 +16,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		MonoTouch.UIKit.UILabel CurrencyPair { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UILabel Executing { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel LeftSideAction { get; set; }
 
 		[Outlet]
@@ -71,6 +74,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			if (CurrencyPair != null) {
 				CurrencyPair.Dispose ();
 				CurrencyPair = null;
+			}
+
+			if (Executing != null) {
+				Executing.Dispose ();
+				Executing = null;
 			}
 
 			if (LeftSideAction != null) {

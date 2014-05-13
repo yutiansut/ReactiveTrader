@@ -6,6 +6,9 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Adaptive.ReactiveTrader.Client.Domain;
 using Adaptive.ReactiveTrader.Client.Concurrency;
+using System.IO;
+using Adaptive.ReactiveTrader.Client.iOSTab.Tiles;
+using Adaptive.ReactiveTrader.Shared.UI;
 
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
@@ -31,30 +34,42 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			return priceTilesModel.Count;
 		}
 
-		public override string TitleForHeader (UITableView tableView, int section)
-		{
-			return "Header";
-		}
-
-		public override string TitleForFooter (UITableView tableView, int section)
-		{
-			return "Footer";
-		}
-
 		public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
 		{
-			PriceTileViewCell cell = tableView.DequeueReusableCell (PriceTileViewCell.Key) as PriceTileViewCell;
-			if (cell == null)
-				cell = PriceTileViewCell.Create();
-
 			PriceTileModel model = priceTilesModel [(int)indexPath.IndexAtPosition (1)];
+
+			var cell = GetCell (tableView, model);
 
 			cell.UpdateFrom (model);
 
-			return cell;
+			return ( UITableViewCell)cell;
+		}
+
+		private IPriceTileCell GetCell(UITableView tableView, PriceTileModel model) {
+			IPriceTileCell priceTileCell = null;
+
+			switch (model.Status) {
+			case PriceTileStatus.Done:
+				priceTileCell = tableView.DequeueReusableCell (PriceTileTradeAffirmationViewCell.Key) as PriceTileTradeAffirmationViewCell;
+				if (priceTileCell == null)
+					priceTileCell = PriceTileTradeAffirmationViewCell.Create ();
+
+
+				break;
+			case PriceTileStatus.Streaming:
+			case PriceTileStatus.Executing:
+				priceTileCell = tableView.DequeueReusableCell (PriceTileViewCell.Key) as PriceTileViewCell;
+				if (priceTileCell == null)
+					priceTileCell = PriceTileViewCell.Create ();
+
+				break;
+			}
+
+			return priceTileCell;
 		}
 
 		public override float GetHeightForRow (UITableView tableView, NSIndexPath indexPath)
+
 		{
 			// NOTE: Don't call the base implementation on a Model class
 			// see http://docs.xamarin.com/guides/ios/application_fundamentals/delegates,_protocols,_and_events

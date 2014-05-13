@@ -8,14 +8,16 @@ using System.Collections.Generic;
 using Adaptive.ReactiveTrader.Client.Domain.Models.ReferenceData;
 using Adaptive.ReactiveTrader.Client.Concurrency;
 using MonoTouch.Foundation;
+using System.Reactive.Disposables;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
-	public class PriceTilesModel : IRedrawRequester<PriceTileModel>
+	public class PriceTilesModel : IDisposable
 	{
 		private readonly IConcurrencyService concurrencyService;
 		private readonly IReactiveTrader reactiveTrader;
 		private readonly UITableView tableView;
+		private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
 		private readonly List<PriceTileModel> _activeCurrencyPairs = new List<PriceTileModel>();
 
@@ -40,11 +42,13 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			foreach (var update in updates) {
 				if (update.UpdateType == Adaptive.ReactiveTrader.Client.Domain.Models.UpdateType.Add) {
 
-					var tileModel = new PriceTileModel (update.CurrencyPair, this.concurrencyService, this);
-
-					// TODO We really want our tilemodel to be notifying here.. 
+					var tileModel = new PriceTileModel (update.CurrencyPair, this.concurrencyService);
 
 					_activeCurrencyPairs.Add (tileModel);
+
+					_disposables.Add (
+						tileModel.OnChanged.Subscribe (OnItemChanged)
+					);
 
 				} else {
 					// todo handle removal of price tile
@@ -65,23 +69,21 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			}
 		}
 
-		#region IRedrawRequester implementation
+		private void OnItemChanged(PriceTileModel item) {
 
-		void IRedrawRequester<PriceTileModel>.Redraw (PriceTileModel item)
-		{
 			var indexOfItem = _activeCurrencyPairs.IndexOf (item);
 
 			tableView.ReloadRows (
 				new [] {
 					NSIndexPath.Create (0, indexOfItem)
 				}, UITableViewRowAnimation.None);
+
 		}
 
-		#endregion
-	}
-
-	public interface IRedrawRequester<T> {
-		void Redraw (T item);
+		public void Dispose ()
+		{
+			_disposables.Dispose();
+		}
 	}
 }
 

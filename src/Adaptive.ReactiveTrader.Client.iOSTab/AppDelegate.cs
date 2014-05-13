@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Adaptive.ReactiveTrader.Client.Domain;
 using System.Diagnostics;
 using Adaptive.ReactiveTrader.Client.iOSTab.Logging;
+using Adaptive.ReactiveTrader.Client.iOSTab.View;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
@@ -43,16 +45,18 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			_reactiveTrader = new Adaptive.ReactiveTrader.Client.Domain.ReactiveTrader ();
 			_reactiveTrader.Initialize ("iOS-" + Process.GetCurrentProcess ().Id, new [] { "https://reactivetrader.azurewebsites.net/signalr" }, logging);
 			_reactiveTrader.ConnectionStatusStream
-				.Subscribe (ci => BeginInvokeOnMainThread (() => {
+				.SubscribeOn(cs.TaskPool)
+				.ObserveOn(cs.Dispatcher)
+				.Subscribe (ci => {
 				var view = new UIAlertView () {
 					Title = "Connection Status",
 					Message = string.Format ("Reactive Trader is now {0}.", ci.ConnectionStatus.ToString ().ToLowerInvariant ())
 				};
 				view.AddButton ("OK");
 				view.Show ();
-			}));
+				});
 
-			var viewController1 = new TradesViewController (_reactiveTrader);
+			var viewController1 = new TradesViewController (_reactiveTrader, cs);
 			var viewController2 = new PriceTilesViewController (_reactiveTrader, cs);
 			tabBarController = new UITabBarController ();
 			tabBarController.ViewControllers = new UIViewController [] {
