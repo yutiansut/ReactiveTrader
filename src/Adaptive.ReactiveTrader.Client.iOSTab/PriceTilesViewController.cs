@@ -31,10 +31,14 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
+
+			var view = this.View as UITableView;
+
+			view.KeyboardDismissMode = UIScrollViewKeyboardDismissMode.OnDrag;
 			
 			// Register the TableView's data source
 
-			var model = new PriceTilesModel (_reactiveTrader, _concurrencyService, this.View as UITableView);
+			var model = new PriceTilesModel (_reactiveTrader, _concurrencyService, view);
 			TableView.Source = new PriceTilesViewSource (model);
 			model.Initialise ();
 		}

@@ -36,7 +36,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 			if (cell == null)
 				cell = PriceTileTradeAffirmationViewCell.Create ();
 
-			var doneTrade = _tradeTilesModel [(int)indexPath.IndexAtPosition (0)];
+			var doneTrade = _tradeTilesModel [(int)indexPath.IndexAtPosition (1)];
 
 			cell.UpdateFrom (doneTrade);
 

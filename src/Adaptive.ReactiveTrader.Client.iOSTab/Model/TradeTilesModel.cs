@@ -67,6 +67,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Model
 					_table.InsertRows (new [] { NSIndexPath.Create (0, 0)}, UITableViewRowAnimation.Top);
 				}
 			}
+
 			if (isSotw) {
 				_table.ReloadData ();
 			}
