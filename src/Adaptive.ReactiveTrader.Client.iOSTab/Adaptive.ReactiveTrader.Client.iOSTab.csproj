@@ -155,6 +155,10 @@
     <Compile Include="View\TradesViewSource.cs" />
     <Compile Include="Model\TradeTilesModel.cs" />
     <Compile Include="View\Tiles\ITradeDoneCell.cs" />
+    <Compile Include="View\StatusViewController.cs" />
+    <Compile Include="View\StatusViewController.designer.cs">
+      <DependentUpon>StatusViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\first.png" />
@@ -199,5 +203,6 @@
     <InterfaceDefinition Include="PriceTileViewCell.xib" />
     <InterfaceDefinition Include="PriceTilesView.xib" />
     <InterfaceDefinition Include="View\Tiles\PriceTileTradeAffirmationViewCell.xib" />
+    <InterfaceDefinition Include="View\StatusViewController.xib" />
   </ItemGroup>
 </Project>
