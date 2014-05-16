@@ -27,7 +27,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			_concurrencyService = concurrencyService;
 
 			Title = "Logs";
-			TabBarItem.Image = UIImage.FromBundle ("second");
+			TabBarItem.Image = UIImage.FromBundle ("adaptive");
 
 			_logSource.LogSource
 				.ObserveOn(_concurrencyService.Dispatcher)

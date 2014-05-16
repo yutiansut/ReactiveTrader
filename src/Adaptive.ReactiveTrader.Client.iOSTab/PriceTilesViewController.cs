@@ -18,6 +18,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		{
 			this._concurrencyService = concurrencyService;
 			this._reactiveTrader = reactiveTrader;
+
+			Title = "Prices";
+			TabBarItem.Image = UIImage.FromBundle ("adaptive");
 		}
 
 		public override void DidReceiveMemoryWarning ()
