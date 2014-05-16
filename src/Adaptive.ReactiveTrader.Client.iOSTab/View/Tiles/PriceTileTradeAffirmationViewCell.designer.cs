@@ -39,16 +39,14 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 		[Outlet]
 		MonoTouch.UIKit.UILabel TradeId { get; set; }
 
+		[Outlet]
+		MonoTouch.UIKit.UILabel TraderId { get; set; }
+
 		[Action ("Done:")]
 		partial void Done (MonoTouch.Foundation.NSObject sender);
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (DoneButton != null) {
-				DoneButton.Dispose ();
-				DoneButton = null;
-			}
-
 			if (CounterCCY != null) {
 				CounterCCY.Dispose ();
 				CounterCCY = null;
@@ -74,6 +72,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 				DirectionCCY = null;
 			}
 
+			if (DoneButton != null) {
+				DoneButton.Dispose ();
+				DoneButton = null;
+			}
+
 			if (Rate != null) {
 				Rate.Dispose ();
 				Rate = null;
@@ -87,6 +90,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 			if (TradeId != null) {
 				TradeId.Dispose ();
 				TradeId = null;
+			}
+
+			if (TraderId != null) {
+				TraderId.Dispose ();
+				TraderId = null;
 			}
 		}
 	}

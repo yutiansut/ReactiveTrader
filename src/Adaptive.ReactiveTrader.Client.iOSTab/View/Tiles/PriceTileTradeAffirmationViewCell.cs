@@ -46,18 +46,40 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 
 		public void UpdateFrom(TradeDoneModel model) {
 
+			UIStringAttributes strikethroughAttributes;
+
+			switch (model.Trade.TradeStatus) {
+			case Domain.Models.Execution.TradeStatus.Rejected:
+				strikethroughAttributes = new UIStringAttributes {
+					StrikethroughStyle = NSUnderlineStyle.Single
+				};
+				break;
+
+			case Domain.Models.Execution.TradeStatus.Done:
+			default:
+				strikethroughAttributes = new UIStringAttributes {
+					StrikethroughStyle = NSUnderlineStyle.None
+				};
+				break;
+			}
+
+			// Always displayed 'plain'...
+
 			CurrencyPair.Text = model.Trade.CurrencyPair;
-
-			CounterCCY.Text = model.Trade.DealtCurrency;
-
-			Direction.Text = model.Trade.Direction.ToString();
-
-			DirectionAmount.Text = model.Trade.Notional.ToString ();
-
-			Rate.Text = model.Trade.SpotRate.ToString ();
+			Direction.Text = model.Trade.Direction.ToString ();
 			TradeId.Text = model.Trade.TradeId.ToString ();
-			SpotDate.Text = model.Trade.ValueDate.ToShortDateString ();
 
+
+			// May be struck through in the event of trade failure...
+
+			CounterCCY.AttributedText = new NSAttributedString(model.Trade.DealtCurrency, strikethroughAttributes);
+			DirectionAmount.AttributedText = new NSAttributedString(model.Trade.Notional.ToString (), strikethroughAttributes);
+			Rate.AttributedText = new NSAttributedString(model.Trade.SpotRate.ToString (), strikethroughAttributes);
+			SpotDate.AttributedText = new NSAttributedString(model.Trade.ValueDate.ToShortDateString (), strikethroughAttributes);
+			TraderId.AttributedText = new NSAttributedString(model.Trade.TraderName, strikethroughAttributes);
+
+			// May also be struck through, but currently content not dynamic?
+			DirectionCCY.AttributedText = new NSAttributedString(DirectionCCY.Text, strikethroughAttributes);
 
 			DoneButton.Hidden = true;
 
