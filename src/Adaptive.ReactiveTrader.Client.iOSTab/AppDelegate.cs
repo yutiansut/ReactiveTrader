@@ -44,24 +44,27 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			_reactiveTrader = new Adaptive.ReactiveTrader.Client.Domain.ReactiveTrader ();
 			_reactiveTrader.Initialize ("iOS-" + Process.GetCurrentProcess ().Id, new [] { "https://reactivetrader.azurewebsites.net/signalr" }, logging);
-			_reactiveTrader.ConnectionStatusStream
-				.SubscribeOn(cs.TaskPool)
-				.ObserveOn(cs.Dispatcher)
-				.Subscribe (ci => {
-				var view = new UIAlertView () {
-					Title = "Connection Status",
-					Message = string.Format ("Reactive Trader is now {0}.", ci.ConnectionStatus.ToString ().ToLowerInvariant ())
-				};
-				view.AddButton ("OK");
-				view.Show ();
-				});
 
-			var viewController1 = new TradesViewController (_reactiveTrader, cs);
-			var viewController2 = new PriceTilesViewController (_reactiveTrader, cs);
+//			_reactiveTrader.ConnectionStatusStream
+//				.SubscribeOn(cs.TaskPool)
+//				.ObserveOn(cs.Dispatcher)
+//				.Subscribe (ci => {
+//				var view = new UIAlertView () {
+//					Title = "Connection Status",
+//					Message = string.Format ("Reactive Trader is now {0}.", ci.ConnectionStatus.ToString ().ToLowerInvariant ())
+//				};
+//				view.AddButton ("OK");
+//				view.Show ();
+//				});
+
+			var tradesViewController = new TradesViewController (_reactiveTrader, cs);
+			var pricesViewController = new PriceTilesViewController (_reactiveTrader, cs);
+			var statusViewController = new StatusViewController (_reactiveTrader, cs);
 			tabBarController = new UITabBarController ();
 			tabBarController.ViewControllers = new UIViewController [] {
-				viewController1,
-				viewController2
+				statusViewController,
+				tradesViewController,
+				pricesViewController
 				#if DEBUG
 				, logViewController
 				#endif
