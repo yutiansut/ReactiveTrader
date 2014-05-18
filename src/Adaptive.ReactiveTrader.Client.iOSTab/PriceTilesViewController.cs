@@ -10,6 +10,7 @@ using System.Linq;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
+	//[Register("PriceTilesViewController")]
 	public partial class PriceTilesViewController : UITableViewController
 	{
 		private readonly IReactiveTrader _reactiveTrader;
@@ -17,6 +18,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		private readonly PriceTilesModel _model;
 
 		public PriceTilesViewController (IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService) 
+		//		: base("PriceTilesViewController", null)
 				: base(UITableViewStyle.Grouped)
 		{
 			this._concurrencyService = concurrencyService;
