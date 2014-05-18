@@ -26,6 +26,15 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 			Title = "Status";
 			TabBarItem.Image = UIImage.FromBundle ("adaptive");
 
+			_reactiveTrader.ConnectionStatusStream
+				.SubscribeOn (_concurrencyService.TaskPool)
+				.ObserveOn (_concurrencyService.Dispatcher)
+				.Subscribe (OnStatusChange);
+
+			Observable.Interval (TimeSpan.FromSeconds(1), _concurrencyService.TaskPool)
+				.ObserveOn (_concurrencyService.Dispatcher)
+				.Subscribe(_ => OnTimer());
+
 		}
 
 		protected override void Dispose (bool disposing)
@@ -44,16 +53,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-
-			_reactiveTrader.ConnectionStatusStream
-				.SubscribeOn (_concurrencyService.TaskPool)
-				.ObserveOn (_concurrencyService.Dispatcher)
-				.Subscribe (OnStatusChange);
-
-			Observable.Timer (TimeSpan.FromSeconds(1), _concurrencyService.TaskPool)
-				.ObserveOn (_concurrencyService.Dispatcher)
-				.Subscribe(_ => OnTimer());
-
 			// Perform any additional setup after loading the view, typically from a nib.
 		}
 
@@ -65,9 +64,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 		private void OnTimer() {
 			var statistics = _reactiveTrader.PriceLatencyRecorder.CalculateAndReset ();
 
-			this.ServerUpdateRate.Text = statistics.ReceivedCount.ToString ();
-			this.UIUpdateRate.Text = statistics.RenderedCount.ToString ();
-			this.UILatency.Text = statistics.RenderedCount.ToString ();
+			this.ServerUpdateRate.Text = string.Format ("{0} / sec", statistics.ReceivedCount);
+			this.UIUpdateRate.Text = string.Format ("{0} / sec", statistics.RenderedCount);
+			this.UILatency.Text = string.Format ("{0} ms", statistics.RenderedCount);
 		}
 	}
 }

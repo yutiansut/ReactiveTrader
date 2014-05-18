@@ -173,6 +173,8 @@
     <BundleResource Include="Resources\Default.png" />
     <BundleResource Include="Resources\adaptive.png" />
     <BundleResource Include="Resources\adaptive%402x.png" />
+    <BundleResource Include="Resources\green-up.png" />
+    <BundleResource Include="Resources\red-down.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

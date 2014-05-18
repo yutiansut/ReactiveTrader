@@ -14,6 +14,7 @@ using Adaptive.ReactiveTrader.Client.iOSTab.Tiles;
 using System.IO;
 using Adaptive.ReactiveTrader.Shared.DTO.Execution;
 using Adaptive.ReactiveTrader.Client.iOSTab.Model;
+using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
@@ -52,8 +53,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		public string RightSideBigNumber  { get; set; }
 		public string RightSidePips  { get; set; }
 
+		public string Spread { get; set; }
+
 		public string Notional { get; set; }
 		public TradeDoneModel TradeDone { get; set; }
+		public PriceMovement Movement { get; set; }
 
 		public void Bid ()
 		{
@@ -108,13 +112,12 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			NotifyOnChanged (this);
 		}
 
-		void OnPrice (IPrice value)
+		void OnPrice (IPrice currentPrice)
 		{
-			_lastPrice = value;
-
-			if (!value.IsStale) {
-				var bid = PriceFormatter.GetFormattedPrice (value.Bid.Rate, value.CurrencyPair.RatePrecision, value.CurrencyPair.PipsPosition);
-				var ask = PriceFormatter.GetFormattedPrice (value.Ask.Rate, value.CurrencyPair.RatePrecision, value.CurrencyPair.PipsPosition);
+		
+			if (!currentPrice.IsStale) {
+				var bid = PriceFormatter.GetFormattedPrice (currentPrice.Bid.Rate, currentPrice.CurrencyPair.RatePrecision, currentPrice.CurrencyPair.PipsPosition);
+				var ask = PriceFormatter.GetFormattedPrice (currentPrice.Ask.Rate, currentPrice.CurrencyPair.RatePrecision, currentPrice.CurrencyPair.PipsPosition);
 
 				LeftSideNumber = bid.BigFigures;
 				LeftSideBigNumber = bid.Pips;
@@ -124,8 +127,28 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 				RightSideBigNumber = ask.Pips;
 				RightSidePips = ask.TenthOfPip;
 
+				Spread = currentPrice.Spread.ToString ("0.0");
+
+				if (_lastPrice != null && !_lastPrice.IsStale) {
+					if (_lastPrice.Mid < currentPrice.Mid) {
+						Movement = PriceMovement.Up;
+					} else if (_lastPrice.Mid > currentPrice.Mid) {
+						Movement = PriceMovement.Down;
+					} else 
+					{
+						Movement = PriceMovement.None;
+					}
+				} else {
+					Movement = PriceMovement.None;
+				}
+
 				this.NotifyOnChanged (this);
+			} else {
+				Movement = PriceMovement.None;
 			}
+
+			_lastPrice = currentPrice;
+
 		}
 
 	}

@@ -9,6 +9,7 @@ using System.ComponentModel;
 using MonoTouch.CoreGraphics;
 using Adaptive.ReactiveTrader.Client.iOSTab.Tiles;
 using System.IO;
+using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
@@ -49,19 +50,38 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			this.Notional.Text = model.Notional;
 
 			this.Executing.Hidden = model.Status != PriceTileStatus.Executing;
+
+			this.Spread.Text = model.Spread;
+
+			switch (model.Movement) {
+				case PriceMovement.Down:
+					this.PriceMovementDown.Hidden = false;
+					this.PriceMovementUp.Hidden = true;
+					break;
+				case PriceMovement.Up:
+					this.PriceMovementDown.Hidden = true;
+					this.PriceMovementUp.Hidden = false;
+					break;
+				case PriceMovement.None:
+					this.PriceMovementDown.Hidden = true;
+					this.PriceMovementUp.Hidden = true;
+					break;
+			}
+
 		}
 
 		partial void LeftSideButtonTouchUpInside (NSObject sender)
 		{
+			// TODO 
 			var model = _priceTileMode;
-			if (model != null)
+			if (model != null && model.Status == PriceTileStatus.Streaming)
 				model.Bid();
 		}
 
 		partial void RightSideButtonTouchUpInside (NSObject sender)
 		{
 			var model = _priceTileMode;
-			if (model != null)
+			if (model != null && model.Status == PriceTileStatus.Streaming)
 				model.Ask();
 		}
 

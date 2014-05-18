@@ -40,7 +40,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			view.KeyboardDismissMode = UIScrollViewKeyboardDismissMode.OnDrag;
 			
 			// Register the TableView's data source
-
+ 
+			// TODO We don't want to pass view here, we just want to observe the model and update when required.
 			var model = new PriceTilesModel (_reactiveTrader, _concurrencyService, view);
 			TableView.Source = new PriceTilesViewSource (model);
 			model.Initialise ();
