@@ -8,6 +8,9 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using System.Collections.Specialized;
 
 namespace Adaptive.ReactiveTrader.Shared.Extensions
 {
@@ -379,6 +382,5 @@ namespace Adaptive.ReactiveTrader.Shared.Extensions
                 return memberExpression;
             }
         }
-
     }
 }

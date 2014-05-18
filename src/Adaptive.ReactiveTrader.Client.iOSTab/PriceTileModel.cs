@@ -15,6 +15,7 @@ using System.IO;
 using Adaptive.ReactiveTrader.Shared.DTO.Execution;
 using Adaptive.ReactiveTrader.Client.iOSTab.Model;
 using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
+using Adaptive.ReactiveTrader.Client.Domain.Instrumentation;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
@@ -23,10 +24,13 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		private readonly ICurrencyPair _currencyPair;
 		private readonly IConcurrencyService _concurrencyService;
 
+		IPriceLatencyRecorder priceLatencyRecorder;
+
 		IPrice _lastPrice;
 
-		public PriceTileModel (ICurrencyPair currencyPair, IConcurrencyService concurrencyService)
+		public PriceTileModel (ICurrencyPair currencyPair, IPriceLatencyRecorder priceLatencyRecorder, IConcurrencyService concurrencyService)
 		{
+			this.priceLatencyRecorder = priceLatencyRecorder;
 			this._currencyPair = currencyPair;
 			this._concurrencyService = concurrencyService;
 
@@ -101,6 +105,10 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			NotifyOnChanged (this);
 		}
 
+		public void Rendered() {
+			this.priceLatencyRecorder.OnRendered (_lastPrice);
+		}
+
 		private void OnTradeResponseUpdate(IStale<ITrade> tradeUpdate) {
 			if (tradeUpdate.IsStale) {
 
@@ -141,7 +149,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 				} else {
 					Movement = PriceMovement.None;
 				}
-
 				this.NotifyOnChanged (this);
 			} else {
 				Movement = PriceMovement.None;

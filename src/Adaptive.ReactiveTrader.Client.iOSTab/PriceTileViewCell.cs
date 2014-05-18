@@ -67,7 +67,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 					this.PriceMovementUp.Hidden = true;
 					break;
 			}
-
+			model.Rendered ();
 		}
 
 		partial void LeftSideButtonTouchUpInside (NSObject sender)

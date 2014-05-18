@@ -11,6 +11,7 @@ using Adaptive.ReactiveTrader.Client.Domain.Models.Execution;
 using System.Collections.Generic;
 using Adaptive.ReactiveTrader.Shared.DTO.Execution;
 using MonoTouch.Foundation;
+using System.Collections.ObjectModel;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.Model
 {
@@ -18,16 +19,13 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Model
 	{
 		private readonly IReactiveTrader _reactiveTrader;
 		private readonly IConcurrencyService _concurrencyService;
-		private readonly UITableView _table;
 		private readonly CompositeDisposable _disposables = new CompositeDisposable();
-		private readonly List<TradeDoneModel> _doneTrades = new List<TradeDoneModel> ();
+		private readonly ObservableCollection<TradeDoneModel> _doneTrades = new ObservableCollection<TradeDoneModel> ();
 
-
-		public TradeTilesModel (IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService, UITableView table)
+		public TradeTilesModel (IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService)
 		{
 			_reactiveTrader = reactiveTrader;
 			_concurrencyService = concurrencyService;
-			_table = table;
 		}
 
 		public void Initialise() {
@@ -41,6 +39,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Model
 			);
 		}
 
+		public ObservableCollection<TradeDoneModel> DoneTrades  { get { return _doneTrades; } }
 
 		public int Count { 
 			get {
@@ -63,14 +62,14 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Model
 			foreach (var trade in trades) {
 				var td = new TradeDoneModel (trade);
 				_doneTrades.Insert (0, td);
-				if (!isSotw) {
-					_table.InsertRows (new [] { NSIndexPath.Create (0, 0)}, UITableViewRowAnimation.Top);
-				}
+//				if (!isSotw) {
+//					_table.InsertRows (new [] { NSIndexPath.Create (0, 0)}, UITableViewRowAnimation.Top);
+//				}
 			}
 
-			if (isSotw) {
-				_table.ReloadData ();
-			}
+//			if (isSotw) {
+//				_table.ReloadData ();
+//			}
 
 		}
 	}

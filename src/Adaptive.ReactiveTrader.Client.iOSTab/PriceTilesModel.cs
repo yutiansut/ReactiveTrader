@@ -9,75 +9,53 @@ using Adaptive.ReactiveTrader.Client.Domain.Models.ReferenceData;
 using Adaptive.ReactiveTrader.Client.Concurrency;
 using MonoTouch.Foundation;
 using System.Reactive.Disposables;
+using System.Collections.ObjectModel;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
 	public class PriceTilesModel : IDisposable
 	{
-		private readonly IConcurrencyService concurrencyService;
-		private readonly IReactiveTrader reactiveTrader;
-		private readonly UITableView tableView;
+		private readonly IConcurrencyService _concurrencyService;
+		private readonly IReactiveTrader _reactiveTrader;
 		private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
-		private readonly List<PriceTileModel> _activeCurrencyPairs = new List<PriceTileModel>();
+		private readonly ObservableCollection<PriceTileModel> _activeCurrencyPairs = new ObservableCollection<PriceTileModel>();
 
-
-		public PriceTilesModel (IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService, UITableView tableView)
+		public PriceTilesModel (IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService)
 		{
-			this.concurrencyService = concurrencyService;
-			this.reactiveTrader = reactiveTrader;
-			this.tableView = tableView;
+			this._concurrencyService = concurrencyService;
+			this._reactiveTrader = reactiveTrader;
 		}
 
 		public void Initialise() {
 
-			this.reactiveTrader.ReferenceData
+			this._reactiveTrader.ReferenceData
 				.GetCurrencyPairsStream ()
-				.ObserveOn(this.concurrencyService.Dispatcher)
+				.ObserveOn(this._concurrencyService.Dispatcher)
 				.Subscribe (updates => OnCurrencyPairUpdates(updates));
 		}
+
+		public ObservableCollection<PriceTileModel> ActiveCurrencyPairs { get { return _activeCurrencyPairs; } }
 
 		private void OnCurrencyPairUpdates (IEnumerable<ICurrencyPairUpdate> updates)
 		{
 			foreach (var update in updates) {
 				if (update.UpdateType == Adaptive.ReactiveTrader.Client.Domain.Models.UpdateType.Add) {
 
-					var tileModel = new PriceTileModel (update.CurrencyPair, this.concurrencyService);
+					var tileModel = new PriceTileModel (update.CurrencyPair, this._reactiveTrader.PriceLatencyRecorder, this._concurrencyService);
 
 					_activeCurrencyPairs.Add (tileModel);
-
-					_disposables.Add (
-						tileModel.OnChanged.Subscribe (OnItemChanged)
-					);
 
 				} else {
 					// todo handle removal of price tile
 				}
 			}
-			tableView.ReloadData ();
 		}		
-
-		public int Count {
-			get {
-				return _activeCurrencyPairs.Count;
-			}
-		}
 
 		public PriceTileModel this[int index] {
 			get { 
 				return _activeCurrencyPairs [index];
 			}
-		}
-
-		private void OnItemChanged(PriceTileModel item) {
-
-			var indexOfItem = _activeCurrencyPairs.IndexOf (item);
-
-			tableView.ReloadRows (
-				new [] {
-					NSIndexPath.Create (0, indexOfItem)
-				}, UITableViewRowAnimation.None);
-
 		}
 
 		public void Dispose ()

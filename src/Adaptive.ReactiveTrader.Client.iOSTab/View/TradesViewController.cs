@@ -14,14 +14,26 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 	{
 		private readonly IReactiveTrader _reactiveTrader;
 		private readonly IConcurrencyService _concurrencyService;
+		private readonly TradeTilesModel _model;
 
-		public TradesViewController (IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService) : base (UITableViewStyle.Grouped)
+		public TradesViewController (IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService) : base (UITableViewStyle.Plain)
 		{
 			_reactiveTrader = reactiveTrader;
 			_concurrencyService = concurrencyService;
 
 			Title = "Trades";
 			TabBarItem.Image = UIImage.FromBundle ("adaptive");
+
+			_model = new TradeTilesModel (_reactiveTrader, _concurrencyService);
+
+			_model.DoneTrades.CollectionChanged += (sender, e) => {
+				// todo - handle insertions/removals properly
+				UITableView table = this.TableView;
+				if (table != null)
+					table.ReloadData ();
+			};
+
+			_model.Initialise ();
 		}
 
 		public override void DidReceiveMemoryWarning ()
@@ -36,12 +48,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 		{
 			base.ViewDidLoad ();
 			
-			// Register the TableView's data source
-			var model = new TradeTilesModel (_reactiveTrader, _concurrencyService, this.View as UITableView);
-
-			TableView.Source = new TradesViewSource (model);
-
-			model.Initialise ();
+			TableView.Source = new TradesViewSource (_model);
 		}
 	}
 }

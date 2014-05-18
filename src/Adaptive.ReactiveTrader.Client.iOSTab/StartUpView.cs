@@ -7,11 +7,12 @@ using MonoTouch.UIKit;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
-	public partial class PriceTilesView : UIViewController
+	public partial class StartUpView : UIViewController
 	{
-		public PriceTilesView () : base ("PriceTilesView", null)
+		public StartUpView () : base ("StartUpView", null)
 		{
 		}
+
 
 		public override void DidReceiveMemoryWarning ()
 		{

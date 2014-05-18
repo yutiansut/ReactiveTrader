@@ -31,7 +31,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 		public override int RowsInSection (UITableView tableview, int section)
 		{
-			return priceTilesModel.Count;
+			return priceTilesModel.ActiveCurrencyPairs.Count;
 		}
 
 		public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)

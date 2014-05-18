@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Diagnostics;
+using System.Security.Principal;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Adaptive.ReactiveTrader.Client.Domain;
-using System.Diagnostics;
 using Adaptive.ReactiveTrader.Client.iOSTab.Logging;
 using Adaptive.ReactiveTrader.Client.iOSTab.View;
+using Adaptive.ReactiveTrader.Client.Domain.Transport;
+using System.Runtime.InteropServices;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
@@ -39,39 +42,36 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			var logging = new LoggerFactory (logSource);
 
 			#if DEBUG
+			UIApplication.CheckForIllegalCrossThreadCalls = true;
 			var logViewController = new LogViewController(cs, logSource);
 			#endif
 
 			_reactiveTrader = new Adaptive.ReactiveTrader.Client.Domain.ReactiveTrader ();
 			_reactiveTrader.Initialize ("iOS-" + Process.GetCurrentProcess ().Id, new [] { "https://reactivetrader.azurewebsites.net/signalr" }, logging);
 
-//			_reactiveTrader.ConnectionStatusStream
-//				.SubscribeOn(cs.TaskPool)
-//				.ObserveOn(cs.Dispatcher)
-//				.Subscribe (ci => {
-//				var view = new UIAlertView () {
-//					Title = "Connection Status",
-//					Message = string.Format ("Reactive Trader is now {0}.", ci.ConnectionStatus.ToString ().ToLowerInvariant ())
-//				};
-//				view.AddButton ("OK");
-//				view.Show ();
-//				});
-
 			var tradesViewController = new TradesViewController (_reactiveTrader, cs);
 			var pricesViewController = new PriceTilesViewController (_reactiveTrader, cs);
 			var statusViewController = new StatusViewController (_reactiveTrader, cs);
+
 			tabBarController = new UITabBarController ();
 			tabBarController.ViewControllers = new UIViewController [] {
-				statusViewController,
+				pricesViewController,
 				tradesViewController,
-				pricesViewController
+				statusViewController
 				#if DEBUG
 				, logViewController
 				#endif
 			};
 
+			var startUpViewController = new StartUpView ();
 
-			window.RootViewController = tabBarController;
+			_reactiveTrader.ConnectionStatusStream
+				.Where (ci => ci.ConnectionStatus == ConnectionStatus.Connected)
+				.ObserveOn(cs.Dispatcher)
+				.Subscribe (_ => startUpViewController.PresentViewController (tabBarController, false, null));
+
+			window.RootViewController = startUpViewController;
+
 			// make the window visible
 			window.MakeKeyAndVisible ();
 			

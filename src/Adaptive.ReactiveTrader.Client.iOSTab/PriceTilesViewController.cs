@@ -6,21 +6,49 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Adaptive.ReactiveTrader.Client.Domain;
 using Adaptive.ReactiveTrader.Client.Concurrency;
+using System.Linq;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
-	public class PriceTilesViewController : UITableViewController
+	public partial class PriceTilesViewController : UITableViewController
 	{
-		IReactiveTrader _reactiveTrader;
-		IConcurrencyService _concurrencyService;
+		private readonly IReactiveTrader _reactiveTrader;
+		private readonly IConcurrencyService _concurrencyService;
+		private readonly PriceTilesModel _model;
 
-		public PriceTilesViewController (IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService) : base(UITableViewStyle.Grouped)
+		public PriceTilesViewController (IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService) 
+				: base(UITableViewStyle.Grouped)
 		{
 			this._concurrencyService = concurrencyService;
 			this._reactiveTrader = reactiveTrader;
 
 			Title = "Prices";
 			TabBarItem.Image = UIImage.FromBundle ("adaptive");
+
+			_model = new PriceTilesModel (_reactiveTrader, _concurrencyService);
+
+			_model.ActiveCurrencyPairs.CollectionChanged += (sender, e) => {
+				foreach (var model in e.NewItems.Cast<PriceTileModel>()) {
+					model.OnChanged
+						.Subscribe (OnItemChanged);
+				}
+				if (IsViewLoaded) {
+					TableView.ReloadData ();
+				}
+			};
+			_model.Initialise ();
+
+		}
+		private void OnItemChanged(PriceTileModel item) {
+
+			if (IsViewLoaded) {
+				var indexOfItem = _model.ActiveCurrencyPairs.IndexOf (item);
+
+				TableView.ReloadRows (
+					new [] {
+						NSIndexPath.Create (0, indexOfItem)
+					}, UITableViewRowAnimation.None);
+			}
 		}
 
 		public override void DidReceiveMemoryWarning ()
@@ -35,16 +63,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		{
 			base.ViewDidLoad ();
 
-			var view = this.View as UITableView;
-
-			view.KeyboardDismissMode = UIScrollViewKeyboardDismissMode.OnDrag;
-			
 			// Register the TableView's data source
+			TableView.Source = new PriceTilesViewSource (_model);
  
-			// TODO We don't want to pass view here, we just want to observe the model and update when required.
-			var model = new PriceTilesModel (_reactiveTrader, _concurrencyService, view);
-			TableView.Source = new PriceTilesViewSource (model);
-			model.Initialise ();
 		}
 	}
 }
