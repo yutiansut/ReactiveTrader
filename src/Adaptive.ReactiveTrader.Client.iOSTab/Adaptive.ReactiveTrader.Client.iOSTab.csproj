@@ -128,16 +128,6 @@
     <Compile Include="Logging\ILogSink.cs" />
     <Compile Include="Logging\ILogSource.cs" />
     <Compile Include="Logging\LogHub.cs" />
-    <Compile Include="PriceTileViewCell.cs" />
-    <Compile Include="PriceTileViewCell.designer.cs">
-      <DependentUpon>PriceTileViewCell.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PriceTilesView.cs" />
-    <Compile Include="PriceTilesView.designer.cs">
-      <DependentUpon>PriceTilesView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PriceTilesViewController.cs" />
-    <Compile Include="PriceTilesViewSource.cs" />
     <Compile Include="PriceTileModel.cs" />
     <Compile Include="PriceTilesModel.cs" />
     <Compile Include="PriceFormatter.cs" />
@@ -151,8 +141,6 @@
     </Compile>
     <Compile Include="View\Tiles\IPriceTileCell.cs" />
     <Compile Include="Model\TradeDoneModel.cs" />
-    <Compile Include="View\TradesViewController.cs" />
-    <Compile Include="View\TradesViewSource.cs" />
     <Compile Include="Model\TradeTilesModel.cs" />
     <Compile Include="View\Tiles\ITradeDoneCell.cs" />
     <Compile Include="View\StatusViewController.cs" />
@@ -163,6 +151,19 @@
     <Compile Include="StartUpView.designer.cs">
       <DependentUpon>StartUpView.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\Tiles\PriceTileErrorViewCell.cs" />
+    <Compile Include="View\Tiles\PriceTileErrorViewCell.designer.cs">
+      <DependentUpon>PriceTileErrorViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Prices\PriceTilesViewController.cs" />
+    <Compile Include="View\Prices\PriceTilesViewSource.cs" />
+    <Compile Include="View\Tiles\PriceTileViewCell.cs" />
+    <Compile Include="View\Tiles\PriceTileViewCell.designer.cs">
+      <DependentUpon>PriceTileViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Trades\TradesViewController.cs" />
+    <Compile Include="View\Trades\TradesViewSource.cs" />
+    <Compile Include="View\Prices\PriceTilesViewDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\first.png" />
@@ -204,12 +205,14 @@
     <Folder Include="View\" />
     <Folder Include="View\Tiles\" />
     <Folder Include="Model\" />
+    <Folder Include="View\Prices\" />
+    <Folder Include="View\Trades\" />
   </ItemGroup>
   <ItemGroup>
-    <InterfaceDefinition Include="PriceTileViewCell.xib" />
-    <InterfaceDefinition Include="PriceTilesView.xib" />
     <InterfaceDefinition Include="View\Tiles\PriceTileTradeAffirmationViewCell.xib" />
     <InterfaceDefinition Include="View\StatusViewController.xib" />
     <InterfaceDefinition Include="StartUpView.xib" />
+    <InterfaceDefinition Include="View\Tiles\PriceTileErrorViewCell.xib" />
+    <InterfaceDefinition Include="View\Tiles\PriceTileViewCell.xib" />
   </ItemGroup>
 </Project>

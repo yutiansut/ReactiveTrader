@@ -18,8 +18,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		private readonly PriceTilesModel _model;
 
 		public PriceTilesViewController (IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService) 
-		//		: base("PriceTilesViewController", null)
-				: base(UITableViewStyle.Grouped)
+			: base(UITableViewStyle.Plain)
 		{
 			this._concurrencyService = concurrencyService;
 			this._reactiveTrader = reactiveTrader;
@@ -41,6 +40,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			_model.Initialise ();
 
 		}
+
 		private void OnItemChanged(PriceTileModel item) {
 
 			if (IsViewLoaded) {
@@ -67,7 +67,10 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			// Register the TableView's data source
 			TableView.Source = new PriceTilesViewSource (_model);
- 
+			//			TableView.Delegate = new PriceTilesViewDelegate ();
+
+			// TODO: Obtain Adaptive branding RGB value to use here.
+			TableView.BackgroundColor = UIColor.FromRGB (10, 15, 30);
 		}
 	}
 }

@@ -121,9 +121,13 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		}
 
 		void OnPrice (IPrice currentPrice)
-		{
-		
+		{		
 			if (!currentPrice.IsStale) {
+				// TODO: Discuss other statuses (Done, Executing)...
+				if (this.Status == PriceTileStatus.Stale) {
+					this.Status = PriceTileStatus.Streaming;
+				}
+
 				var bid = PriceFormatter.GetFormattedPrice (currentPrice.Bid.Rate, currentPrice.CurrencyPair.RatePrecision, currentPrice.CurrencyPair.PipsPosition);
 				var ask = PriceFormatter.GetFormattedPrice (currentPrice.Ask.Rate, currentPrice.CurrencyPair.RatePrecision, currentPrice.CurrencyPair.PipsPosition);
 
@@ -152,6 +156,12 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 				this.NotifyOnChanged (this);
 			} else {
 				Movement = PriceMovement.None;
+
+				// TODO: Discuss other statuses (Done, Executing)...
+				if (this.Status == PriceTileStatus.Streaming) {
+					this.Status = PriceTileStatus.Stale;
+					this.NotifyOnChanged (this);
+				}
 			}
 
 			_lastPrice = currentPrice;

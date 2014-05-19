@@ -47,6 +47,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			#endif
 
 			_reactiveTrader = new Adaptive.ReactiveTrader.Client.Domain.ReactiveTrader ();
+
+			// TODO: might we need to defer initialisation, in case status moves to Connected before we subscribe on ConnectionStatus?
 			_reactiveTrader.Initialize ("iOS-" + Process.GetCurrentProcess ().Id, new [] { "https://reactivetrader.azurewebsites.net/signalr" }, logging);
 
 			var tradesViewController = new TradesViewController (_reactiveTrader, cs);
@@ -74,7 +76,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			// make the window visible
 			window.MakeKeyAndVisible ();
-			
+
 			return true;
 		}
 	}

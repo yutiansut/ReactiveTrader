@@ -16,7 +16,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 		private readonly IConcurrencyService _concurrencyService;
 		private readonly TradeTilesModel _model;
 
-		public TradesViewController (IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService) : base (UITableViewStyle.Plain)
+		public TradesViewController (IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService)
+			: base (UITableViewStyle.Plain)
 		{
 			_reactiveTrader = reactiveTrader;
 			_concurrencyService = concurrencyService;
@@ -49,6 +50,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 			base.ViewDidLoad ();
 			
 			TableView.Source = new TradesViewSource (_model);
+
+			// TODO: Obtain Adaptive branding RGB value to use here.
+			TableView.BackgroundColor = UIColor.FromRGB (10, 15, 30);
 		}
 	}
 }

@@ -25,7 +25,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 		public override int NumberOfSections (UITableView tableView)
 		{
-			// TODO: return the actual number of sections
 			return 1;
 		}
 
@@ -53,15 +52,19 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 				priceTileCell = tableView.DequeueReusableCell (PriceTileTradeAffirmationViewCell.Key) as PriceTileTradeAffirmationViewCell;
 				if (priceTileCell == null)
 					priceTileCell = PriceTileTradeAffirmationViewCell.Create ();
-
-
 				break;
+
 			case PriceTileStatus.Streaming:
 			case PriceTileStatus.Executing:
 				priceTileCell = tableView.DequeueReusableCell (PriceTileViewCell.Key) as PriceTileViewCell;
 				if (priceTileCell == null)
 					priceTileCell = PriceTileViewCell.Create ();
+				break;
 
+			case PriceTileStatus.Stale:
+				priceTileCell = tableView.DequeueReusableCell (PriceTileErrorViewCell.Key) as PriceTileViewCell;
+				if (priceTileCell == null)
+					priceTileCell = PriceTileErrorViewCell.Create ();
 				break;
 			}
 

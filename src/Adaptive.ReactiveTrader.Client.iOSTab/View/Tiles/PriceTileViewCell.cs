@@ -18,7 +18,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		public static readonly UINib Nib = UINib.FromName ("PriceTileViewCell", NSBundle.MainBundle);
 		public static readonly NSString Key = new NSString ("PriceTileViewCell");
 
-		private PriceTileModel _priceTileMode;
+		private PriceTileModel _priceTileModel;
 
 		public PriceTileViewCell (IntPtr handle) : base (handle)
 		{
@@ -31,7 +31,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			
 		public void UpdateFrom (PriceTileModel model)
 		{
-			_priceTileMode = model;
+			_priceTileModel = model;
 
 			this.CurrencyPair.Text = model.Symbol;
 
@@ -73,21 +73,21 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		partial void LeftSideButtonTouchUpInside (NSObject sender)
 		{
 			// TODO 
-			var model = _priceTileMode;
+			var model = _priceTileModel;
 			if (model != null && model.Status == PriceTileStatus.Streaming)
 				model.Bid();
 		}
 
 		partial void RightSideButtonTouchUpInside (NSObject sender)
 		{
-			var model = _priceTileMode;
+			var model = _priceTileModel;
 			if (model != null && model.Status == PriceTileStatus.Streaming)
 				model.Ask();
 		}
 
 		partial void NotionalValueChanged (NSObject sender)
 		{
-			var model = _priceTileMode;
+			var model = _priceTileModel;
 			if (model != null)
 				model.Notional = Notional.Text;
 		}
