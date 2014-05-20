@@ -164,6 +164,7 @@
     <Compile Include="View\Trades\TradesViewController.cs" />
     <Compile Include="View\Trades\TradesViewSource.cs" />
     <Compile Include="View\Prices\PriceTilesViewDelegate.cs" />
+    <Compile Include="Styles.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\first.png" />

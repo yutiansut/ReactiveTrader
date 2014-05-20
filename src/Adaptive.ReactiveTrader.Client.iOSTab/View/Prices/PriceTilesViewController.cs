@@ -67,10 +67,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			// Register the TableView's data source
 			TableView.Source = new PriceTilesViewSource (_model);
-			//			TableView.Delegate = new PriceTilesViewDelegate ();
-
-			// TODO: Obtain Adaptive branding RGB value to use here.
-			TableView.BackgroundColor = UIColor.FromRGB (10, 15, 30);
+			Styles.ConfigureTable (TableView);
 		}
 	}
 }

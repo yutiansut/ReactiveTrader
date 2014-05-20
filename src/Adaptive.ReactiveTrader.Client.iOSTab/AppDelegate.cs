@@ -34,6 +34,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		//
 		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 		{
+			// Appearance
+			// TODO: Obtain Adaptive branding RGB value to use here.
+			UITableView.Appearance.BackgroundColor = UIColor.FromRGB (10, 15, 30);
+			UITableView.Appearance.SeparatorInset = UIEdgeInsets.Zero;
+
 			// create a new window instance based on the screen size
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
 

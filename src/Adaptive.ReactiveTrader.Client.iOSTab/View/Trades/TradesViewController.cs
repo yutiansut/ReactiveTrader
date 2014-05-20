@@ -51,8 +51,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 			
 			TableView.Source = new TradesViewSource (_model);
 
-			// TODO: Obtain Adaptive branding RGB value to use here.
-			TableView.BackgroundColor = UIColor.FromRGB (10, 15, 30);
+			Styles.ConfigureTable (this.TableView);
 		}
 	}
 }
