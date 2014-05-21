@@ -30,8 +30,18 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 			_model.DoneTrades.CollectionChanged += (sender, e) => {
 				// todo - handle insertions/removals properly
 				UITableView table = this.TableView;
-				if (table != null)
-					table.ReloadData ();
+
+				if (table != null) {
+					if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add
+						&& e.NewItems.Count == 1) {
+						table.InsertRows (
+							new [] {
+								NSIndexPath.Create (0, e.NewStartingIndex)
+							}, UITableViewRowAnimation.Top);
+					} else {
+						table.ReloadData ();
+					}
+				}
 			};
 
 			_model.Initialise ();
