@@ -116,7 +116,7 @@
                         </connections>
                     </button>
                 </subviews>
-                <color key="backgroundColor" red="0.15686275059999999" green="0.2078431547" blue="0.2588235438" alpha="1" colorSpace="deviceRGB"/>
+                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
             </tableViewCellContentView>
             <connections>
                 <outlet property="CounterCCY" destination="z4M-U1-p3F" id="N6T-hc-0CQ"/>

@@ -20,13 +20,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 
 		public override int NumberOfSections (UITableView tableView)
 		{
-			// TODO: return the actual number of sections
 			return 1;
 		}
 
 		public override int RowsInSection (UITableView tableview, int section)
 		{
-			// TODO: return the actual number of items in the section
 			return _tradeTilesModel.Count;
 		}
 
@@ -42,11 +40,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 
 			return cell;
 		}
-
+		/*
 		public override float GetHeightForRow (UITableView tableView, NSIndexPath indexPath)
 		{
-			return 206.0f;
-		}
+			// For now all rows are the same height, set via ConfigureTable.
+		}*/
 	}
 }
 

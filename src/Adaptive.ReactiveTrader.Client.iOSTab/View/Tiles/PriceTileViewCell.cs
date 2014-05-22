@@ -19,14 +19,18 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		public static readonly NSString Key = new NSString ("PriceTileViewCell");
 
 		private PriceTileModel _priceTileModel;
+		private static UserModel _userModel;
 
 		public PriceTileViewCell (IntPtr handle) : base (handle)
 		{
 		}
 
-		public static PriceTileViewCell Create ()
+		public static PriceTileViewCell Create (UserModel userModel)
 		{
-			return (PriceTileViewCell)Nib.Instantiate (null, null) [0];
+			PriceTileViewCell created = (PriceTileViewCell)Nib.Instantiate (null, null) [0];
+			created.ContentView.BackgroundColor = Styles.RTDarkerBlue;
+			_userModel = userModel;
+			return created;
 		}
 			
 		public void UpdateFrom (PriceTileModel model)
@@ -74,15 +78,25 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		{
 			// TODO 
 			var model = _priceTileModel;
-			if (model != null && model.Status == PriceTileStatus.Streaming)
-				model.Bid();
+			if (model != null && model.Status == PriceTileStatus.Streaming) {
+				//
+				// TODO: Determine where to best place the check for trading enabled.
+				// Where would we implenet two-touch, or more complex order entry?
+				//
+				if (_userModel.GetOneTouchTradingEnabled() && model.Bid()) {
+					_userModel.SetOneTouchTradingEnabled(false);
+				}
+			}
 		}
 
 		partial void RightSideButtonTouchUpInside (NSObject sender)
 		{
 			var model = _priceTileModel;
-			if (model != null && model.Status == PriceTileStatus.Streaming)
-				model.Ask();
+			if (model != null && model.Status == PriceTileStatus.Streaming) {
+				if (_userModel.GetOneTouchTradingEnabled() && model.Ask()); {
+					_userModel.SetOneTouchTradingEnabled(false);
+				}
+			}
 		}
 
 		partial void NotionalValueChanged (NSObject sender)

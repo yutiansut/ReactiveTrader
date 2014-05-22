@@ -16,6 +16,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		private readonly IReactiveTrader _reactiveTrader;
 		private readonly IConcurrencyService _concurrencyService;
 		private readonly PriceTilesModel _model;
+		private readonly UserModel _userModel; // TODO: Relocate this. Singleton?
 
 		public PriceTilesViewController (IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService) 
 			: base(UITableViewStyle.Plain)
@@ -25,6 +26,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			Title = "Prices";
 			TabBarItem.Image = UIImage.FromBundle ("adaptive");
+
+			_userModel = new UserModel ();
 
 			_model = new PriceTilesModel (_reactiveTrader, _concurrencyService);
 
@@ -65,8 +68,10 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		{
 			base.ViewDidLoad ();
 
-			// Register the TableView's data source
-			TableView.Source = new PriceTilesViewSource (_model);
+			TableView.RegisterNibForHeaderFooterViewReuse (PricesHeaderCell.Nib, PricesHeaderCell.Key);
+
+			TableView.Source = new PriceTilesViewSource (_model, _userModel);
+
 			Styles.ConfigureTable (TableView);
 		}
 	}

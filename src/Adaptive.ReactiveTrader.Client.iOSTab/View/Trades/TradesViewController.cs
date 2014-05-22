@@ -61,7 +61,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 			
 			TableView.Source = new TradesViewSource (_model);
 
-			Styles.ConfigureTable (this.TableView);
+			Styles.ConfigureTable (TableView);
 		}
 	}
 }

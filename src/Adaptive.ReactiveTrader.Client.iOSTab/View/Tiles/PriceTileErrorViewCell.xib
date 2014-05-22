@@ -29,7 +29,7 @@
                     </label>
                 </subviews>
             </tableViewCellContentView>
-            <color key="backgroundColor" red="0.50196081400000003" green="0.14324945988358781" blue="0.062363863654377405" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="CurrencyPair" destination="f34-Tb-MGI" id="pbT-n4-q7F"/>
             </connections>

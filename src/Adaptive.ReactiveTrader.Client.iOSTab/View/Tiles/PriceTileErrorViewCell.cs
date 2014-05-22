@@ -18,7 +18,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 
 		public static PriceTileErrorViewCell Create ()
 		{
-			return (PriceTileErrorViewCell)Nib.Instantiate (null, null) [0];
+			PriceTileErrorViewCell created = (PriceTileErrorViewCell)Nib.Instantiate (null, null) [0];
+			created.ContentView.BackgroundColor = Styles.RTFailRed;
+			return created;
 		}
 
 		public void UpdateFrom (PriceTileModel model)

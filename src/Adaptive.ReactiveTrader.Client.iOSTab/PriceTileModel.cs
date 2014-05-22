@@ -63,8 +63,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		public TradeDoneModel TradeDone { get; set; }
 		public PriceMovement Movement { get; set; }
 
-		public void Bid ()
+		public Boolean Bid ()
 		{
+			Boolean executed = false;
 			var price = _lastPrice;
 			long notional;
 
@@ -77,13 +78,20 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 					.ObserveOn(_concurrencyService.Dispatcher)
 					.Subscribe(OnTradeResponseUpdate);
 
+				executed = true;
+
 				NotifyOnChanged (this);
 
 			}
+
+			// TODO: Failure cases (eg unparsable or otherwise unsuitable notional).
+
+			return (executed);
 		}
 
-		public void Ask ()
+		public Boolean Ask ()
 		{
+			Boolean executed = false;
 			var price = _lastPrice;
 			long notional;
 
@@ -96,8 +104,14 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 					.ObserveOn(_concurrencyService.Dispatcher)
 					.Subscribe(OnTradeResponseUpdate);
 
+				executed = true;
+
 				NotifyOnChanged (this);
 			}
+
+			// TODO: Failure cases (eg unparsable or otherwise unsuitable notional).
+
+			return (executed);
 		}
 
 		public void Done() {

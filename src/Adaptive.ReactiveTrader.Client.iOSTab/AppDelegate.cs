@@ -35,9 +35,10 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 		{
 			// Appearance
-			// TODO: Obtain Adaptive branding RGB value to use here.
-			UITableView.Appearance.BackgroundColor = UIColor.FromRGB (10, 15, 30);
+			UITableView.Appearance.BackgroundColor = Styles.RTDarkerBlue;
 			UITableView.Appearance.SeparatorInset = UIEdgeInsets.Zero;
+
+			UITabBar.Appearance.BarTintColor = Styles.RTDarkerBlue;
 
 			// create a new window instance based on the screen size
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
@@ -53,8 +54,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			_reactiveTrader = new Adaptive.ReactiveTrader.Client.Domain.ReactiveTrader ();
 
-			// TODO: might we need to defer initialisation, in case status moves to Connected before we subscribe on ConnectionStatus?
 			_reactiveTrader.Initialize ("iOS-" + Process.GetCurrentProcess ().Id, new [] { "https://reactivetrader.azurewebsites.net/signalr" }, logging);
+			//		_reactiveTrader.Initialize ("iOS-" + Process.GetCurrentProcess ().Id, new [] { "http://192.168.1.197:8080/signalr" }, logging);
 
 			var tradesViewController = new TradesViewController (_reactiveTrader, cs);
 			var pricesViewController = new PriceTilesViewController (_reactiveTrader, cs);

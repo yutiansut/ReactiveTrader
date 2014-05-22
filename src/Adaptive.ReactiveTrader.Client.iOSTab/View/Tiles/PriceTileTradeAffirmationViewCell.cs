@@ -21,7 +21,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 
 		public static PriceTileTradeAffirmationViewCell Create ()
 		{
-			return (PriceTileTradeAffirmationViewCell)Nib.Instantiate (null, null) [0];
+			PriceTileTradeAffirmationViewCell created = (PriceTileTradeAffirmationViewCell)Nib.Instantiate (null, null) [0];
+			created.ContentView.BackgroundColor = Styles.RTDarkerBlue;
+			return created;
 		}
 
 		partial void Done (NSObject sender)
