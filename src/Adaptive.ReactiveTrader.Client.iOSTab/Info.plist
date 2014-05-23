@@ -36,7 +36,5 @@
 	<true/>
 	<key>CFBundleIdentifier</key>
 	<string>com.weareadaptive.ReactiveTrader</string>
-	<key>NSMainNibFile</key>
-	<string>StartUpView</string>
 </dict>
 </plist>
