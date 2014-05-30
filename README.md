@@ -1,11 +1,11 @@
-1. Overview
-2. Play with the App
-3. Compiling from source
-4. No experience with trading systems? Read this
-5. Introduction to Reactive Trader
-6. Features
-7. Architecture
-8. Blog posts
+1. [Overview](#1-overview)
+2. [Play with the App](#2-play-with-the-app)
+3. [Compiling from source](#3-compiling-from-source)
+4. [No experience with trading systems? Read this](#4-no-experience-with-trading-systems-read-this)
+5. [Introduction to Reactive Trader](#5-introduction-to-reactive-trader)
+6. [Features](#6-features)
+7. [Architecture](#7-architecture)
+8. [Blog posts](#8-blog-posts)
 
 ## 1. Overview
 
@@ -129,3 +129,4 @@ The following architecture diagram provides a view of the main components and la
 
  - [ReactConf 2014: video & slides](http://weareadaptive.com/blog/2014/04/12/reactconf-2014-reactive-ui/)
  - [Reactive Trader 1: Concurrency and Asynchrony](http://weareadaptive.com/blog/2014/04/18/asynchrony-concurrency/)
+ - [Reactive Trader 2: Everything is a Stream](http://weareadaptive.com/blog/2014/05/05/everything-is-a-stream/)
