@@ -2,7 +2,7 @@
 
  - [A quick overview](#overview)
  - [Video & Podtcast](#video-and-podcast)
- - [Some documentation](https://github.com/AdaptiveConsulting/ReactiveTrader/wiki)
+ - [Documentation](https://github.com/AdaptiveConsulting/ReactiveTrader/wiki)
  - [Blog and Annoucements](#blog-and-annoucements)
 
 # Overview
