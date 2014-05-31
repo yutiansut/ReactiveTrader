@@ -28,164 +28,43 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <ol>
-<li><a href="#1-overview">Overview</a></li>
-<li><a href="#2-play-with-the-app">Play with the App</a></li>
-<li><a href="#3-compiling-from-source">Compiling from source</a></li>
-<li><a href="#4-no-experience-with-trading-systems-read-this">No experience with trading systems? Read this</a></li>
-<li><a href="#5-introduction-to-reactive-trader">Introduction to Reactive Trader</a></li>
-<li><a href="#6-features">Features</a></li>
-<li><a href="#7-architecture">Architecture</a></li>
-<li><a href="#8-blog-posts">Blog posts</a></li>
-</ol><h2>
-<a name="1-overview" class="anchor" href="#1-overview"><span class="octicon octicon-link"></span></a>1. Overview</h2>
-
-<p>Reactive Trader is a client-server application demonstrating some of the problems needing to be dealt with when building reactive user interfaces. It was initially built as a demonstration app for a presentation we gave at <a href="http://reactconf.com/">ReactConf 2014</a> and we have decided to open source it so the community can hopefully benefit. You can see the video of the talk on <a href="http://youtu.be/Tp5mRlHwZ7M">YouTube</a>.</p>
-
-<p>We have selected the requirements carefully for this app to highlight the 4 pillars of reactive applications as defined in the <a href="http://www.reactivemanifesto.org/">reactive manifesto</a>: resilient, event-driven, scalable and responsive.</p>
-
-<p><a href="http://weareadaptive.com">Adaptive</a> is a London based software consultancy. Even if we are relatively new, our consultants have been working on reactive backend systems and building reactive user interfaces in the finance industry for the last decade. We thought it would be great to share some of our ideas and designs and hopefully encourage discussion. </p>
-
-<p>If you have questions or ideas, please get in touch with us:</p>
+          <h1>
+<a name="what-are-you-looking-for" class="anchor" href="#what-are-you-looking-for"><span class="octicon octicon-link"></span></a>What are you looking for?</h1>
 
 <ul>
-<li>by email: info at weareadaptive dot com</li>
-<li>on twitter <a href="https://twitter.com/adaptivelimited">@AdaptiveLimited</a>
-</li>
-<li>or by creating an entry on the <a href="https://github.com/AdaptiveConsulting/ReactiveTrader/issues">issue tracker</a>
-</li>
-</ul><p>We will be blogging about specific aspects of Reactive Trader on <a href="http://weareadaptive.com/blog/">Adaptive's blog</a> and new entries of the blog will be anounced on Twitter <a href="https://twitter.com/adaptivelimited">@AdaptiveLimited</a> - Please subscribe!</p>
+<li><a href="#overview">A quick overview</a></li>
+<li><a href="#video-and-podcast">Video &amp; Podcast</a></li>
+<li><a href="https://github.com/AdaptiveConsulting/ReactiveTrader/wiki">Documentation</a></li>
+<li><a href="#blog-and-annoucements">Blog and Annoucements</a></li>
+</ul><h1>
+<a name="overview" class="anchor" href="#overview"><span class="octicon octicon-link"></span></a>Overview</h1>
 
-<p>There are 3 falvors of ReactiveTrader at the moment:</p>
+<p>Reactive Trader is a client-server application demonstrating some of the problems needing to be dealt with when building reactive user interfaces. It was initially built as a demonstration app for a presentation we gave at <a href="http://reactconf.com/">ReactConf 2014</a> and we have decided to open source it so the community can hopefully benefit. You may want to have a look at the <a href="#video-and-podcast">video of the talk</a></p>
 
-<ul>
-<li>a .NET client using WPF, <a href="http://www.introtorx.com/">RxNET</a> and <a href="https://github.com/SignalR/SignalR">SignalR</a>
-</li>
-<li>a Web client using <a href="http://www.typescriptlang.org/">TypeScript</a>, <a href="https://github.com/Reactive-Extensions/RxJS">RxJS</a> and <a href="https://github.com/SignalR/SignalR">SignalR</a> (work in progress)</li>
-<li>a WinRT client (Win8), sharing most of the code with the WPF client using <a href="http://msdn.microsoft.com/en-us/library/gg597391(v=vs.110).aspx">PCL</a>
-</li>
-</ul><h2>
-<a name="2-play-with-the-app" class="anchor" href="#2-play-with-the-app"><span class="octicon octicon-link"></span></a>2. Play with the app</h2>
-
-<p>Requirements:</p>
-
-<ul>
-<li>Windows </li>
-<li><a href="http://www.microsoft.com/en-gb/download/details.aspx?id=30653">Microsoft .NET Framework 4.5</a></li>
-</ul><p>Steps:</p>
-
-<ol>
-<li>Download the <a href="https://github.com/AdaptiveConsulting/ReactiveTrader/raw/master/src/ReactiveTrader.zip">package</a>
-</li>
-<li>If you are on Windows 7+ unblock the zip (right click, properties, unblock)</li>
-<li>Extract the zip</li>
-<li>Launch the file <strong>LaunchReactiveTrader</strong>.bat to start both the client UI and the server admin UI, which allow you to control the server</li>
-<li>Have fun</li>
-</ol><p><img src="https://f.cloud.github.com/assets/1256913/2470980/8e95e5c6-b01c-11e3-9311-cc17a7c1b191.png" alt="image"></p>
+<p><img src="https://f.cloud.github.com/assets/1256913/2470980/8e95e5c6-b01c-11e3-9311-cc17a7c1b191.png" alt="image"></p>
 
 <p>... talking via Web Socket with ...</p>
 
 <p><img src="https://f.cloud.github.com/assets/1256913/2470993/d7f153ea-b01c-11e3-9c0c-ac8c8261299a.png" alt="image"></p>
 
-<h2>
-<a name="3-compiling-from-source" class="anchor" href="#3-compiling-from-source"><span class="octicon octicon-link"></span></a>3. Compiling from source</h2>
-
-<p>Requirements:</p>
+<p>Reactive Trader comes in different falvors (click on the link for a demo)</p>
 
 <ul>
-<li>Visual Studio 2012/13</li>
-<li>the <a href="http://www.typescriptlang.org/">TypeScript Visual Studio plugin</a> - if you want to play with the JavaScript version of ReactiveTrader. We are using TypeScript 1.0.</li>
-</ul><p>Steps:</p>
+<li><a href="https://reactivetrader.blob.core.windows.net/client/Adaptive.ReactiveTrader.application">WPF (ClickOnce)</a></li>
+<li><a href="https://reactivetrader.azurewebsites.net/">HTML5</a></li>
+<li>Windows Store App (to be published on the store)</li>
+<li>iOS native app (to be published on app store)</li>
+</ul><h1>
+<a name="video-and-podcast" class="anchor" href="#video-and-podcast"><span class="octicon octicon-link"></span></a>Video and Podcast</h1>
 
-<ol>
-<li>Clone the project</li>
-<li>Open the solution</li>
-<li>Compile the solution</li>
-<li>In solution properties choose both *.GUI projects as startup projects</li>
-<li>hit F5</li>
-</ol><h2>
-<a name="4-no-experience-with-trading-systems-read-this" class="anchor" href="#4-no-experience-with-trading-systems-read-this"><span class="octicon octicon-link"></span></a>4. No experience with trading systems? Read this</h2>
+<p><a href="http://www.youtube.com/watch?v=Tp5mRlHwZ7M"><img src="http://img.youtube.com/vi/Tp5mRlHwZ7M/0.jpg" alt="Alt text for your video"></a></p>
 
-<p>If you know what FX, SPOT and SDP mean, you can skip this section.</p>
 
-<p>This application is a (very) simplified version of what you would find in the the finance industry and more specifically in FX (Foreign Exchange). Investment banks, for instance, offer this type of applications to their clients so they can trade electronically with them. You might have heard of the acryonym SDP - it stands for Single Dealer Platforms. This term describes what a bank's e-commerce (electronic commerce) platforms is often called.</p>
 
-<p>In the real world clients would launch these trading UIs and connect via the internet or via leased or otherwise  private lines to the bank's backend system.</p>
+<h1>
+<a name="blog-and-annoucements" class="anchor" href="#blog-and-annoucements"><span class="octicon octicon-link"></span></a>Blog and Annoucements</h1>
 
-<p>Some financial products' price moves very quickly and this is very much the case in FX, especially for SPOT. What is SPOT? When some large company wants to change millions of US Dollars (USD) to Euro (EUR) for instance, and need to do this transaction "now" this is called a SPOT trade. FX e-commerce platform "stream" SPOT prices to their clients via APIs or providing a user interface. This price has two sides: a buy side and a sell side. The different between those prices is called the spread. It is not uncommon for a price - both buy and sell sides - to move several times a second on highly traded (liquid) currency pairs, such as EURUSD.</p>
-
-<h2>
-<a name="5-introduction-to-reactive-trader" class="anchor" href="#5-introduction-to-reactive-trader"><span class="octicon octicon-link"></span></a>5. Introduction to Reactive Trader</h2>
-
-<p>Reactive Trader is a sample trading application composed as UI, written in WPF and a server, also written in .NET. To illustrate reactive UI problems we decided to implement trading functionalities around FX (Foreign Exchange): this is an area where price move quickly and you need an event driven architecture to cope with that.</p>
-
-<p>Client-server communication needs to be duplex (ie. both the server and the client need to be able to send a message to the other party at any point in time). Lots of solutions exist for this, from simple web socket based libraries to high performance gateways that we commonly use when building such a system for a client.</p>
-
-<p>We wanted something simple to setup so someone could clone this repo from GitHub and hit run, without much more configuration. We also wanted the transport to be "web friendly" so you could use the same concepts in HTML5/Javascript or any other UI technology. In the .NET world SignalR was a good candidate (it's an abstraction on top of web sockets with fallback to Server Sent Events, then to long polling, and so one). We did some investigations and decided that it was perfectly good enough for what we wanted to demonstrate here.</p>
-
-<h2>
-<a name="6-features" class="anchor" href="#6-features"><span class="octicon octicon-link"></span></a>6. Features</h2>
-
-<p>In this section you will find a description of the different features of Reactive Trader, how you can reproduce them in the application and also some pointers to the relevant source code.</p>
-
-<h3>
-<a name="61-streaming" class="anchor" href="#61-streaming"><span class="octicon octicon-link"></span></a>6.1. Streaming</h3>
-
-<p>The application streams spot prices for different currency pairs: the UI connects to the server and subscribes to price streams for EUR/USD and other currency pairs. The server generate pseudo-random prices and push them to the client. </p>
-
-<p><img src="https://f.cloud.github.com/assets/1256913/2321909/a8a6fcb2-a3aa-11e3-9cc2-036c77b6c6e7.png" alt="image"></p>
-
-<p><strong>Resilience</strong>:</p>
-
-<ul>
-<li>if connectivity with the server is lost, the UI detects the error and invalidates all the prices (pricing tiles become blank). Pricing tiles resubscribe automatically when the connection is re-established.</li>
-<li>if a stream becomes stale (no update is seen for some time), the client will assume that there is a problem with the stream and invalidate the price, until it receives a new price.</li>
-</ul><p><strong>Responsive</strong>: the UI client applies a conflation algorithm to protect the UI against burst of prices.</p>
-
-<h3>
-<a name="62-trade-execution" class="anchor" href="#62-trade-execution"><span class="octicon octicon-link"></span></a>6.2. Trade execution</h3>
-
-<p>The user can specify an amount and whether they wish to buy or sell, then attempt to execute a trade. The server will process the request and accept or reject the trade. </p>
-
-<p><strong>Resilience</strong>:</p>
-
-<ul>
-<li>It is possible that the server does not respond in a timely maner and the client will timeout and display an error message.</li>
-</ul><h3>
-<a name="63-blotter" class="anchor" href="#63-blotter"><span class="octicon octicon-link"></span></a>6.3. Blotter</h3>
-
-<p>All trades executed, whether accepted or rejected are inserted in the blotter. In a real trading system the user would see only his own trades (or trades for his desk). In Reactive Trader all clients can see all the trades.</p>
-
-<p><strong>Resilience</strong>: </p>
-
-<ul>
-<li>If the server fails or the connection is lost, the blotter will still display the current trades, so that the user can continue to work, and attempt to reconnect. Once the connectivity is restored, the blotter will re-synchronize with the server and display the up to date list of trades.</li>
-</ul><h3>
-<a name="64-reference-data" class="anchor" href="#64-reference-data"><span class="octicon octicon-link"></span></a>6.4. Reference Data</h3>
-
-<p>Reactive Trader UI request the list of currency pairs from the server and automatically creates a pricing tile for each currency pair. </p>
-
-<p>The server can also notify the client when a currency pair is added or removed (you can think of this as adding a user permission for this currency pair or removing one). We decided to implement that feature to show that a push based design makes sense not only for streaming prices, but also to notify the client in real time when permissions or some other slow moving reference data changes, without requiring a restart of the client application.</p>
-
-<p><strong>Resilience</strong>: </p>
-
-<ul>
-<li>If the server fails or connection is lost, the client will keep the current list of currency pairs it has and wait for the connection to come back. Once the connection comes back it will re-subscribe and synchronize the currency pairs.</li>
-</ul><h2>
-<a name="7-architecture" class="anchor" href="#7-architecture"><span class="octicon octicon-link"></span></a>7. Architecture</h2>
-
-<p>The following architecture diagram provides a view of the main components and layering within the client and server. Note that the focus of reactive trader is reactive UI design, so we kept the server as dumb and simple as possible here.</p>
-
-<p><img src="https://f.cloud.github.com/assets/1256913/2321883/421d7f48-a3aa-11e3-8a4c-22bf0858a085.png" alt="image"></p>
-
-<h2>
-<a name="8-blog-posts" class="anchor" href="#8-blog-posts"><span class="octicon octicon-link"></span></a>8. Blog posts</h2>
-
-<ul>
-<li><a href="http://weareadaptive.com/blog/2014/04/12/reactconf-2014-reactive-ui/">ReactConf 2014: video &amp; slides</a></li>
-<li><a href="http://weareadaptive.com/blog/2014/04/18/asynchrony-concurrency/">Reactive Trader 1: Concurrency and Asynchrony</a></li>
-<li><a href="http://weareadaptive.com/blog/2014/05/05/everything-is-a-stream/">Reactive Trader 2: Everything is a Stream</a></li>
-</ul>
+<p>We annouce all new features and <a href="http://weareadaptive.com/blog/">blog posts</a> on Twitter: <a href="https://twitter.com/AdaptiveLimited">@AdaptiveLimited</a></p>
         </section>
 
         <aside id="sidebar">
