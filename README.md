@@ -1,7 +1,7 @@
 # What are you looking for?
 
  - [A quick overview](#overview)
- - [Video & Podtcast](#video-and-podcast)
+ - [Video & Podcast](#video-and-podcast)
  - [Documentation](https://github.com/AdaptiveConsulting/ReactiveTrader/wiki)
  - [Blog and Annoucements](#blog-and-annoucements)
 
