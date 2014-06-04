@@ -376,7 +376,7 @@ namespace Adaptive.ReactiveTrader.Shared.Extensions
                 {
                     memberExpression = (MemberExpression) propertyExpression.Body;
                 }
-                    if (memberExpression.Expression.NodeType != ExpressionType.Parameter)
+                    if (memberExpression.Expression.NodeType != ExpressionType.Parameter && memberExpression.Expression.NodeType != ExpressionType.Constant)
                     {
                         throw new InvalidOperationException("Getting members not directly on the expression's root object has been disallowed.");
                     }
