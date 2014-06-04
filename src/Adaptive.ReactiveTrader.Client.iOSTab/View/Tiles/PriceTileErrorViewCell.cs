@@ -28,8 +28,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 			_priceTileModel = model;
 
 			this.CurrencyPair.Text = model.Symbol;
-
-			model.Rendered ();
 		}
 	}
 }

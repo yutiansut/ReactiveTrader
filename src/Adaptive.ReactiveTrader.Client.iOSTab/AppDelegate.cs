@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq; 
 using System.Reactive.Linq;
 using System.Diagnostics;
 using System.Security.Principal;
@@ -73,10 +73,13 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			var startUpViewController = new StartUpView ();
 
+			startUpViewController.DisplayMessages (true, "Connecting..");
 			_reactiveTrader.ConnectionStatusStream
 				.Where (ci => ci.ConnectionStatus == ConnectionStatus.Connected)
-				.ObserveOn(cs.Dispatcher)
-				.Subscribe (_ => startUpViewController.PresentViewController (tabBarController, false, null));
+				.Timeout (TimeSpan.FromSeconds (15))
+				.ObserveOn (cs.Dispatcher)
+				.Subscribe (_ => startUpViewController.PresentViewController (tabBarController, false, null),
+				ex => startUpViewController.DisplayMessages (false, "Disconnected", "Unable to connect. Please restart the app."));
 
 			window.RootViewController = startUpViewController;
 

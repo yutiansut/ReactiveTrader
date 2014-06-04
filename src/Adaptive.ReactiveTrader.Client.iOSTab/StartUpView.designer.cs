@@ -17,6 +17,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel Connecting { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel ErrorLabel { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -28,6 +31,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			if (Connecting != null) {
 				Connecting.Dispose ();
 				Connecting = null;
+			}
+
+			if (ErrorLabel != null) {
+				ErrorLabel.Dispose ();
+				ErrorLabel = null;
 			}
 		}
 	}

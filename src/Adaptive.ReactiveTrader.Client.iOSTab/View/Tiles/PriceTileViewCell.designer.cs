@@ -34,7 +34,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		MonoTouch.UIKit.UITextField Notional { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel NotionalCcy { get; set; }
+		MonoTouch.UIKit.UIButton NotionalCCY { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIImageView PriceMovementDown { get; set; }
@@ -63,6 +63,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		[Action ("LeftSideButtonTouchUpInside:")]
 		partial void LeftSideButtonTouchUpInside (MonoTouch.Foundation.NSObject sender);
 
+		[Action ("NotionalCcyTouchUpInside:")]
+		partial void NotionalCcyTouchUpInside (MonoTouch.Foundation.NSObject sender);
+
 		[Action ("NotionalValueChanged:")]
 		partial void NotionalValueChanged (MonoTouch.Foundation.NSObject sender);
 
@@ -71,6 +74,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (NotionalCCY != null) {
+				NotionalCCY.Dispose ();
+				NotionalCCY = null;
+			}
+
 			if (CurrencyPair != null) {
 				CurrencyPair.Dispose ();
 				CurrencyPair = null;
@@ -104,11 +112,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			if (Notional != null) {
 				Notional.Dispose ();
 				Notional = null;
-			}
-
-			if (NotionalCcy != null) {
-				NotionalCcy.Dispose ();
-				NotionalCcy = null;
 			}
 
 			if (PriceMovementDown != null) {

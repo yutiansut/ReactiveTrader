@@ -39,9 +39,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			this.CurrencyPair.Text = model.Symbol;
 
-			this.LeftSideAction.Text = "SELL";
+			SetBuySellSides (model);
 
-			this.RightSideAction.Text = "BUY";
+			this.Notional.Text = model.Notional;
 
 			this.LeftSideNumber.Text = model.LeftSideNumber;
 			this.LeftSideBigNumber.Text = model.LeftSideBigNumber;
@@ -51,8 +51,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			this.RightSideBigNumber.Text = model.RightSideBigNumber;
 			this.RightSidePips.Text = model.RightSidePips;
 
-			this.Notional.Text = model.Notional;
-
+	
 			this.Executing.Hidden = model.Status != PriceTileStatus.Executing;
 
 			this.Spread.Text = model.Spread;
@@ -93,17 +92,53 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		{
 			var model = _priceTileModel;
 			if (model != null && model.Status == PriceTileStatus.Streaming) {
-				if (_userModel.GetOneTouchTradingEnabled() && model.Ask()); {
+				if (_userModel.GetOneTouchTradingEnabled() && model.Ask()) {
 					_userModel.SetOneTouchTradingEnabled(false);
 				}
 			}
 		}
-
+			
 		partial void NotionalValueChanged (NSObject sender)
 		{
 			var model = _priceTileModel;
 			if (model != null)
 				model.Notional = Notional.Text;
+		}
+			
+		partial void NotionalCcyTouchUpInside (NSObject sender)
+		{
+			var model = _priceTileModel;
+			if (model != null) {
+				SwapBuySellSides (model);
+				SetBuySellSides (model);
+			}
+			this.NotionalCCY.SetNeedsDisplay ();
+		}
+
+		void SwapBuySellSides(PriceTileModel model) {
+			if (model.NotionalCcy == model.Base) {
+				model.NotionalCcy = model.Counter;
+			} else {
+				model.NotionalCcy = model.Base;
+			}
+		}
+
+		void SetBuySellSides (PriceTileModel model)
+		{
+			if (model.NotionalCcy == model.Base) {
+				this.LeftSideAction.Text = "SELL";
+				this.RightSideAction.Text = "BUY";
+			}
+			else {
+				this.LeftSideAction.Text = "BUY";
+				this.RightSideAction.Text = "SELL";
+			}
+			this.NotionalCCY.TitleLabel.Text = model.NotionalCcy;
+//			this.NotionalCCY.SetTitle (model.NotionalCcy,
+//				UIControlState.Normal
+//				| UIControlState.Highlighted
+//				| UIControlState.Disabled
+//				| UIControlState.Selected);
 		}
 	}
 }

@@ -16,6 +16,7 @@ using Adaptive.ReactiveTrader.Shared.DTO.Execution;
 using Adaptive.ReactiveTrader.Client.iOSTab.Model;
 using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
 using Adaptive.ReactiveTrader.Client.Domain.Instrumentation;
+using System.Runtime.InteropServices;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
@@ -39,6 +40,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			this.Status = PriceTileStatus.Streaming;
 			this.RightSideBigNumber = this.LeftSideBigNumber = "--";
 			this.Notional = "1000000";
+			this.NotionalCcy = this.Base;
 
 			_currencyPair.PriceStream
 				.ObserveOn(_concurrencyService.Dispatcher)
@@ -48,6 +50,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		public PriceTileStatus Status { get; set; }
 
 		public string Symbol { get;	set; }
+		public string Base { get { return _currencyPair.BaseCurrency; } }
+		public string Counter { get { return _currencyPair.CounterCurrency;}}
 
 		public string LeftSideNumber { get; set; }
 		public string LeftSideBigNumber { get; set; }
@@ -60,6 +64,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		public string Spread { get; set; }
 
 		public string Notional { get; set; }
+		public string NotionalCcy { get; set; }
 		public TradeDoneModel TradeDone { get; set; }
 		public PriceMovement Movement { get; set; }
 
@@ -177,11 +182,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 					this.NotifyOnChanged (this);
 				}
 			}
-
 			_lastPrice = currentPrice;
-
 		}
-
 	}
 }
 
