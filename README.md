@@ -4,6 +4,7 @@
  - [Video & Podcast](#video-and-podcast)
  - [Documentation](https://github.com/AdaptiveConsulting/ReactiveTrader/wiki)
  - [Blogs](#blogs)
+ - [Training](#training)
  - [Future Announcements](#future-annoucements)
 
 # Overview
