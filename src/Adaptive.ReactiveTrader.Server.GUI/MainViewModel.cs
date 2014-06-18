@@ -13,8 +13,7 @@ namespace Adaptive.ReactiveTrader.Server
 {
     internal class MainViewModel : ViewModelBase, IMainViewModel
     {
-        private readonly string Address = "http://0.0.0.0:" + PortNumber;
-        private const int PortNumber = 8080;
+        private const string Address = "http://localhost:8080";
         private static readonly ILog Log = LogManager.GetLogger(typeof (MainWindow));
 
         private readonly IPriceFeed _priceFeed;
@@ -107,10 +106,7 @@ namespace Adaptive.ReactiveTrader.Server
 
             try
             {
-                _signalr = WebApp.Start(new StartOptions()
-                {
-                    Port = PortNumber,
-                });
+                _signalr = WebApp.Start(Address);
             }
             catch (Exception exception)
             {
