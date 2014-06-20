@@ -38,7 +38,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Concurrency\IConcurrencyService.cs" />
-    <Compile Include="Concurrency\PeriodicBatchScheduler.cs" />
+    <Compile Include="Concurrency\IConstantRatePump.cs" />
     <Compile Include="Configuration\IConfigurationProvider.cs" />
     <Compile Include="Configuration\IUserProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

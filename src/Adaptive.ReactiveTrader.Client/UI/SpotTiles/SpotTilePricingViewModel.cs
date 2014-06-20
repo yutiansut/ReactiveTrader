@@ -34,6 +34,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
         private readonly ISpotTileViewModel _parent;
         private readonly IPriceLatencyRecorder _priceLatencyRecorder;
         private readonly IConcurrencyService _concurrencyService;
+        private readonly IConstantRatePump _constantRatePump;
         private bool _disposed;
         private decimal? _previousRate;
         private SpotTileSubscriptionMode _subscriptionMode;
@@ -46,6 +47,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
             Func<Direction, ISpotTilePricingViewModel, IOneWayPriceViewModel> oneWayPriceFactory,
             IReactiveTrader reactiveTrader,
             IConcurrencyService concurrencyService,
+            IConstantRatePump constantRatePump,
             ILoggerFactory loggerFactory)
         {
             _currencyPair = currencyPair;
@@ -53,6 +55,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
             _parent = parent;
             _priceLatencyRecorder = reactiveTrader.PriceLatencyRecorder;
             _concurrencyService = concurrencyService;
+            _constantRatePump = constantRatePump;
             _log = loggerFactory.Create(typeof (SpotTilePricingViewModel));
             
             _priceSubscription = new SerialDisposable();
@@ -140,7 +143,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
         {
             _priceSubscription.Disposable = _currencyPair.PriceStream
                                         .SubscribeOn(_concurrencyService.TaskPool)
-                                        .Conflate(TimeSpan.FromMilliseconds(100), _concurrencyService.Dispatcher)
+                                        .Conflate(TimeSpan.FromMilliseconds(125), _concurrencyService.Dispatcher)
                                         .Subscribe(OnPrice, OnError);
         }
 
@@ -153,7 +156,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
                                           _latestPrice = price;
                                       }, OnError);
 
-            var el = _concurrencyService.DispatcherPeriodic.Schedule(() =>
+            var el = _constantRatePump.Tick.Subscribe(_ =>
                 {
                     if (_currentPrice != _latestPrice && _latestPrice != null)
                     {
