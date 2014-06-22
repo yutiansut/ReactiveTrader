@@ -25,6 +25,7 @@ namespace Adaptive.ReactiveTrader.Client
             builder.RegisterType<ConfigurationProvider>().As<IConfigurationProvider>();
             builder.RegisterType<UserProvider>().As<IUserProvider>();
             builder.RegisterType<ConcurrencyService>().As<IConcurrencyService>();
+            builder.RegisterType<ConstantRatePump>().As<IConstantRatePump>().SingleInstance();
 
             // views
             builder.RegisterType<ShellView>();
