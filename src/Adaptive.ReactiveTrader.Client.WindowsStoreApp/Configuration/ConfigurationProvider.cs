@@ -4,8 +4,8 @@
     {
         public string[] Servers
         {
-            get { return new[] { "http://localhost:8080" }; }
-            //get { return new[] { "https://reactivetrader.azurewebsites.net/signalr" }; }
+            //get { return new[] { "http://localhost:8080" }; }
+            get { return new[] { "https://reactivetrader.azurewebsites.net/signalr" }; }
         }
     }
 }
