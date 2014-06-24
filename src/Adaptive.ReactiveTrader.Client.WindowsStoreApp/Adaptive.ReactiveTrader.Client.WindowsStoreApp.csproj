@@ -132,7 +132,6 @@
     <Compile Include="Behaviors\MouseOverVisualStateBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Concurrency\ConcurrencyService.cs" />
-    <Compile Include="Concurrency\ConstantRatePump.cs" />
     <Compile Include="Configuration\ConfigurationProvider.cs" />
     <Compile Include="Configuration\UserProvider.cs" />
     <Compile Include="Controls\CursorHelper.cs" />

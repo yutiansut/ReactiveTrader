@@ -44,8 +44,8 @@ namespace Adaptive.ReactiveTrader.Client
             Log.InfoFormat("Reactive trader API initialized in {0}ms", sw.ElapsedMilliseconds);
 
             MainWindow = new MainWindow();
-            var shellView = container.Resolve<ShellView>();
-            MainWindow.Content = shellView;
+            var shellViewModel = container.Resolve<IShellViewModel>();
+            MainWindow.Content = new ShellView(shellViewModel);
 
             await Task.Delay(TimeSpan.FromSeconds(1.5));
             splash.Close();
