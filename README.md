@@ -23,7 +23,7 @@ Reactive Trader comes in different flavours (click on the link for a demo)
  
  - [WPF (ClickOnce)](https://reactivetrader.blob.core.windows.net/client/Adaptive.ReactiveTrader.application)
  - [HTML5](https://reactivetrader.azurewebsites.net/)
- - Windows Store App (...soon to be published!)
+ - [Windows Store App](http://apps.microsoft.com/windows/app/reactive-trader/a2c622c5-ef66-4653-911f-688fe79ac999)
  - iOS native app (...soon to be published!)
 
 # Video and Podcast
