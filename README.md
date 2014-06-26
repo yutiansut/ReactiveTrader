@@ -23,13 +23,18 @@ Reactive Trader comes in different flavours (click on the link for a demo)
  
  - [WPF (ClickOnce)](https://reactivetrader.blob.core.windows.net/client/Adaptive.ReactiveTrader.application)
  - [HTML5](https://reactivetrader.azurewebsites.net/)
- - Windows Store App (...soon to be published!)
+ - [Windows Store App](http://apps.microsoft.com/windows/app/reactive-trader/a2c622c5-ef66-4653-911f-688fe79ac999)
  - iOS native app (...soon to be published!)
 
-# Video and Podcast
+# Talk
 
 Click on the image below to watch the video on YouTube.  It was recorded during our talk at [ReactConf 2014](http://reactconf.com/)
 [![Our video from ReactConf 2012](http://img.youtube.com/vi/Tp5mRlHwZ7M/0.jpg)](http://www.youtube.com/watch?v=Tp5mRlHwZ7M)
+
+# Podcast
+
+We had the pleasure of chatting with [Scott Hanselman](http://www.hanselman.com/) on his regular podcast Hanselminutes about Reactive Trader, Rx, trading systems, open source, etc.
+[Podcast](http://www.hanselminutes.com/428/creating-reactive-user-interfaces-with-adaptive-consultings-reactive-trader)
 
 # Blogs
 
