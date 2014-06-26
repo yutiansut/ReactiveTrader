@@ -33,6 +33,8 @@ Click on the image below to watch the video on YouTube.  It was recorded during 
 
 # Podcast
 
+![Hanselminutes](http://www.hanselman.com/images/blog-hanselminutes.png)
+
 We had the pleasure of chatting with [Scott Hanselman](http://www.hanselman.com/) on his regular podcast Hanselminutes about Reactive Trader, Rx, trading systems, open source, etc.
 [Podcast](http://www.hanselminutes.com/428/creating-reactive-user-interfaces-with-adaptive-consultings-reactive-trader)
 
