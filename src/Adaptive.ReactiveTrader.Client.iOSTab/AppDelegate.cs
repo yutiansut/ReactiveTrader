@@ -23,8 +23,10 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		private IReactiveTrader _reactiveTrader;
 
 		// class-level declarations
+
 		UIWindow window;
 		UITabBarController tabBarController;
+
 		//
 		// This method is invoked when the application has loaded and is ready to run. In this
 		// method you should instantiate the window, load the UI into it and then make the window
@@ -39,6 +41,13 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			UITableView.Appearance.SeparatorInset = UIEdgeInsets.Zero;
 
 			UITabBar.Appearance.BarTintColor = Styles.RTDarkerBlue;
+
+
+			// Black opaque status bar (which we request via Info.plist) not supported in iOS 7?
+			// Xamarin 5.0.1 toolset out of date?
+
+			UIApplication.SharedApplication.SetStatusBarStyle (UIStatusBarStyle.LightContent, false);
+			UIApplication.SharedApplication.SetStatusBarHidden (false, true);
 
 			// create a new window instance based on the screen size
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
@@ -62,6 +71,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			var statusViewController = new StatusViewController (_reactiveTrader, cs);
 
 			tabBarController = new UITabBarController ();
+
 			tabBarController.ViewControllers = new UIViewController [] {
 				pricesViewController,
 				tradesViewController,

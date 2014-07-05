@@ -13,7 +13,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 	partial class PricesHeaderCell
 	{
 		[Outlet]
-		MonoTouch.UIKit.UIView ContentView { get; set; }
+		MonoTouch.UIKit.UIView ContainerView { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel StatusLabel { get; set; }
@@ -26,19 +26,19 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (ContentView != null) {
-				ContentView.Dispose ();
-				ContentView = null;
-			}
-
-			if (StatusSwitch != null) {
-				StatusSwitch.Dispose ();
-				StatusSwitch = null;
+			if (ContainerView != null) {
+				ContainerView.Dispose ();
+				ContainerView = null;
 			}
 
 			if (StatusLabel != null) {
 				StatusLabel.Dispose ();
 				StatusLabel = null;
+			}
+
+			if (StatusSwitch != null) {
+				StatusSwitch.Dispose ();
+				StatusSwitch = null;
 			}
 		}
 	}

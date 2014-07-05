@@ -75,7 +75,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 			// May be struck through in the event of trade failure...
 
 			CounterCCY.AttributedText = new NSAttributedString(model.Trade.DealtCurrency, strikethroughAttributes);
-			DirectionAmount.AttributedText = new NSAttributedString(model.Trade.Notional.ToString (), strikethroughAttributes);
+			DirectionAmount.AttributedText = new NSAttributedString(Styles.FormatNotional(model.Trade.Notional, true), strikethroughAttributes);
 			Rate.AttributedText = new NSAttributedString(model.Trade.SpotRate.ToString (), strikethroughAttributes);
 			SpotDate.AttributedText = new NSAttributedString(model.Trade.ValueDate.ToShortDateString (), strikethroughAttributes);
 			TraderId.AttributedText = new NSAttributedString(model.Trade.TraderName, strikethroughAttributes);

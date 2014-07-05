@@ -127,10 +127,6 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="ConcurrencyService.cs" />
     <Compile Include="iOSDispatcherScheduler.cs" />
-    <Compile Include="LogViewController.cs" />
-    <Compile Include="LogViewController.designer.cs">
-      <DependentUpon>LogViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Logging\LoggerFactory.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Logging\ILogSink.cs" />
@@ -151,14 +147,6 @@
     <Compile Include="Model\TradeDoneModel.cs" />
     <Compile Include="Model\TradeTilesModel.cs" />
     <Compile Include="View\Tiles\ITradeDoneCell.cs" />
-    <Compile Include="View\StatusViewController.cs" />
-    <Compile Include="View\StatusViewController.designer.cs">
-      <DependentUpon>StatusViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="StartUpView.cs" />
-    <Compile Include="StartUpView.designer.cs">
-      <DependentUpon>StartUpView.cs</DependentUpon>
-    </Compile>
     <Compile Include="View\Tiles\PriceTileErrorViewCell.cs" />
     <Compile Include="View\Tiles\PriceTileErrorViewCell.designer.cs">
       <DependentUpon>PriceTileErrorViewCell.cs</DependentUpon>
@@ -177,6 +165,18 @@
       <DependentUpon>PricesHeaderCell.cs</DependentUpon>
     </Compile>
     <Compile Include="UserModel.cs" />
+    <Compile Include="View\Status\StatusViewController.cs" />
+    <Compile Include="View\Status\StatusViewController.designer.cs">
+      <DependentUpon>StatusViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\StartUp\StartUpView.cs" />
+    <Compile Include="View\StartUp\StartUpView.designer.cs">
+      <DependentUpon>StartUpView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Log\LogViewController.cs" />
+    <Compile Include="View\Log\LogViewController.designer.cs">
+      <DependentUpon>LogViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\first.png" />
@@ -193,6 +193,8 @@
     <BundleResource Include="Resources\adaptive%402x.png" />
     <BundleResource Include="Resources\green-up.png" />
     <BundleResource Include="Resources\red-down.png" />
+    <BundleResource Include="Resources\adaptive-logo%402x.png" />
+    <BundleResource Include="Resources\adaptive-logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -220,13 +222,16 @@
     <Folder Include="Model\" />
     <Folder Include="View\Prices\" />
     <Folder Include="View\Trades\" />
+    <Folder Include="View\Status\" />
+    <Folder Include="View\StartUp\" />
+    <Folder Include="View\Log\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="View\Tiles\PriceTileTradeAffirmationViewCell.xib" />
-    <InterfaceDefinition Include="View\StatusViewController.xib" />
-    <InterfaceDefinition Include="StartUpView.xib" />
     <InterfaceDefinition Include="View\Tiles\PriceTileErrorViewCell.xib" />
     <InterfaceDefinition Include="View\Tiles\PriceTileViewCell.xib" />
     <InterfaceDefinition Include="View\Prices\PricesHeaderCell.xib" />
+    <InterfaceDefinition Include="View\Status\StatusViewController.xib" />
+    <InterfaceDefinition Include="View\StartUp\StartUpView.xib" />
   </ItemGroup>
 </Project>

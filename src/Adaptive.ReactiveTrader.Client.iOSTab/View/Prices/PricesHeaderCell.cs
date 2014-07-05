@@ -28,10 +28,10 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			}
 
 			if (isEnabled) {
-				this.ContentView.BackgroundColor = Styles.RTWarnOrange;
+				this.ContainerView.BackgroundColor = Styles.RTWarnOrange;
 				this.StatusLabel.Text = "One touch trading is enabled";
 			} else {
-				this.ContentView.BackgroundColor = Styles.RTDarkerBlue;
+				this.ContainerView.BackgroundColor = Styles.RTDarkerBlue;
 				this.StatusLabel.Text = "One touch trading is disabled";
 			}
 		}

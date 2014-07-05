@@ -7,6 +7,7 @@ using MonoTouch.UIKit;
 using Adaptive.ReactiveTrader.Client.Domain;
 using Adaptive.ReactiveTrader.Client.Concurrency;
 using System.Linq;
+using Adaptive.ReactiveTrader.Client.iOSTab.Tiles;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
@@ -44,15 +45,58 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 		}
 
-		private void OnItemChanged(PriceTileModel item) {
+		private void OnItemChanged(PriceTileModel itemModel) {
 
 			if (IsViewLoaded) {
-				var indexOfItem = _model.ActiveCurrencyPairs.IndexOf (item);
+				var indexOfItem = _model.ActiveCurrencyPairs.IndexOf (itemModel);
 
-				TableView.ReloadRows (
-					new [] {
-						NSIndexPath.Create (0, indexOfItem)
-					}, UITableViewRowAnimation.None);
+				NSIndexPath path = NSIndexPath.FromRowSection(indexOfItem, 0);
+				IPriceTileCell cell = (IPriceTileCell)TableView.CellAt (path);
+
+				if (cell == null) {
+					//					System.Console.WriteLine ("Row {0} not found", indexOfItem);
+					// There's no cell bound to that index in the data, so we can ignore the update.
+				} else {
+					System.Console.WriteLine ("Row {0} FOUND {1}", indexOfItem, cell.GetType ().ToString ());
+
+					bool bAppropriateCell = false; // TODO: Refactor this elsewhere.
+
+					switch (itemModel.Status) {
+					case PriceTileStatus.Done:
+						if (cell.GetType ().Equals (Type.GetType ("Adaptive.ReactiveTrader.Client.iOSTab.PriceTileTradeAffirmationViewCell", false))) {
+							bAppropriateCell = true;
+						}
+						break;
+
+					case PriceTileStatus.Streaming:
+					case PriceTileStatus.Executing:
+						if (cell.GetType ().Equals (Type.GetType ("Adaptive.ReactiveTrader.Client.iOSTab.PriceTileViewCell", false))) {
+							bAppropriateCell = true;
+						}
+						break;
+
+					case PriceTileStatus.Stale:
+						if (cell.GetType ().Equals (Type.GetType ("Adaptive.ReactiveTrader.Client.iOSTab.PriceTileErrorViewCell", false))) {
+							bAppropriateCell = true;
+						}
+						break;
+					}
+
+					// TODO: Batch the updates up, to only call ReloadRows once per main event loop loop?
+
+					if (bAppropriateCell) {
+						System.Console.WriteLine ("Cell is APPROPRIATE", indexOfItem);
+						cell.UpdateFrom (itemModel);
+					} else {
+						// TODO: If the cell is of the wrong type, reload the row instead.
+
+						TableView.ReloadRows (
+							new [] {
+								NSIndexPath.Create (0, indexOfItem)
+							}, UITableViewRowAnimation.None);
+					}
+				}
+
 			}
 		}
 
@@ -74,6 +118,16 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			Styles.ConfigureTable (TableView);
 		}
+
+
+		// Workaround: Prevent UI from incorrectly extending under tab bar.
+
+		public override UIRectEdge EdgesForExtendedLayout {
+			get {
+				return (base.EdgesForExtendedLayout ^ UIRectEdge.Bottom);
+			}
+		}
+
 	}
 }
 

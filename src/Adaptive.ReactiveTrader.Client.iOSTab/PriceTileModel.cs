@@ -39,7 +39,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			this.Symbol = _currencyPair.BaseCurrency + " / " + _currencyPair.CounterCurrency;
 			this.Status = PriceTileStatus.Streaming;
 			this.RightSideBigNumber = this.LeftSideBigNumber = "--";
-			this.Notional = "1000000";
+			this.Notional = 1000000;
 			this.NotionalCcy = this.Base;
 
 			_currencyPair.PriceStream
@@ -63,7 +63,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 		public string Spread { get; set; }
 
-		public string Notional { get; set; }
+		public long Notional { get; set; }
 		public string NotionalCcy { get; set; }
 		public TradeDoneModel TradeDone { get; set; }
 		public PriceMovement Movement { get; set; }
@@ -72,13 +72,12 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		{
 			Boolean executed = false;
 			var price = _lastPrice;
-			long notional;
 
-			if (price != null && long.TryParse (Notional, out notional)) {
+			if (price != null) {
 
 				Status = PriceTileStatus.Executing;
 
-				price.Bid.ExecuteRequest ( notional, _currencyPair.BaseCurrency)
+				price.Bid.ExecuteRequest ( Notional, _currencyPair.BaseCurrency)
 					.SubscribeOn(_concurrencyService.TaskPool)
 					.ObserveOn(_concurrencyService.Dispatcher)
 					.Subscribe(OnTradeResponseUpdate);
@@ -89,7 +88,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			}
 
-			// TODO: Failure cases (eg unparsable or otherwise unsuitable notional).
+			// TODO: Failure cases (eg unsuitable notional).
 
 			return (executed);
 		}
@@ -98,13 +97,12 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		{
 			Boolean executed = false;
 			var price = _lastPrice;
-			long notional;
 
-			if (price != null && long.TryParse (Notional, out notional)) {
+			if (price != null) {
 
 				Status = PriceTileStatus.Executing;
 
-				price.Ask.ExecuteRequest ( notional, _currencyPair.BaseCurrency)
+				price.Ask.ExecuteRequest ( Notional, _currencyPair.BaseCurrency)
 					.SubscribeOn(_concurrencyService.TaskPool)
 					.ObserveOn(_concurrencyService.Dispatcher)
 					.Subscribe(OnTradeResponseUpdate);
@@ -114,7 +112,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 				NotifyOnChanged (this);
 			}
 
-			// TODO: Failure cases (eg unparsable or otherwise unsuitable notional).
+			// TODO: Failure cases (eg unsuitable notional).
 
 			return (executed);
 		}

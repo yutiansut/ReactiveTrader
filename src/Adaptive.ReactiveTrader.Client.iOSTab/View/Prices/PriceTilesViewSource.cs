@@ -56,7 +56,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 		public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
 		{
-			PriceTileModel model = priceTilesModel [(int)indexPath.IndexAtPosition (1)];
+			PriceTileModel model = priceTilesModel [indexPath.Row];
 
 			var cell = GetCell (tableView, model);
 
@@ -72,21 +72,24 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			switch (model.Status) {
 			case PriceTileStatus.Done:
 				priceTileCell = tableView.DequeueReusableCell (PriceTileTradeAffirmationViewCell.Key) as PriceTileTradeAffirmationViewCell;
-				if (priceTileCell == null)
+				if (priceTileCell == null) {
 					priceTileCell = PriceTileTradeAffirmationViewCell.Create ();
+				}
 				break;
 
 			case PriceTileStatus.Streaming:
 			case PriceTileStatus.Executing:
 				priceTileCell = tableView.DequeueReusableCell (PriceTileViewCell.Key) as PriceTileViewCell;
-				if (priceTileCell == null)
+				if (priceTileCell == null) {
 					priceTileCell = PriceTileViewCell.Create (this.userModel);
+				}
 				break;
 
 			case PriceTileStatus.Stale:
 				priceTileCell = tableView.DequeueReusableCell (PriceTileErrorViewCell.Key) as PriceTileViewCell;
-				if (priceTileCell == null)
+				if (priceTileCell == null) {
 					priceTileCell = PriceTileErrorViewCell.Create ();
+				}
 				break;
 			}
 

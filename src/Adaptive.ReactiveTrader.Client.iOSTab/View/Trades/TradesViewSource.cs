@@ -23,6 +23,12 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 			return 1;
 		}
 
+		public override float GetHeightForHeader (UITableView tableView, int section)
+		{
+			// Crude fix for overlap with trades cells and phone status bar.
+			return 20.0f;
+		}
+
 		public override int RowsInSection (UITableView tableview, int section)
 		{
 			return _tradeTilesModel.Count;

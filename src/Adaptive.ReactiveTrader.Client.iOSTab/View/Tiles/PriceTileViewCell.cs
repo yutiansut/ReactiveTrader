@@ -32,7 +32,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			_userModel = userModel;
 			return created;
 		}
-			
+
 		public void UpdateFrom (PriceTileModel model)
 		{
 			_priceTileModel = model;
@@ -41,7 +41,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			SetBuySellSides (model);
 
-			this.Notional.Text = model.Notional;
+			if (this.Notional.IsEditing) {
+				System.Console.WriteLine ("Notional {0} is mid edit", this.Notional.Text);
+			} else {
+				this.Notional.Text = Styles.FormatNotional (model.Notional, true);
+			}
 
 			this.LeftSideNumber.Text = model.LeftSideNumber;
 			this.LeftSideBigNumber.Text = model.LeftSideBigNumber;
@@ -50,8 +54,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			this.RightSideNumber.Text = model.RightSideNumber;
 			this.RightSideBigNumber.Text = model.RightSideBigNumber;
 			this.RightSidePips.Text = model.RightSidePips;
-
-	
+				
 			this.Executing.Hidden = model.Status != PriceTileStatus.Executing;
 
 			this.Spread.Text = model.Spread;
@@ -101,8 +104,15 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		partial void NotionalValueChanged (NSObject sender)
 		{
 			var model = _priceTileModel;
-			if (model != null)
-				model.Notional = Notional.Text;
+			if (model != null) {
+				long newNotional;
+				if (long.TryParse (Notional.Text, out newNotional)) {
+					model.Notional = newNotional;
+				} else {
+					// Leave it unchanged.
+					// TODO: A more elegant failure case for unparsable (or otherwise unsitable) notional?
+				}
+			}
 		}
 			
 		partial void NotionalCcyTouchUpInside (NSObject sender)

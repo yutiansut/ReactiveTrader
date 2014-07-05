@@ -13,10 +13,10 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 	partial class StatusViewController
 	{
 		[Outlet]
-		MonoTouch.UIKit.UILabel ConnectionStatus { get; set; }
+		MonoTouch.UIKit.UILabel ConnectionDetail { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel ConnectionUrl { get; set; }
+		MonoTouch.UIKit.UILabel ConnectionStatus { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel ServerUpdateRate { get; set; }
@@ -29,19 +29,14 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (ConnectionDetail != null) {
+				ConnectionDetail.Dispose ();
+				ConnectionDetail = null;
+			}
+
 			if (ConnectionStatus != null) {
 				ConnectionStatus.Dispose ();
 				ConnectionStatus = null;
-			}
-
-			if (ConnectionUrl != null) {
-				ConnectionUrl.Dispose ();
-				ConnectionUrl = null;
-			}
-
-			if (UIUpdateRate != null) {
-				UIUpdateRate.Dispose ();
-				UIUpdateRate = null;
 			}
 
 			if (ServerUpdateRate != null) {
@@ -52,6 +47,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 			if (UILatency != null) {
 				UILatency.Dispose ();
 				UILatency = null;
+			}
+
+			if (UIUpdateRate != null) {
+				UIUpdateRate.Dispose ();
+				UIUpdateRate = null;
 			}
 		}
 	}

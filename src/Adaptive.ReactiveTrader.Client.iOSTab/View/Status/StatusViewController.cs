@@ -63,6 +63,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 			base.ViewDidLoad ();
 			// Perform any additional setup after loading the view, typically from a nib.
 
+			// The connection detail text area wraps and is resizable.
+			// Note that this requires us to turn off Auto-layout for this view.
+
+			this.ConnectionDetail.LineBreakMode = UILineBreakMode.CharacterWrap;
+
 			if (_lastConnectionInfo != null) {
 				OnStatusChange (_lastConnectionInfo);
 				_lastConnectionInfo = null;
@@ -71,7 +76,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 
 		private void OnStatusChange(ConnectionInfo connectionInfo) {
 			if (this.IsViewLoaded) {
-				this.ConnectionUrl.Text = connectionInfo.Server;
+				this.ConnectionDetail.Text = connectionInfo.Server;
+				this.ConnectionDetail.SizeToFit (); // Multi-line, with initially small height.
 				this.ConnectionStatus.Text = connectionInfo.ConnectionStatus.ToString ();
 			} else {
 				_lastConnectionInfo = connectionInfo;

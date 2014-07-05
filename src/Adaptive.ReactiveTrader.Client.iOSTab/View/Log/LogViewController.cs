@@ -82,6 +82,16 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 				Font = UIFont.FromName ("Courier", 10)
 			};
 		}
+
+
+		// Workaround: Prevent UI from incorrectly extending under tab bar.
+
+		public override UIRectEdge EdgesForExtendedLayout {
+			get {
+				return (base.EdgesForExtendedLayout ^ UIRectEdge.Bottom);
+			}
+		}
+
 	}
 }
 
