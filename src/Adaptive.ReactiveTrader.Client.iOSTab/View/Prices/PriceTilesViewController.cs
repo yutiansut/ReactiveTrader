@@ -25,7 +25,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			this._reactiveTrader = reactiveTrader;
 
 			Title = "Prices";
-			TabBarItem.Image = UIImage.FromBundle ("adaptive");
+			TabBarItem.Image = UIImage.FromBundle ("tab_prices");
 
 			_model = new PriceTilesModel (_reactiveTrader, _concurrencyService);
 

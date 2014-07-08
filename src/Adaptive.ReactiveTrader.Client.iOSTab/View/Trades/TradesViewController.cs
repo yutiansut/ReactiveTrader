@@ -23,7 +23,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 			_concurrencyService = concurrencyService;
 
 			Title = "Trades";
-			TabBarItem.Image = UIImage.FromBundle ("adaptive");
+			TabBarItem.Image = UIImage.FromBundle ("tab_trades");
 
 			_model = new TradeTilesModel (_reactiveTrader, _concurrencyService);
 

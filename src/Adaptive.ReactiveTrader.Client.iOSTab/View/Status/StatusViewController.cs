@@ -26,7 +26,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 			_concurrencyService = concurrencyService;
 
 			Title = "Status";
-			TabBarItem.Image = UIImage.FromBundle ("adaptive");
+			TabBarItem.Image = UIImage.FromBundle ("tab_status");
 
 			_disposables.Add (
 				_reactiveTrader.ConnectionStatusStream
@@ -67,6 +67,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 			// Note that this requires us to turn off Auto-layout for this view.
 
 			this.ConnectionDetail.LineBreakMode = UILineBreakMode.CharacterWrap;
+
+			this.TraderId.Text = UserModel.Instance.TraderId;
 
 			if (_lastConnectionInfo != null) {
 				OnStatusChange (_lastConnectionInfo);

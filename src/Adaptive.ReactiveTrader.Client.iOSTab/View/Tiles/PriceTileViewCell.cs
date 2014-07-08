@@ -159,11 +159,15 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 					model.Notional = newNotional;
 				} else {
 					System.Console.WriteLine("Unable to parse notional {0}", Notional.Text);
-					// Leave it unchanged.
+					// Leave model value unchanged.
 					// TODO: A more elegant failure case for unparsable (or otherwise unsuitable) notional?
 					// TODO: Consider canning any attempt at one-touch trading which triggered this parse attempt.
 				}
 			}
+
+			// Reinstate nicely-formatted version of notional (with new, or existing, value)...
+
+			this.Notional.Text = Styles.FormatNotional (_priceTileModel.Notional, true);
 		}
 			
 		partial void NotionalCcyTouchUpInside (NSObject sender)

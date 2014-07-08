@@ -22,6 +22,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 		MonoTouch.UIKit.UILabel ServerUpdateRate { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UILabel TraderId { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel UILatency { get; set; }
 
 		[Outlet]
@@ -52,6 +55,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 			if (UIUpdateRate != null) {
 				UIUpdateRate.Dispose ();
 				UIUpdateRate = null;
+			}
+
+			if (TraderId != null) {
+				TraderId.Dispose ();
+				TraderId = null;
 			}
 		}
 	}

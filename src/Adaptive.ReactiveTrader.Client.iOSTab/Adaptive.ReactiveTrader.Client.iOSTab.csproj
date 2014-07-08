@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -147,6 +147,7 @@
     <Compile Include="Model\TradeDoneModel.cs" />
     <Compile Include="Model\TradeTilesModel.cs" />
     <Compile Include="View\Tiles\ITradeDoneCell.cs" />
+    <Compile Include="View\Tiles\INotionalDelegateRecipient.cs" />
     <Compile Include="View\Tiles\PriceTileErrorViewCell.cs" />
     <Compile Include="View\Tiles\PriceTileErrorViewCell.designer.cs">
       <DependentUpon>PriceTileErrorViewCell.cs</DependentUpon>
@@ -177,14 +178,9 @@
       <DependentUpon>LogViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Tiles\NotionalTextFieldDelegate.cs" />
-    <Compile Include="View\Tiles\INotionalDelegateRecipient.cs" />
     <Compile Include="Model\UserModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\first.png" />
-    <BundleResource Include="Resources\first%402x.png" />
-    <BundleResource Include="Resources\second.png" />
-    <BundleResource Include="Resources\second%402x.png" />
     <BundleResource Include="Resources\Icon-60%402x.png" />
     <BundleResource Include="Resources\Icon%402x.png" />
     <BundleResource Include="Resources\Icon.png" />
@@ -197,6 +193,12 @@
     <BundleResource Include="Resources\red-down.png" />
     <BundleResource Include="Resources\adaptive-logo%402x.png" />
     <BundleResource Include="Resources\adaptive-logo.png" />
+    <BundleResource Include="Resources\tab_status%402x.png" />
+    <BundleResource Include="Resources\tab_status.png" />
+    <BundleResource Include="Resources\tab_prices.png" />
+    <BundleResource Include="Resources\tab_prices%402x.png" />
+    <BundleResource Include="Resources\tab_trades.png" />
+    <BundleResource Include="Resources\tab_trades%402x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
