@@ -13,24 +13,51 @@ using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
-	public partial class PriceTileViewCell : UITableViewCell, IPriceTileCell
+	public partial class PriceTileViewCell : UITableViewCell, IPriceTileCell, INotionalDelegateRecipient
 	{
 		public static readonly UINib Nib = UINib.FromName ("PriceTileViewCell", NSBundle.MainBundle);
 		public static readonly NSString Key = new NSString ("PriceTileViewCell");
 
 		private PriceTileModel _priceTileModel;
-		private static UserModel _userModel;
+
 
 		public PriceTileViewCell (IntPtr handle) : base (handle)
 		{
 		}
 
-		public static PriceTileViewCell Create (UserModel userModel)
+		public static PriceTileViewCell Create ()
 		{
 			PriceTileViewCell created = (PriceTileViewCell)Nib.Instantiate (null, null) [0];
 			created.ContentView.BackgroundColor = Styles.RTDarkerBlue;
-			_userModel = userModel;
+
+			created.Notional.Delegate = new NotionalTextFieldDelegate (created);
+
+			var numberToolbar = new UIToolbar (new RectangleF(0.0f, 0.0f, created.Frame.Size.Width, 40.0f));
+
+			numberToolbar.Items = new UIBarButtonItem[] {
+				new UIBarButtonItem ("Cancel", UIBarButtonItemStyle.Bordered, created, new MonoTouch.ObjCRuntime.Selector ("CancelNumberPad")),
+				new UIBarButtonItem (UIBarButtonSystemItem.FlexibleSpace),
+				new UIBarButtonItem (UIBarButtonSystemItem.Done, created, new MonoTouch.ObjCRuntime.Selector ("DoneNumberPad"))
+			};
+
+			created.Notional.InputAccessoryView = numberToolbar;
+
 			return created;
+		}
+
+		[Export("CancelNumberPad")]
+		private void CancelNumberPad ()
+		{
+			System.Console.WriteLine ("CancelNumberPad");
+			this.Notional.Text = Styles.FormatNotional (_priceTileModel.Notional, false);
+			this.Notional.ResignFirstResponder ();
+		}
+
+		[Export("DoneNumberPad")]
+		private void DoneNumberPad ()
+		{
+			System.Console.WriteLine ("DoneNumberPad");
+			this.Notional.ResignFirstResponder ();
 		}
 
 		public void UpdateFrom (PriceTileModel model)
@@ -42,7 +69,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			SetBuySellSides (model);
 
 			if (this.Notional.IsEditing) {
-				System.Console.WriteLine ("Notional {0} is mid edit", this.Notional.Text);
+				// TODO: Determine what it really means to update the Notional via the model.
+				System.Console.WriteLine ("Notional {0} is mid edit, so not updating to {1}", this.Notional.Text, model.Notional);
 			} else {
 				this.Notional.Text = Styles.FormatNotional (model.Notional, true);
 			}
@@ -78,6 +106,13 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 		partial void LeftSideButtonTouchUpInside (NSObject sender)
 		{
+			// TODO: Reconsider the UX here. Should we make use of a partly-entered notional value? One that might be rejected?
+
+			if (this.Notional.IsEditing) {
+				// Try to accept whatever value's been entered, and then use it below...
+				DoneNumberPad();
+			}
+
 			// TODO 
 			var model = _priceTileModel;
 			if (model != null && model.Status == PriceTileStatus.Streaming) {
@@ -85,32 +120,48 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 				// TODO: Determine where to best place the check for trading enabled.
 				// Where would we implenet two-touch, or more complex order entry?
 				//
-				if (_userModel.GetOneTouchTradingEnabled() && model.Bid()) {
-					_userModel.SetOneTouchTradingEnabled(false);
+				if (UserModel.Instance.OneTouchTradingEnabled && model.Bid()) {
+					UserModel.Instance.OneTouchTradingEnabled = false;
 				}
 			}
 		}
 
 		partial void RightSideButtonTouchUpInside (NSObject sender)
 		{
+			// TODO: Reconsider the UX here. Should we make use of a partly-entered notional value? One that might be rejected?
+
+			if (this.Notional.IsEditing) {
+				// Try to accept whatever value's been entered, and then use it below...
+				DoneNumberPad();
+			}
+
 			var model = _priceTileModel;
 			if (model != null && model.Status == PriceTileStatus.Streaming) {
-				if (_userModel.GetOneTouchTradingEnabled() && model.Ask()) {
-					_userModel.SetOneTouchTradingEnabled(false);
+				if (UserModel.Instance.OneTouchTradingEnabled && model.Ask()) {
+					UserModel.Instance.OneTouchTradingEnabled = false;
 				}
 			}
 		}
-			
-		partial void NotionalValueChanged (NSObject sender)
+
+		public void NotionalValueEditStarted()
 		{
+			System.Console.WriteLine("NotionalValueEditStarted, now {0}", Notional.Text);
+		}
+
+		public void NotionalValueEditComplete ()
+		{
+			System.Console.WriteLine("NotionalValueEditComplete, now {0}", Notional.Text);
+
 			var model = _priceTileModel;
 			if (model != null) {
 				long newNotional;
 				if (long.TryParse (Notional.Text, out newNotional)) {
 					model.Notional = newNotional;
 				} else {
+					System.Console.WriteLine("Unable to parse notional {0}", Notional.Text);
 					// Leave it unchanged.
-					// TODO: A more elegant failure case for unparsable (or otherwise unsitable) notional?
+					// TODO: A more elegant failure case for unparsable (or otherwise unsuitable) notional?
+					// TODO: Consider canning any attempt at one-touch trading which triggered this parse attempt.
 				}
 			}
 		}
@@ -122,7 +173,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 				SwapBuySellSides (model);
 				SetBuySellSides (model);
 			}
-			this.NotionalCCY.SetNeedsDisplay ();
 		}
 
 		void SwapBuySellSides(PriceTileModel model) {
@@ -143,12 +193,14 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 				this.LeftSideAction.Text = "BUY";
 				this.RightSideAction.Text = "SELL";
 			}
-			this.NotionalCCY.TitleLabel.Text = model.NotionalCcy;
-//			this.NotionalCCY.SetTitle (model.NotionalCcy,
-//				UIControlState.Normal
-//				| UIControlState.Highlighted
-//				| UIControlState.Disabled
-//				| UIControlState.Selected);
+
+			this.NotionalCCY.SetTitle (model.NotionalCcy, UIControlState.Normal);
+			this.NotionalCCY.SetTitle (model.NotionalCcy, UIControlState.Disabled);
+			this.NotionalCCY.SetTitle (model.NotionalCcy, UIControlState.Selected);
+
+			// Show what it WILL be, when user is mid tap...
+
+			this.NotionalCCY.SetTitle ((model.NotionalCcy == model.Base)?model.Counter:model.Base, UIControlState.Highlighted);
 		}
 	}
 }

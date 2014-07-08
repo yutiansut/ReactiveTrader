@@ -17,7 +17,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		private readonly IReactiveTrader _reactiveTrader;
 		private readonly IConcurrencyService _concurrencyService;
 		private readonly PriceTilesModel _model;
-		private readonly UserModel _userModel; // TODO: Relocate this. Singleton?
 
 		public PriceTilesViewController (IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService) 
 			: base(UITableViewStyle.Plain)
@@ -27,8 +26,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			Title = "Prices";
 			TabBarItem.Image = UIImage.FromBundle ("adaptive");
-
-			_userModel = new UserModel ();
 
 			_model = new PriceTilesModel (_reactiveTrader, _concurrencyService);
 
@@ -57,7 +54,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 					//					System.Console.WriteLine ("Row {0} not found", indexOfItem);
 					// There's no cell bound to that index in the data, so we can ignore the update.
 				} else {
-					System.Console.WriteLine ("Row {0} FOUND {1}", indexOfItem, cell.GetType ().ToString ());
+					//					System.Console.WriteLine ("Row {0} FOUND {1}", indexOfItem, cell.GetType ().ToString ());
 
 					bool bAppropriateCell = false; // TODO: Refactor this elsewhere.
 
@@ -85,7 +82,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 					// TODO: Batch the updates up, to only call ReloadRows once per main event loop loop?
 
 					if (bAppropriateCell) {
-						System.Console.WriteLine ("Cell is APPROPRIATE", indexOfItem);
+						//						System.Console.WriteLine ("Cell is APPROPRIATE", indexOfItem);
 						cell.UpdateFrom (itemModel);
 					} else {
 						// TODO: If the cell is of the wrong type, reload the row instead.
@@ -114,7 +111,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			TableView.RegisterNibForHeaderFooterViewReuse (PricesHeaderCell.Nib, PricesHeaderCell.Key);
 
-			TableView.Source = new PriceTilesViewSource (_model, _userModel);
+			TableView.Source = new PriceTilesViewSource (_model);
 
 			Styles.ConfigureTable (TableView);
 		}

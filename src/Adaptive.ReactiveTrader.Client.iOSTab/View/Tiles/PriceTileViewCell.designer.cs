@@ -66,19 +66,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		[Action ("NotionalCcyTouchUpInside:")]
 		partial void NotionalCcyTouchUpInside (MonoTouch.Foundation.NSObject sender);
 
-		[Action ("NotionalValueChanged:")]
-		partial void NotionalValueChanged (MonoTouch.Foundation.NSObject sender);
-
 		[Action ("RightSideButtonTouchUpInside:")]
 		partial void RightSideButtonTouchUpInside (MonoTouch.Foundation.NSObject sender);
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (NotionalCCY != null) {
-				NotionalCCY.Dispose ();
-				NotionalCCY = null;
-			}
-
 			if (CurrencyPair != null) {
 				CurrencyPair.Dispose ();
 				CurrencyPair = null;
@@ -112,6 +104,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			if (Notional != null) {
 				Notional.Dispose ();
 				Notional = null;
+			}
+
+			if (NotionalCCY != null) {
+				NotionalCCY.Dispose ();
+				NotionalCCY = null;
 			}
 
 			if (PriceMovementDown != null) {

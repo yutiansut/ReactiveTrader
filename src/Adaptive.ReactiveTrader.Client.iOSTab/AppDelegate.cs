@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq; 
 using System.Reactive.Linq;
-using System.Diagnostics;
 using System.Security.Principal;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
@@ -63,8 +62,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			_reactiveTrader = new Adaptive.ReactiveTrader.Client.Domain.ReactiveTrader ();
 
-			_reactiveTrader.Initialize ("iOS-" + Process.GetCurrentProcess ().Id, new [] { "https://reactivetrader.azurewebsites.net/signalr" }, logging);
-			//		_reactiveTrader.Initialize ("iOS-" + Process.GetCurrentProcess ().Id, new [] { "http://192.168.1.197:8080/signalr" }, logging);
+			_reactiveTrader.Initialize (UserModel.Instance.TraderId, new [] { "https://reactivetrader.azurewebsites.net/signalr" }, logging);
+			//		_reactiveTrader.Initialize (UserModel.Instance.Id, new [] { "http://192.168.1.197:8080/signalr" }, logging);
 
 			var tradesViewController = new TradesViewController (_reactiveTrader, cs);
 			var pricesViewController = new PriceTilesViewController (_reactiveTrader, cs);

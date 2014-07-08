@@ -10,8 +10,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		public static readonly UINib Nib = UINib.FromName ("PricesHeaderCell", NSBundle.MainBundle);
 		public static readonly NSString Key = new NSString ("PricesHeaderCell");
 
-		private UserModel _currentUserModel;
-
 		public PricesHeaderCell (IntPtr handle) : base (handle)
 		{
 		}
@@ -40,20 +38,17 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		{
 			userModel.OnChanged
 				.Subscribe (OnItemChanged);
-			this._currentUserModel = userModel;
-			this.DecorateWithEnabledness (userModel.GetOneTouchTradingEnabled());
+			this.DecorateWithEnabledness (userModel.OneTouchTradingEnabled);
 		}
 
 		private void OnItemChanged(UserModel item) {
-			DecorateWithEnabledness(item.GetOneTouchTradingEnabled());
+			DecorateWithEnabledness(item.OneTouchTradingEnabled);
 		}
 
 		partial void SwitchValueChanged (MonoTouch.Foundation.NSObject sender)
 		{
-			if (this._currentUserModel != null) {
-				UISwitch asSwitch = (UISwitch)sender;
-				this._currentUserModel.SetOneTouchTradingEnabled(asSwitch.On);
-			}
+			UISwitch asSwitch = (UISwitch)sender;
+			UserModel.Instance.OneTouchTradingEnabled = asSwitch.On;
 		}
 	}
 }

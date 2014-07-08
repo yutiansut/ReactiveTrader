@@ -29,8 +29,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 		partial void Done (NSObject sender)
 		{
 			var model = _priceTileModel;
-			if (model != null)
+			if (model != null) {
 				model.Done();
+			}
 		}
 
 		public void UpdateFrom (PriceTileModel model)
@@ -38,8 +39,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 			_priceTileModel = model;
 
 			var tradeDone = model.TradeDone;
-			if (tradeDone == null)
+			if (tradeDone == null) {
 				return;
+			}
 
 			UpdateFrom (tradeDone);
 
@@ -78,15 +80,23 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 			DirectionAmount.AttributedText = new NSAttributedString(Styles.FormatNotional(model.Trade.Notional, true), strikethroughAttributes);
 			Rate.AttributedText = new NSAttributedString(model.Trade.SpotRate.ToString (), strikethroughAttributes);
 			SpotDate.AttributedText = new NSAttributedString(model.Trade.ValueDate.ToShortDateString (), strikethroughAttributes);
-			TraderId.AttributedText = new NSAttributedString(model.Trade.TraderName, strikethroughAttributes);
+
+			// May also be BOLD if the trader id matches the current user...
+
+			UIStringAttributes maybeStrikeMaybeBold = new UIStringAttributes();
+			maybeStrikeMaybeBold.StrikethroughStyle = strikethroughAttributes.StrikethroughStyle;
+			if (model.Trade.TraderName == UserModel.Instance.TraderId) {
+				maybeStrikeMaybeBold.Font = UIFont.BoldSystemFontOfSize(TraderId.Font.PointSize);
+			}
+
+			TraderId.AttributedText = new NSAttributedString(model.Trade.TraderName, maybeStrikeMaybeBold);
 
 			// May also be struck through, but currently content not dynamic?
+
 			DirectionCCY.AttributedText = new NSAttributedString(DirectionCCY.Text, strikethroughAttributes);
 
 			DoneButton.Hidden = true;
 
-			//			[Outlet]
-			//			MonoTouch.UIKit.UILabel DirectionCCY { get; set; }
 		}
 	}
 }

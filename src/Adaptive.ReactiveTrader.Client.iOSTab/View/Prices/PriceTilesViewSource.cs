@@ -16,12 +16,10 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 	public class PriceTilesViewSource : UITableViewSource
 	{
 		private readonly PriceTilesModel priceTilesModel;
-		private readonly UserModel userModel;
 
-		public PriceTilesViewSource (PriceTilesModel priceTilesModel, UserModel userModel)
+		public PriceTilesViewSource (PriceTilesModel priceTilesModel)
 		{
 			this.priceTilesModel = priceTilesModel;
-			this.userModel = userModel;
 		}
 
 
@@ -49,7 +47,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			// see http://docs.xamarin.com/guides/ios/application_fundamentals/delegates,_protocols,_and_events
 
 			PricesHeaderCell dequeued = tableView.DequeueReusableHeaderFooterView (PricesHeaderCell.Key) as PricesHeaderCell;
-			dequeued.UpdateFrom (this.userModel);
+			dequeued.UpdateFrom (UserModel.Instance);
 			return dequeued;
 		}
 
@@ -81,7 +79,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			case PriceTileStatus.Executing:
 				priceTileCell = tableView.DequeueReusableCell (PriceTileViewCell.Key) as PriceTileViewCell;
 				if (priceTileCell == null) {
-					priceTileCell = PriceTileViewCell.Create (this.userModel);
+					priceTileCell = PriceTileViewCell.Create ();
 				}
 				break;
 
