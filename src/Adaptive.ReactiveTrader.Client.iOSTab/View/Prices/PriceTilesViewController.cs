@@ -60,6 +60,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 					switch (itemModel.Status) {
 					case PriceTileStatus.Done:
+					case PriceTileStatus.DoneStale:
 						if (cell.GetType ().Equals (Type.GetType ("Adaptive.ReactiveTrader.Client.iOSTab.PriceTileTradeAffirmationViewCell", false))) {
 							bAppropriateCell = true;
 						}

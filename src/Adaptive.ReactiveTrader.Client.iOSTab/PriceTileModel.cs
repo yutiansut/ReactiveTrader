@@ -35,12 +35,18 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			this._currencyPair = currencyPair;
 			this._concurrencyService = concurrencyService;
 
-			// default ui content
+			// Default ui content.
+
 			this.Symbol = _currencyPair.BaseCurrency + " / " + _currencyPair.CounterCurrency;
 			this.Status = PriceTileStatus.Streaming;
 			this.RightSideBigNumber = this.LeftSideBigNumber = "--";
-			this.Notional = 1000000;
 			this.NotionalCcy = this.Base;
+
+			// Make default National something a bit random / more interesting. Improved usability.
+
+			var random = new System.Random();
+			this.Notional = 100000 + 50000 * random.Next(19);
+
 
 			_currencyPair.PriceStream
 				.ObserveOn(_concurrencyService.Dispatcher)
@@ -118,7 +124,13 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		}
 
 		public void Done() {
-			Status = PriceTileStatus.Streaming;
+			// Prices may have gone stale while we showed the 'done'...
+
+			if (Status == PriceTileStatus.DoneStale) {
+				Status = PriceTileStatus.Stale;
+			} else {
+				Status = PriceTileStatus.Streaming;
+			}
 			NotifyOnChanged (this);
 		}
 
@@ -128,7 +140,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 		private void OnTradeResponseUpdate(IStale<ITrade> tradeUpdate) {
 			if (tradeUpdate.IsStale) {
-
+				// TODO: What does this state represent?
 			} else {
 				var trade = tradeUpdate.Update;
 				Status = PriceTileStatus.Done;
@@ -140,7 +152,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		void OnPrice (IPrice currentPrice)
 		{		
 			if (!currentPrice.IsStale) {
-				// TODO: Discuss other statuses (Done, Executing)...
+				// TODO: Cover all statuses (Done, Executing)...
+				if (this.Status == PriceTileStatus.DoneStale) {
+					this.Status = PriceTileStatus.Done;
+				}
+
 				if (this.Status == PriceTileStatus.Stale) {
 					this.Status = PriceTileStatus.Streaming;
 				}
@@ -172,9 +188,15 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 				}
 				this.NotifyOnChanged (this);
 			} else {
+				// Stale!
 				Movement = PriceMovement.None;
 
-				// TODO: Discuss other statuses (Done, Executing)...
+				if (this.Status == PriceTileStatus.Done) {
+					this.Status = PriceTileStatus.DoneStale;
+					this.NotifyOnChanged (this);
+				}
+
+				// TODO: Cover all statuses (Done, Executing)...
 				if (this.Status == PriceTileStatus.Streaming) {
 					this.Status = PriceTileStatus.Stale;
 					this.NotifyOnChanged (this);

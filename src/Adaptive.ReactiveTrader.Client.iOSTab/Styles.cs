@@ -20,7 +20,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		//
 
 		public static void ConfigureTable(UITableView uiTableView) {
-			uiTableView.RowHeight = 206.0f;
+			uiTableView.RowHeight = 180.0f;
 			uiTableView.AllowsSelection = false;
 			uiTableView.SeparatorColor = Styles.RTLightBlue;
 		}

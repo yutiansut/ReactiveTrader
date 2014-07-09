@@ -69,9 +69,19 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 
 			// Always displayed 'plain'...
 
-			CurrencyPair.Text = model.Trade.CurrencyPair;
 			Direction.Text = model.Trade.Direction.ToString ();
 			TradeId.Text = model.Trade.TradeId.ToString ();
+
+			// Displayed plain but needs some formatting to make nice...
+
+			if (model.Trade.CurrencyPair.Length == 6) {
+				string currencyOne = model.Trade.CurrencyPair.Substring (0, 3);
+				string currencyTwo = model.Trade.CurrencyPair.Substring (3, 3);
+				CurrencyPair.Text = String.Format("{0} / {1}", currencyOne, currencyTwo);
+			} else {
+				// We expect the currency pair to always be 3 + 3, but just in case...
+				CurrencyPair.Text = model.Trade.CurrencyPair;
+			}
 
 
 			// May be struck through in the event of trade failure...

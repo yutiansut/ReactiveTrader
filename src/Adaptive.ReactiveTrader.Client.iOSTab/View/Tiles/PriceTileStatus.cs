@@ -7,6 +7,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 		Streaming,
 		Executing,
 		Done,
+		DoneStale,
 		Stale
 	}
 }

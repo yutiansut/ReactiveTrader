@@ -70,7 +70,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			if (this.Notional.IsEditing) {
 				// TODO: Determine what it really means to update the Notional via the model.
-				System.Console.WriteLine ("Notional {0} is mid edit, so not updating to {1}", this.Notional.Text, model.Notional);
+				// System.Console.WriteLine ("Notional {0} is mid edit, so not updating to {1}", this.Notional.Text, model.Notional);
 			} else {
 				this.Notional.Text = Styles.FormatNotional (model.Notional, true);
 			}
@@ -83,7 +83,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			this.RightSideBigNumber.Text = model.RightSideBigNumber;
 			this.RightSidePips.Text = model.RightSidePips;
 				
-			this.Executing.Hidden = model.Status != PriceTileStatus.Executing;
+			this.Executing.Hidden = (model.Status != PriceTileStatus.Executing);
 
 			this.Spread.Text = model.Spread;
 
@@ -121,7 +121,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 				// Where would we implenet two-touch, or more complex order entry?
 				//
 				if (UserModel.Instance.OneTouchTradingEnabled && model.Bid()) {
-					UserModel.Instance.OneTouchTradingEnabled = false;
+					//
+					// TODO: Reinstate this safety feature if the app is used for REAL trading!
+					// UserModel.Instance.OneTouchTradingEnabled = false;
 				}
 			}
 		}
@@ -138,7 +140,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			var model = _priceTileModel;
 			if (model != null && model.Status == PriceTileStatus.Streaming) {
 				if (UserModel.Instance.OneTouchTradingEnabled && model.Ask()) {
-					UserModel.Instance.OneTouchTradingEnabled = false;
+					//
+					// TODO: Reinstate this safety feature if the app is used for REAL trading!
+					// UserModel.Instance.OneTouchTradingEnabled = false;
 				}
 			}
 		}

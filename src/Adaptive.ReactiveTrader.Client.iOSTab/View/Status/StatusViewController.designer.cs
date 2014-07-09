@@ -29,6 +29,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel UIUpdateRate { get; set; }
+
+		[Action ("LinkTouchUpInside:")]
+		partial void LinkTouchUpInside (MonoTouch.Foundation.NSObject sender);
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -47,6 +50,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 				ServerUpdateRate = null;
 			}
 
+			if (TraderId != null) {
+				TraderId.Dispose ();
+				TraderId = null;
+			}
+
 			if (UILatency != null) {
 				UILatency.Dispose ();
 				UILatency = null;
@@ -55,11 +63,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 			if (UIUpdateRate != null) {
 				UIUpdateRate.Dispose ();
 				UIUpdateRate = null;
-			}
-
-			if (TraderId != null) {
-				TraderId.Dispose ();
-				TraderId = null;
 			}
 		}
 	}

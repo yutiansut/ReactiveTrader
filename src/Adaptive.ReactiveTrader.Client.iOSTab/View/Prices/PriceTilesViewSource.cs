@@ -69,6 +69,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			switch (model.Status) {
 			case PriceTileStatus.Done:
+			case PriceTileStatus.DoneStale:
 				priceTileCell = tableView.DequeueReusableCell (PriceTileTradeAffirmationViewCell.Key) as PriceTileTradeAffirmationViewCell;
 				if (priceTileCell == null) {
 					priceTileCell = PriceTileTradeAffirmationViewCell.Create ();

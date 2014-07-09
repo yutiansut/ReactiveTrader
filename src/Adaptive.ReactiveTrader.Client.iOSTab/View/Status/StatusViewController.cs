@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Drawing;
+using System.Collections.Generic; // For List<T>
 
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
@@ -18,7 +19,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 		private readonly IConcurrencyService _concurrencyService;
 		private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
-		ConnectionInfo _lastConnectionInfo;
+		private ConnectionInfo _lastConnectionInfo;
+		private UIWebView _webView;
 
 		public StatusViewController (IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService) : base ("StatusViewController", null)
 		{
@@ -76,7 +78,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 			}
 		}
 
-		private void OnStatusChange(ConnectionInfo connectionInfo) {
+		private void OnStatusChange(ConnectionInfo connectionInfo)
+		{
 			if (this.IsViewLoaded) {
 				this.ConnectionDetail.Text = connectionInfo.Server;
 				this.ConnectionDetail.SizeToFit (); // Multi-line, with initially small height.
@@ -86,7 +89,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 			}
 		}
 
-		private void OnTimer() {
+		private void OnTimer()
+		{
 			var statistics = _reactiveTrader.PriceLatencyRecorder.CalculateAndReset ();
 
 			if (this.IsViewLoaded) {
@@ -94,6 +98,30 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 				this.UIUpdateRate.Text = string.Format ("{0} / sec", statistics.RenderedCount);
 				this.UILatency.Text = string.Format ("{0} ms", statistics.RenderedCount);
 			}
+		}
+
+		partial void LinkTouchUpInside (MonoTouch.Foundation.NSObject sender)
+		{
+			UITabBarController parentTabBar = this.ParentViewController as UITabBarController;
+
+			if (_webView == null) {
+
+				_webView = new UIWebView (this.View.Bounds);
+
+				UIViewController webViewController = new UIViewController();
+				webViewController.View = _webView;
+				webViewController.Title = "Adaptive";
+				webViewController.TabBarItem.Image = UIImage.FromBundle ("adaptive");
+
+				List<UIViewController> tabBarViewControllers = new List<UIViewController>(parentTabBar.ViewControllers);
+				tabBarViewControllers.Add(webViewController);
+				parentTabBar.SetViewControllers(tabBarViewControllers.ToArray(), false);
+			}
+
+			string url = "http://www.weareadaptive.com";
+			_webView.LoadRequest(new NSUrlRequest(new NSUrl(url)));
+
+			parentTabBar.SelectedIndex = parentTabBar.ViewControllers.Length - 1;
 		}
 	}
 }
