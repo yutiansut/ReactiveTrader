@@ -5,6 +5,7 @@ using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Adaptive.ReactiveTrader.Client.iOSTab.Model;
+using Adaptive.ReactiveTrader.Client.Domain.Models;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 {
@@ -50,6 +51,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 
 		public void UpdateFrom(TradeDoneModel model) {
 
+			string currencyOne = "???";
+			string currencyTwo = "???";
+
 			UIStringAttributes strikethroughAttributes;
 
 			switch (model.Trade.TradeStatus) {
@@ -75,8 +79,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 			// Displayed plain but needs some formatting to make nice...
 
 			if (model.Trade.CurrencyPair.Length == 6) {
-				string currencyOne = model.Trade.CurrencyPair.Substring (0, 3);
-				string currencyTwo = model.Trade.CurrencyPair.Substring (3, 3);
+				currencyOne = model.Trade.CurrencyPair.Substring (0, 3);
+				currencyTwo = model.Trade.CurrencyPair.Substring (3, 3);
 				CurrencyPair.Text = String.Format("{0} / {1}", currencyOne, currencyTwo);
 			} else {
 				// We expect the currency pair to always be 3 + 3, but just in case...
@@ -84,14 +88,20 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 			}
 
 
+			//			System.Console.WriteLine ("Trade details: {0}", model.Trade.ToString());
+
 			// May be struck through in the event of trade failure...
 
 			CounterCCY.AttributedText = new NSAttributedString(model.Trade.DealtCurrency, strikethroughAttributes);
 			DirectionAmount.AttributedText = new NSAttributedString(Styles.FormatNotional(model.Trade.Notional, true), strikethroughAttributes);
 			Rate.AttributedText = new NSAttributedString(model.Trade.SpotRate.ToString (), strikethroughAttributes);
-			SpotDate.AttributedText = new NSAttributedString(model.Trade.ValueDate.ToShortDateString (), strikethroughAttributes);
 
-			// May also be BOLD if the trader id matches the current user...
+			// 'Proper' trade dates not yet supports? So use this format to match web client...
+
+			string valueDateFromTradeDate = String.Format("SP. {0}", model.Trade.TradeDate.ToShortDateString ());
+			ValueDate.AttributedText = new NSAttributedString(valueDateFromTradeDate, strikethroughAttributes);
+
+			// We use some BOLD if the trader id matches the current user...
 
 			UIStringAttributes maybeStrikeMaybeBold = new UIStringAttributes();
 			maybeStrikeMaybeBold.StrikethroughStyle = strikethroughAttributes.StrikethroughStyle;
@@ -101,9 +111,14 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 
 			TraderId.AttributedText = new NSAttributedString(model.Trade.TraderName, maybeStrikeMaybeBold);
 
-			// May also be struck through, but currently content not dynamic?
+			//
+			// Not directly available from ITrade, so we derive it thus?
+			// Previously was always 'EUR', so this better but probably not right!
+			//
 
-			DirectionCCY.AttributedText = new NSAttributedString(DirectionCCY.Text, strikethroughAttributes);
+			//			string directionCurrency = (model.Trade.Direction == Adaptive.ReactiveTrader.Client.Domain.Models.Direction.BUY) ? currencyOne : currencyTwo;
+			string directionCurrency = currencyOne;
+			DirectionCCY.AttributedText = new NSAttributedString(directionCurrency, strikethroughAttributes);
 
 			DoneButton.Hidden = true;
 

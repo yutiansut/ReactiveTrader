@@ -42,7 +42,22 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			created.Notional.InputAccessoryView = numberToolbar;
 
+			UserModel.Instance.OnChanged
+				.Subscribe (created.OnUserModelChanged);
+			created.DecorateWithEnabledness (UserModel.Instance.OneTouchTradingEnabled);
+
 			return created;
+		}
+
+		private void OnUserModelChanged(UserModel item)
+		{
+			DecorateWithEnabledness(item.OneTouchTradingEnabled);
+		}
+
+		private void DecorateWithEnabledness(Boolean isEnabled)
+		{
+			this.LeftSideButton.UserInteractionEnabled = isEnabled;
+			this.RightSideButton.UserInteractionEnabled = isEnabled;
 		}
 
 		[Export("CancelNumberPad")]

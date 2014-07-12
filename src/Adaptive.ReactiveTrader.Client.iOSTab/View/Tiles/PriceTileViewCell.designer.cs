@@ -25,6 +25,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		MonoTouch.UIKit.UILabel LeftSideBigNumber { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UIButton LeftSideButton { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel LeftSideNumber { get; set; }
 
 		[Outlet]
@@ -49,6 +52,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		MonoTouch.UIKit.UILabel RightSideBigNumber { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UIButton RightSideButton { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel RightSideNumber { get; set; }
 
 		[Outlet]
@@ -71,6 +77,16 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (LeftSideButton != null) {
+				LeftSideButton.Dispose ();
+				LeftSideButton = null;
+			}
+
+			if (RightSideButton != null) {
+				RightSideButton.Dispose ();
+				RightSideButton = null;
+			}
+
 			if (CurrencyPair != null) {
 				CurrencyPair.Dispose ();
 				CurrencyPair = null;

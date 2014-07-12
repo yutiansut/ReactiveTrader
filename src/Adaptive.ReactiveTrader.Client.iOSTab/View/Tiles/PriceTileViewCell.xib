@@ -161,6 +161,7 @@
                 <outlet property="Executing" destination="L6h-Ft-KPv" id="Bxx-w4-0kX"/>
                 <outlet property="LeftSideAction" destination="Pop-1J-r7s" id="STB-UM-l9O"/>
                 <outlet property="LeftSideBigNumber" destination="0Pe-ca-63A" id="oon-zW-iND"/>
+                <outlet property="LeftSideButton" destination="qxS-9a-ZVw" id="A3d-3c-fTL"/>
                 <outlet property="LeftSideNumber" destination="bqT-IN-7Ib" id="9qL-DV-Hqj"/>
                 <outlet property="LeftSidePips" destination="hNq-3H-LSD" id="hMY-cd-Khi"/>
                 <outlet property="Notional" destination="fcz-S8-9x5" id="KPM-K3-Ixr"/>
@@ -169,6 +170,7 @@
                 <outlet property="PriceMovementUp" destination="7tA-Kj-6Gg" id="Ktq-r5-ZsE"/>
                 <outlet property="RightSideAction" destination="iZI-1m-8dr" id="AjM-ik-0nP"/>
                 <outlet property="RightSideBigNumber" destination="4bK-jP-xMc" id="Q4K-fp-fje"/>
+                <outlet property="RightSideButton" destination="Pra-oH-pKo" id="uym-6P-qtY"/>
                 <outlet property="RightSideNumber" destination="PX6-ny-X4E" id="ysf-T3-TkO"/>
                 <outlet property="RightSidePips" destination="ate-gw-feF" id="BEq-Sf-d4G"/>
                 <outlet property="SpotDate" destination="kmf-y0-NQO" id="GmW-RC-IYD"/>

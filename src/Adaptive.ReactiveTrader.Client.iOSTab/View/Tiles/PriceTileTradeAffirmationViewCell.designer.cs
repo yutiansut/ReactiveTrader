@@ -34,13 +34,13 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 		MonoTouch.UIKit.UILabel Rate { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel SpotDate { get; set; }
-
-		[Outlet]
 		MonoTouch.UIKit.UILabel TradeId { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel TraderId { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel ValueDate { get; set; }
 
 		[Action ("Done:")]
 		partial void Done (MonoTouch.Foundation.NSObject sender);
@@ -82,11 +82,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 				Rate = null;
 			}
 
-			if (SpotDate != null) {
-				SpotDate.Dispose ();
-				SpotDate = null;
+			if (ValueDate != null) {
+				ValueDate.Dispose ();
+				ValueDate = null;
 			}
-
+				
 			if (TradeId != null) {
 				TradeId.Dispose ();
 				TradeId = null;
