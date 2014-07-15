@@ -42,22 +42,44 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			created.Notional.InputAccessoryView = numberToolbar;
 
+			//
+			// TODO: Reinstate change of notional currency once data model / back end support this.
+			// For now we just disable the button (not that some relevant implementation of the button click remains).
+			//
+
+			created.NotionalCCY.UserInteractionEnabled = false;
+
+
 			UserModel.Instance.OnChanged
 				.Subscribe (created.OnUserModelChanged);
-			created.DecorateWithEnabledness (UserModel.Instance.OneTouchTradingEnabled);
+			created.DecorateWithTradingEnabled (UserModel.Instance.OneTouchTradingEnabled);
 
 			return created;
 		}
 
 		private void OnUserModelChanged(UserModel item)
 		{
-			DecorateWithEnabledness(item.OneTouchTradingEnabled);
+			DecorateWithTradingEnabled(item.OneTouchTradingEnabled);
 		}
 
-		private void DecorateWithEnabledness(Boolean isEnabled)
+		private void DecorateWithTradingEnabled(Boolean isTradingEnabled)
 		{
-			this.LeftSideButton.UserInteractionEnabled = isEnabled;
-			this.RightSideButton.UserInteractionEnabled = isEnabled;
+			Boolean allowBuyAndSell = isTradingEnabled;
+
+			//
+			// If our last observed model status was 'executing' then thwart trading at UI level.
+			// This is a niceness that prevents the iOS-driven touched / 'flare' state from appearing.
+			// Actual trading was already thwarted by a check for status == streaming.
+			//
+
+			if (_priceTileModel != null) {
+				if (_priceTileModel.Status == PriceTileStatus.Executing) {
+					allowBuyAndSell = false;
+				}
+			}
+
+			this.LeftSideButton.UserInteractionEnabled = allowBuyAndSell;
+			this.RightSideButton.UserInteractionEnabled = allowBuyAndSell;
 		}
 
 		[Export("CancelNumberPad")]
@@ -79,6 +101,12 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		{
 			_priceTileModel = model;
 
+			//
+			// Trading enabled UI may change based on executing vs not executing...
+			//
+
+			DecorateWithTradingEnabled (UserModel.Instance.OneTouchTradingEnabled);
+
 			this.CurrencyPair.Text = model.Symbol;
 
 			SetBuySellSides (model);
@@ -90,6 +118,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 				this.Notional.Text = Styles.FormatNotional (model.Notional, true);
 			}
 
+			// Price and spread...
+
 			this.LeftSideNumber.Text = model.LeftSideNumber;
 			this.LeftSideBigNumber.Text = model.LeftSideBigNumber;
 			this.LeftSidePips.Text = model.LeftSidePips;
@@ -97,10 +127,10 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			this.RightSideNumber.Text = model.RightSideNumber;
 			this.RightSideBigNumber.Text = model.RightSideBigNumber;
 			this.RightSidePips.Text = model.RightSidePips;
-				
-			this.Executing.Hidden = (model.Status != PriceTileStatus.Executing);
 
 			this.Spread.Text = model.Spread;
+
+			// Movement...
 
 			switch (model.Movement) {
 				case PriceMovement.Down:
@@ -116,6 +146,15 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 					this.PriceMovementUp.Hidden = true;
 					break;
 			}
+
+			// Other status...
+
+			this.Executing.Hidden = (model.Status != PriceTileStatus.Executing);
+
+			// TODO: Update this when date/time changes, not just when the model updates!
+
+			this.SpotDate.Text = "SP. " + DateTime.Now.AddDays(2).ToString ("dd MMM");
+
 			model.Rendered ();
 		}
 

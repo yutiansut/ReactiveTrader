@@ -22,7 +22,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		//
 
 		public static void ConfigureTable(UITableView uiTableView) {
-			uiTableView.RowHeight = 180.0f;
+			uiTableView.RowHeight = 176.0f;
+			// Keep RowHeight ^^^^^^^ small enough to allow editing of notional when iOS tried to show the top edge of the containing table cell.
 			uiTableView.AllowsSelection = false;
 			uiTableView.SeparatorColor = Styles.RTLightBlue;
 		}
