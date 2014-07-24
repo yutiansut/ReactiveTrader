@@ -48,13 +48,13 @@
     <ConsolePause>false</ConsolePause>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchDebug>true</MtouchDebug>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>iPhone Distribution: Adaptive Financial Consulting Limited (EANV3YMW5P)</CodesignKey>
     <IpaPackageName>
     </IpaPackageName>
     <MtouchI18n>
     </MtouchI18n>
     <MtouchArch>ARMv7</MtouchArch>
-    <CodesignProvision>6C10FD1C-5793-4700-94D5-6B6EB5F206A7</CodesignProvision>
+    <CodesignProvision>151C6120-E3E5-4B8F-9415-47B493964A1C</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>full</DebugType>
@@ -93,8 +93,8 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <CodesignProvision>Automatic:AppStore</CodesignProvision>
-    <CodesignKey>iPhone Distribution</CodesignKey>
+    <CodesignProvision>151C6120-E3E5-4B8F-9415-47B493964A1C</CodesignProvision>
+    <CodesignKey>iPhone Distribution: Adaptive Financial Consulting Limited (EANV3YMW5P)</CodesignKey>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
