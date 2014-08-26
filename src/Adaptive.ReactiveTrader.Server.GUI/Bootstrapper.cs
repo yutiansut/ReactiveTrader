@@ -1,4 +1,5 @@
 ﻿using Adaptive.ReactiveTrader.Server.Blotter;
+using Adaptive.ReactiveTrader.Server.Control;
 using Adaptive.ReactiveTrader.Server.Execution;
 using Adaptive.ReactiveTrader.Server.Pricing;
 using Adaptive.ReactiveTrader.Server.ReferenceData;
@@ -33,6 +34,9 @@ namespace Adaptive.ReactiveTrader.Server
             builder.RegisterType<TradeRepository>().As<ITradeRepository>().SingleInstance();
             builder.RegisterType<BlotterHub>().SingleInstance();            
             
+            // control
+            builder.RegisterType<ControlHub>().SingleInstance();
+
             builder.RegisterType<ContextHolder>().As<IContextHolder>().SingleInstance();
 
             // UI

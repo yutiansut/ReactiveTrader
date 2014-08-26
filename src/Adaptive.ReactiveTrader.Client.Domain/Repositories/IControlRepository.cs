@@ -8,6 +8,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Repositories
     public interface IControlRepository
     {
         IObservable<Unit> SetPriceFeedThroughput(double throughput);
+        IObservable<double> GetPriceFeedThroughput();
         IObservable<IEnumerable<CurrencyPairStateDto>> GetCurrencyPairStates();
         IObservable<Unit> SetCurrencyPairState(string symbol, bool enabled, bool stale);
     }

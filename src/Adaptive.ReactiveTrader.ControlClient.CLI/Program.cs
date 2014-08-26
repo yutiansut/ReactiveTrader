@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reactive.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Client.Configuration;
 using Adaptive.ReactiveTrader.Client.Domain;
@@ -22,17 +20,18 @@ namespace Adaptive.ReactiveTrader.ControlClient.CLI
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Program));
 
-        static async void Main(string[] args)
+        static void Main(string[] args)
         {
             InitializeLogging();
 
             var reactiveTraderApi = InitializeApi();
 
-            await reactiveTraderApi.ConnectionStatusStream.Where(ci => ci.ConnectionStatus == ConnectionStatus.Connected);
-            
+            Log.Info("API Connecting...");
+            reactiveTraderApi.ConnectionStatusStream.Subscribe(Log.Info);
+            reactiveTraderApi.ConnectionStatusStream.Where(ci => ci.ConnectionStatus == ConnectionStatus.Connected).Take(1).Wait();
             Log.Info("API Connected.");
 
-            RunLoop(reactiveTraderApi);
+            RunLoop(reactiveTraderApi).Wait();
         }
 
         private static IReactiveTrader InitializeApi()
@@ -72,22 +71,26 @@ namespace Adaptive.ReactiveTrader.ControlClient.CLI
             return reactiveTraderApi;
         }
 
-        private static async void RunLoop(IReactiveTrader reactiveTraderApi)
+        private static async Task RunLoop(IReactiveTrader reactiveTraderApi)
         {
+            Log.Info("Enter currency pair symbol and new state. Either E or D for enabled or disabled, or A or S for active or stale");
             while (true)
             {
                 var states = await reactiveTraderApi.Control.GetCurrencyPairStates();
-                Print(states);
+                var throughput = await reactiveTraderApi.Control.GetPriceFeedThroughput();
+                Print(states, throughput);
                 await SendCommand(states, reactiveTraderApi);
             }
         }
 
-        private static void Print(IEnumerable<CurrencyPairStateDto> states)
+        private static void Print(IEnumerable<CurrencyPairStateDto> states, double throughput)
         {
-            Console.WriteLine("Symbol   | (E)nabled/(D)isable | (A)ctive/(S)tale   |");
+            Log.Info("       | (E)nabled/ | (A)ctive/ |");
+            Log.Info("Symbol | (D)isabled | (S)tale   |");
+            Log.Info("---------------------------------");
             foreach (var state in states.OrderBy(st => st.Symbol))
             {
-                Console.WriteLine("{0, -9} | {1, 20} | {2, 20} |", state.Symbol, 
+                Log.InfoFormat("{0, -6} | {1, 10} | {2, 9} |", state.Symbol, 
                     state.Enabled
                     ? "E"
                     : "D",
@@ -95,18 +98,35 @@ namespace Adaptive.ReactiveTrader.ControlClient.CLI
                     ? "S"
                     : "A");
             }
+            Log.Info("---------------------------------");
+            Log.InfoFormat("Target throughput: {0:G} ticks per second.", throughput);
         }
 
         private async static Task SendCommand(IEnumerable<CurrencyPairStateDto> states, IReactiveTrader reactiveTrader)
         {
             var commandLine = Console.ReadLine();
             var args = commandLine.Split(new [] { ' '}, StringSplitOptions.RemoveEmptyEntries);
+
+            if (args.Length > 1)
+            {
+                await UpdateCurrencyPairState(states, reactiveTrader, args);
+            }
+            else
+            {
+                await UpdateThroughput(reactiveTrader, args[0]);
+            }
             
-            var ccyPair = states.FirstOrDefault(state => string.Equals(args[0], state.Symbol, StringComparison.InvariantCultureIgnoreCase));
+
+        }
+
+        private static async Task UpdateCurrencyPairState(IEnumerable<CurrencyPairStateDto> states, IReactiveTrader reactiveTrader, string[] args)
+        {
+            var ccyPair =
+                states.FirstOrDefault(state => string.Equals(args[0], state.Symbol, StringComparison.InvariantCultureIgnoreCase));
 
             if (ccyPair == null)
             {
-                Console.WriteLine("Could not find symbol {0}", args[0]);
+                Log.WarnFormat("Could not find symbol {0}", args[0]);
                 return;
             }
 
@@ -131,7 +151,7 @@ namespace Adaptive.ReactiveTrader.ControlClient.CLI
                 }
             }
 
-            Console.WriteLine("From: {0}", ccyPair);
+            Log.InfoFormat("From: {0}", ccyPair);
             if (setEnabled.HasValue)
             {
                 ccyPair.Enabled = setEnabled.Value;
@@ -141,18 +161,33 @@ namespace Adaptive.ReactiveTrader.ControlClient.CLI
             {
                 ccyPair.Stale = setStale.Value;
             }
-            Console.WriteLine("To:   {0}", ccyPair);
-            Console.WriteLine("Setting..");
+            Log.InfoFormat("To:   {0}", ccyPair);
+            Log.Info("Setting..");
             try
             {
                 var result =
                     await reactiveTrader.Control.SetCurrencyPairState(ccyPair.Symbol, ccyPair.Enabled, ccyPair.Stale);
-                Console.WriteLine("Set!");
+                Log.Info("Set!");
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Failed to set.");
-                Console.WriteLine(ex);
+                Log.Warn("Failed to set.");
+                Log.Warn(ex);
+            }
+        }
+
+        private static async Task UpdateThroughput(IReactiveTrader reactiveTrader, string arg)
+        {
+            int throughput = 0;
+            if (int.TryParse(arg, out throughput))
+            {
+                Log.InfoFormat("Setting through to {0:G}.", throughput);
+                var result = await reactiveTrader.Control.SetPriceFeedThroughput(throughput);
+                Log.Info("Set!");
+            }
+            else
+            {
+                Log.Warn("Could not parse throughput. Please specify an integer.");
             }
         }
 

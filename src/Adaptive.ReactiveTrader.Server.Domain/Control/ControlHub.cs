@@ -36,6 +36,18 @@ namespace Adaptive.ReactiveTrader.Server.Control
             _priceFeed.SetUpdateFrequency(throughputDto.Throughput);
             return new UnitDto();
         }
+        
+        [ControlAuth]
+        [HubMethodName(ServiceConstants.Server.GetPriceFeedThroughput)]
+        public FeedThroughputDto SetPriceFeedThroughput()
+        {
+            var throughput = _priceFeed.GetUpdateFrequency();
+            Log.InfoFormat("Returning price feed throughput of {0} to {1}.", throughput, ContextUtil.GetUserName(Context));
+            return new FeedThroughputDto
+            {
+                Throughput = throughput
+            };
+        }
 
         [ControlAuth]
         [HubMethodName(ServiceConstants.Server.GetCurrencyPairStates)]

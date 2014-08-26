@@ -10,5 +10,6 @@ namespace Adaptive.ReactiveTrader.Client.Domain.ServiceClients
         IObservable<UnitDto> SetPriceFeedThroughput(FeedThroughputDto request);
         IObservable<IEnumerable<CurrencyPairStateDto>> GetCurrencyPairStates();
         IObservable<UnitDto> SetCurrencyPairState(CurrencyPairStateDto request);
+        IObservable<FeedThroughputDto> GetPriceFeedThroughput();
     }
 }

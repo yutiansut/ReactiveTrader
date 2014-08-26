@@ -15,7 +15,7 @@
             public const string BlotterHub = "BlotterHub";
             public const string SubscribeTrades = "SubscribeTrades";
             public const string UnsubscribeTrades = "UnsubscribeTrades";
-            
+
             // reference data
             public const string ReferenceDataHub = "ReferenceDataHub";
             public const string GetCurrencyPairs = "GetCurrencyPairs";
@@ -27,6 +27,7 @@
             // control
             public const string ControlHub = "ControlHub";
             public const string SetPriceFeedThroughput = "SetPriceFeedThroughput";
+            public const string GetPriceFeedThroughput = "GetPriceFeedThroughput";
             public const string GetCurrencyPairStates = "GetCurrencyPairStates";
             public const string SetCurrencyPairState = "SetCurrencyPairState";
         }

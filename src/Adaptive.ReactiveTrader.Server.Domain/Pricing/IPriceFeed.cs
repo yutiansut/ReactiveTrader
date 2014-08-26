@@ -4,5 +4,6 @@
     {
         void Start();
         void SetUpdateFrequency(double value);
+        double GetUpdateFrequency();
     }
 }

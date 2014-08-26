@@ -27,6 +27,11 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Repositories
                 .Select(_ => Unit.Default);
         }
 
+        public IObservable<double> GetPriceFeedThroughput()
+        {
+            return _controlServiceClient.GetPriceFeedThroughput().Select(dto => dto.Throughput);
+        }
+
         public IObservable<IEnumerable<CurrencyPairStateDto>> GetCurrencyPairStates()
         {
             return _controlServiceClient.GetCurrencyPairStates();

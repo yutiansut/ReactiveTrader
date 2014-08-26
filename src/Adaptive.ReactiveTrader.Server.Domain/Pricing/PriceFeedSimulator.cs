@@ -15,6 +15,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         private readonly Random _random;
         private Timer _timer;
         private int _updatesPerTick = 1;
+        private double _updatesPerSecond;
 
         public PriceFeedSimulator(
             ICurrencyPairRepository currencyPairRepository,
@@ -36,6 +37,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
         public void SetUpdateFrequency(double updatesPerSecond)
         {
+            _updatesPerSecond = updatesPerSecond;
             if (_timer != null)
             {
                 _timer.Dispose();
@@ -54,6 +56,11 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
             }
 
             _timer = new Timer(OnTimerTick, null, (int)periodMs, (int)periodMs);
+        }
+
+        public double GetUpdateFrequency()
+        {
+            return _updatesPerSecond;
         }
 
         private void PopulateLastValueCache()

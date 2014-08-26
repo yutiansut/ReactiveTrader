@@ -31,6 +31,11 @@ namespace Adaptive.ReactiveTrader.Client.Domain.ServiceClients
             return RequestUponConnection(conn => SetPriceFeedThroughput(conn, request), ControlConnectionTimeout);
         }
 
+        public IObservable<FeedThroughputDto> GetPriceFeedThroughput()
+        {
+            return RequestUponConnection(GetPriceFeedThroughput, ControlConnectionTimeout);
+        }
+
         public IObservable<IEnumerable<CurrencyPairStateDto>> GetCurrencyPairStates()
         {
             if (string.IsNullOrWhiteSpace(_authTokenProvider.AuthToken))
@@ -57,12 +62,21 @@ namespace Adaptive.ReactiveTrader.Client.Domain.ServiceClients
             });
         }
 
+        private IObservable<FeedThroughputDto> GetPriceFeedThroughput(IConnection connection)
+        {
+            return Observable.FromAsync(() =>
+            {
+                connection.SetAuthToken(_authTokenProvider.AuthToken);
+                return connection.ControlHubProxy.Invoke<FeedThroughputDto>(ServiceConstants.Server.GetPriceFeedThroughput);
+            });
+        }
+
         private IObservable<IEnumerable<CurrencyPairStateDto>> GetCurrencyPairStates(IConnection connection)
         {
             return Observable.FromAsync(() =>
             {
                 connection.SetAuthToken(_authTokenProvider.AuthToken);
-                return connection.ControlHubProxy.Invoke<IEnumerable<CurrencyPairStateDto>>(ServiceConstants.Server.SetPriceFeedThroughput);
+                return connection.ControlHubProxy.Invoke<IEnumerable<CurrencyPairStateDto>>(ServiceConstants.Server.GetCurrencyPairStates);
             });
         }
 
