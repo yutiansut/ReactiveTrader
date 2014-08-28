@@ -104,7 +104,7 @@
     <Content Include="generated.js" />
     <Content Include="packages.config" />
     <Content Include="generated.js.map" />
-    <None Include="Properties\PublishProfiles\reactivetrader.pubxml" />
+    <None Include="Properties\PublishProfiles\reactivetrader - Web Deploy.pubxml" />
     <Content Include="statusbar_logo.png" />
     <Content Include="Web.config" />
   </ItemGroup>
