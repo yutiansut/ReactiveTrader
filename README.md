@@ -1,3 +1,5 @@
+![image](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTrader/master/adaptive-logo.png)
+
 # What are you looking for?
 
  - [A quick overview](#overview)
