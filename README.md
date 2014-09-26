@@ -11,6 +11,14 @@
 
 Reactive Trader is a client-server application demonstrating some of the problems needing to be dealt with when building reactive, or event driven, user interfaces. It was initially built as a demonstration application for a presentation we gave at [ReactConf 2014](http://reactconf.com/). We have decided to open source it so the community can benefit from our contribution.
 
+Reactive Trader comes in different flavours (click on the link for a demo)
+ 
+ - [WPF (ClickOnce)](https://reactivetrader.blob.core.windows.net/client/Adaptive.ReactiveTrader.application)![image](https://f.cloud.github.com/assets/1256913/2470980/8e95e5c6-b01c-11e3-9311-cc17a7c1b191.png)
+ - [HTML5](https://reactivetrader.azurewebsites.net/)![image](http://weareadaptive.com/wp-content/uploads/2014/04/ReactiveTraderWeb2-500x317.png)
+ - [Windows Store App](http://apps.microsoft.com/windows/app/reactive-trader/a2c622c5-ef66-4653-911f-688fe79ac999)![image](http://weareadaptive.com/wp-content/uploads/2014/09/2014-09-04-15_49_11-Reactive-Trader.png)
+ - [iOS native app](https://itunes.apple.com/gb/app/reactivetrader/id892239109?mt=8)![image](http://weareadaptive.com/wp-content/uploads/2014/09/Photo-04-09-2014-15-50-13.png)
+
+
 Reactive Trader was written by the team at [Adaptive](http://weareadaptive.com), a consultancy that specialises in building real time trading systems. We have many years of experience in building trading systems for clients with highly demanding latency and reliability requirements. Over the years we have learnt quite a few lessons, and wanted to talk about and point to examples of how we solve technical problems related to real time delivery of messages.
 
 ![image](https://f.cloud.github.com/assets/1256913/2470980/8e95e5c6-b01c-11e3-9311-cc17a7c1b191.png)
@@ -18,13 +26,6 @@ Reactive Trader was written by the team at [Adaptive](http://weareadaptive.com),
 ... talking via Web Socket with ...
 
 ![image](https://f.cloud.github.com/assets/1256913/2470993/d7f153ea-b01c-11e3-9c0c-ac8c8261299a.png)
-
-Reactive Trader comes in different flavours (click on the link for a demo)
- 
- - [WPF (ClickOnce)](https://reactivetrader.blob.core.windows.net/client/Adaptive.ReactiveTrader.application)
- - [HTML5](https://reactivetrader.azurewebsites.net/)
- - [Windows Store App](http://apps.microsoft.com/windows/app/reactive-trader/a2c622c5-ef66-4653-911f-688fe79ac999)
- - [iOS native app](https://itunes.apple.com/gb/app/reactivetrader/id892239109?mt=8)
 
 # Talk
 
