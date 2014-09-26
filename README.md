@@ -15,21 +15,22 @@ Reactive Trader is a client-server application demonstrating some of the problem
 
 Reactive Trader comes in different flavours (click on the link for a demo)
  
-[WPF (ClickOnce)](https://reactivetrader.blob.core.windows.net/client/Adaptive.ReactiveTrader.application)
-
-[![image](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTrader/master/images/wpf.png)](https://reactivetrader.blob.core.windows.net/client/Adaptive.ReactiveTrader.application)
- 
 [HTML5](https://reactivetrader.azurewebsites.net/)
 
 [![image](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTrader/master/images/web.png)](https://reactivetrader.azurewebsites.net/)
- 
-[Windows Store App](http://apps.microsoft.com/windows/app/reactive-trader/a2c622c5-ef66-4653-911f-688fe79ac999)
-
-[![image](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTrader/master/images/winstore.png)](http://apps.microsoft.com/windows/app/reactive-trader/a2c622c5-ef66-4653-911f-688fe79ac999)
 
 [iOS native app](https://itunes.apple.com/gb/app/reactivetrader/id892239109?mt=8)
 
 [![image](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTrader/master/images/ios.png)](https://itunes.apple.com/gb/app/reactivetrader/id892239109?mt=8)
+
+[WPF (ClickOnce)](https://reactivetrader.blob.core.windows.net/client/Adaptive.ReactiveTrader.application)
+
+[![image](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTrader/master/images/wpf.png)](https://reactivetrader.blob.core.windows.net/client/Adaptive.ReactiveTrader.application)
+  
+[Windows Store App](http://apps.microsoft.com/windows/app/reactive-trader/a2c622c5-ef66-4653-911f-688fe79ac999)
+
+[![image](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTrader/master/images/winstore.png)](http://apps.microsoft.com/windows/app/reactive-trader/a2c622c5-ef66-4653-911f-688fe79ac999)
+
 
 Reactive Trader was written by the team at [Adaptive](http://weareadaptive.com), a consultancy that specialises in building real time trading systems. We have many years of experience in building trading systems for clients with highly demanding latency and reliability requirements. Over the years we have learnt quite a few lessons, and wanted to talk about and point to examples of how we solve technical problems related to real time delivery of messages.
 
