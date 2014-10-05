@@ -60,6 +60,8 @@ We have written a number of blog posts in which we dive deeper into certain aspe
 
 We have been using Reactive Extensions since 2010. Lee Campbell, author of [Intro To Rx](http://www.introtorx.com/), runs our Rx training course, [Practical Rx](http://weareadaptive.com/training). Reactive Trader makes extensive use of Reactive Extensions, and this course is a great opportunity to learn to think in Rx. 
 
+Learn more about Practical Rx by Lee Campbell on [Adaptive website](http://weareadaptive.com/training)
+
 # Future Announcements
 
 We announce all new features and [blog posts](http://weareadaptive.com/blog/) on Twitter: [@AdaptiveLimited](https://twitter.com/AdaptiveLimited)
