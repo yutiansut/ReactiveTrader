@@ -1,6 +1,6 @@
 @echo off
 
-%~dp0\src\.nuget\nuget restore %~dp0\src\ReactiveTrader.sln
+%~dp0\tools\nuget restore %~dp0\src\ReactiveTrader.sln
 
 call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" x86
 

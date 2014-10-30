@@ -1,6 +1,6 @@
 @echo off
 
-%~dp0\src\.nuget\nuget restore %~dp0\src\ReactiveTrader.sln
+%~dp0\tools\nuget restore %~dp0\src\ReactiveTrader.sln
 
 echo %1
 
