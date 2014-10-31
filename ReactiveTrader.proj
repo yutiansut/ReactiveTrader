@@ -79,6 +79,8 @@
     <TestProjects Include="$(SourceRoot)Adaptive.ReactiveTrader.Tests\bin\$(BuildConfiguration)\Adaptive.ReactiveTrader.Tests.dll" />
   </ItemGroup>
 
+  <UsingTask TaskName="NUnit" AssemblyFile="$(teamcity_dotnet_nunitlauncher_msbuild_task)" Condition=" $(teamcity_dotnet_nunitlauncher_msbuild_task) != '' "/>
+
   <Target Name="RunTests" DependsOnTargets="Compile">
     <NUnit Assemblies="@(TestProjects)" Force32Bit="True"
         ToolPath="$(SourceRoot)packages\NUnit.Runners.2.6.3\tools"
