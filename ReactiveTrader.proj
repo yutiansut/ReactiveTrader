@@ -91,7 +91,10 @@
     />
     
     <!--If using TeamCity, use their NUnit task, which has different command-line settings -->
-    <NUnitTeamCity Assemblies="@(TestProjects)" Platform="x86" Condition="$(teamcity_dotnet_nunitlauncher_msbuild_task) != ''"/>
+    <NUnitTeamCity Assemblies="@(TestProjects)" 
+                   Platform="x86" 
+                   NUnitVersion="2.6.3" 
+                   Condition="$(teamcity_dotnet_nunitlauncher_msbuild_task) != ''"/>
   </Target>
 
   <Target Name="Package" DependsOnTargets="RunTests">
