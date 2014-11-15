@@ -13,6 +13,7 @@ namespace Adaptive.ReactiveTrader.Server
         string DesiredThroughput { get; }
         int UpdateFrequency { get; set; }
         ObservableCollection<ICurrencyPairViewModel> CurrencyPairs { get; }
+        bool WindowAlwaysOnTop { get; set; }
         void Start();
     }
 }

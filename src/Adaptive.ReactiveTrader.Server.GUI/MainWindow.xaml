@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="ReactiveTrader Server" 
         Height="350" 
+        Topmost="{Binding WindowAlwaysOnTop, Mode=OneWay}"
         Width="450">
     <Window.Style>
         <Style TargetType="Window">
@@ -35,6 +36,7 @@
             <TextBlock Text="{Binding Throughput, Mode=OneWay}" Width="40" />
             <TextBlock Text=" msg/sec"/>
         </StackPanel>
+        <CheckBox Grid.Row="1" Grid.Column="2" IsChecked="{Binding WindowAlwaysOnTop, Mode=TwoWay}" Content="Always On Top" />
         
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Desired Throughput" Margin="4"/>
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="4" >

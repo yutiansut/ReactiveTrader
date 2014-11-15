@@ -21,18 +21,19 @@ namespace Adaptive.ReactiveTrader.Server
         private readonly Func<CurrencyPairInfo, ICurrencyPairViewModel> _ccyViewModelFactory;
         private readonly IPricePublisher _pricePublisher;
         private long _lastTickTotalUpdates;
+        private bool _updatingThroughput;
 
         private IDisposable _signalr;
         private DispatcherTimer _timer;
         private int _updateFrequency = 100;
 
         public ICommand StartStopCommand { get; private set; }
+        public bool WindowAlwaysOnTop { get; set; }
         public string ServerStatus { get; private set; }
         public string StartStopCommandText { get; private set; }
         public string Throughput { get; private set; }
         public string DesiredThroughput { get; set; }
-        private bool _updatingThroughput;
-
+        
         public ObservableCollection<ICurrencyPairViewModel> CurrencyPairs { get; private set; } 
 
         public MainViewModel(
@@ -46,6 +47,7 @@ namespace Adaptive.ReactiveTrader.Server
             _currencyPairRepository = currencyPairRepository;
             _ccyViewModelFactory = ccyViewModelFactory;
 
+            WindowAlwaysOnTop = false;
             StartStopCommand = new DelegateCommand(StartStopServer);
             CurrencyPairs = new ObservableCollection<ICurrencyPairViewModel>();
 
