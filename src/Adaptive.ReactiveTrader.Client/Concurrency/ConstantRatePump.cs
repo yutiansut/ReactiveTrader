@@ -8,9 +8,9 @@ namespace Adaptive.ReactiveTrader.Client.Concurrency
     {
         private readonly IObservable<Unit> _tick;
  
-        public ConstantRatePump(IConcurrencyService concurrencyService)
+        public ConstantRatePump(IConcurrencyService concurrencyService, IConstantRateConfigurationProvider configurationProvider)
         {
-            _tick = Observable.Timer(TimeSpan.Zero, TimeSpan.FromMilliseconds(125), concurrencyService.Dispatcher)
+            _tick = Observable.Timer(TimeSpan.Zero, configurationProvider.ConstantRate, concurrencyService.Dispatcher)
                               .Select(_ => Unit.Default)   // Use underscore (_) as a parameter name to indicate that it is ignored/not used
                               .Publish()
                               .RefCount();

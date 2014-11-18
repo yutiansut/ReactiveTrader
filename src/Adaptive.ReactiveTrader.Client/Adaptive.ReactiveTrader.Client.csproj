@@ -39,6 +39,7 @@
     <Compile Include="BootstrapperBase.cs" />
     <Compile Include="Concurrency\ConstantRatePump.cs" />
     <Compile Include="Concurrency\IConcurrencyService.cs" />
+    <Compile Include="Concurrency\IConstantRateConfigurationProvider.cs" />
     <Compile Include="Concurrency\IConstantRatePump.cs" />
     <Compile Include="Configuration\IConfigurationProvider.cs" />
     <Compile Include="Configuration\IUserProvider.cs" />

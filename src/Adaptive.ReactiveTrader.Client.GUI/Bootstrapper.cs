@@ -9,6 +9,7 @@ namespace Adaptive.ReactiveTrader.Client
         protected override void RegisterTypes(ContainerBuilder builder)
         {
             builder.RegisterType<ConfigurationProvider>().As<IConfigurationProvider>();
+            builder.RegisterType<ConstantRateConfigurationProvider>().As<IConstantRateConfigurationProvider>();
             builder.RegisterType<UserProvider>().As<IUserProvider>();
             builder.RegisterType<ConcurrencyService>().As<IConcurrencyService>();
         }

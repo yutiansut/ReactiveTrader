@@ -2,7 +2,7 @@
 
 namespace Adaptive.ReactiveTrader.Client.Configuration
 {
-    class ConfigurationProvider : IConfigurationProvider
+    public sealed class ConfigurationProvider : IConfigurationProvider
     {
         public string[] Servers
         {
