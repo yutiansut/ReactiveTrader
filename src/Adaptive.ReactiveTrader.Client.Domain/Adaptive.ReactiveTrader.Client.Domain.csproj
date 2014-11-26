@@ -49,6 +49,7 @@
     <Compile Include="Concurrency\IConcurrencyService.cs" />
     <Compile Include="ConnectionInfo.cs" />
     <Compile Include="Instrumentation\Histogram.cs" />
+    <Compile Include="Instrumentation\IGnuPlot.cs" />
     <Compile Include="Instrumentation\IPriceLatencyRecorder.cs" />
     <Compile Include="Instrumentation\IProcessorMonitor.cs" />
     <Compile Include="Instrumentation\NullProcessorMonitor.cs" />
@@ -107,6 +108,9 @@
     <Compile Include="Transport\IConnectionProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="HdrHistogram.NET">
+      <HintPath>..\lib\HdrHistogram.NET.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Client">
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.0.3\lib\portable-net45+sl5+netcore45+wp8\Microsoft.AspNet.SignalR.Client.dll</HintPath>
       <Private>True</Private>

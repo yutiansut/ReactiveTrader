@@ -16,6 +16,10 @@
         <SolidColorBrush x:Key="BackgroundBrush" Color="#FF212A35" />
     </UserControl.Resources>
     <Grid Background="{StaticResource BackgroundBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/> 
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -23,7 +27,8 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         
-        <ContentPresenter Grid.Row="0" Content="{Binding SpotTiles, Mode=OneTime}">
+        
+        <ContentPresenter Grid.Row="0" Grid.ColumnSpan="2" Content="{Binding SpotTiles, Mode=OneTime}">
             <ContentPresenter.ContentTemplate>
                 <DataTemplate DataType="spotTiles1:ISpotTilesViewModel">
                     <spotTiles:SpotTilesView DataContext="{Binding Mode=OneWay}" />
@@ -31,7 +36,7 @@
             </ContentPresenter.ContentTemplate>
         </ContentPresenter>
 
-        <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="7" Background="{StaticResource BackgroundBrush}" />
+        <GridSplitter Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="7" Background="{StaticResource BackgroundBrush}" />
         
         <ContentPresenter Grid.Row="2" Content="{Binding Blotter, Mode=OneTime}">
             <ContentPresenter.ContentTemplate>
@@ -41,7 +46,7 @@
             </ContentPresenter.ContentTemplate>
         </ContentPresenter>
 
-        <ContentPresenter Grid.Row="3" Content="{Binding ConnectivityStatus, Mode=OneTime}">
+        <ContentPresenter Grid.Row="3" Grid.ColumnSpan="2" Content="{Binding ConnectivityStatus, Mode=OneTime}">
             <ContentPresenter.ContentTemplate>
                 <DataTemplate DataType="connectivity1:IConnectivityStatusViewModel">
                     <connectivity:ConnectivityStatusView DataContext="{Binding Mode=OneWay}" />

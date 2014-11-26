@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Client.Concurrency;
 using Adaptive.ReactiveTrader.Client.Domain;
@@ -12,7 +13,8 @@ namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
     public class ConnectivityStatusViewModel : ViewModelBase, IConnectivityStatusViewModel
     {
         private readonly IProcessorMonitor _processorMonitor;
-        private static readonly TimeSpan StatsFrequency = TimeSpan.FromSeconds(1);
+        private readonly Func<IGnuPlot> _gnuPlotFactory;
+        private static readonly TimeSpan StatsFrequency = TimeSpan.FromSeconds(5);
 
         private readonly IPriceLatencyRecorder _priceLatencyRecorder;
 
@@ -20,9 +22,11 @@ namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
             IReactiveTrader reactiveTrader, 
             IConcurrencyService concurrencyService, 
             ILoggerFactory loggerFactory,
-            IProcessorMonitor processorMonitor)
+            IProcessorMonitor processorMonitor,
+            Func<IGnuPlot> gnuPlotFactory)
         {
             _processorMonitor = processorMonitor;
+            _gnuPlotFactory = gnuPlotFactory;
             _priceLatencyRecorder = reactiveTrader.PriceLatencyRecorder;
             var log = loggerFactory.Create(typeof (ConnectivityStatusViewModel));
 
@@ -74,6 +78,24 @@ namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
                 CpuTime = Math.Round(cpuTime.TotalMilliseconds, 0).ToString();
                 CpuPercent = Math.Round(cpuTime.TotalMilliseconds / (Environment.ProcessorCount * StatsFrequency.TotalMilliseconds) * 100, 0).ToString();
             }
+
+            // Gnu plot
+            var gnuPlot = _gnuPlotFactory();
+            /*
+             * #plot commands
+set terminal png
+set output 'plot.png'
+set logscale x
+unset xtics
+set key top left
+set style line 1 lt 1 lw 3 pt 3 linecolor rgb "red"
+plot './xlabels.dat' with labels center offset 0, 1.5 point, 'output.hgrm' using 4:1 with lines
+*/
+            gnuPlot.WriteFile(".\\output.hgrm", stats.Histogram);
+            gnuPlot.Set("terminal png", "output '.\\plot.png'", "logscale x");
+            gnuPlot.Unset("xtics");
+            gnuPlot.Set("key top left", "set style line 1 lt 1 lw 3 pt 3 linecolor rgb \"red\"");
+            gnuPlot.Plot(".\\xlabels.dat", "with labels center offset 0, 1.5 point, 'output.hgrm' using 4:1 with lines");
         }
 
         private void OnStatusChange(ConnectionInfo connectionInfo)

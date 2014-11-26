@@ -1,18 +1,16 @@
-﻿using Adaptive.ReactiveTrader.Client.Domain.Models.Pricing;
+﻿using System.IO;
+using Adaptive.ReactiveTrader.Client.Domain.Models.Pricing;
+using HdrHistogram.NET;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.Instrumentation
 {
     public class PriceLatencyRecorder : IPriceLatencyRecorder
     {
-        private readonly Histogram _uiLatency;
-        private readonly Histogram _serverLatency;
         private readonly Histogram _combinedLatency;
         private readonly object _histogramLock = new object();
 
         public PriceLatencyRecorder()
         {
-            _uiLatency = GetHistogram();
-            _serverLatency = GetHistogram();
             _combinedLatency = GetHistogram();
         }
 
@@ -22,8 +20,10 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Instrumentation
             if (priceLatency != null)
             {
                 priceLatency.DisplayedOnUi();
-                _uiLatency.AddObservation((long)priceLatency.UiProcessingTimeMs);
-                _combinedLatency.AddObservation((long)priceLatency.TotalLatencyMs);
+
+                long totalLatencyTicks = priceLatency.TotalLatencyTicks;
+                if (totalLatencyTicks > 0)
+                    _combinedLatency.recordValue(totalLatencyTicks);
             }
         }
 
@@ -33,10 +33,6 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Instrumentation
             if (priceLatency != null)
             {
                 priceLatency.ReceivedInGuiProcess();
-                lock (_histogramLock)
-                {
-                    _serverLatency.AddObservation((long) priceLatency.ServerToClientMs);
-                }
             }
         }
 
@@ -46,16 +42,12 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Instrumentation
 
             lock (_histogramLock)
             {
-                stats.RenderedCount = _uiLatency.Count;
-                stats.ReceivedCount = _serverLatency.Count;
-                stats.ServerLatencyMax = _serverLatency.Max;
-                stats.UiLatencyMax = _uiLatency.Max;
-                stats.TotalLatencyMax = _combinedLatency.Max;
-                stats.Histogram = _combinedLatency.ToString();
+                stats.TotalLatencyMax = _combinedLatency.getMaxValue();
+                var sw = new StringWriter();
+                _combinedLatency.outputPercentileDistribution(sw);
+                stats.Histogram = sw.ToString();
 
-                _uiLatency.Clear();
-                _combinedLatency.Clear();
-                _serverLatency.Clear();
+                _combinedLatency.reset();
             }
 
             return stats;
@@ -72,7 +64,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Instrumentation
             }
 
             intervals[intervals.Length - 1] = long.MaxValue;
-            return new Histogram(intervals);
+            return new Histogram(1000000 * 60, 3);
         }
     }
 }

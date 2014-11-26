@@ -66,7 +66,12 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Models.Pricing
 
         public double TotalLatencyMs
         {
-            get { return UiProcessingTimeMs + ServerToClientMs; }
+            get { return GetElapsedMs(_serverTimestamp, _renderedTimestamp); }
+        }
+
+        public long TotalLatencyTicks
+        {
+            get { return _renderedTimestamp - _serverTimestamp; }
         }
 
         private static double GetElapsedMs(long start, long end)

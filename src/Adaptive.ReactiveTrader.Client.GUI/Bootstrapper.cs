@@ -1,5 +1,6 @@
 ﻿using Adaptive.ReactiveTrader.Client.Concurrency;
 using Adaptive.ReactiveTrader.Client.Configuration;
+using Adaptive.ReactiveTrader.Client.Domain.Instrumentation;
 using Autofac;
 
 namespace Adaptive.ReactiveTrader.Client
@@ -12,6 +13,7 @@ namespace Adaptive.ReactiveTrader.Client
             builder.RegisterType<ConstantRateConfigurationProvider>().As<IConstantRateConfigurationProvider>();
             builder.RegisterType<UserProvider>().As<IUserProvider>();
             builder.RegisterType<ConcurrencyService>().As<IConcurrencyService>();
+            builder.RegisterType<GnuPlot>().As<IGnuPlot>();
         }
     }
 }
