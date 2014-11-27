@@ -52,6 +52,8 @@
     <Compile Include="UI\Blotter\TradeViewModel.cs" />
     <Compile Include="UI\Connectivity\ConnectivityStatusViewModel.cs" />
     <Compile Include="UI\Connectivity\IConnectivityStatusViewModel.cs" />
+    <Compile Include="UI\Histogram\HistogramViewModel.cs" />
+    <Compile Include="UI\Histogram\IHistogramViewModel.cs" />
     <Compile Include="UI\Shell\IShellViewModel.cs" />
     <Compile Include="UI\Shell\ShellViewModel.cs" />
     <Compile Include="UI\SpotTiles\Designer\DesignTimeOneWayPriceViewModel.cs" />

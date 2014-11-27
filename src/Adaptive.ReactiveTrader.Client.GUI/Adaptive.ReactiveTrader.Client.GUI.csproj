@@ -138,6 +138,9 @@
     <Compile Include="UI\Connectivity\ConnectivityStatusView.xaml.cs">
       <DependentUpon>ConnectivityStatusView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Histogram\HistogramView.xaml.cs">
+      <DependentUpon>HistogramView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Shell\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
@@ -206,6 +209,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UI\Histogram\HistogramView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Shell\ShellView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -265,6 +272,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="xlabels.dat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

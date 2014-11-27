@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using Adaptive.ReactiveTrader.Client.Domain.Instrumentation;
 
@@ -9,7 +10,7 @@ namespace Adaptive.ReactiveTrader.Client
 {
     public class GnuPlot : IGnuPlot
     {
-        public string PathToGnuplot = @"C:\Program Files\gnuplot\bin";
+        public string PathToGnuplot = @"C:\Users\User\src\ReactiveTrader\src\gnuplot\bin\";
         private readonly Process _extPro;
         private readonly StreamWriter _gnupStWr;
         private readonly List<StoredPlot> _plotBuffer;
@@ -20,7 +21,7 @@ namespace Adaptive.ReactiveTrader.Client
 
         public GnuPlot()
         {
-            if (PathToGnuplot[PathToGnuplot.Length - 1].ToString() != @"\")
+            if (!PathToGnuplot.EndsWith(@"\"))
                 PathToGnuplot += @"\";
             _extPro = new Process();
             _extPro.StartInfo.FileName = PathToGnuplot + "gnuplot.exe";
@@ -574,6 +575,21 @@ namespace Adaptive.ReactiveTrader.Client
         public void WriteFile(string filename, string content)
         {
             File.WriteAllText(filename, content);
+        }
+
+        public void DeleteFile(string filename)
+        {
+            File.Delete(filename);
+        }
+        public string GetCurrentDirectory()
+        {
+            return Environment.CurrentDirectory;
+        }
+
+        public void Dispose()
+        {
+            _extPro.CloseMainWindow();
+            _extPro.Dispose();
         }
     }
 }

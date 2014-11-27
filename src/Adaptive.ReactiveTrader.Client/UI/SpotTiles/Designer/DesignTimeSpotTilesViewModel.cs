@@ -18,5 +18,6 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles.Designer
         }
 
         public ObservableCollection<ISpotTileViewModel> SpotTiles { get; private set; }
+        public SpotTileSubscriptionMode SubscriptionMode { get; private set; }
     }
 }

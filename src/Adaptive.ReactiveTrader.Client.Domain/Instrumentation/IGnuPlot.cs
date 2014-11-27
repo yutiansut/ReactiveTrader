@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.Instrumentation
 {
-    public interface IGnuPlot
+    public interface IGnuPlot : IDisposable
     {
         bool Hold { get; }
         void WriteLine(string gnuplotcommands);
@@ -44,6 +45,8 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Instrumentation
         void HoldOff();
         void Close();
         void WriteFile(string filename, string content);
+        void DeleteFile(string filename);
+        string GetCurrentDirectory();
     }
 
         enum PointStyles

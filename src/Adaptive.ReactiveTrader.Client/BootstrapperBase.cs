@@ -3,6 +3,7 @@ using Adaptive.ReactiveTrader.Client.Domain;
 using Adaptive.ReactiveTrader.Client.Domain.Instrumentation;
 using Adaptive.ReactiveTrader.Client.UI.Blotter;
 using Adaptive.ReactiveTrader.Client.UI.Connectivity;
+using Adaptive.ReactiveTrader.Client.UI.Histogram;
 using Adaptive.ReactiveTrader.Client.UI.Shell;
 using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
 using Adaptive.ReactiveTrader.Shared.Logging;
@@ -32,6 +33,7 @@ namespace Adaptive.ReactiveTrader.Client
             builder.RegisterType<BlotterViewModel>().As<IBlotterViewModel>().ExternallyOwned();
             builder.RegisterType<TradeViewModel>().As<ITradeViewModel>().ExternallyOwned();
             builder.RegisterType<ConnectivityStatusViewModel>().As<IConnectivityStatusViewModel>().ExternallyOwned();
+            builder.RegisterType<HistogramViewModel>().As<IHistogramViewModel>().ExternallyOwned();
 
             RegisterTypes(builder);
 

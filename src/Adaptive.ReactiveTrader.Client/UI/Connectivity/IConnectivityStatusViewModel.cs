@@ -1,7 +1,12 @@
-﻿namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
+﻿using System;
+using Adaptive.ReactiveTrader.Client.Domain.Instrumentation;
+using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
+
+namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
 {
     public interface IConnectivityStatusViewModel
     {
+        void OnStatistics(Statistics statistics, TimeSpan frequency);
         string Status { get; }
         string Server { get; }
         bool Disconnected { get; }

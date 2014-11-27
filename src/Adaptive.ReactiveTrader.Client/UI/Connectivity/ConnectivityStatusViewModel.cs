@@ -5,6 +5,7 @@ using Adaptive.ReactiveTrader.Client.Concurrency;
 using Adaptive.ReactiveTrader.Client.Domain;
 using Adaptive.ReactiveTrader.Client.Domain.Instrumentation;
 using Adaptive.ReactiveTrader.Client.Domain.Transport;
+using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
 using Adaptive.ReactiveTrader.Shared.Logging;
 using Adaptive.ReactiveTrader.Shared.UI;
 
@@ -14,7 +15,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
     {
         private readonly IProcessorMonitor _processorMonitor;
         private readonly Func<IGnuPlot> _gnuPlotFactory;
-        private static readonly TimeSpan StatsFrequency = TimeSpan.FromSeconds(5);
+        
 
         private readonly IPriceLatencyRecorder _priceLatencyRecorder;
 
@@ -42,29 +43,23 @@ namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
                 .Subscribe(
                 OnStatusChange,
                 ex => log.Error("An error occurred within the connection status stream.", ex));
-
-            Observable
-                .Interval(StatsFrequency, concurrencyService.Dispatcher)
-                .Subscribe(OnTimerTick);
         }
 
-        private void OnTimerTick(long _)
+        public void OnStatistics(Statistics statistics, TimeSpan frequency)
         {
-            var stats = _priceLatencyRecorder.CalculateAndReset();
-            
-            if (stats == null)
+            if (statistics == null)
                 return;
 
-            UiLatency = stats.UiLatencyMax;
-            UiUpdates = stats.RenderedCount;
-            TicksReceived = stats.ReceivedCount;
+            UiLatency = statistics.UiLatencyMax;
+            UiUpdates = statistics.RenderedCount;
+            TicksReceived = statistics.ReceivedCount;
             
-            Histogram = stats.Histogram;
+            Histogram = statistics.Histogram;
 
             if (!Disconnected && Server != null && Server.Contains("localhost"))
             {
-                ServerClientLatency = stats.ServerLatencyMax + "ms";
-                TotalLatency = stats.TotalLatencyMax + "ms";
+                ServerClientLatency = statistics.ServerLatencyMax + "ms";
+                TotalLatency = statistics.TotalLatencyMax + "ms";
             }
             else
             {
@@ -76,26 +71,8 @@ namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
             {
                 var cpuTime = _processorMonitor.CalculateProcessingAndReset();
                 CpuTime = Math.Round(cpuTime.TotalMilliseconds, 0).ToString();
-                CpuPercent = Math.Round(cpuTime.TotalMilliseconds / (Environment.ProcessorCount * StatsFrequency.TotalMilliseconds) * 100, 0).ToString();
+                CpuPercent = Math.Round(cpuTime.TotalMilliseconds / (Environment.ProcessorCount * frequency.TotalMilliseconds) * 100, 0).ToString();
             }
-
-            // Gnu plot
-            var gnuPlot = _gnuPlotFactory();
-            /*
-             * #plot commands
-set terminal png
-set output 'plot.png'
-set logscale x
-unset xtics
-set key top left
-set style line 1 lt 1 lw 3 pt 3 linecolor rgb "red"
-plot './xlabels.dat' with labels center offset 0, 1.5 point, 'output.hgrm' using 4:1 with lines
-*/
-            gnuPlot.WriteFile(".\\output.hgrm", stats.Histogram);
-            gnuPlot.Set("terminal png", "output '.\\plot.png'", "logscale x");
-            gnuPlot.Unset("xtics");
-            gnuPlot.Set("key top left", "set style line 1 lt 1 lw 3 pt 3 linecolor rgb \"red\"");
-            gnuPlot.Plot(".\\xlabels.dat", "with labels center offset 0, 1.5 point, 'output.hgrm' using 4:1 with lines");
         }
 
         private void OnStatusChange(ConnectionInfo connectionInfo)

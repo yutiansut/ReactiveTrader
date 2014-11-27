@@ -64,7 +64,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Instrumentation
             }
 
             intervals[intervals.Length - 1] = long.MaxValue;
-            return new Histogram(1000000 * 60, 3);
+            return new Histogram((long)(1000000 * 60 * 30), 3); // 1 ns to 30 minutes
         }
     }
 }

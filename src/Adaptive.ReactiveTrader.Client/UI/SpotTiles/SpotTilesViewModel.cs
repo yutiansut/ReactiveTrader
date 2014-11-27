@@ -19,6 +19,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
     public class SpotTilesViewModel : ViewModelBase, ISpotTilesViewModel, IDisposable
     {
         public ObservableCollection<ISpotTileViewModel> SpotTiles { get; private set; }
+        public SpotTileSubscriptionMode SubscriptionMode { get; private set; }
         private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
         private readonly IReferenceDataRepository _referenceDataRepository;
         private readonly Func<ICurrencyPair, SpotTileSubscriptionMode, ISpotTileViewModel> _spotTileFactory;
@@ -45,7 +46,11 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
 
             _subscriptions.Add(
                 _config.Config.ObserveProperty(p => p.SubscriptionMode)
-                    .Subscribe(subscriptionMode => SpotTiles.Where(vm => vm.Pricing != null).ForEach(vm => vm.Pricing.SubscriptionMode = subscriptionMode)));
+                    .Subscribe(subscriptionMode =>
+                    {
+                        SpotTiles.Where(vm => vm.Pricing != null).ForEach(vm => vm.Pricing.SubscriptionMode = subscriptionMode);
+                        SubscriptionMode = subscriptionMode;
+                    }));
 
             _subscriptions.Add(
                 _config.Config.ObserveProperty(p => p.ExecutionMode)
