@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Reactive.Concurrency;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Adaptive.ReactiveTrader.Server.Pricing;
@@ -20,6 +23,7 @@ namespace Adaptive.ReactiveTrader.Server
         private readonly ICurrencyPairRepository _currencyPairRepository;
         private readonly Func<CurrencyPairInfo, ICurrencyPairViewModel> _ccyViewModelFactory;
         private readonly IPricePublisher _pricePublisher;
+        private readonly SerialDisposable _oscilatingWorkDisposable = new SerialDisposable();
         private long _lastTickTotalUpdates;
         private bool _updatingThroughput;
 
@@ -29,6 +33,7 @@ namespace Adaptive.ReactiveTrader.Server
 
         public ICommand StartStopCommand { get; private set; }
         public bool WindowAlwaysOnTop { get; set; }
+        public bool IsOscillating { get; set; }
         public string ServerStatus { get; private set; }
         public string StartStopCommandText { get; private set; }
         public string Throughput { get; private set; }
@@ -159,6 +164,48 @@ namespace Adaptive.ReactiveTrader.Server
                     _updatingThroughput = true;
                     DesiredThroughput = updateFrequency.ToString("N0");
                     _updatingThroughput = false;
+                });
+
+            this.ObserveProperty(p => p.IsOscillating)
+                .Subscribe(isOscillating =>
+                {
+                    if (isOscillating)
+                    {
+                        bool isDescending = true;
+                        var originalThroughput = int.Parse(DesiredThroughput);
+                        var currentThroughput = originalThroughput;
+
+                        _oscilatingWorkDisposable.Disposable =
+                            Observable.Interval(TimeSpan.FromSeconds(4), DispatcherScheduler.Current)
+                                .OnDisposed(() => DesiredThroughput = originalThroughput.ToString())
+                                .Subscribe(_ =>
+                                {
+                                    if (isDescending)
+                                    {
+                                        currentThroughput -= 500;
+                                        if (currentThroughput <= 0)
+                                        {
+                                            isDescending = false;
+                                            currentThroughput = 1;
+                                        }
+                                        DesiredThroughput = currentThroughput.ToString();
+                                    }
+                                    else
+                                    {
+                                        currentThroughput += 500;
+                                        if (currentThroughput >= originalThroughput)
+                                        {
+                                            isDescending = true;
+                                            currentThroughput = originalThroughput;
+                                        }
+                                        DesiredThroughput = currentThroughput.ToString();
+                                    }
+                                });
+                    }
+                    else
+                    {
+                        _oscilatingWorkDisposable.Disposable.Dispose();
+                    }
                 });
         }
 

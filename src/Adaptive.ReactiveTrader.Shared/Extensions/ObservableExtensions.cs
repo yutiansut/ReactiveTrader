@@ -61,6 +61,15 @@ namespace Adaptive.ReactiveTrader.Shared.Extensions
             });
         }
 
+        public static IObservable<T> OnDisposed<T>(this IObservable<T> source, Action onDispose)
+        {
+            return Observable.Create<T>(o => new CompositeDisposable
+            {
+                source.Subscribe(o),
+                Disposable.Create(onDispose)
+            });
+        }
+             
         public static IObservable<T> ObserveLatestOn<T>(this IObservable<T> source, IScheduler scheduler)
         {
             return Observable.Create<T>(observer =>

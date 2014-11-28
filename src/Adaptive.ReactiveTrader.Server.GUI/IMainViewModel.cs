@@ -14,6 +14,7 @@ namespace Adaptive.ReactiveTrader.Server
         int UpdateFrequency { get; set; }
         ObservableCollection<ICurrencyPairViewModel> CurrencyPairs { get; }
         bool WindowAlwaysOnTop { get; set; }
+        bool IsOscillating { get; set; }
         void Start();
     }
 }

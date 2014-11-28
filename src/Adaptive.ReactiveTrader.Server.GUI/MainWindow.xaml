@@ -43,6 +43,7 @@
             <TextBox Text="{Binding DesiredThroughput, Mode=TwoWay}" Width="40" />
             <TextBlock Text=" msg/sec"/>
         </StackPanel>
+        <CheckBox Grid.Row="2" Grid.Column="2" IsChecked="{Binding IsOscillating, Mode=TwoWay}" Content="Oscillate Throughput"/>
         
         <Slider Grid.Row="3" Grid.ColumnSpan="3"
                 Margin="4" 
