@@ -1,11 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Client.Concurrency;
 using Adaptive.ReactiveTrader.Client.Domain;
 using Adaptive.ReactiveTrader.Client.Domain.Instrumentation;
 using Adaptive.ReactiveTrader.Client.Domain.Transport;
-using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
 using Adaptive.ReactiveTrader.Shared.Logging;
 using Adaptive.ReactiveTrader.Shared.UI;
 
@@ -14,21 +12,14 @@ namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
     public class ConnectivityStatusViewModel : ViewModelBase, IConnectivityStatusViewModel
     {
         private readonly IProcessorMonitor _processorMonitor;
-        private readonly Func<IGnuPlot> _gnuPlotFactory;
-        
-
-        private readonly IPriceLatencyRecorder _priceLatencyRecorder;
 
         public ConnectivityStatusViewModel(
             IReactiveTrader reactiveTrader, 
             IConcurrencyService concurrencyService, 
             ILoggerFactory loggerFactory,
-            IProcessorMonitor processorMonitor,
-            Func<IGnuPlot> gnuPlotFactory)
+            IProcessorMonitor processorMonitor)
         {
             _processorMonitor = processorMonitor;
-            _gnuPlotFactory = gnuPlotFactory;
-            _priceLatencyRecorder = reactiveTrader.PriceLatencyRecorder;
             var log = loggerFactory.Create(typeof (ConnectivityStatusViewModel));
 
             if (!_processorMonitor.IsAvailable)

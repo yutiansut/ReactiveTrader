@@ -13,7 +13,7 @@ namespace Adaptive.ReactiveTrader.Client
             builder.RegisterType<ConstantRateConfigurationProvider>().As<IConstantRateConfigurationProvider>();
             builder.RegisterType<UserProvider>().As<IUserProvider>();
             builder.RegisterType<ConcurrencyService>().As<IConcurrencyService>();
-            builder.RegisterType<GnuPlot>().As<IGnuPlot>();
+            builder.RegisterType<TextFileWriter>().As<ITextFileWriter>();
         }
     }
 }

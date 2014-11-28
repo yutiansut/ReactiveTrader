@@ -49,7 +49,7 @@
     <Compile Include="Concurrency\IConcurrencyService.cs" />
     <Compile Include="ConnectionInfo.cs" />
     <Compile Include="Instrumentation\Histogram.cs" />
-    <Compile Include="Instrumentation\IGnuPlot.cs" />
+    <Compile Include="Instrumentation\ITextFileWriter.cs" />
     <Compile Include="Instrumentation\IPriceLatencyRecorder.cs" />
     <Compile Include="Instrumentation\IProcessorMonitor.cs" />
     <Compile Include="Instrumentation\NullProcessorMonitor.cs" />

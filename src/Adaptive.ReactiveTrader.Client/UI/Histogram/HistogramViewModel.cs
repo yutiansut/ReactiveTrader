@@ -13,13 +13,11 @@ namespace Adaptive.ReactiveTrader.Client.UI.Histogram
     {
         private readonly Stopwatch _stopwatch = Stopwatch.StartNew();
         private readonly EventLoopScheduler _eventLoopScheduler = new EventLoopScheduler();
-        private readonly IConcurrencyService _concurrencyService;
-        private readonly Func<IGnuPlot> _gnuPlotFactory;
+        private readonly Func<ITextFileWriter> _gnuPlotFactory;
         private int _index = 0;
         
-        public HistogramViewModel(IConcurrencyService concurrencyService, Func<IGnuPlot> gnuPlotFactory)
+        public HistogramViewModel(Func<ITextFileWriter> gnuPlotFactory)
         {
-            _concurrencyService = concurrencyService;
             _gnuPlotFactory = gnuPlotFactory;
         }
 
@@ -48,13 +46,13 @@ namespace Adaptive.ReactiveTrader.Client.UI.Histogram
             gnuPlot.WriteFile(string.Format(@".\output-{0}-{1}-{2}.hgrm", _index, subscriptionMode, _stopwatch.Elapsed.ToString().Replace(':', '.')),
                 statistics.Histogram);
             _stopwatch.Restart();
-            gnuPlot.WriteFile(".\\output.hgrm", statistics.Histogram);
-            gnuPlot.Set("terminal png", string.Format("output '{0}'", file), "logscale x");
-            gnuPlot.Unset("xtics");
-            gnuPlot.Set("key top left", "set style line 1 lt 1 lw 3 pt 3 linecolor rgb \"red\"");
-            gnuPlot.Plot(".\\xlabels.dat", "with labels center offset 0, 1.5 point, 'output.hgrm' using 4:1 with lines");
-            gnuPlot.Close();
-            gnuPlot.Dispose();
+            //gnuPlot.WriteFile(".\\output.hgrm", statistics.Histogram);
+            //gnuPlot.Set("terminal png", string.Format("output '{0}'", file), "logscale x");
+            //gnuPlot.Unset("xtics");
+            //gnuPlot.Set("key top left", "set style line 1 lt 1 lw 3 pt 3 linecolor rgb \"red\"");
+            //gnuPlot.Plot(".\\xlabels.dat", "with labels center offset 0, 1.5 point, 'output.hgrm' using 4:1 with lines");
+            //gnuPlot.Close();
+            //gnuPlot.Dispose();
             _index++;
         }
        

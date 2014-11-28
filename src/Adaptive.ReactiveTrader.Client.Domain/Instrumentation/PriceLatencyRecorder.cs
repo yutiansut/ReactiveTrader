@@ -55,15 +55,6 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Instrumentation
 
         private Histogram GetHistogram()
         {
-            var intervals = new long[13];
-            var intervalUpperBound = 1L;
-            for (var i = 0; i < intervals.Length - 1; i++)
-            {
-                intervalUpperBound *= 2;
-                intervals[i] = intervalUpperBound;
-            }
-
-            intervals[intervals.Length - 1] = long.MaxValue;
             return new Histogram((long)(1000000 * 60 * 30), 3); // 1 ns to 30 minutes
         }
     }
