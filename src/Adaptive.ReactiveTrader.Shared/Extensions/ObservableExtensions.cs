@@ -69,15 +69,17 @@ namespace Adaptive.ReactiveTrader.Shared.Extensions
                 Disposable.Create(onDispose)
             });
         }
-             
+
         public static IObservable<T> ObserveLatestOn<T>(this IObservable<T> source, IScheduler scheduler)
         {
             return Observable.Create<T>(observer =>
             {
                 var gate = new object();
                 bool active = false;
-                var cancelable = new MultipleAssignmentDisposable();
-                var disposable = source.Materialize().Subscribe(thisNotification =>
+                //var cancelable = new MultipleAssignmentDisposable();
+                var cancelable = new SerialDisposable();
+                var disposable = source.Materialize()
+                    .Subscribe(thisNotification =>
                 {
                     bool wasNotAlreadyActive;
                     Notification<T> outsideNotification;
@@ -115,91 +117,116 @@ namespace Adaptive.ReactiveTrader.Shared.Extensions
             });
         }
 
-        /// <summary>
-        /// Applies a conflation algorithm to an observable stream. 
-        /// Anytime the stream OnNext twice below minimumUpdatePeriod, the second update gets delayed to respect the minimumUpdatePeriod
-        /// If more than 2 update happen, only the last update is pushed
-        /// Updates are pushed and rescheduled using the provided scheduler
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="source">stream</param>
-        /// <param name="minimumUpdatePeriod">minimum delay between 2 updates</param>
-        /// <param name="scheduler">to be used to publish updates and schedule delayed updates</param>
-        /// <returns></returns>
-        public static IObservable<T> Conflate<T>(this IObservable<T> source, TimeSpan minimumUpdatePeriod, IScheduler scheduler)
+        ///// <summary>
+        ///// Applies a conflation algorithm to an observable stream. 
+        ///// Anytime the stream OnNext twice below minimumUpdatePeriod, the second update gets delayed to respect the minimumUpdatePeriod
+        ///// If more than 2 update happen, only the last update is pushed
+        ///// Updates are pushed and rescheduled using the provided scheduler
+        ///// </summary>
+        ///// <typeparam name="T"></typeparam>
+        ///// <param name="source">stream</param>
+        ///// <param name="minimumUpdatePeriod">minimum delay between 2 updates</param>
+        ///// <param name="scheduler">to be used to publish updates and schedule delayed updates</param>
+        ///// <returns></returns>
+        //public static IObservable<T> Conflate<T>(this IObservable<T> source, TimeSpan minimumUpdatePeriod, IScheduler scheduler)
+        //{
+        //    return Observable.Create<T>(observer =>
+        //    {
+        //        // indicate when the last update was published
+        //        var lastUpdateTime = DateTimeOffset.MinValue;
+        //        // indicate if an update is currently scheduled
+        //        var updateScheduled = new MultipleAssignmentDisposable();
+        //        // indicate if completion has been requested (we can't complete immediatly if an update is in flight)
+        //        var completionRequested = false;
+        //        var gate = new object();
+
+        //        var subscription = source
+        //                .ObserveOn(scheduler)
+        //                .Subscribe(
+        //                    x =>
+        //                    {
+        //                        var currentUpdateTime = scheduler.Now;
+
+        //                        bool scheduleRequired;
+        //                        lock (gate)
+        //                        {
+        //                            scheduleRequired = currentUpdateTime - lastUpdateTime < minimumUpdatePeriod;
+        //                            if (scheduleRequired && updateScheduled.Disposable != null)
+        //                            {
+        //                                updateScheduled.Disposable.Dispose();
+        //                                updateScheduled.Disposable = null;
+        //                            }
+        //                        }
+
+        //                        if (scheduleRequired)
+        //                        {
+        //                            updateScheduled.Disposable = scheduler.Schedule(lastUpdateTime + minimumUpdatePeriod, () =>
+        //                            {
+        //                                observer.OnNext(x);
+
+        //                                lock (gate)
+        //                                {
+        //                                    lastUpdateTime = scheduler.Now;
+        //                                    updateScheduled.Disposable = null;
+        //                                    if (completionRequested)
+        //                                    {
+        //                                        observer.OnCompleted();
+        //                                    }
+        //                                }
+        //                            });
+        //                        }
+        //                        else
+        //                        {
+        //                            observer.OnNext(x);
+        //                            lock (gate)
+        //                            {
+        //                                lastUpdateTime = scheduler.Now;
+        //                            }
+        //                        }
+        //                    },
+        //                    observer.OnError,
+        //                    () =>
+        //                    {
+        //                        // if we have scheduled an update we need to complete once the update has been published
+        //                        if (updateScheduled.Disposable != null)
+        //                        {
+        //                            lock (gate)
+        //                            {
+        //                                completionRequested = true;                                        
+        //                            }
+        //                        }
+        //                        else
+        //                        {
+        //                            observer.OnCompleted();
+        //                        }
+        //                    });
+
+        //        return subscription;
+        //    });
+        //}
+
+        public static IObservable<T> Conflate<T>(this IObservable<T> source,
+            TimeSpan _,
+            IScheduler scheduler)
         {
             return Observable.Create<T>(observer =>
             {
-                // indicate when the last update was published
-                var lastUpdateTime = DateTimeOffset.MinValue;
-                // indicate if an update is currently scheduled
-                var updateScheduled = new MultipleAssignmentDisposable();
-                // indicate if completion has been requested (we can't complete immediatly if an update is in flight)
-                var completionRequested = false;
-                var gate = new object();
-
-                var subscription = source
-                        .ObserveOn(scheduler)
-                        .Subscribe(
-                            x =>
+                Notification<T> currentNotification = null;
+                var cancelable = new SerialDisposable();
+                var subscription = source.Materialize()
+                    .Subscribe(thisNotification =>
+                    {
+                        var previous = Interlocked.Exchange(ref currentNotification, thisNotification);
+                        if (previous == null)
+                        {
+                            cancelable.Disposable = scheduler.Schedule(self =>
                             {
-                                var currentUpdateTime = scheduler.Now;
-
-                                bool scheduleRequired;
-                                lock (gate)
-                                {
-                                    scheduleRequired = currentUpdateTime - lastUpdateTime < minimumUpdatePeriod;
-                                    if (scheduleRequired && updateScheduled.Disposable != null)
-                                    {
-                                        updateScheduled.Disposable.Dispose();
-                                        updateScheduled.Disposable = null;
-                                    }
-                                }
-
-                                if (scheduleRequired)
-                                {
-                                    updateScheduled.Disposable = scheduler.Schedule(lastUpdateTime + minimumUpdatePeriod, () =>
-                                    {
-                                        observer.OnNext(x);
-
-                                        lock (gate)
-                                        {
-                                            lastUpdateTime = scheduler.Now;
-                                            updateScheduled.Disposable = null;
-                                            if (completionRequested)
-                                            {
-                                                observer.OnCompleted();
-                                            }
-                                        }
-                                    });
-                                }
-                                else
-                                {
-                                    observer.OnNext(x);
-                                    lock (gate)
-                                    {
-                                        lastUpdateTime = scheduler.Now;
-                                    }
-                                }
-                            },
-                            observer.OnError,
-                            () =>
-                            {
-                                // if we have scheduled an update we need to complete once the update has been published
-                                if (updateScheduled.Disposable != null)
-                                {
-                                    lock (gate)
-                                    {
-                                        completionRequested = true;                                        
-                                    }
-                                }
-                                else
-                                {
-                                    observer.OnCompleted();
-                                }
+                                var localNotification = Interlocked.Exchange(ref currentNotification, null);
+                                localNotification.Accept(observer);
                             });
-
-                return subscription;
+                        }
+                    });
+                return new CompositeDisposable(cancelable, subscription);
             });
         }
 
@@ -239,9 +266,9 @@ namespace Adaptive.ReactiveTrader.Shared.Extensions
                         lock (gate)
                         {
                             // cancel any scheduled heartbeat
-                            heartbeatTimerSubscription.Disposable.Dispose();    
+                            heartbeatTimerSubscription.Disposable.Dispose();
                         }
-                        
+
                         observer.OnNext(new Heartbeat<T>(x));
 
                         scheduleHeartbeats();
@@ -356,13 +383,13 @@ namespace Adaptive.ReactiveTrader.Shared.Extensions
 
         private static class CompiledExpressionHelper<TSource, TProp>
         {
-            private static readonly Dictionary<string, Func<TSource, TProp>> Funcs = new Dictionary<string,Func<TSource,TProp>>();
+            private static readonly Dictionary<string, Func<TSource, TProp>> Funcs = new Dictionary<string, Func<TSource, TProp>>();
 
             public static Func<TSource, TProp> GetFunc(Expression<Func<TSource, TProp>> propertyExpression)
             {
                 var memberExpression = GetMemberExpression(propertyExpression);
                 var propertyName = memberExpression.Member.Name;
-                var key = typeof (TSource).FullName + "." + propertyName;
+                var key = typeof(TSource).FullName + "." + propertyName;
                 Func<TSource, TProp> func;
 
                 if (!Funcs.TryGetValue(key, out func))
@@ -379,16 +406,16 @@ namespace Adaptive.ReactiveTrader.Shared.Extensions
                 var unaryExpr = propertyExpression.Body as UnaryExpression;
                 if (unaryExpr != null && unaryExpr.NodeType == ExpressionType.Convert)
                 {
-                    memberExpression = (MemberExpression) unaryExpr.Operand;
+                    memberExpression = (MemberExpression)unaryExpr.Operand;
                 }
                 else
                 {
-                    memberExpression = (MemberExpression) propertyExpression.Body;
+                    memberExpression = (MemberExpression)propertyExpression.Body;
                 }
-                    if (memberExpression.Expression.NodeType != ExpressionType.Parameter && memberExpression.Expression.NodeType != ExpressionType.Constant)
-                    {
-                        throw new InvalidOperationException("Getting members not directly on the expression's root object has been disallowed.");
-                    }
+                if (memberExpression.Expression.NodeType != ExpressionType.Parameter && memberExpression.Expression.NodeType != ExpressionType.Constant)
+                {
+                    throw new InvalidOperationException("Getting members not directly on the expression's root object has been disallowed.");
+                }
                 return memberExpression;
             }
         }
