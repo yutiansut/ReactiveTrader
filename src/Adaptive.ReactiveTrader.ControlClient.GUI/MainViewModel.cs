@@ -29,6 +29,7 @@ namespace Adaptive.ReactiveTrader.ControlClient.GUI
         public ICommand RefreshCommand { get; private set; }
         public string ServerStatus { get; private set; }
         public string DesiredThroughput { get; set; }
+        public bool WindowAlwaysOnTop { get; set; }
 
         public ObservableCollection<ICurrencyPairViewModel> CurrencyPairs { get; private set; } 
 
@@ -43,6 +44,8 @@ namespace Adaptive.ReactiveTrader.ControlClient.GUI
             _userProvider = userProvider;
             _configurationProvider = configurationProvider;
             _concurrencyService = concurrencyService;
+
+            WindowAlwaysOnTop = false;
 
             RefreshCommand = new DelegateCommand(RefreshData);
             CurrencyPairs = new ObservableCollection<ICurrencyPairViewModel>();
