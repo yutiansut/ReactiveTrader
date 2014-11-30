@@ -99,7 +99,6 @@
     <Compile Include="ServiceClients\PricingServiceClient.cs" />
     <Compile Include="ServiceClients\ReferenceDataServiceClient.cs" />
     <Compile Include="ServiceClients\ServiceClientBase.cs" />
-    <Compile Include="ServiceClients\TransportDisconnectedException.cs" />
     <Compile Include="Transport\Connection.cs" />
     <Compile Include="Transport\ConnectionProvider.cs" />
     <Compile Include="Transport\ConnectionStatus.cs" />
