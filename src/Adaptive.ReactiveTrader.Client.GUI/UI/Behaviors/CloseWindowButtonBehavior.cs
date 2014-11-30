@@ -1,6 +1,6 @@
 ﻿namespace Adaptive.ReactiveTrader.Client.UI.Behaviors
 {
-    public class CloseWindowButtonBehaviorBase : WindowButtonBehaviorBase
+    public class CloseWindowButtonBehavior : WindowButtonBehaviorBase
     {
         protected override void OnButtonClicked()
         {
