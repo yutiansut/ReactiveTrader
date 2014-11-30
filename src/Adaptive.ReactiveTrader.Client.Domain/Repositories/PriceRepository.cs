@@ -9,7 +9,7 @@ using Adaptive.ReactiveTrader.Shared.Logging;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.Repositories
 {
-    class PriceRepository : IPriceRepository
+    internal class PriceRepository : IPriceRepository
     {
         private readonly IPricingServiceClient _pricingServiceClient;
         private readonly IPriceFactory _priceFactory;

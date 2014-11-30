@@ -12,7 +12,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.ServiceClients
 {
     internal class PricingServiceClient : ServiceClientBase, IPricingServiceClient
     {
-        private ILog _log;
+        private readonly ILog _log;
 
         public PricingServiceClient(IConnectionProvider connectionProvider, ILoggerFactory loggerFactory) : base(connectionProvider)
         {
@@ -41,7 +41,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.ServiceClients
 
                 // send a subscription request
                 _log.InfoFormat("Sending price subscription for currency pair {0}", currencyPair);
-                SendSubscription(currencyPair, pricingHubProxy)
+                var subscription = SendSubscription(currencyPair, pricingHubProxy)
                     .Subscribe(
                         _ => _log.InfoFormat("Subscribed to {0}", currencyPair),
                         observer.OnError);
@@ -58,7 +58,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.ServiceClients
                                 _log.WarnFormat("An error occurred while sending unsubscription request for {0}:{1}", currencyPair, ex.Message));
                 });
 
-                return new CompositeDisposable {priceSubscription, unsubscriptionDisposable};
+                return new CompositeDisposable {priceSubscription, unsubscriptionDisposable, subscription};
             })
             .Publish()
             .RefCount();

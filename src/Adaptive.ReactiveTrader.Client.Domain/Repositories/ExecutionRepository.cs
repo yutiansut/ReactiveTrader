@@ -10,7 +10,7 @@ using Adaptive.ReactiveTrader.Shared.Extensions;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.Repositories
 {
-    class ExecutionRepository : IExecutionRepository
+    internal class ExecutionRepository : IExecutionRepository
     {
         private readonly IExecutionServiceClient _executionServiceClient;
         private readonly ITradeFactory _tradeFactory;
@@ -25,21 +25,24 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Repositories
 
         public IObservable<IStale<ITrade>> ExecuteRequest(IExecutablePrice executablePrice, long notional, string dealtCurrency)
         {
-            var price = executablePrice.Parent;
-
-            var request = new TradeRequestDto
+            return Observable.Defer(() =>
             {
-                Direction = executablePrice.Direction == Direction.BUY ? DirectionDto.Buy : DirectionDto.Sell,
-                Notional = notional,
-                SpotRate = executablePrice.Rate,
-                Symbol = price.CurrencyPair.Symbol,
-                ValueDate = price.ValueDate,
-                DealtCurrency = dealtCurrency
-            };
+                var price = executablePrice.Parent;
 
-            return _executionServiceClient.ExecuteRequest(request)
-                .Select(_tradeFactory.Create)
-                .DetectStale(TimeSpan.FromSeconds(2), _concurrencyService.TaskPool);
+                var request = new TradeRequestDto
+                {
+                    Direction = executablePrice.Direction == Direction.BUY ? DirectionDto.Buy : DirectionDto.Sell,
+                    Notional = notional,
+                    SpotRate = executablePrice.Rate,
+                    Symbol = price.CurrencyPair.Symbol,
+                    ValueDate = price.ValueDate,
+                    DealtCurrency = dealtCurrency
+                };
+
+                return _executionServiceClient.ExecuteRequest(request)
+                    .Select(_tradeFactory.Create)
+                    .DetectStale(TimeSpan.FromSeconds(2), _concurrencyService.TaskPool);
+            });
         }
     }
 }
