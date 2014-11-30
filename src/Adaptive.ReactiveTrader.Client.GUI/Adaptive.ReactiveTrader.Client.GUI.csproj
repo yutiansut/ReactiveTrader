@@ -130,7 +130,7 @@
     <Compile Include="UI\Behaviors\CloseWindowButtonBehavior.cs" />
     <Compile Include="UI\Behaviors\MaximizeWindowButtonBehavior.cs" />
     <Compile Include="UI\Behaviors\MinimizeWindowButtonBehavior.cs" />
-    <Compile Include="UI\Behaviors\WindowButtonBehavior.cs" />
+    <Compile Include="UI\Behaviors\WindowButtonBehaviorBase.cs" />
     <Compile Include="UI\Blotter\BlotterView.xaml.cs">
       <DependentUpon>BlotterView.xaml</DependentUpon>
     </Compile>
@@ -193,7 +193,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\Generic.xaml">
+    <Page Include="Styles\Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

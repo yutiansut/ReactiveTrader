@@ -17,10 +17,10 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport
         private readonly IObservable<IConnection> _connectionSequence;
         private readonly string[] _servers;
         private readonly ILoggerFactory _loggerFactory;
+        private readonly ILog _log;
 
         private int _currentIndex;
-        private ILog _log;
-
+        
         public ConnectionProvider(string username, string[] servers, ILoggerFactory loggerFactory)
         {
             _username = username;
