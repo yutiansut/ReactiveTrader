@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Client.Concurrency;
@@ -35,10 +34,9 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
         private readonly IPriceLatencyRecorder _priceLatencyRecorder;
         private readonly IConcurrencyService _concurrencyService;
         private readonly IConstantRatePump _constantRatePump;
-        private bool _disposed;
         private decimal? _previousRate;
         private SpotTileSubscriptionMode _subscriptionMode;
-        
+
         private volatile IPrice _latestPrice;
         private IPrice _currentPrice;
         private readonly ILog _log;
@@ -56,8 +54,8 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
             _priceLatencyRecorder = reactiveTrader.PriceLatencyRecorder;
             _concurrencyService = concurrencyService;
             _constantRatePump = constantRatePump;
-            _log = loggerFactory.Create(typeof (SpotTilePricingViewModel));
-            
+            _log = loggerFactory.Create(typeof(SpotTilePricingViewModel));
+
             _priceSubscription = new SerialDisposable();
             Bid = oneWayPriceFactory(Direction.SELL, this);
             Ask = oneWayPriceFactory(Direction.BUY, this);
@@ -65,17 +63,13 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
             DealtCurrency = currencyPair.BaseCurrency;
             SpotDate = "SP";
             IsSubscribing = true;
-            
+
             SubscribeForPrices();
         }
 
         public void Dispose()
         {
-            if (!_disposed)
-            {
-                _priceSubscription.Dispose();
-                _disposed = true;
-            }
+            _priceSubscription.Dispose();
         }
 
         public string Symbol { get { return String.Format("{0} / {1}", _currencyPair.BaseCurrency, _currencyPair.CounterCurrency); } }
@@ -96,7 +90,8 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
         public SpotTileExecutionMode ExecutionMode
         {
             get { return Bid.ExecutionMode; }
-            set { 
+            set
+            {
                 Bid.ExecutionMode = value;
                 Ask.ExecutionMode = value;
             }
@@ -166,7 +161,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
 
             _priceSubscription.Disposable = new CompositeDisposable(ps, el);
         }
-        
+
         private void OnPrice(IPrice price)
         {
             IsSubscribing = false;
@@ -184,8 +179,8 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
             else
             {
                 if (_previousRate.HasValue)
-                {   
-                    if (price.Mid > _previousRate.Value) 
+                {
+                    if (price.Mid > _previousRate.Value)
                         Movement = PriceMovement.Up;
                     else if (price.Mid < _previousRate.Value)
                         Movement = PriceMovement.Down;
