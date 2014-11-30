@@ -79,19 +79,19 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,7,0">
                                         <Button Style="{StaticResource MinMaxButtonStyle}" VerticalContentAlignment="Bottom">
                                             <i:Interaction.Behaviors>
-                                                <behaviors:MinimizeWindowButtonBehavior AssociatedWindow="{Binding RelativeSource={RelativeSource TemplatedParent}}"/>
+                                                <behaviors:MinimizeWindowButtonBehaviorBase AssociatedWindow="{Binding RelativeSource={RelativeSource TemplatedParent}}"/>
                                             </i:Interaction.Behaviors>
                                             <Path Data="M0,0L8,0 8,2 0,2z" Fill="Black" Height="2" Width="8" Margin="0,0,0,7" />
                                         </Button>
                                         <Button Style="{StaticResource MinMaxButtonStyle}">
                                             <i:Interaction.Behaviors>
-                                                <behaviors:MaximizeWindowButtonBehavior AssociatedWindow="{Binding RelativeSource={RelativeSource TemplatedParent}}"/>
+                                                <behaviors:MaximizeWindowButtonBehaviorBase AssociatedWindow="{Binding RelativeSource={RelativeSource TemplatedParent}}"/>
                                             </i:Interaction.Behaviors>
                                             <Path Data="M9,7L1,7 1,2 9,2z M0,8L10,8 10,0 0,0z" Fill="Black" Height="8" Width="10" />
                                         </Button>
                                         <Button Style="{StaticResource CloseButtonStyle}">
                                             <i:Interaction.Behaviors>
-                                                <behaviors:CloseWindowButtonBehavior AssociatedWindow="{Binding RelativeSource={RelativeSource TemplatedParent}}"/>
+                                                <behaviors:CloseWindowButtonBehaviorBase AssociatedWindow="{Binding RelativeSource={RelativeSource TemplatedParent}}"/>
                                             </i:Interaction.Behaviors>
                                         </Button>
                                     </StackPanel>

@@ -5,7 +5,7 @@ using ILog = Adaptive.ReactiveTrader.Shared.Logging.ILog;
 
 namespace Adaptive.ReactiveTrader.Client.Logging
 {
-    class Log4NetLoggerFactory : ILoggerFactory
+    public class Log4NetLoggerFactory : ILoggerFactory
     {
         public ILog Create(Type type)
         {

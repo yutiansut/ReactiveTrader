@@ -4,7 +4,7 @@ using Adaptive.ReactiveTrader.Client.Domain.Instrumentation;
 
 namespace Adaptive.ReactiveTrader.Client.Instrumentation
 {
-    class ProcessorMonitor : IProcessorMonitor
+    public class ProcessorMonitor : IProcessorMonitor
     {
         private readonly Process _currentProcess;
         private TimeSpan _lastProcessTime;
