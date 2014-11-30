@@ -18,7 +18,6 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
         string SpotDate { get; }
         bool IsSubscribing { get; }
         bool IsStale { get; }
-
         void OnTrade(ITrade trade);
         void OnExecutionError(string message);
     }

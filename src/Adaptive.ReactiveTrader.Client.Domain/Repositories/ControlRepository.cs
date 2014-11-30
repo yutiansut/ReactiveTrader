@@ -7,7 +7,7 @@ using Adaptive.ReactiveTrader.Shared.DTO.Control;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.Repositories
 {
-    public class ControlRepository : IControlRepository
+    internal class ControlRepository : IControlRepository
     {
         private readonly IControlServiceClient _controlServiceClient;
 

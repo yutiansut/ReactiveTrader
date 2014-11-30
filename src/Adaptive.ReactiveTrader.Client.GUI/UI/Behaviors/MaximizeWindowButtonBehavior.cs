@@ -2,7 +2,7 @@
 
 namespace Adaptive.ReactiveTrader.Client.UI.Behaviors
 {
-    public class MaximizeWindowButtonBehavior : WindowButtonBehavior
+    public class MaximizeWindowButtonBehavior : WindowButtonBehaviorBase
     {
         protected override void OnButtonClicked()
         {

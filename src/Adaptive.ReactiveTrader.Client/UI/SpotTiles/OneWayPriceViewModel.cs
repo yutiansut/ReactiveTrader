@@ -17,10 +17,10 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
     {
         private readonly ISpotTilePricingViewModel _parent;
         private readonly IConcurrencyService _concurrencyService;
+        private readonly ILog _log;
 
         private readonly DelegateCommand _executeCommand;
         private IExecutablePrice _executablePrice;
-        private ILog _log;
 
         public Direction Direction { get; private set; }
         public string BigFigures { get; private set; }
@@ -39,8 +39,33 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
             _executeCommand = new DelegateCommand(OnExecute, CanExecute);
         }
 
-        #region ExecuteCommand
         public ICommand ExecuteCommand { get { return _executeCommand; } }
+
+        
+        public void OnPrice(IExecutablePrice executablePrice)
+        {
+            _executablePrice = executablePrice;
+
+            var formattedPrice = PriceFormatter.GetFormattedPrice(_executablePrice.Rate,
+                executablePrice.Parent.CurrencyPair.RatePrecision, executablePrice.Parent.CurrencyPair.PipsPosition);
+
+            BigFigures = formattedPrice.BigFigures;
+            Pips = formattedPrice.Pips;
+            TenthOfPip = formattedPrice.TenthOfPip;
+
+            _executeCommand.RaiseCanExecuteChanged();
+        }
+
+        public void OnStalePrice()
+        {
+            _executablePrice = null;
+
+            BigFigures = string.Empty;
+            Pips = string.Empty;
+            TenthOfPip = string.Empty;
+
+            _executeCommand.RaiseCanExecuteChanged();
+        }
 
         private bool CanExecute()
         {
@@ -59,7 +84,8 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
             if (ExecutionMode == SpotTileExecutionMode.Async)
             {
                 ExecuteAsync(notional);
-            } else if (ExecutionMode == SpotTileExecutionMode.Sync)
+            }
+            else if (ExecutionMode == SpotTileExecutionMode.Sync)
             {
                 ExecuteSync(notional);
             }
@@ -98,33 +124,6 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
                 _parent.OnExecutionError("An error occurred while executing the trade. Please check your blotter and if your position is unknown, contact your support representative.");
             }
             IsExecuting = false;
-        }
-
-        #endregion
-
-        public void OnPrice(IExecutablePrice executablePrice)
-        {
-            _executablePrice = executablePrice;
-
-            var formattedPrice = PriceFormatter.GetFormattedPrice(_executablePrice.Rate,
-                executablePrice.Parent.CurrencyPair.RatePrecision, executablePrice.Parent.CurrencyPair.PipsPosition);
-
-            BigFigures = formattedPrice.BigFigures;
-            Pips = formattedPrice.Pips;
-            TenthOfPip = formattedPrice.TenthOfPip;
-
-            _executeCommand.RaiseCanExecuteChanged();
-        }
-
-        public void OnStalePrice()
-        {
-            _executablePrice = null;
-
-            BigFigures = string.Empty;
-            Pips = string.Empty;
-            TenthOfPip = string.Empty;
-
-            _executeCommand.RaiseCanExecuteChanged();
         }
 
         private void OnExecutedResult(IStale<ITrade> trade)

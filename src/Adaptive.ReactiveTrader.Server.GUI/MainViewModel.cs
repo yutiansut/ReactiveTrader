@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Reactive.Disposables;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Adaptive.ReactiveTrader.Server.Pricing;
@@ -11,7 +12,7 @@ using Microsoft.Owin.Hosting;
 
 namespace Adaptive.ReactiveTrader.Server
 {
-    internal class MainViewModel : ViewModelBase, IMainViewModel
+    internal class MainViewModel : ViewModelBase, IMainViewModel, IDisposable
     {
         private const string Address = "http://localhost:8080";
         private static readonly ILog Log = LogManager.GetLogger(typeof (MainWindow));
@@ -20,6 +21,8 @@ namespace Adaptive.ReactiveTrader.Server
         private readonly ICurrencyPairRepository _currencyPairRepository;
         private readonly Func<CurrencyPairInfo, ICurrencyPairViewModel> _ccyViewModelFactory;
         private readonly IPricePublisher _pricePublisher;
+        private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
+
         private long _lastTickTotalUpdates;
         private bool _updatingThroughput;
 
@@ -136,7 +139,7 @@ namespace Adaptive.ReactiveTrader.Server
 
         private void ObserveThroughputs()
         {
-            this.ObserveProperty(p => p.DesiredThroughput)
+            _subscriptions.Add(this.ObserveProperty(p => p.DesiredThroughput)
                 .Subscribe(desiredThroughput =>
                 {
                     if (_updatingThroughput)
@@ -148,9 +151,9 @@ namespace Adaptive.ReactiveTrader.Server
                         UpdateFrequency = value;
                     }
                     _updatingThroughput = false;
-                });
+                }));
 
-            this.ObserveProperty(p => p.UpdateFrequency)
+            _subscriptions.Add(this.ObserveProperty(p => p.UpdateFrequency)
                 .Subscribe(updateFrequency =>
                 {
                     if (_updatingThroughput)
@@ -159,8 +162,12 @@ namespace Adaptive.ReactiveTrader.Server
                     _updatingThroughput = true;
                     DesiredThroughput = updateFrequency.ToString("N0");
                     _updatingThroughput = false;
-                });
+                }));
         }
 
+        public void Dispose()
+        {
+            _subscriptions.Dispose();
+        }
     }
 }

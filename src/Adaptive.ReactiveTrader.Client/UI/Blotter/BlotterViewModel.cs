@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Client.Concurrency;
 using Adaptive.ReactiveTrader.Client.Domain;
@@ -14,16 +15,18 @@ using PropertyChanged;
 namespace Adaptive.ReactiveTrader.Client.UI.Blotter
 {
     [ImplementPropertyChanged]
-    public class BlotterViewModel : ViewModelBase, IBlotterViewModel
+    public class BlotterViewModel : ViewModelBase, IBlotterViewModel, IDisposable
     {
         private readonly ITradeRepository _tradeRepository;
         private readonly Func<ITrade, bool, ITradeViewModel> _tradeViewModelFactory;
         private readonly IConcurrencyService _concurrencyService;
-        public ObservableCollection<ITradeViewModel> Trades { get; private set; }
+        private readonly SerialDisposable _loadingDisposable = new SerialDisposable();
 
         private bool _stale;
         private bool _stowReceived;
         private readonly ILog _log;
+
+        public ObservableCollection<ITradeViewModel> Trades { get; private set; }
 
         public BlotterViewModel(IReactiveTrader reactiveTrader,
                                 Func<ITrade, bool, ITradeViewModel> tradeViewModelFactory,
@@ -38,10 +41,15 @@ namespace Adaptive.ReactiveTrader.Client.UI.Blotter
 
             LoadTrades();
         }
+        
+        public void Dispose()
+        {
+            _loadingDisposable.Dispose();
+        }
 
         private void LoadTrades()
         {
-            _tradeRepository.GetTradesStream()
+            _loadingDisposable.Disposable = _tradeRepository.GetTradesStream()
                             .ObserveOn(_concurrencyService.Dispatcher)
                             .SubscribeOn(_concurrencyService.TaskPool)
                             .Subscribe(

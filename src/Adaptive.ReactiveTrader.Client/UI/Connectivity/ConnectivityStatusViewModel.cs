@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Client.Concurrency;
 using Adaptive.ReactiveTrader.Client.Domain;
@@ -9,12 +10,13 @@ using Adaptive.ReactiveTrader.Shared.UI;
 
 namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
 {
-    public class ConnectivityStatusViewModel : ViewModelBase, IConnectivityStatusViewModel
+    public class ConnectivityStatusViewModel : ViewModelBase, IConnectivityStatusViewModel, IDisposable
     {
-        private readonly IProcessorMonitor _processorMonitor;
         private static readonly TimeSpan StatsFrequency = TimeSpan.FromSeconds(1);
-
+        
+        private readonly IProcessorMonitor _processorMonitor;
         private readonly IPriceLatencyRecorder _priceLatencyRecorder;
+        private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
 
         public ConnectivityStatusViewModel(
             IReactiveTrader reactiveTrader, 
@@ -32,19 +34,24 @@ namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
                 CpuTime = "N/A";
             }
 
-            reactiveTrader.ConnectionStatusStream
+            _subscriptions.Add(reactiveTrader.ConnectionStatusStream
                 .ObserveOn(concurrencyService.Dispatcher)
                 .SubscribeOn(concurrencyService.TaskPool)
                 .Subscribe(
                 OnStatusChange,
-                ex => log.Error("An error occurred within the connection status stream.", ex));
+                ex => log.Error("An error occurred within the connection status stream.", ex)));
 
-            Observable
+            _subscriptions.Add(Observable
                 .Interval(StatsFrequency, concurrencyService.Dispatcher)
-                .Subscribe(OnTimerTick);
+                .Subscribe(_ => OnTimerTick()));
         }
 
-        private void OnTimerTick(long _)
+        public void Dispose()
+        {
+            _subscriptions.Dispose();
+        }
+
+        private void OnTimerTick()
         {
             var stats = _priceLatencyRecorder.CalculateAndReset();
             

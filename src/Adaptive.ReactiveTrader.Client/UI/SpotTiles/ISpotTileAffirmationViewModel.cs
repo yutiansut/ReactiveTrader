@@ -12,12 +12,10 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
         long Notional { get; }
         decimal SpotRate { get; }
         string Rejected { get; }
-
         DateTime TradeDate { get; }
         long TradeId { get; }
         string TraderName { get; }
         DateTime ValueDate { get; }
-
         ICommand DismissCommand { get; }
         string DealtCurrency { get; }
         string OtherCurrency { get; }

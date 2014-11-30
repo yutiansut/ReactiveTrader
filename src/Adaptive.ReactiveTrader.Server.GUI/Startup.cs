@@ -20,7 +20,6 @@ namespace Adaptive.ReactiveTrader.Server
                 var hubConfiguration = new HubConfiguration
                 {
                     Resolver = new AutofacSignalRDependencyResolver(App.Container),
-
                 };
                 // Run the SignalR pipeline. We're not using MapSignalR
                 // since this branch already runs under the "/signalr"

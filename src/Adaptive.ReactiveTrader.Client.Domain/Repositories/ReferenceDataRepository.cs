@@ -21,7 +21,6 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Repositories
         public IObservable<IEnumerable<ICurrencyPairUpdate>> GetCurrencyPairsStream()
         {
 			// TODO This should really cache all ccy pairs.
-
             return Observable.Defer(() => _referenceDataServiceClient.GetCurrencyPairUpdatesStream())
                 .Where(updates => updates.Any())
                 .Select(updates => updates.Select(update => _currencyPairUpdateFactory.Create(update)))

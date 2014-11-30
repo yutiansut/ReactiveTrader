@@ -4,10 +4,10 @@ using System.Windows.Interactivity;
 
 namespace Adaptive.ReactiveTrader.Client.UI.Behaviors
 {
-    public abstract class WindowButtonBehavior : Behavior<Button>
+    public abstract class WindowButtonBehaviorBase : Behavior<Button>
     {
         public static readonly DependencyProperty AssociatedWindowProperty = DependencyProperty.Register(
-            "AssociatedWindow", typeof(Window), typeof(WindowButtonBehavior), new PropertyMetadata(null));
+            "AssociatedWindow", typeof(Window), typeof(WindowButtonBehaviorBase), new PropertyMetadata(null));
 
         public Window AssociatedWindow
         {
