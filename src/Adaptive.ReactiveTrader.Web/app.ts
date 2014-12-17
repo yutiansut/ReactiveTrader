@@ -6,6 +6,7 @@
     var username = "Web-" + Math.floor((Math.random() * 1000) + 1);
 
     var reactiveTrader = <IReactiveTrader> new ReactiveTrader();
+    // If you don't specify a server, by default SignalR connects to origin.
     var servers = location.search.indexOf("?server=local") == -1 ? [""] : ["http://localhost:8080"];
     reactiveTrader.initialize(username, servers);
 

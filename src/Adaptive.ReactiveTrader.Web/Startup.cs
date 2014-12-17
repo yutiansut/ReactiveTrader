@@ -4,6 +4,7 @@ using Adaptive.ReactiveTrader.Web;
 using Autofac;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
+using Microsoft.Owin.Cors;
 using Owin;
 
 [assembly: OwinStartup(typeof(Startup))]
@@ -21,14 +22,21 @@ namespace Adaptive.ReactiveTrader.Web
             var priceFeed = container.Resolve<IPriceFeed>();
             priceFeed.Start();
 
-            var hubConfiguration = new HubConfiguration
+            app.UseCors(CorsOptions.AllowAll);
+            app.Map("/signalr", map =>
             {
-                // you don't want to use that in prod, just when debugging
-                EnableDetailedErrors = true,
-                Resolver = new AutofacSignalRDependencyResolver(container)
-            };
+                var hubConfiguration = new HubConfiguration
+                {
+                    // you don't want to use that in prod, just when debugging
+                    EnableDetailedErrors = true,
+                    EnableJSONP = true,
+                    Resolver = new AutofacSignalRDependencyResolver(container)
+                };
 
-            app.MapSignalR(hubConfiguration);
+
+                map.UseCors(CorsOptions.AllowAll)
+                    .RunSignalR(hubConfiguration);
+            });
         }
     }
 }
