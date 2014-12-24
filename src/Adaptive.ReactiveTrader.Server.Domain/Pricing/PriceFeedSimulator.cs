@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
+using Adaptive.ReactiveTrader.Server.Analytics;
 using Adaptive.ReactiveTrader.Server.ReferenceData;
 using Adaptive.ReactiveTrader.Shared.DTO.Pricing;
 
@@ -12,6 +13,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         private readonly ICurrencyPairRepository _currencyPairRepository;
         private readonly IPricePublisher _pricePublisher;
         private readonly IPriceLastValueCache _priceLastValueCache;
+        private readonly IAnalyticsService _analyticsService;
         private readonly Random _random;
         private Timer _timer;
         private int _updatesPerTick = 1;
@@ -20,11 +22,13 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         public PriceFeedSimulator(
             ICurrencyPairRepository currencyPairRepository,
             IPricePublisher pricePublisher,
-            IPriceLastValueCache priceLastValueCache)
+            IPriceLastValueCache priceLastValueCache,
+            IAnalyticsService analyticsService)
         {
             _currencyPairRepository = currencyPairRepository;
             _pricePublisher = pricePublisher;
             _priceLastValueCache = priceLastValueCache;
+            _analyticsService = analyticsService;
             _random = new Random(_currencyPairRepository.GetHashCode());
         }
 
@@ -94,6 +98,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
                 var newPrice = randomCurrencyPairInfo.GenerateNextQuote(lastPrice);
                 _priceLastValueCache.StoreLastValue(newPrice);
                 _pricePublisher.Publish(newPrice);
+                _analyticsService.OnPrice(newPrice);
             }
         }
 

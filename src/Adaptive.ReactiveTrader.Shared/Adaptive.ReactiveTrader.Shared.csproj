@@ -36,6 +36,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AuthTokenProvider.cs" />
+    <Compile Include="DTO\Analytics\CurrencyPairPositionDto.cs" />
+    <Compile Include="DTO\Analytics\HistoricPositionDto.cs" />
+    <Compile Include="DTO\Analytics\PositionUpdatesDto.cs" />
     <Compile Include="DTO\Control\CurrencyPairStateDto.cs" />
     <Compile Include="DTO\Control\FeedThroughputDto.cs" />
     <Compile Include="DTO\Execution\DirectionDto.cs" />
@@ -87,6 +90,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

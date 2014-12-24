@@ -96,6 +96,13 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Analytics\AnalyticsHub.cs" />
+    <Compile Include="Analytics\AnalyticsPublisher.cs" />
+    <Compile Include="Analytics\AnalyticsService.cs" />
+    <Compile Include="Analytics\CurrencyPairPositionReport.cs" />
+    <Compile Include="Analytics\CurrencyPairTracker.cs" />
+    <Compile Include="Analytics\IAnalyticsPublisher.cs" />
+    <Compile Include="Analytics\IAnalyticsService.cs" />
     <Compile Include="Blotter\BlotterHub.cs" />
     <Compile Include="ContextUtil.cs" />
     <Compile Include="Control\ControlAuth.cs" />
@@ -142,6 +149,7 @@
       <Name>Adaptive.ReactiveTrader.Shared</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

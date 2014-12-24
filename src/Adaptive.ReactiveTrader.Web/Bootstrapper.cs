@@ -1,4 +1,5 @@
-﻿using Adaptive.ReactiveTrader.Server.Blotter;
+﻿using Adaptive.ReactiveTrader.Server.Analytics;
+using Adaptive.ReactiveTrader.Server.Blotter;
 using Adaptive.ReactiveTrader.Server.Control;
 using Adaptive.ReactiveTrader.Server.Execution;
 using Adaptive.ReactiveTrader.Server.Pricing;
@@ -13,6 +14,11 @@ namespace Adaptive.ReactiveTrader.Web
         public IContainer Build()
         {
             var builder = new ContainerBuilder();
+
+            // analytics
+            builder.RegisterType<AnalyticsPublisher>().As<IAnalyticsPublisher>().SingleInstance();
+            builder.RegisterType<AnalyticsService>().As<IAnalyticsService>().SingleInstance();
+            builder.RegisterType<AnalyticsHub>().SingleInstance();
 
             // pricing
             builder.RegisterType<PricePublisher>().As<IPricePublisher>().SingleInstance();

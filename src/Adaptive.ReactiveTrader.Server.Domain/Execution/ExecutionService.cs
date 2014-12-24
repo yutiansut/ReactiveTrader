@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.Server.Analytics;
 using Adaptive.ReactiveTrader.Server.Blotter;
 using Adaptive.ReactiveTrader.Shared.DTO.Execution;
 
@@ -10,12 +11,14 @@ namespace Adaptive.ReactiveTrader.Server.Execution
     {
         private readonly IBlotterPublisher _blotterPublisher;
         private readonly ITradeRepository _tradeRepository;
+        private readonly IAnalyticsService _analyticsService;
         private long _tradeId;
 
-        public ExecutionService(IBlotterPublisher blotterPublisher, ITradeRepository tradeRepository)
+        public ExecutionService(IBlotterPublisher blotterPublisher, ITradeRepository tradeRepository, IAnalyticsService analyticsService)
         {
             _blotterPublisher = blotterPublisher;
             _tradeRepository = tradeRepository;
+            _analyticsService = analyticsService;
             _tradeId = 0;
         }
 
@@ -56,10 +59,12 @@ namespace Adaptive.ReactiveTrader.Server.Execution
             };
 
             _tradeRepository.StoreTrade(trade);
+            _analyticsService.OnTrade(trade);
 
             // publish trade asynchronously
             await _blotterPublisher.Publish(trade);
 
+            
             return trade;
         }
     }

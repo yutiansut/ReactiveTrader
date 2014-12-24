@@ -30,13 +30,20 @@
             public const string GetPriceFeedThroughput = "GetPriceFeedThroughput";
             public const string GetCurrencyPairStates = "GetCurrencyPairStates";
             public const string SetCurrencyPairState = "SetCurrencyPairState";
+            
+            // analytics
+            public const string AnalyticsHub = "AnalyticsHub";
+            public const string SubscribeAnalytics = "SubscribeAnalytics";
+            public const string UnsubscribeAnalytics = "UnsubscribeAnalytics";
+            public const string AnalyticsGroup = "AnalyticsGroup";
         }
 
         public static class Client
         {
             public const string OnNewPrice = "OnNewPrice";
             public const string OnNewTrade = "OnNewTrade";
-            public const string OnCurrencyPairUpdate = "OnCurrencyPairUpdate"; 
+            public const string OnCurrencyPairUpdate = "OnCurrencyPairUpdate";
+            public const string OnNewAnalytics = "OnNewAnalytics";
         }
     }
 }
