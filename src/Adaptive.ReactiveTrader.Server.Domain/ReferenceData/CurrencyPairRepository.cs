@@ -7,7 +7,8 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
     {
         private readonly Dictionary<string, CurrencyPairInfo> _currencyPairs = new Dictionary<string, CurrencyPairInfo>
         {
-            {"EURUSD", CreateCycleCurrencyPairInfo("EURUSD", 4, 5, 1.3629m, true, 1.36m, 1.365m,"Price cycles between 1.36-1.365")},
+            {"EURUSD", CreateCurrencyPairInfo("EURUSD", 4, 5, 1.3629m, true)},
+            // {"EURUSD", CreateCycleCurrencyPairInfo("EURUSD", 4, 5, 1.3629m, true, 1.36m, 1.365m,"Price cycles between 1.36-1.365")},
             {"USDJPY", CreateCurrencyPairInfo("USDJPY", 2, 3, 102.14m, true)},
             {"GBPUSD", CreateCurrencyPairInfo("GBPUSD", 4, 5, 1.6395m, true, "Server waits 1.5sec to execute then sends a trade done.")},       // ExecutionService
             {"GBPJPY", CreateCurrencyPairInfo("GBPJPY", 2, 3, 167.67m, true, "Always rejects upon execution.")},                                // ExecutionService
