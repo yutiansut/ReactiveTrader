@@ -16,9 +16,22 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
         private readonly IDictionary<string, PriceDto> _priceCache = new Dictionary<string, PriceDto>();
         private readonly IDictionary<string, CurrencyPairTracker> _ccyPairTracker = new Dictionary<string, CurrencyPairTracker>();
         private readonly EventLoopScheduler _eventLoopScheduler = new EventLoopScheduler();
+        private readonly object _currentPositionLock = new object();
 
         private PositionUpdatesDto _currentPositionUpdatesDto = new PositionUpdatesDto();
         
+
+        public PositionUpdatesDto CurrentPositionUpdatesDto
+        {
+            get
+            {
+                lock (_currentPositionLock)
+                {
+                    return _currentPositionUpdatesDto;
+                }
+            }
+        }
+
         public AnalyticsService(IAnalyticsPublisher analyticsPublisher)
         {
             _analyticsPublisher = analyticsPublisher;
@@ -77,11 +90,14 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
                                     .Where(hpu => hpu.Timestamp >= window)
                                     .Concat(new [] { new HistoricPositionDto() {Timestamp = now, UsdPnl = usdPnl}})
                                     .ToArray();
-
-            _currentPositionUpdatesDto = pud;
+            
+            lock (_currentPositionLock)
+            {
+                _currentPositionUpdatesDto = pud;
+            }
 
             // todo need to do something different here, I think.
-            _analyticsPublisher.Publish(_currentPositionUpdatesDto).Wait(TimeSpan.FromSeconds(10));
+            _analyticsPublisher.Publish(pud).Wait(TimeSpan.FromSeconds(10));
         }
 
         private CurrencyPairTracker GetTrackerFor(string currencyPair)

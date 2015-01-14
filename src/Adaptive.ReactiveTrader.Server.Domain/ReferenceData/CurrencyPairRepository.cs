@@ -18,7 +18,6 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
             {"EURCHF", CreateCurrencyPairInfo("EURCHF", 4, 5, 1.2224m, false, "Server waits before sending a first price update.")},            // PricingHub
             {"AUDUSD", CreateCurrencyPairInfo("AUDUSD", 4, 5, 0.8925m, true)},
             {"NZDUSD", CreateCurrencyPairInfo("NZDUSD", 4, 5, 0.8263m, true)},
-            {"USDCAD", CreateCurrencyPairInfo("USDCAD", 4, 5, 1.1043m, true)},
             {"EURCAD", CreateCurrencyPairInfo("EURCAD", 4, 5, 1.5062m, true)},
             {"EURAUD", CreateCurrencyPairInfo("EURAUD", 4, 5, 1.5256m, true)},
             {"AUDCAD", CreateCurrencyPairInfo("AUDCAD", 4, 5, 0.9873m, false)},
@@ -26,7 +25,6 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
             {"CHFJPY", CreateCurrencyPairInfo("CHFJPY", 2, 3, 113.8591m, false)},
             {"AUDJPY", CreateCurrencyPairInfo("AUDJPY", 2, 3, 91.3133m, false)},
             {"AUDNZD", CreateCurrencyPairInfo("AUDNZD", 4, 5, 1.0807m, false)},
-            {"CADUSD", CreateCurrencyPairInfo("CADUSD", 4, 5, 0.9054m, false)},
             {"CADJPY", CreateCurrencyPairInfo("CADJPY", 2, 3, 92.4686m, false)},
             {"CHFUSD", CreateCurrencyPairInfo("CHFUSD", 4, 5, 1.1148m, false)},
             {"EURNOK", CreateCurrencyPairInfo("EURNOK", 4, 4, 8.3613m, false)},
