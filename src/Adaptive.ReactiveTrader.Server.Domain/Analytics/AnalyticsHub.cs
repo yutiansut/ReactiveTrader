@@ -18,7 +18,7 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
         }
 
         [HubMethodName(ServiceConstants.Server.SubscribeAnalytics)]
-        public async Task SubscribeAnalytics(UnitDto unitDto)
+        public async Task SubscribeAnalytics()
         {
             _contextHolder.AnalyticsHubClients = Clients;
 
@@ -26,7 +26,7 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
         }
 
         [HubMethodName(ServiceConstants.Server.UnsubscribeAnalytics)]
-        public async Task UnsubscribeAnalytics(UnitDto unitDto)
+        public async Task UnsubscribeAnalytics()
         {
             await Groups.Remove(Context.ConnectionId, ServiceConstants.Server.AnalyticsGroup);
         }

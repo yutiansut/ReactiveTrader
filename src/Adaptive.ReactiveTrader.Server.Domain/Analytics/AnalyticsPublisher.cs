@@ -17,7 +17,7 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 
         public async Task Publish(PositionUpdatesDto positionUpdatesDto)
         {
-            var context = _contextHolder.PricingHubClient;
+            var context = _contextHolder.AnalyticsHubClients;
             if (context == null)
                 return;
 
