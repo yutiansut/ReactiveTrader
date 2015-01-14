@@ -29,10 +29,11 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
             _eventLoopScheduler.Schedule(() =>
             {
                 CurrencyPairTracker currencyPairTracker;
-                if (!_ccyPairTracker.TryGetValue(trade.CurrencyPair, out currencyPairTracker))
-                {
-                    currencyPairTracker = new CurrencyPairTracker(trade.CurrencyPair);
-                }
+
+                var currencyPair = trade.CurrencyPair;
+                
+                currencyPairTracker = GetTrackerFor(currencyPair);
+
                 currencyPairTracker.OnTrade(trade, _priceCache);
                 PublishPositionReport();
             });
@@ -40,7 +41,13 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 
         public void OnPrice(PriceDto priceDto)
         {
-            _eventLoopScheduler.Schedule(() => _priceCache[priceDto.Symbol] = priceDto);
+            _eventLoopScheduler.Schedule(() => 
+            {
+                _priceCache[priceDto.Symbol] = priceDto;
+                var currencyPairTracker = GetTrackerFor(priceDto.Symbol);
+                currencyPairTracker.OnPrice(_priceCache, false);
+
+            });
         }
 
         private void PublishPositionReport()
@@ -75,6 +82,17 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 
             // todo need to do something different here, I think.
             _analyticsPublisher.Publish(_currentPositionUpdatesDto).Wait(TimeSpan.FromSeconds(10));
+        }
+
+        private CurrencyPairTracker GetTrackerFor(string currencyPair)
+        {
+            CurrencyPairTracker currencyPairTracker;
+            if (!_ccyPairTracker.TryGetValue(currencyPair, out currencyPairTracker))
+            {
+                currencyPairTracker = new CurrencyPairTracker(currencyPair);
+                _ccyPairTracker.Add(currencyPair, currencyPairTracker);
+            }
+            return currencyPairTracker;
         }
     }
 }

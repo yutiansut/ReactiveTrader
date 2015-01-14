@@ -12,5 +12,10 @@ namespace Adaptive.ReactiveTrader.Shared.DTO.Analytics
         }
         public IEnumerable<CurrencyPairPositionDto> CurrentPositions { get; set; }
         public IEnumerable<HistoricPositionDto> History { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("CurrentPositions: {0}, History: {1}", string.Join(", ", CurrentPositions), string.Join(", ", History));
+        }
     }
 }
