@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reactive;
@@ -336,6 +337,18 @@ namespace Adaptive.ReactiveTrader.Shared.Extensions
             where TSource : INotifyPropertyChanged
         {
             return ObserveProperty(source, propertyExpression, false);
+        }
+
+        public static IObservable<Unit> ObserveCollection(this INotifyCollectionChanged source)
+        {
+            var observable =
+                from evt in Observable.FromEvent<NotifyCollectionChangedEventHandler, NotifyCollectionChangedEventArgs>(
+                    h => (s, e) => h(e),
+                    h => source.CollectionChanged += h,
+                    h => source.CollectionChanged -= h)
+                select Unit.Default;
+
+            return observable;
         }
 
         public static string GetPropertyName<TSource, TProp>(this TSource source,
