@@ -30,13 +30,13 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/SpotTileUpDownLayout"
-            android:text="1.256" />
+            android:text="" />
         <Button
             android:id="@+id/SpotTileAskButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/SpotTileUpDownLayout"
-            android:text="1.456"
+            android:text=""
             style="?android:attr/borderlessButtonStyle" />
     </RelativeLayout>
 </RelativeLayout>

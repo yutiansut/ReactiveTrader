@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reactive;
 using System.Reactive.Concurrency;
@@ -339,14 +341,14 @@ namespace Adaptive.ReactiveTrader.Shared.Extensions
             return ObserveProperty(source, propertyExpression, false);
         }
 
-        public static IObservable<Unit> ObserveCollection(this INotifyCollectionChanged source)
+        public static IObservable<NotifyCollectionChangedEventArgs> ObserveCollection(this INotifyCollectionChanged source)
         {
             var observable =
                 from evt in Observable.FromEvent<NotifyCollectionChangedEventHandler, NotifyCollectionChangedEventArgs>(
                     h => (s, e) => h(e),
                     h => source.CollectionChanged += h,
                     h => source.CollectionChanged -= h)
-                select Unit.Default;
+                select evt;
 
             return observable;
         }
@@ -397,5 +399,94 @@ namespace Adaptive.ReactiveTrader.Shared.Extensions
             }
         }
 
+        public static IDisposable OnItems<TSource>(this INotifyCollectionChanged notifyingCollection, Func<TSource, IDisposable> onNewItem)
+        {
+            if (notifyingCollection == null)
+                throw new ArgumentNullException("notifyingCollection");
+
+            var collection = (ICollection)notifyingCollection;
+            var subscriptions = new Dictionary<TSource, IDisposable>();
+            var handleNewItem = new Action<TSource>(item => subscriptions.Add(item, onNewItem(item)));
+            var handleOldItem = new Action<TSource>(item =>
+            {
+                IDisposable subscription;
+                if (subscriptions.TryGetValue(item, out subscription))
+                {
+                    subscriptions.Remove(item);
+                    subscription.Dispose();
+                }
+            });
+            var handleDispose = new Action(() =>
+            {
+                foreach (var item in subscriptions.Keys.ToArray())
+                {
+                    handleOldItem(item);
+                }
+            });
+
+            foreach (var item in collection.OfType<TSource>())
+            {
+                handleNewItem(item);
+            }
+
+            var collectionObservation = notifyingCollection.ObserveCollection()
+                .Subscribe(e =>
+                {
+                    switch (e.Action)
+                    {
+                        case NotifyCollectionChangedAction.Add:
+                            if (e.NewItems != null)
+                            {
+                                foreach (var item in e.NewItems.OfType<TSource>())
+                                {
+                                    handleNewItem(item);
+                                }
+                            }
+
+                            break;
+                        case NotifyCollectionChangedAction.Remove:
+                            if (e.OldItems != null)
+                            {
+                                foreach (var item in e.OldItems.OfType<TSource>())
+                                {
+                                    handleOldItem(item);
+                                }
+                            }
+                            break;
+                        case NotifyCollectionChangedAction.Replace:
+                            if (e.OldItems != null)
+                            {
+                                foreach (var item in e.OldItems.OfType<TSource>())
+                                {
+                                    handleOldItem(item);
+                                }
+                            }
+                            if (e.NewItems != null)
+                            {
+                                foreach (var item in e.NewItems.OfType<TSource>())
+                                {
+                                    handleNewItem(item);
+                                }
+                            }
+                            break;
+                        case NotifyCollectionChangedAction.Reset:
+                            handleDispose();
+                            if (e.NewItems != null)
+                            {
+                                foreach (var item in e.NewItems.OfType<TSource>())
+                                {
+                                    handleNewItem(item);
+                                }
+                            }
+                            break;
+                    }
+                });
+
+            return Disposable.Create(() =>
+            {
+                handleDispose();
+                collectionObservation.Dispose();
+            });
+        }
     }
 }
