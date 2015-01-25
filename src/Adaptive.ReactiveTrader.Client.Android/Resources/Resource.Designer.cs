@@ -60,6 +60,9 @@ namespace Adaptive.ReactiveTrader.Client.Android
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f050004
+			public const int SpotTileAskButton = 2131034116;
+			
 			// aapt resource value: 0x7f050003
 			public const int SpotTileBidButton = 2131034115;
 			
@@ -70,10 +73,7 @@ namespace Adaptive.ReactiveTrader.Client.Android
 			public const int SpotTileUpDownLayout = 2131034114;
 			
 			// aapt resource value: 0x7f050000
-			public const int SpotTilesListView = 2131034112;
-			
-			// aapt resource value: 0x7f050004
-			public const int text = 2131034116;
+			public const int SpotTilesRecyclerView = 2131034112;
 			
 			static Id()
 			{

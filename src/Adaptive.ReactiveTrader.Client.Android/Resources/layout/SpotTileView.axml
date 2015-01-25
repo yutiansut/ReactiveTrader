@@ -3,8 +3,8 @@
     android:orientation="horizontal"
     android:layout_width="328px"
     android:layout_height="150px"
-    android:paddingRight="3dp"
-    android:paddingBottom="3dp"
+    android:layout_marginRight="3dp"
+    android:layout_marginBottom="3dp"
     android:background="#FF293543">
     <TextView
         android:id="@+id/SpotTileCurrencyPairTextView"
@@ -31,26 +31,12 @@
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/SpotTileUpDownLayout"
             android:text="1.256" />
-    <!--    <Button
+        <Button
             android:id="@+id/SpotTileAskButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/SpotTileUpDownLayout"
             android:text="1.456"
-            style="?android:attr/borderlessButtonStyle" /> -->
-        <RelativeLayout
-            android:clickable="false"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/SpotTileUpDownLayout">
-            <TextView
-                android:id="@+id/text"
-                android:text="Sample text"
-                android:textAppearance="?android:attr/textAppearanceButton"
-                android:layout_centerVertical="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
+            style="?android:attr/borderlessButtonStyle" />
     </RelativeLayout>
 </RelativeLayout>

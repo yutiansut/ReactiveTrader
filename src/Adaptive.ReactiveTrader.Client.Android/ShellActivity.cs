@@ -11,11 +11,12 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Android.Support.V7.Widget;
 using Autofac;
 
 namespace Adaptive.ReactiveTrader.Client.Android
 {
-    [Activity(Label = "Adaptive.ReactiveTrader.Client.Android", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(MainLauncher = true, Icon = "@drawable/icon", Theme = "@android:style/Theme.NoTitleBar")]
     public class ShellActivity : Activity
     {
         protected override void OnCreate(Bundle bundle)
@@ -36,9 +37,17 @@ namespace Adaptive.ReactiveTrader.Client.Android
 
             var shellViewModel = container.Resolve<IShellViewModel>();
 
-            var spotTilesListView = FindViewById<ListView>(Resource.Id.SpotTilesListView);
-            var spotTilesAdapter = new SpotTileAdapter(this, shellViewModel.SpotTiles.SpotTiles);
-            spotTilesListView.Adapter = spotTilesAdapter;
+            var spotTilesRecyclerView = FindViewById<RecyclerView>(Resource.Id.SpotTilesRecyclerView);
+            spotTilesRecyclerView.HasFixedSize = true;
+
+            var gridLayoutManager = new GridLayoutManager(this, 1);
+            spotTilesRecyclerView.SetLayoutManager(gridLayoutManager);
+
+            spotTilesRecyclerView.ViewTreeObserver.AddOnGlobalLayoutListener(new RecyclerViewSpanCalculatorLayoutListener(spotTilesRecyclerView, gridLayoutManager));
+
+
+            var spotTilesAdapter = new SpotTileAdapter(shellViewModel.SpotTiles.SpotTiles);
+            spotTilesRecyclerView.SetAdapter(spotTilesAdapter);
         }
     }
 }
