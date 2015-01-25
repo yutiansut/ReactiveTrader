@@ -11,6 +11,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Android.Support.V7.Widget;
 using Autofac;
 
 namespace Adaptive.ReactiveTrader.Client.Android
@@ -36,9 +37,9 @@ namespace Adaptive.ReactiveTrader.Client.Android
 
             var shellViewModel = container.Resolve<IShellViewModel>();
 
-            var spotTilesListView = FindViewById<ListView>(Resource.Id.SpotTilesListView);
-            var spotTilesAdapter = new SpotTileAdapter(this, shellViewModel.SpotTiles.SpotTiles);
-            spotTilesListView.Adapter = spotTilesAdapter;
+            var spotTilesRecyclerView = FindViewById<RecyclerView>(Resource.Id.SpotTilesRecyclerView);
+            var spotTilesAdapter = new SpotTileAdapter(shellViewModel.SpotTiles.SpotTiles);
+            spotTilesRecyclerView.SetAdapter(spotTilesAdapter);
         }
     }
 }

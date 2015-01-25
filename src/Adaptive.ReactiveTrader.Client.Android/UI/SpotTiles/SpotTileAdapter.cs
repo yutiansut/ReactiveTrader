@@ -2,22 +2,19 @@ using System;
 using System.Collections.ObjectModel;
 using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
 using Adaptive.ReactiveTrader.Shared.Extensions;
-using Android.App;
+using Android.Support.V7.Widget;
 using Android.Views;
-using Android.Widget;
 
 namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
 {
-    public class SpotTileAdapter : BaseAdapter<ISpotTileViewModel>
+    public class SpotTileAdapter : RecyclerView.Adapter
     {
-        private readonly Activity _context;
         private readonly ObservableCollection<ISpotTileViewModel> _spotTileCollecton;
 
         private readonly IDisposable _collectionChangedSubscription;
 
-        public SpotTileAdapter(Activity context, ObservableCollection<ISpotTileViewModel> spotTileCollecton)
+        public SpotTileAdapter(ObservableCollection<ISpotTileViewModel> spotTileCollecton)
         {
-            _context = context;
             _spotTileCollecton = spotTileCollecton;
 
             _collectionChangedSubscription = _spotTileCollecton.ObserveCollection()
@@ -27,44 +24,22 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
                 });
         }
 
-        public override ISpotTileViewModel this[int position]
+        public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-            get
-            {
-                return _spotTileCollecton[position];
-            }
+            var h = (SpotTileViewHolder)holder;
+            h.CurrencyPairLabel.Text = _spotTileCollecton[position].CurrencyPair;
         }
 
-        public override int Count
+        public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
-            get
-            {
-                return _spotTileCollecton.Count;
-            }
+            var v = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.SpotTileView, parent, false);
+            var holder = new SpotTileViewHolder(v);
+            return holder;
         }
 
-        public override long GetItemId(int position)
+        public override int ItemCount
         {
-            return position;
-        }
-
-        public override View GetView(int position, View convertView, ViewGroup parent)
-        {
-            var view = convertView;
-
-            if (view == null)
-            {
-                view = _context.LayoutInflater.Inflate(Resource.Layout.SpotTileView, parent, false);
-
-                var currencyPairLabel = view.FindViewById<TextView>(Resource.Id.SpotTileCurrencyPairTextView);
-
-                view.Tag = new SpotTileViewHolder { CurrencyPairLabel = currencyPairLabel };
-            }
-
-            var holder = (SpotTileViewHolder)view.Tag;
-            holder.CurrencyPairLabel.Text = _spotTileCollecton[position].CurrencyPair;
-
-            return view;
+            get { return _spotTileCollecton.Count; }
         }
 
         protected override void Dispose(bool disposing)

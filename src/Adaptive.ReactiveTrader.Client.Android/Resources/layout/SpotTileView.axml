@@ -31,27 +31,12 @@
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/SpotTileUpDownLayout"
             android:text="1.256" />
-    <!--    <Button
+        <Button
             android:id="@+id/SpotTileAskButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/SpotTileUpDownLayout"
             android:text="1.456"
-            style="?android:attr/borderlessButtonStyle" /> -->
-        <RelativeLayout
-            android:clickable="false"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/SpotTileUpDownLayout">
-            <TextView
-                android:id="@+id/text"
-                android:text="Sample text"
-                android:textAppearance="?android:attr/textAppearanceButton"
-                android:layout_toRightOf="@id/image"
-                android:layout_centerVertical="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
+            style="?android:attr/borderlessButtonStyle" />
     </RelativeLayout>
 </RelativeLayout>
