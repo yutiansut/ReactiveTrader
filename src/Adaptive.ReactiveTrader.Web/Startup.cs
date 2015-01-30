@@ -1,4 +1,5 @@
-﻿using Adaptive.ReactiveTrader.Server.Pricing;
+﻿using Adaptive.ReactiveTrader.Server;
+using Adaptive.ReactiveTrader.Server.Pricing;
 using Adaptive.ReactiveTrader.Server.Transport;
 using Adaptive.ReactiveTrader.Web;
 using Autofac;
@@ -21,7 +22,9 @@ namespace Adaptive.ReactiveTrader.Web
             var container = bootstrapper.Build();
             var priceFeed = container.Resolve<IPriceFeed>();
             priceFeed.Start();
-
+            var cleaner = container.Resolve<Cleaner>();
+            cleaner.Start();
+            
             app.UseCors(CorsOptions.AllowAll);
             app.Map("/signalr", map =>
             {

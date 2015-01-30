@@ -52,6 +52,7 @@
     <Compile Include="DTO\UnitDto.cs" />
     <Compile Include="DTO\UpdateTypeDto.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\Heartbeat.cs" />
     <Compile Include="Extensions\IHeartbeat.cs" />
     <Compile Include="Extensions\IStale.cs" />

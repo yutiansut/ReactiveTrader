@@ -104,10 +104,12 @@
     <Compile Include="Analytics\IAnalyticsPublisher.cs" />
     <Compile Include="Analytics\IAnalyticsService.cs" />
     <Compile Include="Blotter\BlotterHub.cs" />
+    <Compile Include="Cleaner.cs" />
     <Compile Include="ContextUtil.cs" />
     <Compile Include="Control\ControlAuth.cs" />
     <Compile Include="Control\ControlHub.cs" />
     <Compile Include="Execution\ExecutionHub.cs" />
+    <Compile Include="ISchedulerService.cs" />
     <Compile Include="ReferenceData\CurrencyPairInfo.cs" />
     <Compile Include="ReferenceData\CurrencyPairRepository.cs" />
     <Compile Include="Execution\ExecutionService.cs" />
@@ -126,6 +128,7 @@
     <Compile Include="ReferenceData\ICurrencyPairUpdatePublisher.cs" />
     <Compile Include="ReferenceData\RandomWalkCurrencyPairInfo.cs" />
     <Compile Include="ReferenceData\ReferenceDataHub.cs" />
+    <Compile Include="SchedulerService.cs" />
     <Compile Include="Transport\AutofacSignalRDependencyResolver.cs" />
     <Compile Include="Blotter\BlotterPublisher.cs" />
     <Compile Include="Transport\ContextHolder.cs" />
@@ -137,7 +140,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Adaptive.ReactiveTrader.Client.Domain\Adaptive.ReactiveTrader.Client.Domain.csproj">

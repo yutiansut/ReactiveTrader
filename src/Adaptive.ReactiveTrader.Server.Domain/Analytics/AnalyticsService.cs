@@ -20,7 +20,6 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 
         private PositionUpdatesDto _currentPositionUpdatesDto = new PositionUpdatesDto();
         
-
         public PositionUpdatesDto CurrentPositionUpdatesDto
         {
             get
@@ -37,6 +36,17 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
             _analyticsPublisher = analyticsPublisher;
             _eventLoopScheduler.SchedulePeriodic(TimeSpan.FromSeconds(10), PublishPositionReport);
         }
+
+        public void Reset()
+        {
+            _eventLoopScheduler.Schedule(() =>
+            {
+                _ccyPairTracker.Clear();
+                _currentPositionUpdatesDto.History = Enumerable.Empty<HistoricPositionDto>();
+                PublishPositionReport();
+            });
+        }
+
         public void OnTrade(TradeDto trade)
         {
             _eventLoopScheduler.Schedule(() =>
@@ -96,7 +106,6 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
                 _currentPositionUpdatesDto = pud;
             }
 
-            // todo need to do something different here, I think.
             _analyticsPublisher.Publish(pud).Wait(TimeSpan.FromSeconds(10));
         }
 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.ReactiveTrader.Server.Domain", "Adaptive.ReactiveTrader.Server.Domain\Adaptive.ReactiveTrader.Server.Domain.csproj", "{1348ACC4-D5B2-4328-9C80-7EC813E82CE4}"
 EndProject
@@ -29,6 +29,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{B0546294-6BC1-4EE3-BA00-BCA76D452648}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.ReactiveTrader.Client", "Adaptive.ReactiveTrader.Client\Adaptive.ReactiveTrader.Client.csproj", "{A894C01A-D326-40DF-BABC-0F807EB63A21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.ReactiveTrader.Server.Domain.Tests", "Adaptive.ReactiveTrader.Server.Domain.Tests\Adaptive.ReactiveTrader.Server.Domain.Tests.csproj", "{854EA889-0326-46E3-8E12-22E04307C206}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -108,6 +110,16 @@ Global
 		{A894C01A-D326-40DF-BABC-0F807EB63A21}.Release|ARM.ActiveCfg = Release|Any CPU
 		{A894C01A-D326-40DF-BABC-0F807EB63A21}.Release|x64.ActiveCfg = Release|Any CPU
 		{A894C01A-D326-40DF-BABC-0F807EB63A21}.Release|x86.ActiveCfg = Release|Any CPU
+		{854EA889-0326-46E3-8E12-22E04307C206}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{854EA889-0326-46E3-8E12-22E04307C206}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{854EA889-0326-46E3-8E12-22E04307C206}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{854EA889-0326-46E3-8E12-22E04307C206}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{854EA889-0326-46E3-8E12-22E04307C206}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{854EA889-0326-46E3-8E12-22E04307C206}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{854EA889-0326-46E3-8E12-22E04307C206}.Release|Any CPU.Build.0 = Release|Any CPU
+		{854EA889-0326-46E3-8E12-22E04307C206}.Release|ARM.ActiveCfg = Release|Any CPU
+		{854EA889-0326-46E3-8E12-22E04307C206}.Release|x64.ActiveCfg = Release|Any CPU
+		{854EA889-0326-46E3-8E12-22E04307C206}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

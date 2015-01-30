@@ -7,18 +7,20 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
     public class TradeRepository : ITradeRepository
     {
         private readonly Queue<TradeDto> _trades = new Queue<TradeDto>();
-        private const int MaxTrades = 50;
+
+        public void Reset()
+        {
+            lock (_trades)
+            {
+                _trades.Clear();
+            }
+        }
 
         public void StoreTrade(TradeDto trade)
         {
             lock (_trades)
             {
                 _trades.Enqueue(trade);
-
-                if (_trades.Count > MaxTrades)
-                {
-                    _trades.Dequeue();
-                }
             }
         }
 
