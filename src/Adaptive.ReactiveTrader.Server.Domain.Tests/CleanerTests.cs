@@ -38,7 +38,7 @@ namespace Adaptive.ReactiveTrader.Server.Domain.Tests
         [Test]
         public void Ctor_correctly_schedules()
         {
-            _target = new Cleaner(_tradeRepo, _analyticsService, _executionService, _lastValueCache, _s);
+            _target = new Cleaner(_tradeRepo, _analyticsService, _executionService, _lastValueCache, _schedulerService);
 
 
         }
