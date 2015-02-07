@@ -25,11 +25,8 @@ namespace Adaptive.ReactiveTrader.Client.Android
 
             SetContentView(Resource.Layout.ShellView);
 
-
-            var bootstrapper = new Bootstrapper();
+            var bootstrapper = new Bootstrapper(this);
             var container = bootstrapper.Build();
-            var concurrencyService = (ConcurrencyService) container.Resolve<IConcurrencyService>();
-            concurrencyService.Dispatcher = new AndroidUiScheduler(this);
 
             var reactiveTraderApi = container.Resolve<IReactiveTrader>();
             var username = container.Resolve<IUserProvider>().Username;
