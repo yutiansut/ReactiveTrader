@@ -5,6 +5,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Client.Domain.Transport;
 using Adaptive.ReactiveTrader.Shared;
+using Adaptive.ReactiveTrader.Shared.DTO;
 using Adaptive.ReactiveTrader.Shared.DTO.ReferenceData;
 using Adaptive.ReactiveTrader.Shared.Extensions;
 using Adaptive.ReactiveTrader.Shared.Logging;
@@ -23,7 +24,8 @@ namespace Adaptive.ReactiveTrader.Client.Domain.ServiceClients
 
         public IObservable<IEnumerable<CurrencyPairUpdateDto>> GetCurrencyPairUpdatesStream()
         {
-            return GetResilientStream(connection => GetCurrencyPairsForConnection(connection.ReferenceDataHubProxy), TimeSpan.FromSeconds(5));
+            return Observable.Return(new[] { new CurrencyPairUpdateDto() { CurrencyPair = new CurrencyPairDto("EURUSD", 5, 4), UpdateType = UpdateTypeDto.Added } });
+           // return GetResilientStream(connection => GetCurrencyPairsForConnection(connection.ReferenceDataHubProxy), TimeSpan.FromSeconds(5));
         }
 
         private IObservable<IEnumerable<CurrencyPairUpdateDto>> GetCurrencyPairsForConnection(IHubProxy referenceDataHubProxy)
