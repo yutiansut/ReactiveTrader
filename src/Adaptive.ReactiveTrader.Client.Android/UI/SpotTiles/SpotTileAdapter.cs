@@ -34,11 +34,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
 
             var viewHolder = (SpotTileViewHolder)holder;
             viewHolder.CurrencyPairLabel.Text = spotTileViewModel.CurrencyPair;
-
-            viewHolder.BidButton.Text = spotTileViewModel.Pricing.Bid.BigFigures +
-                                        spotTileViewModel.Pricing.Bid.Pips +
-                                        spotTileViewModel.Pricing.Bid.TenthOfPip;
-
+            viewHolder.BidButton.SetDataContext(spotTileViewModel.Pricing.Bid);
             viewHolder.AskButton.SetDataContext(spotTileViewModel.Pricing.Ask);
         }
 
