@@ -24,7 +24,8 @@ namespace Adaptive.ReactiveTrader.Client.Domain.ServiceClients
 
         public IObservable<IEnumerable<CurrencyPairUpdateDto>> GetCurrencyPairUpdatesStream()
         {
-            return Observable.Return(new[] { new CurrencyPairUpdateDto() { CurrencyPair = new CurrencyPairDto("EURUSD", 5, 4), UpdateType = UpdateTypeDto.Added } });
+            return Observable.Return(new[] { new CurrencyPairUpdateDto() { CurrencyPair = new CurrencyPairDto("EURUSD", 5, 4), UpdateType = UpdateTypeDto.Added } })
+                .Concat(Observable.Never<CurrencyPairUpdateDto[]>());
            // return GetResilientStream(connection => GetCurrencyPairsForConnection(connection.ReferenceDataHubProxy), TimeSpan.FromSeconds(5));
         }
 
