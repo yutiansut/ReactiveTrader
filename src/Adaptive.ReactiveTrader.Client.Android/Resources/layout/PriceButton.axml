@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#FF212A35">
+    <TextView
+        android:id="@+id/PriceButtonBigFiguresTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFF0000"
+        android:text="12" />
+    <TextView
+        android:id="@+id/PriceButtonPipsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFF0000"
+        android:text="34" />
+    <TextView
+        android:id="@+id/PriceButtonTenthOfPipTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFF0000"
+        android:text="5666" />
+</LinearLayout>

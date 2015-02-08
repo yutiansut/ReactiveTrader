@@ -32,10 +32,14 @@
             android:text="" />
         <Button
             android:id="@+id/SpotTileAskButton"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_toRightOf="@+id/SpotTileUpDownLayout"
+            style="?android:attr/borderlessButtonStyle" />
+        <Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles.PriceButton
+            android:id="@+id/SpotTileAskPriceButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/SpotTileUpDownLayout"
-            android:text=""
-            style="?android:attr/borderlessButtonStyle" />
+            android:layout_toRightOf="@+id/SpotTileUpDownLayout" />
     </RelativeLayout>
 </RelativeLayout>
