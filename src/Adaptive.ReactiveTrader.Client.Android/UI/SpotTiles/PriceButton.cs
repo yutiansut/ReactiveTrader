@@ -3,8 +3,6 @@ using System.Reactive.Disposables;
 using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
 using Adaptive.ReactiveTrader.Shared.Extensions;
 using Android.Content;
-using Android.Content.Res;
-using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -28,12 +26,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             _pipsTextView = FindViewById<TextView>(Resource.Id.PriceButtonPipsTextView);
             _tenthOfPipTextView = FindViewById<TextView>(Resource.Id.PriceButtonTenthOfPipTextView);
             var directionLabelTextView = FindViewById<TextView>(Resource.Id.PriceButtonDirectionTextView);
-
-            using (var styledAttributes = context.ObtainStyledAttributes(attrs, Resource.Styleable.price_button))
-            {
-                var label = styledAttributes.GetString(Resource.Styleable.price_button_direction_label);
-                directionLabelTextView.Text = label;
-            }
+            directionLabelTextView.Text = attrs.GetAttributeValue(null, "direction_label");
         }
 
         public void SetDataContext(IOneWayPriceViewModel viewModel)

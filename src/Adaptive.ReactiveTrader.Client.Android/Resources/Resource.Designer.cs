@@ -31,9 +31,6 @@ namespace Adaptive.ReactiveTrader.Client.Android
 		public partial class Attribute
 		{
 			
-			// aapt resource value: 0x7f010000
-			public const int direction_label = 2130771968;
-			
 			static Attribute()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -140,25 +137,6 @@ namespace Adaptive.ReactiveTrader.Client.Android
 			}
 			
 			private String()
-			{
-			}
-		}
-		
-		public partial class Styleable
-		{
-			
-			public static int[] price_button = new int[] {
-					2130771968};
-			
-			// aapt resource value: 0
-			public const int price_button_direction_label = 0;
-			
-			static Styleable()
-			{
-				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
-			}
-			
-			private Styleable()
 			{
 			}
 		}
