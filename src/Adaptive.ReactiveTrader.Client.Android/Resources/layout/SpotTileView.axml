@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res/Adaptive.ReactiveTrader.Client.Android"
     android:layout_width="328dp"
     android:layout_height="150dp"
     android:layout_marginRight="3dp"
@@ -27,6 +28,7 @@
         <Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles.PriceButton
             android:id="@+id/SpotTileBidPriceButton"
             tools:layout="@android:layout/SpotTileView"
+            app:direction_label="SELL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/SpotTileUpDownLayout"
@@ -34,6 +36,7 @@
             android:layout_centerVertical="true" />
         <Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles.PriceButton
             android:id="@+id/SpotTileAskPriceButton"
+            app:direction_label="BUY"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/SpotTileUpDownLayout"

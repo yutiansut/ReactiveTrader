@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+   <declare-styleable name="price_button">
+        <attr name="direction_label" format="string" />
+    </declare-styleable>
+</resources>
