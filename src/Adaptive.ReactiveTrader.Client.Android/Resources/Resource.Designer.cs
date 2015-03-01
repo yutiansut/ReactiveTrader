@@ -51,13 +51,16 @@ namespace Adaptive.ReactiveTrader.Client.Android
 			public const int pricebutton_background_selector = 2130837505;
 			
 			// aapt resource value: 0x7f020002
-			public const int pricebutton_normal_background = 2130837506;
+			public const int pricebutton_foreground_selector = 2130837506;
 			
 			// aapt resource value: 0x7f020003
-			public const int pricebutton_pressed_background = 2130837507;
+			public const int pricebutton_normal_background = 2130837507;
 			
 			// aapt resource value: 0x7f020004
-			public const int red = 2130837508;
+			public const int pricebutton_pressed_background = 2130837508;
+			
+			// aapt resource value: 0x7f020005
+			public const int red = 2130837509;
 			
 			static Drawable()
 			{

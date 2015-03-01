@@ -18,6 +18,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
 
         private readonly SerialDisposable _propertyChangedSubscription = new SerialDisposable();
         private readonly SerialDisposable _executingSubscription = new SerialDisposable();
+        private readonly SerialDisposable _canExecuteSubscription = new SerialDisposable();
 
         private IOneWayPriceViewModel _viewModel;
 
@@ -40,7 +41,21 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
         {
             _viewModel = viewModel;
 
+            _canExecuteSubscription.Disposable = Observable.FromEventPattern(h => viewModel.ExecuteCommand.CanExecuteChanged += h, h => viewModel.ExecuteCommand.CanExecuteChanged -= h)
+                .Subscribe(_ =>
+                {
+                    var canExecute = viewModel.ExecuteCommand.CanExecute(null);
+                    Enabled = canExecute;
+                });
+
+            _executingSubscription.Disposable = _viewModel.ObserveProperty(vm => vm.IsExecuting)
+                .Subscribe(isExecuting =>
+                {
+                    Selected = isExecuting;
+                });
+
             _propertyChangedSubscription.Disposable = viewModel.ObserveProperty().Subscribe(_ => Update(viewModel));
+
             Update(viewModel);
         }
 
@@ -49,6 +64,8 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             _bigFiguresTextView.Text = viewModel.BigFigures;
             _pipsTextView.Text = viewModel.Pips;
             _tenthOfPipTextView.Text = viewModel.TenthOfPip;
+
+            bool f = Enabled;
         }
 
         private void PriceButton_Click(object sender, EventArgs e)
@@ -57,14 +74,6 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             {
                 if (_viewModel.ExecuteCommand.CanExecute(null))
                 {
-                    _executingSubscription.Disposable = _viewModel.ObserveProperty(vm => vm.IsExecuting)
-                        .Where(executing => !executing)
-                        .Take(1)
-                        .Subscribe(_ =>
-                        {
-                           // todo
-                        });
-
                     _viewModel.ExecuteCommand.Execute(null);
                 }
             }
@@ -75,6 +84,8 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             Click -= PriceButton_Click;
             _propertyChangedSubscription.Dispose();
             _executingSubscription.Dispose();
+            _canExecuteSubscription.Dispose();
+
         }
     }
 }

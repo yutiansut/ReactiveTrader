@@ -10,8 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="BUY"
-        android:textSize="16dp"
-        android:textColor="#E5FFFFFF"
+        android:textSize="14dp"
+        android:textColor="#F290AFC1"
         android:layout_gravity="center_horizontal" />
     <LinearLayout
         android:orientation="horizontal"
@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1.23"
-            android:textSize="16dp"
+            android:textSize="14dp"
             android:textColor="#F290AFC1"
             android:focusable="false" />
         <TextView
@@ -32,16 +32,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="45"
-            android:textSize="36dp"
+            android:textSize="32dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:textColor="#E5FFFFFF" />
+            android:textColor="@drawable/pricebutton_foreground_selector" />
         <TextView
             android:id="@+id/PriceButtonTenthOfPipTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="6"
-            android:textSize="16dp"
+            android:textSize="14dp"
             android:textColor="#F290AFC1" />
     </LinearLayout>
 </LinearLayout>

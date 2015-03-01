@@ -127,6 +127,9 @@
     <AndroidResource Include="Resources\values\colors.xml" />
     <AndroidResource Include="Resources\drawable\pricebutton_pressed_background.xml" />
     <AndroidResource Include="Resources\drawable\pricebutton_normal_background.xml" />
+    <AndroidResource Include="Resources\drawable\pricebutton_foreground_selector.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Adaptive.ReactiveTrader.Client.Domain\Adaptive.ReactiveTrader.Client.Domain.csproj">
