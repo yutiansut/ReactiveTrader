@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Reactive.Disposables;
 using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
 using Adaptive.ReactiveTrader.Shared.Extensions;
 using Android.Support.V7.Widget;
@@ -12,6 +13,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
         private readonly ObservableCollection<ISpotTileViewModel> _spotTileCollection;
 
         private readonly IDisposable _collectionChangedSubscription;
+        private readonly CompositeDisposable _allSubscriptions = new CompositeDisposable();
 
         public SpotTileAdapter(ObservableCollection<ISpotTileViewModel> spotTileCollection)
         {
@@ -20,6 +22,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             _collectionChangedSubscription = _spotTileCollection.ObserveCollection()
                 .Subscribe(_ =>
                 {
+                    _allSubscriptions.Clear();
                     NotifyDataSetChanged(); // xamtodo - make the change details more explicit and move to some common code
                 });
         }
@@ -36,6 +39,16 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             viewHolder.CurrencyPairLabel.Text = spotTileViewModel.CurrencyPair;
             viewHolder.BidButton.SetDataContext(spotTileViewModel.Pricing.Bid);
             viewHolder.AskButton.SetDataContext(spotTileViewModel.Pricing.Ask);
+
+            _allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.Spread, true)
+                .Subscribe(s => viewHolder.SpreadLabel.Text = s));
+
+            _allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.Movement, true)
+                .Subscribe(m =>
+                {
+                    viewHolder.UpArrow.Visibility = m == PriceMovement.Up ? ViewStates.Visible : ViewStates.Invisible;
+                    viewHolder.DownArrow.Visibility = m == PriceMovement.Down ? ViewStates.Visible : ViewStates.Invisible;
+                }));
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

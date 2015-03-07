@@ -9,6 +9,9 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
         public TextView CurrencyPairLabel { get; private set; }
         public PriceButton BidButton { get; private set; }
         public PriceButton AskButton { get; private set; }
+        public TextView SpreadLabel { get; private set; }
+        public DirectionArrow UpArrow { get; private set; }
+        public DirectionArrow DownArrow { get; private set; }
 
         public SpotTileViewHolder(View itemView) 
             : base(itemView)
@@ -16,6 +19,9 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             CurrencyPairLabel = itemView.FindViewById<TextView>(Resource.Id.SpotTileCurrencyPairTextView);
             BidButton = itemView.FindViewById<PriceButton>(Resource.Id.SpotTileBidPriceButton);
             AskButton = itemView.FindViewById<PriceButton>(Resource.Id.SpotTileAskPriceButton);
+            SpreadLabel = itemView.FindViewById<TextView>(Resource.Id.SpotTileSpreadTextView);
+            UpArrow = itemView.FindViewById<DirectionArrow>(Resource.Id.SpotTileUpArrow);
+            DownArrow = itemView.FindViewById<DirectionArrow>(Resource.Id.SpotTileDownArrow);
         }
     }
 }

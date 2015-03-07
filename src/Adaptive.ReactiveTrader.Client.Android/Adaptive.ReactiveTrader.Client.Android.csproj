@@ -96,6 +96,7 @@
     <Compile Include="ShellActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\SpotTiles\DirectionArrow.cs" />
     <Compile Include="UI\SpotTiles\PriceButton.cs" />
     <Compile Include="UI\SpotTiles\RecyclerViewSpanCalculatorLayoutListener.cs" />
     <Compile Include="UI\SpotTiles\SpotTileAdapter.cs" />

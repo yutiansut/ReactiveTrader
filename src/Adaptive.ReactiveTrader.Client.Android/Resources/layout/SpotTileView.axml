@@ -19,18 +19,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
-            android:id="@+id/SpotTileUpDownLayout"
+            android:id="@+id/SpotTileSpreadLayout"
             android:layout_centerInParent="true"
-            android:layout_width="12dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@android:color/background_dark" />
+            android:orientation="vertical"
+            android:gravity="center">
+            <Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles.DirectionArrow
+                android:id="@+id/SpotTileUpArrow"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                direction="Up" />
+            <TextView
+                android:id="@+id/SpotTileSpreadTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:textColor="#E5FFFFFF"
+                android:textSize="12dp" />
+            <Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles.DirectionArrow
+                android:id="@+id/SpotTileDownArrow"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                direction="Down" />
+        </LinearLayout>
         <Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles.PriceButton
             android:id="@+id/SpotTileBidPriceButton"
             tools:layout="@android:layout/SpotTileView"
             direction_label="SELL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/SpotTileUpDownLayout"
+            android:layout_toLeftOf="@+id/SpotTileSpreadLayout"
             android:layout_weight="1"
             android:layout_centerVertical="true" />
         <Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles.PriceButton
@@ -38,7 +60,7 @@
             direction_label="BUY"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/SpotTileUpDownLayout"
+            android:layout_toRightOf="@+id/SpotTileSpreadLayout"
             android:layout_weight="1"
             android:layout_centerVertical="true" />
     </RelativeLayout>
