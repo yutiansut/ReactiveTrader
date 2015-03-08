@@ -124,13 +124,24 @@
   <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml" />
     <AndroidResource Include="Resources\values\attrs.xml" />
-    <AndroidResource Include="Resources\drawable\pricebutton_background_selector.xml" />
+    <AndroidResource Include="Resources\drawable\pricebutton_background_selector.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\values\colors.xml" />
-    <AndroidResource Include="Resources\drawable\pricebutton_pressed_background.xml" />
-    <AndroidResource Include="Resources\drawable\pricebutton_normal_background.xml" />
+    <AndroidResource Include="Resources\drawable\pricebutton_background_pressed.xml" />
+    <AndroidResource Include="Resources\drawable\pricebutton_background_normal.xml" />
     <AndroidResource Include="Resources\drawable\pricebutton_foreground_selector.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable\spottile_background_normal.xml" />
+    <AndroidResource Include="Resources\drawable\spottile_background_focused.xml" />
+    <AndroidResource Include="Resources\drawable\spottile_background_selector.xml" />
+    <AndroidResource Include="Resources\drawable\notional_background_selector.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\notional_background_focused.xml" />
+    <AndroidResource Include="Resources\drawable\notional_background_normal.xml" />
+    <AndroidResource Include="Resources\drawable\notional_textcolor_selector.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Adaptive.ReactiveTrader.Client.Domain\Adaptive.ReactiveTrader.Client.Domain.csproj">

@@ -12,6 +12,9 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
         public TextView SpreadLabel { get; private set; }
         public DirectionArrow UpArrow { get; private set; }
         public DirectionArrow DownArrow { get; private set; }
+        public TextView DealtCurrencyLabel { get; private set; }
+        public EditText NotionalTextBox { get; private set; }
+        public TextView SpotDateLabel { get; private set; }
 
         public SpotTileViewHolder(View itemView) 
             : base(itemView)
@@ -22,6 +25,9 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             SpreadLabel = itemView.FindViewById<TextView>(Resource.Id.SpotTileSpreadTextView);
             UpArrow = itemView.FindViewById<DirectionArrow>(Resource.Id.SpotTileUpArrow);
             DownArrow = itemView.FindViewById<DirectionArrow>(Resource.Id.SpotTileDownArrow);
+            DealtCurrencyLabel = itemView.FindViewById<TextView>(Resource.Id.SpotTileDealtCurrencyTextView);
+            NotionalTextBox = itemView.FindViewById<EditText>(Resource.Id.SpotTileNotionalEditText);
+            SpotDateLabel = itemView.FindViewById<TextView>(Resource.Id.SpotTileSpotDateTextView);
         }
     }
 }

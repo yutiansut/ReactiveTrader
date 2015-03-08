@@ -1,9 +1,11 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
 using Adaptive.ReactiveTrader.Shared.Extensions;
 using Android.Support.V7.Widget;
+using Android.Text;
 using Android.Views;
 
 namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
@@ -36,12 +38,31 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             }
 
             var viewHolder = (SpotTileViewHolder)holder;
-            viewHolder.CurrencyPairLabel.Text = spotTileViewModel.CurrencyPair;
+            viewHolder.CurrencyPairLabel.Text = spotTileViewModel.Pricing.Symbol;
             viewHolder.BidButton.SetDataContext(spotTileViewModel.Pricing.Bid);
             viewHolder.AskButton.SetDataContext(spotTileViewModel.Pricing.Ask);
 
             _allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.Spread, true)
                 .Subscribe(s => viewHolder.SpreadLabel.Text = s));
+
+            _allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.DealtCurrency, true)
+                .Subscribe(s => viewHolder.DealtCurrencyLabel.Text = s));
+
+            _allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.SpotDate, true)
+                .Subscribe(s => viewHolder.SpotDateLabel.Text = s));
+
+            // two way bind the notional
+            _allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.Notional, true)
+                .Where(n => n != viewHolder.NotionalTextBox.Text)
+                .Subscribe(s => viewHolder.NotionalTextBox.Text = s));
+            _allSubscriptions.Add(Observable.FromEventPattern<TextChangedEventArgs>(
+                h => viewHolder.NotionalTextBox.TextChanged += h,
+                h => viewHolder.NotionalTextBox.TextChanged -= h)
+                .Where(_ => spotTileViewModel.Pricing.Notional != viewHolder.NotionalTextBox.Text)
+                .Subscribe(_ =>
+                {
+                    spotTileViewModel.Pricing.Notional = viewHolder.NotionalTextBox.Text;
+                }));
 
             _allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.Movement, true)
                 .Subscribe(m =>
