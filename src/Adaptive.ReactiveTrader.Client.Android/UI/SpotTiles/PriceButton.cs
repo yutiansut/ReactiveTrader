@@ -21,6 +21,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
         private readonly SerialDisposable _canExecuteSubscription = new SerialDisposable();
 
         private IOneWayPriceViewModel _viewModel;
+        private bool _isenabledOverride = true;
 
 
         public PriceButton(Context context, IAttributeSet attrs)
@@ -45,7 +46,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
                 .Subscribe(_ =>
                 {
                     var canExecute = viewModel.ExecuteCommand.CanExecute(null);
-                    Enabled = canExecute;
+                    Enabled =_isenabledOverride && canExecute;
                 });
 
             _executingSubscription.Disposable = _viewModel.ObserveProperty(vm => vm.IsExecuting)
@@ -59,13 +60,26 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             Update(viewModel);
         }
 
+        public void SetEnabledOverride(bool isEnabled)
+        {
+            if (!isEnabled)
+            {
+                Enabled = false;
+                _pipsTextView.Selected = true;    // state_enabled=false doesn't seem to work in the foreground selector so setting state_selected instead
+            }
+            else
+            {
+                Enabled = _viewModel.ExecuteCommand.CanExecute(null);
+                _pipsTextView.Selected = false;
+            }
+            _isenabledOverride = isEnabled;
+        }
+
         private void Update(IOneWayPriceViewModel viewModel)
         {
             _bigFiguresTextView.Text = viewModel.BigFigures;
             _pipsTextView.Text = viewModel.Pips;
             _tenthOfPipTextView.Text = viewModel.TenthOfPip;
-
-            bool f = Enabled;
         }
 
         private void PriceButton_Click(object sender, EventArgs e)
@@ -85,7 +99,6 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             _propertyChangedSubscription.Dispose();
             _executingSubscription.Dispose();
             _canExecuteSubscription.Dispose();
-
         }
     }
 }

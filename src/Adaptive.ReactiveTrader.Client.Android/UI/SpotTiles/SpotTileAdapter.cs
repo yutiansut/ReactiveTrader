@@ -42,6 +42,12 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             viewHolder.BidButton.SetDataContext(spotTileViewModel.Pricing.Bid);
             viewHolder.AskButton.SetDataContext(spotTileViewModel.Pricing.Ask);
 
+            _allSubscriptions.Add(spotTileViewModel.Pricing.Bid.ObserveProperty(vm => vm.IsExecuting)
+                .Subscribe(s => viewHolder.AskButton.SetEnabledOverride(!s)));
+
+            _allSubscriptions.Add(spotTileViewModel.Pricing.Ask.ObserveProperty(vm => vm.IsExecuting)
+                .Subscribe(s => viewHolder.BidButton.SetEnabledOverride(!s)));
+
             _allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.Spread, true)
                 .Subscribe(s => viewHolder.SpreadLabel.Text = s));
 

@@ -7,7 +7,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.Configuration
     {
         public string Username
         {
-            get { return "WPF-" + new Random().Next(1000); }    // xamtodo
+            get { return "Android-" + new Random().Next(1000); }
         }
     }
 }
