@@ -17,11 +17,10 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
 
         public void OnGlobalLayout()
         {
-            _recyclerView.ViewTreeObserver.RemoveGlobalOnLayoutListener(this);
             var viewWidth = _recyclerView.MeasuredWidth;
-          //  const double tileWidth = 331;
-            //int newSpanCount = (int)Math.Floor(viewWidth / tileWidth);
-            _gridLayoutManager.SpanCount = 4;
+            const double tileWidth = 331;
+            int newSpanCount = (int)((viewWidth / tileWidth) * (2 / 3f));
+            _gridLayoutManager.SpanCount = (Math.Max(1, newSpanCount));
             _gridLayoutManager.RequestLayout();
         }
     }
