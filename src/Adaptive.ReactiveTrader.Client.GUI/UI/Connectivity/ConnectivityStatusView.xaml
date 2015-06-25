@@ -44,6 +44,9 @@
         <TextBlock ToolTipService.ShowDuration="40000">
             <Run Text="{Binding Status, Mode=OneWay}"  />
             <Run Text=" | "/>
+            <Run Text="ConnType:" />
+            <Run Text="{Binding TransportName, Mode=OneWay}"  />
+            <Run Text=" | "/>
             <Run Text="E2E Lat.:" />
             <Run Text="{Binding TotalLatency, Mode=OneWay}"  />
             <Run Text=" | "/>
@@ -62,9 +65,6 @@
             <Run Text="UI Lat.:" />
             <Run Text="{Binding UiLatency, Mode=OneWay}"  />
             <Run Text="ms"/>
-            <Run Text=" | "/>
-            <Run Text="ConnType:" />
-            <Run Text="{Binding TransportName, Mode=OneWay}"  />
             <TextBlock.ToolTip>
                 <ToolTip Width="600">
                     <StackPanel Orientation="Vertical">
