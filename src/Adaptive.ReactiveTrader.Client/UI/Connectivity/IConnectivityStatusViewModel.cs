@@ -10,6 +10,7 @@
         string ServerClientLatency { get; }
         string TotalLatency { get; }
         long UiLatency { get; }
+        string TransportName { get; }
         string Histogram { get; }
         string CpuTime { get; }
         string CpuPercent { get; }

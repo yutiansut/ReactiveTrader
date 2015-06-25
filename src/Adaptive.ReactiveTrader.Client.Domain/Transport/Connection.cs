@@ -25,12 +25,12 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport
         public Connection(string address, string username, ILoggerFactory loggerFactory)
         {
             _log = loggerFactory.Create(typeof (Connection));
-            _statusStream = new BehaviorSubject<ConnectionInfo>(new ConnectionInfo(ConnectionStatus.Uninitialized, address));
+            _statusStream = new BehaviorSubject<ConnectionInfo>(new ConnectionInfo(ConnectionStatus.Uninitialized, address, TransportName));
             Address = address;
             _hubConnection = new HubConnection(address);
             _hubConnection.Headers.Add(ServiceConstants.Server.UsernameHeader, username);
             CreateStatus().Subscribe(
-                s => _statusStream.OnNext(new ConnectionInfo(s, address)),
+                s => _statusStream.OnNext(new ConnectionInfo(s, address, TransportName)),
                 _statusStream.OnError,
                 _statusStream.OnCompleted);
             _hubConnection.Error += exception => _log.Error("There was a connection error with " + address, exception);
@@ -52,13 +52,13 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport
 
             return Observable.Create<Unit>(async observer =>
             {
-                _statusStream.OnNext(new ConnectionInfo(ConnectionStatus.Connecting, Address)); 
+                _statusStream.OnNext(new ConnectionInfo(ConnectionStatus.Connecting, Address, TransportName)); 
 
                 try
                 {
-                    _log.InfoFormat("Connecting to {0}", Address);
+                    _log.InfoFormat("Connecting to {0} via {1}", Address, TransportName);
                     await _hubConnection.Start();
-                    _statusStream.OnNext(new ConnectionInfo(ConnectionStatus.Connected, Address));
+                    _statusStream.OnNext(new ConnectionInfo(ConnectionStatus.Connected, Address, TransportName));
                     observer.OnNext(Unit.Default);
                 }
                 catch (Exception e)
@@ -102,6 +102,18 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport
         }
 
         public string Address { get; private set; }
+
+        public string TransportName
+        {
+            get
+            {
+                if (_hubConnection == null || _hubConnection.Transport == null)
+                {
+                    return "none";
+                }
+                return _hubConnection.Transport.Name;
+            }
+        }
 
         public IHubProxy ReferenceDataHubProxy { get; private set; }
         public IHubProxy PricingHubProxy { get; private set; }

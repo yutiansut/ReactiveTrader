@@ -62,6 +62,9 @@
             <Run Text="UI Lat.:" />
             <Run Text="{Binding UiLatency, Mode=OneWay}"  />
             <Run Text="ms"/>
+            <Run Text=" | "/>
+            <Run Text="ConnType:" />
+            <Run Text="{Binding TransportName, Mode=OneWay}"  />
             <TextBlock.ToolTip>
                 <ToolTip Width="600">
                     <StackPanel Orientation="Vertical">

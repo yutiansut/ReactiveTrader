@@ -86,6 +86,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
         private void OnStatusChange(ConnectionInfo connectionInfo)
         {
             Server = connectionInfo.Server;
+            TransportName = connectionInfo.TransportName;
 
             switch (connectionInfo.ConnectionStatus)
             {
@@ -124,6 +125,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.Connectivity
         public string TotalLatency { get; private set; }
         public string ServerClientLatency { get; private set; }
         public long UiLatency { get; private set; }
+        public string TransportName { get; private set; }
         public string Histogram { get; private set; }
         public string CpuTime { get; private set; }
         public string CpuPercent { get; private set; }
