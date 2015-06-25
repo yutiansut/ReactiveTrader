@@ -74,6 +74,7 @@
                         <TextBlock TextWrapping="Wrap">Server Upd.: Shows the number of price updates the UI has received from the server.</TextBlock>
                         <TextBlock TextWrapping="Wrap">CPU: Shows the CPU usage of the UI (approximately).</TextBlock>
                         <TextBlock TextWrapping="Wrap">UI Lat.: Shows the latency of the slowest price from when it was received by the UI to when it has been rendered.</TextBlock>
+                        <TextBlock TextWrapping="Wrap">ConnType: Shows the SignalR transport name initiated by the Client (webSockets, longPolling, etc).</TextBlock>
                         <TextBlock TextWrapping="Wrap"><Run>Server:</Run> <Run Text="{Binding Server}"/> </TextBlock>
                         <!--<TextBlock TextWrapping="Wrap">Histogram: Shows a more detailed breakdown of the latency distribution of rendered prices.</TextBlock>
                         <TextBlock TextWrapping="Wrap" Text="{Binding Histogram}"/>-->
