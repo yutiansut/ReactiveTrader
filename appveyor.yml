@@ -1,0 +1,12 @@
+assembly_info:
+  patch: false
+
+platform: Any CPU
+configuration: Release
+
+before_build:
+ - nuget restore
+
+build:
+  project: src/ReactiveTrader.sln
+
