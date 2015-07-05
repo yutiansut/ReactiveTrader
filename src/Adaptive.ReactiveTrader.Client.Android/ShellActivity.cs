@@ -6,6 +6,7 @@ using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Support.V7.Widget;
+using Android.Util;
 using Autofac;
 
 namespace Adaptive.ReactiveTrader.Client.Android
@@ -28,11 +29,14 @@ namespace Adaptive.ReactiveTrader.Client.Android
                 _shellViewModel = _container.Resolve<IShellViewModel>();
             }
 
+            var displayMetrics = new DisplayMetrics();
+            WindowManager.DefaultDisplay.GetMetrics(displayMetrics);
+
             var spotTilesRecyclerView = FindViewById<RecyclerView>(Resource.Id.SpotTilesRecyclerView);
             spotTilesRecyclerView.HasFixedSize = true;
             var gridLayoutManager = new GridLayoutManager(this, 1);
             spotTilesRecyclerView.SetLayoutManager(gridLayoutManager);
-            spotTilesRecyclerView.ViewTreeObserver.AddOnGlobalLayoutListener(new RecyclerViewSpanCalculatorLayoutListener(spotTilesRecyclerView, gridLayoutManager));
+            spotTilesRecyclerView.ViewTreeObserver.AddOnGlobalLayoutListener(new RecyclerViewSpanCalculatorLayoutListener(spotTilesRecyclerView, gridLayoutManager, displayMetrics));
 
             var spotTilesAdapter = new SpotTileAdapter(_shellViewModel.SpotTiles.SpotTiles);
             spotTilesRecyclerView.SetAdapter(spotTilesAdapter);
