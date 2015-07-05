@@ -7,6 +7,7 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 {
     public interface IAnalyticsService
     {
+        void Reset();
         void OnTrade(TradeDto trade);
 
         void OnPrice(PriceDto priceDto);

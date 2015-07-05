@@ -21,8 +21,8 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
             var pow = (decimal)Math.Pow(10, CurrencyPair.RatePrecision);
             var newMid = previousPrice.Mid + Random.Next(-5, 5) / pow;
 
-            // check that the new mid does not drift too far from sampleRate (10%)
-            if (Math.Abs(newMid - SampleRate)/SampleRate > .1m)
+            // check that the new mid does not drift too far from sampleRate (3%)
+            if (Math.Abs(newMid - SampleRate)/SampleRate > .03m)
             {
                 newMid = SampleRate;
             }

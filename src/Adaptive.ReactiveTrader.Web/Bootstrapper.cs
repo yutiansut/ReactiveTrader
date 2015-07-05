@@ -1,4 +1,5 @@
-﻿using Adaptive.ReactiveTrader.Server.Analytics;
+﻿using Adaptive.ReactiveTrader.Server;
+using Adaptive.ReactiveTrader.Server.Analytics;
 using Adaptive.ReactiveTrader.Server.Blotter;
 using Adaptive.ReactiveTrader.Server.Control;
 using Adaptive.ReactiveTrader.Server.Execution;
@@ -44,7 +45,9 @@ namespace Adaptive.ReactiveTrader.Web
             builder.RegisterType<BlotterHub>().SingleInstance();            
             
             builder.RegisterType<ContextHolder>().As<IContextHolder>().SingleInstance();
-
+            builder.RegisterType<SchedulerService>().As<ISchedulerService>().SingleInstance();
+            builder.RegisterType<Cleaner>().SingleInstance();
+            
             return builder.Build();
         }
     }

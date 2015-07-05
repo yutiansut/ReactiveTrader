@@ -64,10 +64,11 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
         public void OnPrice(IDictionary<string, PriceDto> priceCache, bool wasTraded)
         {
             var isLong = _baseTradedAmount >= 0;
+            var isUsdBased = CurrencyPair.StartsWith("USD");
 
-            PriceDto monitoredPrice, crossedPrice;
+            PriceDto monitoredPrice, crossedPrice = null;
             if (!priceCache.TryGetValue(CurrencyPair, out monitoredPrice)
-                || !priceCache.TryGetValue(CrossedPair, out crossedPrice))
+                || (!isUsdBased && !priceCache.TryGetValue(CrossedPair, out crossedPrice)))
             {
                 return;
             }
@@ -78,10 +79,18 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 
             var basePnl = _baseTradedAmount - _baseSpot;
 
-            var usdPnl = isLong
-                ? basePnl * crossedPrice.Bid
-                : basePnl * crossedPrice.Ask;
-
+            decimal usdPnl;
+            if (isUsdBased)
+            {
+                usdPnl = basePnl;
+            }
+            else
+            {
+                usdPnl = isLong
+                    ? basePnl * crossedPrice.Bid
+                    : basePnl * crossedPrice.Ask;
+            }
+            
             _currentPosition = new CurrencyPairPositionReport
             {
                 Symbol = CurrencyPair,
