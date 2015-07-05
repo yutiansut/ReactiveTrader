@@ -1,5 +1,7 @@
 [![image](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTrader/master/images/adaptive-logo.png)](http://weareadaptive.com/)
 
+[![Build status](https://ci.appveyor.com/api/projects/status/709bcumithtiyj2l?svg=true)](https://ci.appveyor.com/project/Adaptive/reactivetrader)
+
 # What are you looking for?
 
  - [A quick overview](#overview)
