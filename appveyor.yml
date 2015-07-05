@@ -5,7 +5,7 @@ platform: Any CPU
 configuration: Release
 
 before_build:
- - nuget restore
+ - nuget restore src/ReactiveTrader.sln
 
 build:
   project: src/ReactiveTrader.sln
