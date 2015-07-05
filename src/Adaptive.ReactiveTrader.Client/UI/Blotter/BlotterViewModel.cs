@@ -39,7 +39,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.Blotter
             Trades = new ObservableCollection<ITradeViewModel>();
             _log = loggerFactory.Create(typeof (BlotterViewModel));
 
-           // LoadTrades();
+            LoadTrades();
         }
         
         public void Dispose()

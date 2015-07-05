@@ -95,6 +95,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             if (disposing)
             {
                 _collectionChangedSubscription.Dispose();
+                _allSubscriptions.Dispose();
             }
         }
     }

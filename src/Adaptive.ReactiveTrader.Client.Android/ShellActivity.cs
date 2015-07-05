@@ -1,4 +1,5 @@
-﻿using Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles;
+﻿using Adaptive.ReactiveTrader.Client.Android.UI.Blotter;
+using Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles;
 using Adaptive.ReactiveTrader.Client.Configuration;
 using Adaptive.ReactiveTrader.Client.Domain;
 using Adaptive.ReactiveTrader.Client.UI.Shell;
@@ -37,9 +38,16 @@ namespace Adaptive.ReactiveTrader.Client.Android
             var gridLayoutManager = new GridLayoutManager(this, 1);
             spotTilesRecyclerView.SetLayoutManager(gridLayoutManager);
             spotTilesRecyclerView.ViewTreeObserver.AddOnGlobalLayoutListener(new RecyclerViewSpanCalculatorLayoutListener(spotTilesRecyclerView, gridLayoutManager, displayMetrics));
-
             var spotTilesAdapter = new SpotTileAdapter(_shellViewModel.SpotTiles.SpotTiles);
             spotTilesRecyclerView.SetAdapter(spotTilesAdapter);
+
+
+            var blotterRowsRecyclerView = FindViewById<RecyclerView>(Resource.Id.BlotterRowsRecyclerView);
+            blotterRowsRecyclerView.HasFixedSize = true;
+            var blotterGridLayoutManager = new LinearLayoutManager(this);
+            blotterRowsRecyclerView.SetLayoutManager(blotterGridLayoutManager);
+            var blotterRowsAdapter = new BlotterRowAdapter(_shellViewModel.Blotter.Trades);
+            blotterRowsRecyclerView.SetAdapter(blotterRowsAdapter);
         }
 
         private IContainer Initialize()

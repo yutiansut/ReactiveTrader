@@ -96,6 +96,8 @@
     <Compile Include="ShellActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\Blotter\BlotterRowAdapter.cs" />
+    <Compile Include="UI\Blotter\BlotterRowViewHolder.cs" />
     <Compile Include="UI\SpotTiles\DirectionArrow.cs" />
     <Compile Include="UI\SpotTiles\PriceButton.cs" />
     <Compile Include="UI\SpotTiles\RecyclerViewSpanCalculatorLayoutListener.cs" />
@@ -114,6 +116,12 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\PriceButton.axml" />
+    <AndroidResource Include="Resources\layout\BlotterView.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\BlotterRowView.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Strings.xml" />
