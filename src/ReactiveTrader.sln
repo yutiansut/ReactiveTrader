@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.ReactiveTrader.Server.Domain", "Adaptive.ReactiveTrader.Server.Domain\Adaptive.ReactiveTrader.Server.Domain.csproj", "{1348ACC4-D5B2-4328-9C80-7EC813E82CE4}"
 EndProject
@@ -35,6 +35,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{B0546294-6BC1-4EE3-BA00-BCA76D452648}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.ReactiveTrader.Client", "Adaptive.ReactiveTrader.Client\Adaptive.ReactiveTrader.Client.csproj", "{A894C01A-D326-40DF-BABC-0F807EB63A21}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{24D925F7-EC0E-4FD5-B71A-3DC36E072B28}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
