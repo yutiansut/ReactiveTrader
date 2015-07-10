@@ -1,10 +1,12 @@
-﻿namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
+﻿using System.Globalization;
+
+namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
 {
     public static class PriceFormatter
     {
         public static FormattedPrice GetFormattedPrice(decimal rate, int precision, int pipsPosition)
         {
-            var rateAsString = rate.ToString("0." + new string('0', precision));
+            var rateAsString = rate.ToString("0." + new string('0', precision), CultureInfo.InvariantCulture);
 
             var dotIndex = rateAsString.IndexOf('.');
 
@@ -26,7 +28,7 @@
             var delta = precision - pipsPosition;
             if (delta > 0)
             {
-                return spread.ToString("0." + new string('0', delta));
+                return spread.ToString("0." + new string('0', delta), CultureInfo.InvariantCulture);
             }
             return spread.ToString("0");
         }
