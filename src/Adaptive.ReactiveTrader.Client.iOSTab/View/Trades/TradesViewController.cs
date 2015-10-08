@@ -59,6 +59,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 		{
 			base.ViewDidLoad ();
 			
+            TableView.RegisterNibForHeaderFooterViewReuse(UINib.FromName("PricesHeaderCell", null), PricesHeaderCell.Key);
 			TableView.Source = new TradesViewSource (_model);
 
             var headerHeight = TableView.Source.GetHeightForHeader(TableView, 0);

@@ -1,11 +1,13 @@
 // WARNING
 //
-// This file has been generated automatically by Xamarin Studio to store outlets and
-// actions made in the UI designer. If it is removed, they will be lost.
-// Manual changes to this file may not be handled correctly.
+// This file has been generated automatically by Xamarin Studio from the outlets and
+// actions declared in your storyboard file.
+// Manual changes to this file will not be maintained.
 //
 using Foundation;
+using System;
 using System.CodeDom.Compiler;
+using UIKit;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 {
@@ -32,34 +34,29 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 
 		[Action ("LinkTouchUpInside:")]
 		partial void LinkTouchUpInside (Foundation.NSObject sender);
-		
+
 		void ReleaseDesignerOutlets ()
 		{
 			if (ConnectionDetail != null) {
 				ConnectionDetail.Dispose ();
 				ConnectionDetail = null;
 			}
-
 			if (ConnectionStatus != null) {
 				ConnectionStatus.Dispose ();
 				ConnectionStatus = null;
 			}
-
 			if (ServerUpdateRate != null) {
 				ServerUpdateRate.Dispose ();
 				ServerUpdateRate = null;
 			}
-
 			if (TraderId != null) {
 				TraderId.Dispose ();
 				TraderId = null;
 			}
-
 			if (UILatency != null) {
 				UILatency.Dispose ();
 				UILatency = null;
 			}
-
 			if (UIUpdateRate != null) {
 				UIUpdateRate.Dispose ();
 				UIUpdateRate = null;

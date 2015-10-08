@@ -14,22 +14,37 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		{
 		}
 
-		public static PricesHeaderCell Create ()
-		{
-			return (PricesHeaderCell)Nib.Instantiate (null, null) [0];
-		}
+        public override void MovedToSuperview()
+        {
+            base.MovedToSuperview();
 
-		private void DecorateWithEnabledness(Boolean isEnabled)
+            this.Frame = new CGRect(0, 0, Superview.Frame.Width, 60f);
+            LayoutIfNeeded();
+        }
+
+        public override CGRect Frame
+        {
+            get
+            {
+                return base.Frame;
+            }
+            set
+            {
+                base.Frame = value;
+            }
+        }
+
+        private void DecorateWithEnabledness(bool isEnabled)
 		{
-			if (this.StatusSwitch.On != isEnabled) {
+            if (this.StatusSwitch.On != isEnabled) {
 				this.StatusSwitch.On = isEnabled;
 			}
 
 			if (isEnabled) {
-				this.ContainerView.BackgroundColor = Styles.RTTradeEnabled;
+                this.ContainerView.BackgroundColor = Styles.RTTradeEnabled;
 				this.StatusLabel.Text = "Trading is enabled";
 			} else {
-				this.ContainerView.BackgroundColor = Styles.RTTradeDisabled;
+                this.ContainerView.BackgroundColor = Styles.RTTradeDisabled;
 				this.StatusLabel.Text = "Trading is disabled";
 			}
 		}
@@ -41,11 +56,12 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			this.DecorateWithEnabledness (userModel.OneTouchTradingEnabled);
 		}
 
-		private void OnItemChanged(UserModel item) {
+		private void OnItemChanged(UserModel item)
+        {
 			DecorateWithEnabledness(item.OneTouchTradingEnabled);
 		}
 
-		partial void SwitchValueChanged (Foundation.NSObject sender)
+		partial void SwitchValueChanged (NSObject sender)
 		{
 			UISwitch asSwitch = (UISwitch)sender;
 			UserModel.Instance.OneTouchTradingEnabled = asSwitch.On;

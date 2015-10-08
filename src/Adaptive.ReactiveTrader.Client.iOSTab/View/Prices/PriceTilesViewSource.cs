@@ -1,14 +1,6 @@
-
-
-using System.Collections.Generic;
-using Adaptive.ReactiveTrader.Client.Domain.Models;
 using Foundation;
 using UIKit;
-using Adaptive.ReactiveTrader.Client.Domain;
-using Adaptive.ReactiveTrader.Client.Concurrency;
-using System.IO;
 using Adaptive.ReactiveTrader.Client.iOSTab.Tiles;
-using Adaptive.ReactiveTrader.Shared.UI;
 using System;
 
 
@@ -47,8 +39,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			// NOTE: Don't call the base implementation on a Model class
 			// see http://docs.xamarin.com/guides/ios/application_fundamentals/delegates,_protocols,_and_events
 
-			PricesHeaderCell dequeued = tableView.DequeueReusableHeaderFooterView (PricesHeaderCell.Key) as PricesHeaderCell;
+            PricesHeaderCell dequeued = tableView.DequeueReusableHeaderFooterView (PricesHeaderCell.Key) as PricesHeaderCell;
 			dequeued.UpdateFrom (UserModel.Instance);
+            dequeued.Subviews[0].Frame = new CoreGraphics.CGRect(0, 0, tableView.Frame.Size.Width, 60f);
 			return dequeued;
 		}
 
