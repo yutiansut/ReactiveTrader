@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Client.Domain;
-using MonoTouch.UIKit;
+using UIKit;
 using System.Collections.Generic;
 using Adaptive.ReactiveTrader.Client.Domain.Models.ReferenceData;
 using Adaptive.ReactiveTrader.Client.Concurrency;
-using MonoTouch.Foundation;
+using Foundation;
 using System.Reactive.Disposables;
 using System.Collections.ObjectModel;
 

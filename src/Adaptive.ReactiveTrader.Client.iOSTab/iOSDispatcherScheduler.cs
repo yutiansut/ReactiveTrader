@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
-using MonoTouch.CoreFoundation;
+using CoreFoundation;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {

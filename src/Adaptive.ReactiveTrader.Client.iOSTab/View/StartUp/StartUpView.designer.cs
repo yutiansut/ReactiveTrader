@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
@@ -13,13 +13,13 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 	partial class StartUpView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UIActivityIndicatorView Activity { get; set; }
+		UIKit.UIActivityIndicatorView Activity { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel Connecting { get; set; }
+		UIKit.UILabel Connecting { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel ErrorLabel { get; set; }
+		UIKit.UILabel ErrorLabel { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

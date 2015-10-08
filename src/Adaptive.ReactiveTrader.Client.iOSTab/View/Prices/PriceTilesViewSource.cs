@@ -1,14 +1,15 @@
-﻿
+
 
 using System.Collections.Generic;
 using Adaptive.ReactiveTrader.Client.Domain.Models;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using Adaptive.ReactiveTrader.Client.Domain;
 using Adaptive.ReactiveTrader.Client.Concurrency;
 using System.IO;
 using Adaptive.ReactiveTrader.Client.iOSTab.Tiles;
 using Adaptive.ReactiveTrader.Shared.UI;
+using System;
 
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
@@ -23,25 +24,25 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		}
 
 
-		public override int NumberOfSections (UITableView tableView)
+		public override nint NumberOfSections (UITableView tableView)
 		{
 			return 1;
 		}
 
 
-		public override int RowsInSection (UITableView tableview, int section)
+        public override nint RowsInSection (UITableView tableview, nint section)
 		{
 			return priceTilesModel.ActiveCurrencyPairs.Count;
 		}
 
 
-		public override float GetHeightForHeader (UITableView tableView, int section)
+		public override nfloat GetHeightForHeader (UITableView tableView, nint section)
 		{
 			return 60.0f;
 		}
 
 
-		public override UIView GetViewForHeader (UITableView tableView, int section)
+		public override UIView GetViewForHeader (UITableView tableView, nint section)
 		{
 			// NOTE: Don't call the base implementation on a Model class
 			// see http://docs.xamarin.com/guides/ios/application_fundamentals/delegates,_protocols,_and_events

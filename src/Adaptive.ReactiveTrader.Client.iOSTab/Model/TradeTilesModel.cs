@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 using Adaptive.ReactiveTrader.Client.Domain;
-using MonoTouch.UIKit;
+using UIKit;
 using Adaptive.ReactiveTrader.Client.Concurrency;
 using System.Runtime.Remoting.Channels;
 using System.Reactive.Disposables;
@@ -10,7 +10,7 @@ using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Client.Domain.Models.Execution;
 using System.Collections.Generic;
 using Adaptive.ReactiveTrader.Shared.DTO.Execution;
-using MonoTouch.Foundation;
+using Foundation;
 using System.Collections.ObjectModel;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.Model

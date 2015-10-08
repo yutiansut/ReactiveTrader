@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Adaptive.ReactiveTrader.Shared.Logging;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.Logging

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Drawing;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using System;
+using CoreGraphics;
+using Foundation;
+using UIKit;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
@@ -45,7 +45,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			DecorateWithEnabledness(item.OneTouchTradingEnabled);
 		}
 
-		partial void SwitchValueChanged (MonoTouch.Foundation.NSObject sender)
+		partial void SwitchValueChanged (Foundation.NSObject sender)
 		{
 			UISwitch asSwitch = (UISwitch)sender;
 			UserModel.Instance.OneTouchTradingEnabled = asSwitch.On;

@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.View
@@ -13,25 +13,25 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 	partial class StatusViewController
 	{
 		[Outlet]
-		MonoTouch.UIKit.UILabel ConnectionDetail { get; set; }
+		UIKit.UILabel ConnectionDetail { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel ConnectionStatus { get; set; }
+		UIKit.UILabel ConnectionStatus { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel ServerUpdateRate { get; set; }
+		UIKit.UILabel ServerUpdateRate { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel TraderId { get; set; }
+		UIKit.UILabel TraderId { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel UILatency { get; set; }
+		UIKit.UILabel UILatency { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel UIUpdateRate { get; set; }
+		UIKit.UILabel UIUpdateRate { get; set; }
 
 		[Action ("LinkTouchUpInside:")]
-		partial void LinkTouchUpInside (MonoTouch.Foundation.NSObject sender);
+		partial void LinkTouchUpInside (Foundation.NSObject sender);
 		
 		void ReleaseDesignerOutlets ()
 		{

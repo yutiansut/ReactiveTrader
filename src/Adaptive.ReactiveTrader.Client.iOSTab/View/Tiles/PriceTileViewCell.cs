@@ -1,15 +1,16 @@
-﻿
-using System;
-using System.Drawing;
 
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using System;
+using CoreGraphics;
+
+using Foundation;
+using UIKit;
 using Adaptive.ReactiveTrader.Shared.DTO.ReferenceData;
 using System.ComponentModel;
-using MonoTouch.CoreGraphics;
+using CoreGraphics;
 using Adaptive.ReactiveTrader.Client.iOSTab.Tiles;
 using System.IO;
 using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
+using System.Drawing;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
@@ -32,12 +33,12 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			created.Notional.Delegate = new NotionalTextFieldDelegate (created);
 
-			var numberToolbar = new UIToolbar (new RectangleF(0.0f, 0.0f, created.Frame.Size.Width, 40.0f));
+            var numberToolbar = new UIToolbar (new RectangleF(0.0f, 0.0f, (float)created.Frame.Size.Width, 40.0f));
 
 			numberToolbar.Items = new UIBarButtonItem[] {
-				new UIBarButtonItem ("Cancel", UIBarButtonItemStyle.Bordered, created, new MonoTouch.ObjCRuntime.Selector ("CancelNumberPad")),
+				new UIBarButtonItem ("Cancel", UIBarButtonItemStyle.Bordered, created, new ObjCRuntime.Selector ("CancelNumberPad")),
 				new UIBarButtonItem (UIBarButtonSystemItem.FlexibleSpace),
-				new UIBarButtonItem (UIBarButtonSystemItem.Done, created, new MonoTouch.ObjCRuntime.Selector ("DoneNumberPad"))
+				new UIBarButtonItem (UIBarButtonSystemItem.Done, created, new ObjCRuntime.Selector ("DoneNumberPad"))
 			};
 
 			created.Notional.InputAccessoryView = numberToolbar;

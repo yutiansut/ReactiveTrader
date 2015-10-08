@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq; 
 using System.Reactive.Linq;
 using System.Security.Principal;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using Adaptive.ReactiveTrader.Client.Domain;
 using Adaptive.ReactiveTrader.Client.iOSTab.Logging;
 using Adaptive.ReactiveTrader.Client.iOSTab.View;

@@ -1,10 +1,10 @@
-﻿
+
 using System;
-using System.Drawing;
+using CoreGraphics;
 using System.Collections.Generic; // For List<T>
 
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using Adaptive.ReactiveTrader.Client.Domain;
 using Adaptive.ReactiveTrader.Client.Concurrency;
 using System.Reactive.Disposables;
@@ -100,7 +100,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 			}
 		}
 
-		partial void LinkTouchUpInside (MonoTouch.Foundation.NSObject sender)
+		partial void LinkTouchUpInside (Foundation.NSObject sender)
 		{
 			UITabBarController parentTabBar = this.ParentViewController as UITabBarController;
 

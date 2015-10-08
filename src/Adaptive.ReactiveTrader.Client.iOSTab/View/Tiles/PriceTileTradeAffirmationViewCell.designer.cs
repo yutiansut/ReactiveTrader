@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
@@ -13,37 +13,37 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 	partial class PriceTileTradeAffirmationViewCell
 	{
 		[Outlet]
-		MonoTouch.UIKit.UILabel CounterCCY { get; set; }
+		UIKit.UILabel CounterCCY { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel CurrencyPair { get; set; }
+		UIKit.UILabel CurrencyPair { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel Direction { get; set; }
+		UIKit.UILabel Direction { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel DirectionAmount { get; set; }
+		UIKit.UILabel DirectionAmount { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel DirectionCCY { get; set; }
+		UIKit.UILabel DirectionCCY { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton DoneButton { get; set; }
+		UIKit.UIButton DoneButton { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel Rate { get; set; }
+		UIKit.UILabel Rate { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel TradeId { get; set; }
+		UIKit.UILabel TradeId { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel TraderId { get; set; }
+		UIKit.UILabel TraderId { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel ValueDate { get; set; }
+		UIKit.UILabel ValueDate { get; set; }
 
 		[Action ("Done:")]
-		partial void Done (MonoTouch.Foundation.NSObject sender);
+		partial void Done (Foundation.NSObject sender);
 		
 		void ReleaseDesignerOutlets ()
 		{

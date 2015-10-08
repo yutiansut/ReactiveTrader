@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Globalization;
 
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using UIKit;
+using Foundation;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {

@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
@@ -13,67 +13,67 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 	partial class PriceTileViewCell
 	{
 		[Outlet]
-		MonoTouch.UIKit.UILabel CurrencyPair { get; set; }
+		UIKit.UILabel CurrencyPair { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel Executing { get; set; }
+		UIKit.UILabel Executing { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel LeftSideAction { get; set; }
+		UIKit.UILabel LeftSideAction { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel LeftSideBigNumber { get; set; }
+		UIKit.UILabel LeftSideBigNumber { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton LeftSideButton { get; set; }
+		UIKit.UIButton LeftSideButton { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel LeftSideNumber { get; set; }
+		UIKit.UILabel LeftSideNumber { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel LeftSidePips { get; set; }
+		UIKit.UILabel LeftSidePips { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITextField Notional { get; set; }
+		UIKit.UITextField Notional { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton NotionalCCY { get; set; }
+		UIKit.UIButton NotionalCCY { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIImageView PriceMovementDown { get; set; }
+		UIKit.UIImageView PriceMovementDown { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIImageView PriceMovementUp { get; set; }
+		UIKit.UIImageView PriceMovementUp { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel RightSideAction { get; set; }
+		UIKit.UILabel RightSideAction { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel RightSideBigNumber { get; set; }
+		UIKit.UILabel RightSideBigNumber { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton RightSideButton { get; set; }
+		UIKit.UIButton RightSideButton { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel RightSideNumber { get; set; }
+		UIKit.UILabel RightSideNumber { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel RightSidePips { get; set; }
+		UIKit.UILabel RightSidePips { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel SpotDate { get; set; }
+		UIKit.UILabel SpotDate { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel Spread { get; set; }
+		UIKit.UILabel Spread { get; set; }
 
 		[Action ("LeftSideButtonTouchUpInside:")]
-		partial void LeftSideButtonTouchUpInside (MonoTouch.Foundation.NSObject sender);
+		partial void LeftSideButtonTouchUpInside (Foundation.NSObject sender);
 
 		[Action ("NotionalCcyTouchUpInside:")]
-		partial void NotionalCcyTouchUpInside (MonoTouch.Foundation.NSObject sender);
+		partial void NotionalCcyTouchUpInside (Foundation.NSObject sender);
 
 		[Action ("RightSideButtonTouchUpInside:")]
-		partial void RightSideButtonTouchUpInside (MonoTouch.Foundation.NSObject sender);
+		partial void RightSideButtonTouchUpInside (Foundation.NSObject sender);
 		
 		void ReleaseDesignerOutlets ()
 		{

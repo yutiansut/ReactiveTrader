@@ -1,9 +1,9 @@
-﻿
-using System;
-using System.Drawing;
 
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using System;
+using CoreGraphics;
+
+using Foundation;
+using UIKit;
 using Adaptive.ReactiveTrader.Client.iOSTab.Tiles;
 using Adaptive.ReactiveTrader.Client.iOSTab.Model;
 
@@ -18,18 +18,18 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 			_tradeTilesModel = tradeTilesModel;
 		}
 
-		public override int NumberOfSections (UITableView tableView)
+		public override nint NumberOfSections (UITableView tableView)
 		{
 			return 1;
 		}
 
-		public override float GetHeightForHeader (UITableView tableView, int section)
+		public override nfloat GetHeightForHeader (UITableView tableView, nint section)
 		{
 			// Crude fix for overlap with trades cells and phone status bar.
 			return 20.0f;
 		}
 
-		public override int RowsInSection (UITableView tableview, int section)
+		public override nint RowsInSection (UITableView tableview, nint section)
 		{
 			return _tradeTilesModel.Count;
 		}

@@ -1,4 +1,4 @@
-﻿using Adaptive.ReactiveTrader.Client.Concurrency;
+using Adaptive.ReactiveTrader.Client.Concurrency;
 using System.Reactive.Concurrency;
 using System;
 
