@@ -114,6 +114,10 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			TableView.Source = new PriceTilesViewSource (_model);
 
+            var headerHeight = TableView.Source.GetHeightForHeader(TableView, 0);
+            TableView.ScrollIndicatorInsets = new UIEdgeInsets(headerHeight, 0, 0, 0);
+            TableView.IndicatorStyle = UIScrollViewIndicatorStyle.White;
+
 			Styles.ConfigureTable (TableView);
 		}
 

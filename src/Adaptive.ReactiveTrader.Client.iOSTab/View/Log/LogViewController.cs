@@ -61,6 +61,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			var dvc = new DialogViewController (root);
 			this.AddChildViewController (dvc);
 			this.Add (dvc.TableView);
+            dvc.TableView.IndicatorStyle = UIScrollViewIndicatorStyle.White;
 
 			foreach (var message in _messages) {
 				_logs.Add (GetElement (message));
