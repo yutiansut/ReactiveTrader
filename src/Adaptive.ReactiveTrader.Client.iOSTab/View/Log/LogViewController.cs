@@ -54,7 +54,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			// Perform any additional setup after loading the view, typically from a nib.
 
 			var root = new RootElement ("Logs");
-			_logs = new Section ("Logs");
+
+			_logs = new Section ("    Logs");
 			root.Add (_logs);
 
 			var dvc = new DialogViewController (root);
@@ -79,7 +80,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			return new StyledStringElement (message, string.Empty, UITableViewCellStyle.Default) {
 				LineBreakMode = UILineBreakMode.WordWrap,
 				Alignment = UITextAlignment.Left,
-				Font = UIFont.FromName ("Courier", 10)
+				Font = UIFont.FromName ("Courier", 10),
+                TextColor = UIColor.White
 			};
 		}
 
