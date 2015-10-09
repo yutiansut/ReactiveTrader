@@ -10,6 +10,7 @@ using Adaptive.ReactiveTrader.Client.iOSTab.Logging;
 using Adaptive.ReactiveTrader.Client.iOSTab.View;
 using Adaptive.ReactiveTrader.Client.Domain.Transport;
 using System.Runtime.InteropServices;
+using CoreAnimation;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
@@ -82,12 +83,17 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			var startUpViewController = new StartUpView ();
 
+            tabBarController.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
+
 			startUpViewController.DisplayMessages (true, "Connecting..");
 			_reactiveTrader.ConnectionStatusStream
 				.Where (ci => ci.ConnectionStatus == ConnectionStatus.Connected)
 				.Timeout (TimeSpan.FromSeconds (15))
 				.ObserveOn (cs.Dispatcher)
-				.Subscribe (_ => startUpViewController.PresentViewController (tabBarController, false, null),
+				.Subscribe (_ => 
+                    {
+                        startUpViewController.PresentViewController (tabBarController, true, null);
+                    },
 				ex => startUpViewController.DisplayMessages (false, "Disconnected", "Unable to connect. Please restart the app."));
 
 			window.RootViewController = startUpViewController;

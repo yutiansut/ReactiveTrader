@@ -25,6 +25,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AssemblyName>Adaptive.ReactiveTrader.Client.DomainPortable</AssemblyName>
+    <NoWarn>2002</NoWarn>
+    <NoStdLib>true</NoStdLib>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,12 +36,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AssemblyName>Adaptive.ReactiveTrader.Client.DomainPortable</AssemblyName>
+    <NoStdLib>true</NoStdLib>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
     <Optimize>false</Optimize>
     <OutputPath>bin\iPhone\Distribution</OutputPath>
     <WarningLevel>4</WarningLevel>
     <AssemblyName>Adaptive.ReactiveTrader.Client.Domain.Xamarin</AssemblyName>
+    <NoStdLib>true</NoStdLib>
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
@@ -54,7 +58,6 @@
     <Compile Include="**\*.cs" Exclude="obj\**\*.cs;bin\**\*.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

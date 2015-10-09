@@ -1,14 +1,7 @@
-
 using System;
-using CoreGraphics;
-
 using Foundation;
 using UIKit;
-using Adaptive.ReactiveTrader.Shared.DTO.ReferenceData;
-using System.ComponentModel;
-using CoreGraphics;
 using Adaptive.ReactiveTrader.Client.iOSTab.Tiles;
-using System.IO;
 using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
 using System.Drawing;
 
@@ -150,7 +143,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 			// Other status...
 
-			this.Executing.Hidden = (model.Status != PriceTileStatus.Executing);
+            bool isExecuting = (model.Status != PriceTileStatus.Executing);
+            this.Executing.Hidden = isExecuting;
+            this.Activity.Hidden = isExecuting;
 
 			// TODO: Update this when date/time changes, not just when the model updates!
 

@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
-    <DefineConstants>DEBUG;__MOBILE__;__IOS__;</DefineConstants>
+    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;DEBUG;__MOBILE__;__IOS__;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -26,28 +26,31 @@
     <MtouchDebug>true</MtouchDebug>
     <MtouchArch>i386</MtouchArch>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <DeviceSpecificBuild>true</DeviceSpecificBuild>
-    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
     <MtouchSdkVersion>9.0</MtouchSdkVersion>
-    <MtouchExtraArgs>-gcc_flags "-force_load /Applications/Reveal.app/Contents/SharedSupport/iOS-Libraries/Reveal.framework/Versions/A/Reveal -ObjC -framework QuartzCore -framework CFNetwork"</MtouchExtraArgs>
+    <MtouchUseSGen>true</MtouchUseSGen>
+    <IpaIncludeArtwork>true</IpaIncludeArtwork>
+    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
-    <DefineConstants>__MOBILE__;__IOS__;</DefineConstants>
+    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;__MOBILE__;__IOS__;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <MtouchLink>None</MtouchLink>
     <ConsolePause>false</ConsolePause>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <MtouchUseSGen>true</MtouchUseSGen>
+    <IpaIncludeArtwork>true</IpaIncludeArtwork>
+    <MtouchArch>i386</MtouchArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\iPhone\Debug</OutputPath>
-    <DefineConstants>DEBUG;__MOBILE__;__IOS__;</DefineConstants>
+    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -59,12 +62,15 @@
     <MtouchI18n>
     </MtouchI18n>
     <MtouchArch>ARMv7</MtouchArch>
+    <DeviceSpecificBuild>true</DeviceSpecificBuild>
+    <MtouchUseSGen>true</MtouchUseSGen>
+    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\iPhone\Release</OutputPath>
-    <DefineConstants>__MOBILE__;__IOS__;</DefineConstants>
+    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;__MOBILE__;__IOS__;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
@@ -75,11 +81,13 @@
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <IpaPackageName>
     </IpaPackageName>
+    <MtouchUseSGen>true</MtouchUseSGen>
+    <IpaIncludeArtwork>true</IpaIncludeArtwork>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\iPhone\Ad-Hoc</OutputPath>
-    <DefineConstants>__MOBILE__;__IOS__;</DefineConstants>
+    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;__MOBILE__;__IOS__;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -88,12 +96,14 @@
     <CodesignProvision>Automatic:AdHoc</CodesignProvision>
     <CodesignKey>iPhone Distribution</CodesignKey>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
+    <MtouchUseSGen>true</MtouchUseSGen>
+    <IpaIncludeArtwork>true</IpaIncludeArtwork>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\iPhone\AppStore</OutputPath>
-    <DefineConstants>__MOBILE__;__IOS__;</DefineConstants>
+    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;__MOBILE__;__IOS__;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -101,6 +111,8 @@
     <CodesignProvision>151C6120-E3E5-4B8F-9415-47B493964A1C</CodesignProvision>
     <CodesignKey>iPhone Distribution: Adaptive Financial Consulting Limited (EANV3YMW5P)</CodesignKey>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
+    <MtouchUseSGen>true</MtouchUseSGen>
+    <IpaIncludeArtwork>true</IpaIncludeArtwork>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -208,18 +220,25 @@
     <BundleResource Include="Resources\tab_prices%402x.png" />
     <BundleResource Include="Resources\tab_trades.png" />
     <BundleResource Include="Resources\tab_trades%402x.png" />
+    <BundleResource Include="Resources\green-up%402x.png" />
+    <BundleResource Include="Resources\green-up%403x.png" />
+    <BundleResource Include="Resources\adaptive%403x.png" />
+    <BundleResource Include="Resources\adaptive-logo%403x.png" />
+    <BundleResource Include="Resources\red-down%402x.png" />
+    <BundleResource Include="Resources\red-down%403x.png" />
+    <BundleResource Include="Resources\tab_trades%403x.png" />
+    <BundleResource Include="Resources\tab_status%403x.png" />
+    <BundleResource Include="Resources\tab_prices%403x.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Contents.json" />
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default.png" />
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default%402x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default-568h%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon.png" />
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon-60%402x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\iPhone6-Plus-portrait%403x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\iPhone6-portrait%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\Splash.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\Splash.imageset\splash.png" />
+    <ImageAsset Include="Resources\Images.xcassets\Splash.imageset\splash%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\Splash.imageset\splash%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Adaptive.ReactiveTrader.Client.Domain\Adaptive.ReactiveTrader.Client.Domain.Xamarin.csproj">
@@ -253,6 +272,7 @@
     <InterfaceDefinition Include="View\Prices\PricesHeaderCell.xib" />
     <InterfaceDefinition Include="View\Status\StatusViewController.xib" />
     <InterfaceDefinition Include="View\StartUp\StartUpView.xib" />
+    <InterfaceDefinition Include="View\StartUp\Launch.xib" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

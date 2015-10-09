@@ -14,26 +14,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		{
 		}
 
-        public override void MovedToSuperview()
-        {
-            base.MovedToSuperview();
-
-            this.Frame = new CGRect(0, 0, Superview.Frame.Width, 60f);
-            LayoutIfNeeded();
-        }
-
-        public override CGRect Frame
-        {
-            get
-            {
-                return base.Frame;
-            }
-            set
-            {
-                base.Frame = value;
-            }
-        }
-
         private void DecorateWithEnabledness(bool isEnabled)
 		{
             if (this.StatusSwitch.On != isEnabled) {

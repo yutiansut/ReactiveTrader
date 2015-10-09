@@ -26,6 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AssemblyName>Adaptive.ReactiveTrader.Client</AssemblyName>
+    <NoStdLib>true</NoStdLib>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,12 +36,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AssemblyName>Adaptive.ReactiveTrader.Client</AssemblyName>
+    <NoStdLib>true</NoStdLib>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
     <Optimize>false</Optimize>
     <OutputPath>bin\iPhone\Distribution</OutputPath>
     <WarningLevel>4</WarningLevel>
     <AssemblyName>Adaptive.ReactiveTrader.Client.Xamarin</AssemblyName>
+    <NoStdLib>true</NoStdLib>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="**\*.cs" Exclude="obj\**\*.cs;bin\**\*.cs" />

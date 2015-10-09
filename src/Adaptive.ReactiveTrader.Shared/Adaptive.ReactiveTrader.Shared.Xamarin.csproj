@@ -25,21 +25,24 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AssemblyName>Adaptive.ReactiveTrader.Shared</AssemblyName>
+    <NoStdLib>true</NoStdLib>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AssemblyName>Adaptive.ReactiveTrader.Shared</AssemblyName>
+    <NoStdLib>true</NoStdLib>
+    <NoWarn>2002</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
     <Optimize>false</Optimize>
     <OutputPath>bin\iPhone\Distribution</OutputPath>
     <WarningLevel>4</WarningLevel>
     <AssemblyName>Adaptive.ReactiveTrader.Shared.Xamarin</AssemblyName>
+    <NoStdLib>true</NoStdLib>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="**\*.cs" Exclude="obj\**\*.cs;bin\**\*.cs" />

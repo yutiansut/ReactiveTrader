@@ -17,6 +17,10 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		{
 		}
 
+        public StartUpView(IntPtr ptr) : base(ptr)
+        {
+        }
+
 		public void DisplayMessages(bool isActive, string title, string error = null) {
 			_isActive = isActive;
 			_title = title;
