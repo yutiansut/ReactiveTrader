@@ -12,9 +12,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		private bool _isActive;
 		private string _title;
 		private string _error;
+        private Action _retry;
 
-		public StartUpView () : base ("StartUpView", null)
+        public StartUpView (Action retry) : base ("StartUpView", null)
 		{
+            _retry = retry;
 		}
 
         public StartUpView(IntPtr ptr) : base(ptr)
@@ -37,12 +39,14 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 				}
 				this.Connecting.Text = _title;
 				ErrorLabel.Text = _error;
+
+                RetryButton.Hidden = string.IsNullOrEmpty(_error);
 			}
 		}
 		public override void DidReceiveMemoryWarning ()
 		{
 			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
+            base.DidReceiveMemoryWarning ();
 			
 			// Release any cached data, images, etc that aren't in use.
 		}
@@ -55,6 +59,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			ShowMessages ();
 			// Perform any additional setup after loading the view, typically from a nib.
 		}
+
+        partial void RetryButton_TouchUpInside(UIButton sender)
+        {
+            _retry();
+        }
 	}
 }
 

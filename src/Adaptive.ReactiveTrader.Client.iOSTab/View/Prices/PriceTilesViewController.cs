@@ -1,7 +1,5 @@
-
 using System;
 using CoreGraphics;
-
 using Foundation;
 using UIKit;
 using Adaptive.ReactiveTrader.Client.Domain;
@@ -11,7 +9,6 @@ using Adaptive.ReactiveTrader.Client.iOSTab.Tiles;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
-	//[Register("PriceTilesViewController")]
 	public partial class PriceTilesViewController : UITableViewController
 	{
 		private readonly IReactiveTrader _reactiveTrader;
@@ -42,7 +39,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
 		}
 
-		private void OnItemChanged(PriceTileModel itemModel) {
+		private void OnItemChanged(PriceTileModel itemModel)
+        {
 
 			if (IsViewLoaded) {
 				var indexOfItem = _model.ActiveCurrencyPairs.IndexOf (itemModel);
@@ -50,44 +48,14 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 				NSIndexPath path = NSIndexPath.FromRowSection(indexOfItem, 0);
 				IPriceTileCell cell = (IPriceTileCell)TableView.CellAt (path);
 
-				if (cell == null) {
-					//					System.Console.WriteLine ("Row {0} not found", indexOfItem);
-					// There's no cell bound to that index in the data, so we can ignore the update.
-				} else {
-					//					System.Console.WriteLine ("Row {0} FOUND {1}", indexOfItem, cell.GetType ().ToString ());
-
-					bool bAppropriateCell = false; // TODO: Refactor this elsewhere.
-
-					switch (itemModel.Status) {
-					case PriceTileStatus.Done:
-					case PriceTileStatus.DoneStale:
-						if (cell.GetType ().Equals (Type.GetType ("Adaptive.ReactiveTrader.Client.iOSTab.PriceTileTradeAffirmationViewCell", false))) {
-							bAppropriateCell = true;
-						}
-						break;
-
-					case PriceTileStatus.Streaming:
-					case PriceTileStatus.Executing:
-						if (cell.GetType ().Equals (Type.GetType ("Adaptive.ReactiveTrader.Client.iOSTab.PriceTileViewCell", false))) {
-							bAppropriateCell = true;
-						}
-						break;
-
-					case PriceTileStatus.Stale:
-						if (cell.GetType ().Equals (Type.GetType ("Adaptive.ReactiveTrader.Client.iOSTab.PriceTileErrorViewCell", false))) {
-							bAppropriateCell = true;
-						}
-						break;
-					}
+				if (cell != null) {
 
 					// TODO: Batch the updates up, to only call ReloadRows once per main event loop loop?
 
-					if (bAppropriateCell) {
+                    if (ShouldUpdateCell(itemModel.Status, cell)) {
 						//						System.Console.WriteLine ("Cell is APPROPRIATE", indexOfItem);
 						cell.UpdateFrom (itemModel);
 					} else {
-						// TODO: If the cell is of the wrong type, reload the row instead.
-
 						TableView.ReloadRows (
 							new [] {
 								NSIndexPath.Create (0, indexOfItem)
@@ -98,13 +66,38 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			}
 		}
 
-		public override void DidReceiveMemoryWarning ()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
-			
-			// Release any cached data, images, etc that aren't in use.
-		}
+        private static bool ShouldUpdateCell(PriceTileStatus status, IPriceTileCell cell)
+        {
+            switch (status) {
+                case PriceTileStatus.Done:
+                case PriceTileStatus.DoneStale:
+
+                    if (cell is PriceTileTradeAffirmationViewCell) {
+                        return true;
+                    }
+
+                    break;
+
+                case PriceTileStatus.Streaming:
+                case PriceTileStatus.Executing:
+
+                    if (cell is PriceTileViewCell) {
+                        return true;
+                    }
+
+                    break;
+
+                case PriceTileStatus.Stale:
+
+                    if (cell is PriceTileErrorViewCell) {
+                        return true;
+                    }
+
+                    break;
+            }
+
+            return false;
+        }
 
 		public override void ViewDidLoad ()
 		{

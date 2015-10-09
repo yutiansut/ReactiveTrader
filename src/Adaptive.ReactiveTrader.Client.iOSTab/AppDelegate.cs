@@ -27,6 +27,12 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 		UIWindow window;
 		UITabBarController tabBarController;
 
+        StartUpView _startUpViewController;
+
+        LoggerFactory _loggerFactory;
+
+        ConcurrencyService _cs;
+
 		//
 		// This method is invoked when the application has loaded and is ready to run. In this
 		// method you should instantiate the window, load the UI into it and then make the window
@@ -52,9 +58,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			// create a new window instance based on the screen size
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
 
-			var cs = new ConcurrencyService ();
-			var logSource = new LogHub ();
-			var logging = new LoggerFactory (logSource);
+            var cs = new ConcurrencyService ();
+            _cs = cs;
+
+            var logSource = new LogHub ();
+            _loggerFactory = new LoggerFactory (logSource);
 
 			#if DEBUG
 			UIApplication.CheckForIllegalCrossThreadCalls = true;
@@ -62,9 +70,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			#endif
 
 			_reactiveTrader = new Adaptive.ReactiveTrader.Client.Domain.ReactiveTrader ();
-
-			_reactiveTrader.Initialize (UserModel.Instance.TraderId, new [] { "https://reactivetrader.azurewebsites.net/signalr" }, logging);
-			//		_reactiveTrader.Initialize (UserModel.Instance.Id, new [] { "http://192.168.1.197:8080/signalr" }, logging);
+            _startUpViewController = new StartUpView (Initalize);
+            Initalize();
 
 			var tradesViewController = new TradesViewController (_reactiveTrader, cs);
 			var pricesViewController = new PriceTilesViewController (_reactiveTrader, cs);
@@ -81,28 +88,28 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 				#endif
 			};
 
-			var startUpViewController = new StartUpView ();
-
             tabBarController.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
 
-			startUpViewController.DisplayMessages (true, "Connecting..");
-			_reactiveTrader.ConnectionStatusStream
-				.Where (ci => ci.ConnectionStatus == ConnectionStatus.Connected)
-				.Timeout (TimeSpan.FromSeconds (15))
-				.ObserveOn (cs.Dispatcher)
-				.Subscribe (_ => 
-                    {
-                        startUpViewController.PresentViewController (tabBarController, true, null);
-                    },
-				ex => startUpViewController.DisplayMessages (false, "Disconnected", "Unable to connect. Please restart the app."));
-
-			window.RootViewController = startUpViewController;
-
-			// make the window visible
-			window.MakeKeyAndVisible ();
+			window.RootViewController = _startUpViewController;
+            window.MakeKeyAndVisible ();
 
 			return true;
 		}
+
+        void Initalize()
+        {
+            _reactiveTrader.Initialize (UserModel.Instance.TraderId, new [] { "https://reactivetrader.azurewebsites.net/signalr" }, _loggerFactory);
+            _startUpViewController.DisplayMessages (true, "Connecting..");
+            _reactiveTrader.ConnectionStatusStream
+                .Where (ci => ci.ConnectionStatus == ConnectionStatus.Connected)
+                .Timeout (TimeSpan.FromSeconds (15))
+                .ObserveOn (_cs.Dispatcher)
+                .Subscribe (
+                    _ => _startUpViewController.PresentViewController(tabBarController, true, null),
+                    ex => _startUpViewController.DisplayMessages (false, "Disconnected", "Unable to connect")
+                );
+
+        }
 	}
 }
 

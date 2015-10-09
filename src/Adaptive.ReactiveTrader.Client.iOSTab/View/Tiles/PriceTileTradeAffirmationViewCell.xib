@@ -15,11 +15,11 @@
                 <rect key="frame" x="0.0" y="0.0" width="412" height="175"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uMR-5g-oRV">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uMR-5g-oRV" misplaced="YES">
                         <rect key="frame" x="8" y="-8" width="396" height="192"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CCY / CCY" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mse-eO-w6U">
-                                <rect key="frame" x="10" y="20" width="114" height="21"/>
+                                <rect key="frame" x="14" y="20.5" width="114" height="20.5"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="114" id="tim-kc-0pi"/>
@@ -29,13 +29,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CCY" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fbd-ws-D23">
-                                <rect key="frame" x="96" y="48" width="31" height="21"/>
+                                <rect key="frame" x="100.5" y="48" width="31" height="21"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[notional]" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lbi-eP-z2N">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[notional]" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lbi-eP-z2N" misplaced="YES">
                                 <rect key="frame" x="133" y="48" width="201" height="21"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -43,48 +43,48 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CCY" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z4M-U1-p3F">
-                                <rect key="frame" x="96" y="70" width="31" height="21"/>
+                                <rect key="frame" x="100.5" y="70" width="30.5" height="21"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="at" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IkL-yC-mem">
-                                <rect key="frame" x="126" y="70" width="26" height="21"/>
+                                <rect key="frame" x="130" y="70" width="26" height="21"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="0.45882356169999999" green="0.57254904510000004" blue="0.66274511810000003" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[pair rate]" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C9u-ix-xup" userLabel="Label - Pair rate">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[pair rate]" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C9u-ix-xup" userLabel="Label - Pair rate" misplaced="YES">
                                 <rect key="frame" x="150" y="70" width="151" height="21"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[value date]" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m3s-TG-R0j">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[value date]" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m3s-TG-R0j" misplaced="YES">
                                 <rect key="frame" x="96" y="92" width="203" height="21"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[trade id]" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ud2-zN-TmA">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[trade id]" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ud2-zN-TmA" misplaced="YES">
                                 <rect key="frame" x="96" y="136" width="226" height="21"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[trader id]" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wcg-Jx-97i">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[trader id]" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wcg-Jx-97i" misplaced="YES">
                                 <rect key="frame" x="96" y="114" width="221" height="21"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dgu-gR-7wJ">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dgu-gR-7wJ" misplaced="YES">
                                 <rect key="frame" x="316" y="121" width="60" height="51"/>
                                 <animations/>
                                 <constraints>
@@ -99,7 +99,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[buy/sell]" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vgR-NR-jCB">
-                                <rect key="frame" x="10" y="48" width="78" height="21"/>
+                                <rect key="frame" x="14" y="48" width="78.5" height="21"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="z54-yN-CCe"/>
@@ -109,7 +109,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="vs" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Bh-Fz-7f9">
-                                <rect key="frame" x="10" y="70" width="60" height="21"/>
+                                <rect key="frame" x="14" y="70" width="60" height="21"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="Fjh-gJ-R5D"/>
@@ -120,7 +120,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Value Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UaI-jn-2EN">
-                                <rect key="frame" x="10" y="92" width="78" height="21"/>
+                                <rect key="frame" x="14" y="92" width="78.5" height="21"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="9Yo-jw-IoI"/>
@@ -130,14 +130,14 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trade Id" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sK5-Kb-Snw">
-                                <rect key="frame" x="10" y="136" width="60" height="21"/>
+                                <rect key="frame" x="14" y="136" width="60" height="21.5"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="0.45882356169999999" green="0.57254904510000004" blue="0.66274511810000003" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trader" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cgE-KK-ACf">
-                                <rect key="frame" x="10" y="114" width="60" height="21"/>
+                                <rect key="frame" x="14" y="114" width="60" height="21"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="0.45882356169999999" green="0.57254904510000004" blue="0.66274511810000003" alpha="1" colorSpace="deviceRGB"/>
@@ -146,7 +146,7 @@
                         </subviews>
                         <animations/>
                         <constraints>
-                            <constraint firstItem="Mse-eO-w6U" firstAttribute="leading" secondItem="uMR-5g-oRV" secondAttribute="leading" constant="10" id="1dl-z4-Oji"/>
+                            <constraint firstItem="Mse-eO-w6U" firstAttribute="leading" secondItem="uMR-5g-oRV" secondAttribute="leading" constant="14" id="1dl-z4-Oji"/>
                             <constraint firstItem="cgE-KK-ACf" firstAttribute="trailing" secondItem="2Bh-Fz-7f9" secondAttribute="trailing" id="2Yg-eI-r5D"/>
                             <constraint firstItem="2Bh-Fz-7f9" firstAttribute="top" secondItem="vgR-NR-jCB" secondAttribute="bottom" constant="1" id="3wd-II-Sxz"/>
                             <constraint firstAttribute="trailing" secondItem="C9u-ix-xup" secondAttribute="trailing" constant="95" id="7xV-6Y-CG0"/>
@@ -226,4 +226,14 @@
             <point key="canvasLocation" x="615" y="425"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="adaptive.png" width="31" height="32"/>
+        <image name="green-up.png" width="40" height="17"/>
+        <image name="red-down.png" width="40" height="17"/>
+        <image name="adaptive-logo.png" width="72" height="76"/>
+        <image name="tab_status.png" width="30" height="30"/>
+        <image name="tab_prices.png" width="30" height="30"/>
+        <image name="tab_trades.png" width="30" height="30"/>
+        <image name="Splash" width="392" height="357"/>
+    </resources>
 </document>
