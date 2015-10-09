@@ -45,15 +45,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			// Appearance
 			UITableView.Appearance.BackgroundColor = Styles.RTDarkerBlue;
 			UITableView.Appearance.SeparatorInset = UIEdgeInsets.Zero;
-
 			UITabBar.Appearance.BarTintColor = Styles.RTDarkerBlue;
-
-
-			// Black opaque status bar (which we request via Info.plist) not supported in iOS 7?
-			// Xamarin 5.0.1 toolset out of date?
-
-			UIApplication.SharedApplication.SetStatusBarStyle (UIStatusBarStyle.LightContent, false);
-			UIApplication.SharedApplication.SetStatusBarHidden (false, true);
 
 			// create a new window instance based on the screen size
 			window = new UIWindow (UIScreen.MainScreen.Bounds);

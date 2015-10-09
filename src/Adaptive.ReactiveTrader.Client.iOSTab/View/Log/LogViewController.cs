@@ -1,13 +1,8 @@
 using System;
-using CoreGraphics;
-using Foundation;
 using UIKit;
-using Adaptive.ReactiveTrader.Client.Domain;
 using Adaptive.ReactiveTrader.Client.iOSTab.Logging;
 using System.Reactive.Linq;
-using System.Linq;
 using Adaptive.ReactiveTrader.Client.Concurrency;
-using System.Collections;
 using System.Collections.Generic;
 using MonoTouch.Dialog;
 
@@ -37,14 +32,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 					else
 						OnMessage(message);
 			});
-		}
-
-		public override void DidReceiveMemoryWarning ()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
-			
-			// Release any cached data, images, etc that aren't in use.
 		}
 
 		public override void ViewDidLoad ()
