@@ -20,7 +20,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 		private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
 		private ConnectionInfo _lastConnectionInfo;
-		private UIWebView _webView;
 
 		public StatusViewController (IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService) : base ("StatusViewController", null)
 		{
@@ -100,28 +99,10 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 			}
 		}
 
-		partial void LinkTouchUpInside (Foundation.NSObject sender)
+		partial void LinkTouchUpInside (NSObject sender)
 		{
-			UITabBarController parentTabBar = this.ParentViewController as UITabBarController;
-
-			if (_webView == null) {
-
-				_webView = new UIWebView (this.View.Bounds);
-
-				UIViewController webViewController = new UIViewController();
-				webViewController.View = _webView;
-				webViewController.Title = "Adaptive";
-				webViewController.TabBarItem.Image = UIImage.FromBundle ("adaptive");
-
-				List<UIViewController> tabBarViewControllers = new List<UIViewController>(parentTabBar.ViewControllers);
-				tabBarViewControllers.Add(webViewController);
-				parentTabBar.SetViewControllers(tabBarViewControllers.ToArray(), false);
-			}
-
-			string url = "http://www.weareadaptive.com";
-			_webView.LoadRequest(new NSUrlRequest(new NSUrl(url)));
-
-			parentTabBar.SelectedIndex = parentTabBar.ViewControllers.Length - 1;
+            var url = new NSUrl("http://www.weareadaptive.com");
+            UIApplication.SharedApplication.OpenUrl(url);
 		}
 	}
 }
