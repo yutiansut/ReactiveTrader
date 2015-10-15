@@ -11,23 +11,36 @@
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController">
                     <items>
                         <label alignment="left" text="Label" id="0">
-                            <color key="textColor" red="0.029710147300948786" green="0.39264791175955038" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="textColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         </label>
                         <table alignment="left" id="1">
                             <items>
-                                <tableRow id="2" customClass="RowController">
-                                    <group key="rootItem" width="1" alignment="left" id="3">
+                                <tableRow identifier="default" id="2" customClass="RowController">
+                                    <group key="rootItem" width="1" height="74.5" alignment="left" layout="vertical" id="3">
                                         <items>
-                                            <label alignment="left" text="hello!" id="4"/>
+                                            <label alignment="left" text="..." id="4"/>
+                                            <group width="1" alignment="left" id="6">
+                                                <items>
+                                                    <label alignment="left" text="Sell: " id="7"/>
+                                                    <label alignment="left" text="Label" id="8"/>
+                                                </items>
+                                            </group>
+                                            <group width="1" alignment="left" id="10">
+                                                <items>
+                                                    <label alignment="left" text="Buy: " id="11"/>
+                                                    <label alignment="left" text="Label" id="12"/>
+                                                </items>
+                                            </group>
                                         </items>
                                     </group>
                                     <connections>
                                         <outlet property="Label" destination="4" id="name-outlet-4"/>
+                                        <outlet property="_buyLabel" destination="12" id="RR4-13-QHT"/>
+                                        <outlet property="_sellLabel" destination="8" id="Lgk-3n-Z59"/>
                                     </connections>
                                 </tableRow>
                             </items>
                         </table>
-                        <label alignment="left" text="test" id="5"/>
                     </items>
                     <connections>
                         <outlet property="StatusLabel" destination="0" id="name-outlet-0"/>

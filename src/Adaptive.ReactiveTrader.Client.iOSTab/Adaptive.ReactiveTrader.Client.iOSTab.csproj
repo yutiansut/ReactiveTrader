@@ -159,8 +159,6 @@
     <Compile Include="Logging\LogHub.cs" />
     <Compile Include="PriceTileModel.cs" />
     <Compile Include="PriceTilesModel.cs" />
-    <Compile Include="PriceFormatter.cs" />
-    <Compile Include="FormattedPrice.cs" />
     <Compile Include="NotifyingModel.cs" />
     <Compile Include="INotifyChanged.cs" />
     <Compile Include="View\Tiles\PriceTileStatus.cs" />

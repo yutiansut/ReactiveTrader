@@ -16,6 +16,14 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 	{
 		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
+		WatchKit.WKInterfaceLabel BuyLabel { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
+		WatchKit.WKInterfaceLabel SellLabel { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
 		WatchKit.WKInterfaceLabel StatusLabel { get; set; }
 
 		[Outlet]
@@ -24,6 +32,14 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 
 		void ReleaseDesignerOutlets ()
 		{
+			if (BuyLabel != null) {
+				BuyLabel.Dispose ();
+				BuyLabel = null;
+			}
+			if (SellLabel != null) {
+				SellLabel.Dispose ();
+				SellLabel = null;
+			}
 			if (StatusLabel != null) {
 				StatusLabel.Dispose ();
 				StatusLabel = null;
