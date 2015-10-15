@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleName</key>
-	<string>Adaptive.ReactiveTrader.Client.iOSTab.WatchKitApp</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.weareadaptive.ReactiveTrader.watchkitapp</string>
 	<key>CFBundleDevelopmentRegion</key>
@@ -25,5 +23,7 @@
 	<true/>
 	<key>XSAppIconAssets</key>
 	<string>Resources/Images.xcassets/AppIcons.appiconset</string>
+	<key>CFBundleName</key>
+	<string>Reactive Trader</string>
 </dict>
 </plist>
