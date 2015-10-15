@@ -39,10 +39,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 
             _reactiveTrader = new Adaptive.ReactiveTrader.Client.Domain.ReactiveTrader();
             _reactiveTrader.Initialize (UserModel.Instance.TraderId, new [] { "https://reactivetrader.azurewebsites.net/signalr" });  
-            _reactiveTrader.ConnectionStatusStream
-                .Where(ci => ci.ConnectionStatus == ConnectionStatus.Connected)
-                .Timeout(TimeSpan.FromSeconds (15))
-                .ObserveOn(new EventLoopScheduler())
+            var stream = _reactiveTrader.ConnectionStatusStream.Where(ci => ci.ConnectionStatus == ConnectionStatus.Connected)
+                .Timeout(TimeSpan.FromSeconds(15))
+                .ObserveOn(new EventLoopScheduler());
+
+                stream
                 .Subscribe(
                     _ => StatusLabel.SetText("Connected."), // _startUpViewController.PresentViewController(tabBarController, true, null),
                     ex =>  StatusLabel.SetText("Failed") // _startUpViewController.DisplayMessages (false, "Disconnected", "Unable to connect")
