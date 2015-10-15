@@ -55,12 +55,14 @@
     <ConsolePause>false</ConsolePause>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchDebug>true</MtouchDebug>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>iPhone Developer: Tom Gilder (5TTCT6MNMG)</CodesignKey>
     <IpaPackageName>
     </IpaPackageName>
     <MtouchArch>ARMv7</MtouchArch>
     <DeviceSpecificBuild>true</DeviceSpecificBuild>
     <MtouchUseSGen>true</MtouchUseSGen>
+    <CodesignProvision>a5a28a4e-b692-4bfb-ab64-78ba77f61887</CodesignProvision>
+    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>full</DebugType>
@@ -76,8 +78,9 @@
     <IpaPackageName>
     </IpaPackageName>
     <MtouchUseSGen>true</MtouchUseSGen>
-    <IpaIncludeArtwork>true</IpaIncludeArtwork>
     <MtouchUseLlvm>true</MtouchUseLlvm>
+    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
+    <CodesignProvision>99e815e1-af63-4dfb-b166-4b8328162a89</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
     <Optimize>true</Optimize>
@@ -264,6 +267,11 @@
       <Project>{B954B5A9-ABD0-469B-9397-039675BEC8F0}</Project>
       <Name>Adaptive.ReactiveTrader.Shared.Xamarin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension\Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension.csproj">
+      <Project>{92ED4237-659A-4260-BCCE-F15BF03EBAD6}</Project>
+      <Name>Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension</Name>
+      <IsAppExtension>True</IsAppExtension>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Logging\" />
@@ -283,7 +291,7 @@
     <InterfaceDefinition Include="View\Prices\PricesHeaderCell.xib" />
     <InterfaceDefinition Include="View\Status\StatusViewController.xib" />
     <InterfaceDefinition Include="View\StartUp\StartUpView.xib" />
-    <InterfaceDefinition Include="View\StartUp\Launch.xib" />
+    <InterfaceDefinition Include="View\StartUp\LaunchScreen.xib" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
