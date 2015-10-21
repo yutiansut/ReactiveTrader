@@ -10,9 +10,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
     public sealed class UserModel 
     {
         private static readonly UserModel instance = new UserModel();
-
-        private Boolean _oneTouchTradingEnabled = true;
-        private String _traderId; // Note that these IDs are random; not unique, yet!
+        private string _traderId; // Note that these IDs are random; not unique, yet!
 
         //
         // Explicit static constructor to tell C# compiler not to mark type as beforefieldinit
