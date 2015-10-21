@@ -68,7 +68,7 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <IOSDebuggerPort>10001</IOSDebuggerPort>
     <MtouchLink>None</MtouchLink>
-    <MtouchArch>ARMv7s</MtouchArch>
+    <MtouchArch>ARMv7, ARMv7s</MtouchArch>
     <ConsolePause>false</ConsolePause>
     <MtouchFloat32>true</MtouchFloat32>
     <CodesignKey>iPhone Developer</CodesignKey>
@@ -136,6 +136,7 @@
     <Compile Include="NotificationController.designer.cs">
       <DependentUpon>NotificationController.cs</DependentUpon>
     </Compile>
+    <Compile Include="PriceExtentions.cs" />
     <Compile Include="UserModel.cs" />
     <Compile Include="RowController.cs" />
     <Compile Include="RowController.designer.cs">

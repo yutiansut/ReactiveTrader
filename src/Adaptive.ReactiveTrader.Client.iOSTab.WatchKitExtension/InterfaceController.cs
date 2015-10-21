@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using Adaptive.ReactiveTrader.Client.Domain.Models.ReferenceData;
 using Adaptive.ReactiveTrader.Client.Domain.Models;
 using System.Collections.Generic;
+using System.Linq;
 using ObjCRuntime;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
@@ -65,15 +66,14 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
             onCurrencyPair
                 .Where(update => update.UpdateType == UpdateType.Add)
                 .ObserveOn(new EventLoopScheduler())
+                .Select(u => u.CurrencyPair)
+                .Buffer(TimeSpan.FromSeconds(1))
+                .Where(updates => updates.Any())
                 .Subscribe(update =>
                 {
-                        if (_pairs.Count == 0)
-                        {
-                            _pairs.Add(update.CurrencyPair);
-                        
-                            UpdateTable();
-                        }
-
+                    _pairs.AddRange(update);
+                    UpdateTable();
+                    
                 });
 //            
 //

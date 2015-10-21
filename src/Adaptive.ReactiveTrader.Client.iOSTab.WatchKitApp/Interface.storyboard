@@ -16,9 +16,14 @@
                         <table alignment="left" id="1">
                             <items>
                                 <tableRow identifier="default" id="2" customClass="RowController">
-                                    <group key="rootItem" width="1" height="74.5" alignment="left" layout="vertical" id="3">
+                                    <group key="rootItem" width="134" height="90" alignment="left" layout="vertical" id="3">
                                         <items>
-                                            <label alignment="left" text="..." id="4"/>
+                                            <group width="1" alignment="left" id="17">
+                                                <items>
+                                                    <label alignment="left" text="..." id="4"/>
+                                                    <label alignment="left" text="direction" id="18"/>
+                                                </items>
+                                            </group>
                                             <group width="1" alignment="left" id="6">
                                                 <items>
                                                     <label alignment="left" text="Sell: " id="7"/>
@@ -34,9 +39,10 @@
                                         </items>
                                     </group>
                                     <connections>
-                                        <outlet property="Label" destination="4" id="name-outlet-4"/>
                                         <outlet property="_buyLabel" destination="12" id="RR4-13-QHT"/>
                                         <outlet property="_sellLabel" destination="8" id="Lgk-3n-Z59"/>
+                                        <outlet property="DirectionLabel" destination="18" id="name-outlet-18"/>
+                                        <outlet property="CurrenciesLabel" destination="4" id="name-outlet-4"/>
                                     </connections>
                                 </tableRow>
                             </items>

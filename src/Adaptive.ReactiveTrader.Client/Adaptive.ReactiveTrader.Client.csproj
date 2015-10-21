@@ -73,6 +73,7 @@
     <Compile Include="UI\SpotTiles\OneWayPriceViewModel.cs" />
     <Compile Include="UI\SpotTiles\PriceFormatter.cs" />
     <Compile Include="UI\SpotTiles\PriceMovement.cs" />
+    <Compile Include="UI\SpotTiles\PriceMovementExtentions.cs" />
     <Compile Include="UI\SpotTiles\SpotTileAffirmationViewModel.cs" />
     <Compile Include="UI\SpotTiles\SpotTileConfigViewModel.cs" />
     <Compile Include="UI\SpotTiles\SpotTileErrorViewModel.cs" />
