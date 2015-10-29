@@ -28,7 +28,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
         private UserModel()
         {
             var random = new System.Random();
-            _traderId = String.Format("iOS-{0}-{1}", Process.GetCurrentProcess ().Id, random.Next(65536).ToString("X4"));
+            _traderId = String.Format("watchOS-{0}-{1}", Process.GetCurrentProcess ().Id, random.Next(65536).ToString("X4"));
             System.Console.WriteLine ("UserModel's random TraderId is {0}", _traderId);
         }
 

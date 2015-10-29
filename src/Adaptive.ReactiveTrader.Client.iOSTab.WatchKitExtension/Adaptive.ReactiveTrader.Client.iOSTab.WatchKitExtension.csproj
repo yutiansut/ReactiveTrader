@@ -69,7 +69,6 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchFloat32>true</MtouchFloat32>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <DeviceSpecificBuild>true</DeviceSpecificBuild>
     <MtouchDebug>true</MtouchDebug>
     <MtouchProfiling>true</MtouchProfiling>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
@@ -92,6 +91,9 @@
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\packages\Rx-PlatformServices.2.2.5\lib\portable-windows8+net45+wp8\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
+    <Reference Include="PropertyChanged">
+      <HintPath>..\packages\PropertyChanged.Fody.1.50.3\Lib\portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40\PropertyChanged.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -100,6 +102,7 @@
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <None Include="packages.config" />
+    <None Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="PushNotificationPayload.json" />
@@ -135,5 +138,17 @@
     <Compile Include="RowController.cs" />
     <Compile Include="RowController.designer.cs" />
     <Compile Include="UserModel.cs" />
+    <Compile Include="InitialController.cs" />
+    <Compile Include="InitialController.designer.cs">
+      <DependentUpon>InitialController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PriceController.cs" />
+    <Compile Include="PriceController.designer.cs">
+      <DependentUpon>PriceController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TradeConfirmController.cs" />
+    <Compile Include="TradeConfirmController.designer.cs">
+      <DependentUpon>TradeConfirmController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

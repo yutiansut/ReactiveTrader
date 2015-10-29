@@ -4,12 +4,8 @@ using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Client.Domain.Transport;
 using System.Reactive.Concurrency;
 using WatchKit;
-using System.Collections.ObjectModel;
 using Adaptive.ReactiveTrader.Client.Domain.Models.ReferenceData;
-using Adaptive.ReactiveTrader.Client.Domain.Models;
 using System.Collections.Generic;
-using System.Linq;
-using ObjCRuntime;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 {
@@ -50,31 +46,42 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
                 //.Timeout(TimeSpan.FromSeconds (15))
                 .ObserveOn(new EventLoopScheduler())
                 .Subscribe(
-                    _ => StatusLabel.SetText("Connected."), // _startUpViewController.PresentViewController(tabBarController, true, null),
+                    _ => StatusLabel.SetText("Connected"), // _startUpViewController.PresentViewController(tabBarController, true, null),
                     ex =>  
 
                         StatusLabel.SetText("Failed: " + ex) // _startUpViewController.DisplayMessages (false, "Disconnected", "Unable to connect")
                 );
-                    
-            IObservable<ICurrencyPairUpdate> onCurrencyPair = 
-                _reactiveTrader.ReferenceData
-                .GetCurrencyPairsStream()
-                
-                .SelectMany(update => update);
 
+//            onCurrencyPair
+//                .Where(update => update.UpdateType == UpdateType.Add)
+//                .ObserveOn(new EventLoopScheduler())
+//                .Select(u => u.CurrencyPair)
+//                .Buffer(TimeSpan.FromSeconds(1))
+//                .Where(updates => updates.Any())
+//                .Subscribe(update =>
+//                {
+//                        _pairs.AddRange(update);
+//                        UpdateSubscription();
+//                        UpdateTable();
+//                });
+//3
 
-            onCurrencyPair
-                .Where(update => update.UpdateType == UpdateType.Add)
-                .ObserveOn(new EventLoopScheduler())
-                .Select(u => u.CurrencyPair)
-                .Buffer(TimeSpan.FromSeconds(1))
-                .Where(updates => updates.Any())
-                .Subscribe(update =>
-                {
-                    _pairs.AddRange(update);
-                    UpdateTable();
-                    
-                });
+            Table.SetNumberOfRows(1, RowType);
+            _mergedStream = Observable.Interval(TimeSpan.FromSeconds(.1))
+
+                .Subscribe(
+
+                    _ =>
+                    {
+                        for (int i = 0; i < Table.NumberOfRows; i++)
+                        {
+                            Console.WriteLine(i);
+                            var rowController = (RowController)Table.GetRowController(i);
+                            rowController.UpdatePrice(null);
+                        }
+                    }
+
+                );
 //            
 //
 //                .Subscribe(updates => 
@@ -88,17 +95,55 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 //                    });
         }
 
+        IDisposable _mergedStream;
+
+        void UpdateSubscription()
+        {
+            
+
+//            int i = 0;
+
+//            _mergedStream = _pairs
+//                .Select(pair => pair.PriceStream)
+//                .Merge()
+//                .Buffer(TimeSpan.FromSeconds(1))
+//                .Do(_ => Console.WriteLine("update"))
+//                .Subscribe(prices =>
+//                
+//                    {
+//                    
+//                        IEnumerable<IGrouping<ICurrencyPair, IPrice>> grouped = prices.GroupBy(p => p.CurrencyPair);
+//                    
+//                        foreach (var g in grouped)
+//                        {
+//                            var rowIndex = _pairs.IndexOf(g.Key);
+//                            var rowController = (RowController)Table.GetRowController(rowIndex);
+//
+//
+//                            rowController.UpdatePrice(g.Last());
+////                            g.Last().
+//                        }
+//
+//                    });
+//
+
+//            if (_mergedStream != null)
+//            {
+//                _mergedStream.Dispose();
+//            }
+        }
+
         void UpdateTable()
         {
             Table.SetNumberOfRows(_pairs.Count, RowType);
-            int i = 0;
-
-            foreach (var pair in _pairs)
-            {
-                var rowController = (RowController)Table.GetRowController(i);
-                rowController.CurrencyPair = pair;
-                i++;
-            }
+//            int i = 0;
+//
+//            foreach (var pair in _pairs)
+//            {
+//                var rowController = (RowController)Table.GetRowController(i);
+//                rowController.CurrencyPair = pair;
+//                i++;
+//            }
         }
 
         List<ICurrencyPair> _pairs = new List<ICurrencyPair>();

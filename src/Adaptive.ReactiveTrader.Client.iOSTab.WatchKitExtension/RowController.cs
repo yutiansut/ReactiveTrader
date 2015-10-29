@@ -7,6 +7,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Concurrency;
 using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
+using Adaptive.ReactiveTrader.Client.Domain.Models.Pricing;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 {
@@ -30,7 +31,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
             set
             {
                 _currencyPair = value;
-                UpdateCell();
+                Setup();
             }
         }
         
@@ -44,47 +45,70 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
             {PriceMovement.Down, "▼"},
             {PriceMovement.None, ""}
         };
+
+        int _count = 1;
+
+        public void UpdatePrice(IPrice price)
+        {
+            /*
+            var sellPrice = PriceFormatter.GetFormattedPrice(
+                price.Bid.Rate,
+                price.CurrencyPair.RatePrecision,
+                price.CurrencyPair.PipsPosition);
+
+            var buyPrice = PriceFormatter.GetFormattedPrice(
+                price.Ask.Rate,
+                price.CurrencyPair.RatePrecision,
+                price.CurrencyPair.PipsPosition);
+
+            
+
+            _sellLabel.SetText(sellPrice.ToNormalString());
+            _buyLabel.SetText(buyPrice.ToNormalString());
+        */
+            _sellLabel.SetText(_count.ToString());
+            _buyLabel.SetText(_count.ToString());
+            _count++;
+        }
         
-        void UpdateCell()
+        void Setup()
         {
             CurrenciesLabel.SetText(_currencyPair.BaseCurrency + " / " + _currencyPair.CounterCurrency);
 
-            _subscription.Dispose();
-            var buffered = _currencyPair.PriceStream
-                .Where(price => !price.IsStale)
-                //.Buffer(TimeSpan.FromMilliseconds(100))
-                //.Where(x => x.Any())
-                //.Select(x => x.Last())
-                .SubscribeOn(new EventLoopScheduler());
-
-            _subscription = new CompositeDisposable
-                {
-                    buffered
-                        .Subscribe(price =>
-                        {
-                            var sellPrice = PriceFormatter.GetFormattedPrice(
-                                price.Bid.Rate,
-                                price.CurrencyPair.RatePrecision,
-                                price.CurrencyPair.PipsPosition);
-
-                            var buyPrice = PriceFormatter.GetFormattedPrice(
-                                price.Ask.Rate,
-                                price.CurrencyPair.RatePrecision,
-                                price.CurrencyPair.PipsPosition);
-
-                            _sellLabel.SetText(sellPrice.ToAttributedString());
-                            _buyLabel.SetText(buyPrice.ToAttributedString());
-                        }),
-
-
-
-                    buffered
-                        .ToPriceMovementStream()
-                        .Subscribe(movement =>
-                        {
-                            DirectionLabel.SetText(_movementText[movement]);
-                        })
-                };
+//            _subscription.Dispose();
+//            var buffered = _currencyPair.PriceStream
+//                .Where(price => !price.IsStale)
+//                //.Buffer(TimeSpan.FromMilliseconds(100))
+//                //.Where(x => x.Any())
+//                //.Select(x => x.Last())
+//                .SubscribeOn(new EventLoopScheduler());
+//
+//            _subscription = new CompositeDisposable
+//                {
+//                    buffered
+//                        .Subscribe(price =>
+//                        {
+//                            var sellPrice = PriceFormatter.GetFormattedPrice(
+//                                price.Bid.Rate,
+//                                price.CurrencyPair.RatePrecision,
+//                                price.CurrencyPair.PipsPosition);
+//
+//                            var buyPrice = PriceFormatter.GetFormattedPrice(
+//                                price.Ask.Rate,
+//                                price.CurrencyPair.RatePrecision,
+//                                price.CurrencyPair.PipsPosition);
+//
+//                            _sellLabel.SetText(sellPrice.ToAttributedString());
+//                            _buyLabel.SetText(buyPrice.ToAttributedString());
+//                        }),
+//                        
+//                    buffered
+//                        .ToPriceMovementStream()
+//                        .Subscribe(movement =>
+//                        {
+//                            DirectionLabel.SetText(_movementText[movement]);
+//                        })
+//                };
         }
     }
 }

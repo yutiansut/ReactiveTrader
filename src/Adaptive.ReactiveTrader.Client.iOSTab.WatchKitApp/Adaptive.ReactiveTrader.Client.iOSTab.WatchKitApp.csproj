@@ -68,20 +68,17 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchFloat32>true</MtouchFloat32>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <DeviceSpecificBuild>true</DeviceSpecificBuild>
     <MtouchDebug>true</MtouchDebug>
     <MtouchUseSGen>true</MtouchUseSGen>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchProfiling>true</MtouchProfiling>
+    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -94,5 +91,19 @@
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Interface.storyboard" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Images.xcassets\AppIcons.appiconset\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon38mm%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Icon42mm%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\IconLauncher%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\IconQuickLook38mm%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\IconQuickLook42mm%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\IconSettings%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\IconSettings%403x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\LongLook%402x.png" />
   </ItemGroup>
 </Project>

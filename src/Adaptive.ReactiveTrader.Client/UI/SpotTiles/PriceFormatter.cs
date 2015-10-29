@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using Adaptive.ReactiveTrader.Client.Domain.Models.Pricing;
 
 namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
 {
@@ -33,4 +34,24 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
             return spread.ToString("0");
         }
     }
+
+    public static class PriceFormatterExtention
+    {
+        public static FormattedPrice ToBidPrice(this IPrice price)
+        {
+            return PriceFormatter.GetFormattedPrice(
+                price.Bid.Rate,
+                price.CurrencyPair.RatePrecision,
+                price.CurrencyPair.PipsPosition);
+        }
+
+        public static FormattedPrice ToAskPrice(this IPrice price)
+        {
+            return PriceFormatter.GetFormattedPrice(
+                price.Ask.Rate,
+                price.CurrencyPair.RatePrecision,
+                price.CurrencyPair.PipsPosition);
+        }
+    }
+
 }

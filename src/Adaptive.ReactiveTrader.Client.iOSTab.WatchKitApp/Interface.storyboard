@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="8191" systemVersion="15A282b" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="9059" systemVersion="15A282b" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="20">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="8092"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="9019"/>
     </dependencies>
     <scenes>
         <!--Interface Controller-->
@@ -39,10 +39,10 @@
                                         </items>
                                     </group>
                                     <connections>
+                                        <outlet property="CurrenciesLabel" destination="4" id="name-outlet-4"/>
+                                        <outlet property="DirectionLabel" destination="18" id="name-outlet-18"/>
                                         <outlet property="_buyLabel" destination="12" id="RR4-13-QHT"/>
                                         <outlet property="_sellLabel" destination="8" id="Lgk-3n-Z59"/>
-                                        <outlet property="DirectionLabel" destination="18" id="name-outlet-18"/>
-                                        <outlet property="CurrenciesLabel" destination="4" id="name-outlet-4"/>
                                     </connections>
                                 </tableRow>
                             </items>
@@ -83,14 +83,95 @@
                     </connections>
                 </notificationController>
             </objects>
-            <point key="canvasLocation" x="231" y="0.0"/>
+            <point key="canvasLocation" x="329" y="-3"/>
         </scene>
         <!--Notification Controller-->
         <scene sceneID="KIl-fV-djm">
             <objects>
                 <controller id="gdX-wl-uQE" customClass="NotificationController"/>
             </objects>
-            <point key="canvasLocation" x="462" y="0.0"/>
+            <point key="canvasLocation" x="535" y="-7"/>
+        </scene>
+        <!--Initial Controller-->
+        <scene sceneID="19">
+            <objects>
+                <controller hidesWhenLoading="NO" id="20" customClass="InitialController"/>
+            </objects>
+            <point key="canvasLocation" x="304" y="599"/>
+        </scene>
+        <!--Trade-->
+        <scene sceneID="21">
+            <objects>
+                <controller identifier="price" title="Trade" hidesWhenLoading="NO" alwaysBounce="YES" id="22" customClass="PriceController">
+                    <items>
+                        <button alignment="left" id="24">
+                            <group key="contentGroup" width="1" height="0.34000000000000002" alignment="left" radius="10" id="phn-zX-3Cd">
+                                <items>
+                                    <label alignment="left" verticalAlignment="center" text="Sell" id="23"/>
+                                    <label alignment="right" verticalAlignment="center" textAlignment="right" id="RGW-nl-jvm"/>
+                                </items>
+                                <color key="backgroundColor" red="0.16113173629999999" green="0.26442886310000002" blue="0.39929486190000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <edgeInsets key="margins" left="10" right="10" top="0.0" bottom="0.0"/>
+                            </group>
+                            <connections>
+                                <action selector="SellButtonTapped" destination="22" id="j8s-C0-a6V"/>
+                            </connections>
+                        </button>
+                        <group width="1" alignment="center" verticalAlignment="center" id="Yc3-XS-6zB">
+                            <items>
+                                <label alignment="center" verticalAlignment="center" id="1fS-46-Hpo"/>
+                            </items>
+                        </group>
+                        <button alignment="left" verticalAlignment="bottom" id="4RI-o3-vjw">
+                            <group key="contentGroup" width="1" height="0.34000000000000002" alignment="left" radius="10" id="sn8-ki-hhz">
+                                <items>
+                                    <label alignment="left" verticalAlignment="center" text="Buy" id="Z9M-1g-6RS"/>
+                                    <label alignment="right" verticalAlignment="center" id="sHf-Y1-44M"/>
+                                </items>
+                                <color key="backgroundColor" red="0.16113173629999999" green="0.26442886310000002" blue="0.39929486190000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <edgeInsets key="margins" left="10" right="10" top="0.0" bottom="0.0"/>
+                            </group>
+                            <connections>
+                                <action selector="BuyButtonTapped" destination="22" id="jWm-rI-TNT"/>
+                            </connections>
+                        </button>
+                        <group width="1" height="3" alignment="left" verticalAlignment="bottom" id="jJD-tF-Doo"/>
+                    </items>
+                    <connections>
+                        <outlet property="BuyButton" destination="4RI-o3-vjw" id="hWa-2i-Kcp"/>
+                        <outlet property="BuyPriceLabel" destination="sHf-Y1-44M" id="name-outlet-sHf-Y1-44M"/>
+                        <outlet property="PriceLabel" destination="1fS-46-Hpo" id="pQw-3F-pcK"/>
+                        <outlet property="SellButton" destination="24" id="jbM-8t-A3z"/>
+                        <outlet property="SellPriceLabel" destination="RGW-nl-jvm" id="name-outlet-RGW-nl-jvm"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="563" y="599"/>
+        </scene>
+        <!-- -->
+        <scene sceneID="QB6-FH-h7v">
+            <objects>
+                <controller identifier="confirmation" title=" " id="4FM-J6-eh2" customClass="TradeConfirmController">
+                    <items>
+                        <group width="1" alignment="left" id="26">
+                            <items>
+                                <label width="1" alignment="left" text="Sold" numberOfLines="0" id="ORY-Jz-rHh"/>
+                            </items>
+                            <edgeInsets key="margins" left="5" right="5" top="5" bottom="5"/>
+                        </group>
+                        <button width="1" alignment="left" verticalAlignment="bottom" title="Dismiss" id="25">
+                            <connections>
+                                <action selector="DoneTapped" destination="4FM-J6-eh2" id="UBG-UH-Ft0"/>
+                            </connections>
+                        </button>
+                    </items>
+                    <connections>
+                        <outlet property="DoneButton" destination="25" id="name-outlet-25"/>
+                        <outlet property="DetailsLabel" destination="ORY-Jz-rHh" id="name-outlet-ORY-Jz-rHh"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="881" y="590"/>
         </scene>
     </scenes>
 </document>
