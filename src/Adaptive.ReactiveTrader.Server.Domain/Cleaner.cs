@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Server.Analytics;
@@ -75,7 +74,7 @@ namespace Adaptive.ReactiveTrader.Server
                         Notional = 500000,
                         SpotRate = price.Bid,
                         Symbol = ccyPair,
-                        ValueDate = DateTime.Now.ToNextWeekday(2)
+                        ValueDate = DateTime.Today.AddDays(2).ToWeekday()
                     };
 
                     _executionService.Execute(trade, "CPU-007").Wait(TimeSpan.FromSeconds(10));

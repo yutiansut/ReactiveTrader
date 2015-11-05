@@ -4,16 +4,17 @@ namespace Adaptive.ReactiveTrader.Shared.Extensions
 {
     public static class DateTimeExtensions
     {
-        public static DateTime ToNextWeekday(this DateTime date, int dayCount = 2)
+        public static DateTime ToWeekday(this DateTime date)
         {
-            var plusN = date.AddDays(dayCount);
-
-            while (plusN.DayOfWeek == DayOfWeek.Saturday || plusN.DayOfWeek == DayOfWeek.Sunday)
+            switch (date.DayOfWeek)
             {
-                plusN = plusN.AddDays(1);
+                case DayOfWeek.Saturday:
+                    return date.AddDays(2);
+                case DayOfWeek.Sunday:
+                    return date.AddDays(1);
+                default:
+                    return date;
             }
-
-            return plusN;
         }
     }
 }
