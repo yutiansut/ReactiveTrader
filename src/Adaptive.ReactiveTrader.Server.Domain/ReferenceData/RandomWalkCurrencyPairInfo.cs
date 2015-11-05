@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Adaptive.ReactiveTrader.Shared.DTO.Pricing;
 using Adaptive.ReactiveTrader.Shared.DTO.ReferenceData;
+using Adaptive.ReactiveTrader.Shared.Extensions;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceData
 {
@@ -31,7 +32,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceData
             return new PriceDto
             {
                 Symbol = previousPrice.Symbol,
-                SpotDate = DateTime.UtcNow.AddDays(2).Date,
+                SpotDate = DateTime.UtcNow.AddDays(2).Date.ToWeekday(),
                 Mid = newMid,
                 Ask = newMid + _halfSpread / pow,
                 Bid = newMid - _halfSpread / pow,
