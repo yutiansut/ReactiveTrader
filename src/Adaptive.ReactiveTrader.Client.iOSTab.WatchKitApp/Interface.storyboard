@@ -1,61 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="9059" systemVersion="15A282b" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="20">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="20">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="9019"/>
     </dependencies>
     <scenes>
-        <!--Interface Controller-->
-        <scene sceneID="aou-V4-d1y">
-            <objects>
-                <controller id="AgC-eL-Hgc" customClass="InterfaceController">
-                    <items>
-                        <label alignment="left" text="Label" id="0">
-                            <color key="textColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        </label>
-                        <table alignment="left" id="1">
-                            <items>
-                                <tableRow identifier="default" id="2" customClass="RowController">
-                                    <group key="rootItem" width="134" height="90" alignment="left" layout="vertical" id="3">
-                                        <items>
-                                            <group width="1" alignment="left" id="17">
-                                                <items>
-                                                    <label alignment="left" text="..." id="4"/>
-                                                    <label alignment="left" text="direction" id="18"/>
-                                                </items>
-                                            </group>
-                                            <group width="1" alignment="left" id="6">
-                                                <items>
-                                                    <label alignment="left" text="Sell: " id="7"/>
-                                                    <label alignment="left" text="Label" id="8"/>
-                                                </items>
-                                            </group>
-                                            <group width="1" alignment="left" id="10">
-                                                <items>
-                                                    <label alignment="left" text="Buy: " id="11"/>
-                                                    <label alignment="left" text="Label" id="12"/>
-                                                </items>
-                                            </group>
-                                        </items>
-                                    </group>
-                                    <connections>
-                                        <outlet property="CurrenciesLabel" destination="4" id="name-outlet-4"/>
-                                        <outlet property="DirectionLabel" destination="18" id="name-outlet-18"/>
-                                        <outlet property="_buyLabel" destination="12" id="RR4-13-QHT"/>
-                                        <outlet property="_sellLabel" destination="8" id="Lgk-3n-Z59"/>
-                                    </connections>
-                                </tableRow>
-                            </items>
-                        </table>
-                    </items>
-                    <connections>
-                        <outlet property="StatusLabel" destination="0" id="name-outlet-0"/>
-                        <outlet property="Table" destination="1" id="name-outlet-1"/>
-                    </connections>
-                </controller>
-            </objects>
-            <point key="canvasLocation" x="0.0" y="0.0"/>
-        </scene>
         <!--Glance Interface Controller-->
         <scene sceneID="BOz-TT-tkC">
             <objects>
@@ -74,9 +23,16 @@
             <objects>
                 <notificationController id="YCC-NB-fut">
                     <items>
-                        <label alignment="left" text="Alert Label" id="XkS-y5-khE"/>
+                        <label alignment="left" text="Trade Successful static" numberOfLines="0" id="XkS-y5-khE">
+                            <color key="textColor" red="1" green="0.29508340142590728" blue="0.77050859389103732" alpha="1" colorSpace="calibratedRGB"/>
+                        </label>
                     </items>
-                    <notificationCategory key="notificationCategory" id="JfB-70-Muf"/>
+                    <notificationCategory key="notificationCategory" identifier="trade" descriptionFormat="trade" wantsSashBlur="YES" id="JfB-70-Muf">
+                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="sashColor" red="0.070588235289999995" green="0.2666666667" blue="0.4549019608" alpha="1" colorSpace="calibratedRGB"/>
+                    </notificationCategory>
+                    <color key="backgroundColor" red="0.070588235289999995" green="0.2666666667" blue="0.4549019608" alpha="1" colorSpace="calibratedRGB"/>
+                    <edgeInsets key="margins" left="5" right="5" top="5" bottom="5"/>
                     <connections>
                         <outlet property="notificationAlertLabel" destination="XkS-y5-khE" id="49B-RR-99y"/>
                         <segue destination="gdX-wl-uQE" kind="relationship" relationship="dynamicNotificationInterface" id="fKh-qV-3T2"/>
@@ -88,7 +44,69 @@
         <!--Notification Controller-->
         <scene sceneID="KIl-fV-djm">
             <objects>
-                <controller id="gdX-wl-uQE" customClass="NotificationController"/>
+                <controller spacing="0.0" id="gdX-wl-uQE" customClass="NotificationController">
+                    <items>
+                        <group width="1" alignment="left" layout="vertical" spacing="0.0" id="tEF-ac-nQd">
+                            <items>
+                                <label width="1" alignment="center" text="1" textAlignment="center" minimumScaleFactor="0.5" id="htB-aa-BPn">
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="font" style="UICTFontTextStyleBody"/>
+                                </label>
+                                <label width="1" alignment="left" text="2" textAlignment="center" minimumScaleFactor="0.5" id="W4l-xL-rHV"/>
+                            </items>
+                            <edgeInsets key="margins" left="2" right="2" top="0.0" bottom="5"/>
+                        </group>
+                        <separator alignment="left" id="Xkr-gB-01u">
+                            <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        </separator>
+                        <group width="1" height="50" alignment="left" contentMode="scaleAspectFit" layout="vertical" spacing="0.0" id="0zA-8w-Owo">
+                            <items>
+                                <group width="1" alignment="left" radius="13" spacing="0.0" id="zM3-fo-W4W">
+                                    <items>
+                                        <label alignment="left" verticalAlignment="bottom" text="Sell" textAlignment="left" minimumScaleFactor="0.5" id="pHJ-QS-z9c">
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="font" type="system" pointSize="14"/>
+                                        </label>
+                                        <label alignment="center" verticalAlignment="center" id="0aE-zA-9j8">
+                                            <fontDescription key="font" type="system" pointSize="12"/>
+                                        </label>
+                                        <label alignment="right" verticalAlignment="bottom" text="Buy" minimumScaleFactor="0.5" id="m1P-Vi-YD0">
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="font" type="system" pointSize="14"/>
+                                        </label>
+                                    </items>
+                                    <edgeInsets key="margins" left="5" right="5" top="0.0" bottom="0.0"/>
+                                </group>
+                                <group width="1" alignment="left" verticalAlignment="bottom" spacing="0.0" id="6ze-SS-hwP">
+                                    <items>
+                                        <label alignment="left" verticalAlignment="center" minimumScaleFactor="0.59999999999999998" id="Vae-J2-34i">
+                                            <fontDescription key="font" type="system" pointSize="17"/>
+                                        </label>
+                                        <label alignment="center" verticalAlignment="center" minimumScaleFactor="0.80000000000000004" id="Avd-45-CAp">
+                                            <fontDescription key="font" type="system" pointSize="12"/>
+                                        </label>
+                                        <label alignment="right" verticalAlignment="bottom" minimumScaleFactor="0.59999999999999998" id="8Mz-3Z-edn">
+                                            <fontDescription key="font" type="system" pointSize="17"/>
+                                        </label>
+                                    </items>
+                                    <edgeInsets key="margins" left="5" right="5" top="0.0" bottom="0.0"/>
+                                </group>
+                            </items>
+                            <edgeInsets key="margins" left="0.0" right="0.0" top="5" bottom="5"/>
+                        </group>
+                    </items>
+                    <color key="backgroundColor" red="0.070588235294117646" green="0.26666666666666666" blue="0.45490196078431372" alpha="1" colorSpace="calibratedRGB"/>
+                    <edgeInsets key="margins" left="0.0" right="0.0" top="5" bottom="0.0"/>
+                    <connections>
+                        <outlet property="_arrowLabel" destination="Avd-45-CAp" id="fIt-Ig-p37"/>
+                        <outlet property="_buyPriceLabel" destination="8Mz-3Z-edn" id="NmN-Pb-Fjx"/>
+                        <outlet property="_priceGroup" destination="0zA-8w-Owo" id="3cs-8i-8S7"/>
+                        <outlet property="_priceLabel" destination="0aE-zA-9j8" id="ace-PN-I2d"/>
+                        <outlet property="_sellPriceLabel" destination="Vae-J2-34i" id="02S-qf-4nr"/>
+                        <outlet property="_tradeDetailsLabel1" destination="htB-aa-BPn" id="NmJ-jG-JCQ"/>
+                        <outlet property="_tradeDetailsLabel2" destination="W4l-xL-rHV" id="Edc-sN-TM3"/>
+                    </connections>
+                </controller>
             </objects>
             <point key="canvasLocation" x="535" y="-7"/>
         </scene>
@@ -166,12 +184,15 @@
                         </button>
                     </items>
                     <connections>
-                        <outlet property="DoneButton" destination="25" id="name-outlet-25"/>
                         <outlet property="DetailsLabel" destination="ORY-Jz-rHh" id="name-outlet-ORY-Jz-rHh"/>
+                        <outlet property="DoneButton" destination="25" id="name-outlet-25"/>
                     </connections>
                 </controller>
             </objects>
             <point key="canvasLocation" x="881" y="590"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Activity" width="22" height="22"/>
+    </resources>
 </document>

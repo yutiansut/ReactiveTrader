@@ -10,6 +10,7 @@ using UIKit;
 using WatchKit;
 using System.Reactive.Concurrency;
 using Adaptive.ReactiveTrader.Client.Domain.Models.Execution;
+using Adaptive.ReactiveTrader.Client.iOS.Shared;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 {
@@ -25,13 +26,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
         bool _executingBuy;
         IDisposable _subscription = Disposable.Empty;
 
-        readonly static UIFont _arrowFont = UIFont.SystemFontOfSize(20);
-        readonly static Dictionary<PriceMovement, NSAttributedString> _movementText = new Dictionary<PriceMovement, NSAttributedString>
-        {
-            {PriceMovement.Up,   new NSAttributedString("▲", _arrowFont, UIColor.Green) },
-            {PriceMovement.Down, new NSAttributedString("▼", _arrowFont, UIColor.Red) },
-            {PriceMovement.None, new NSAttributedString("▼", _arrowFont, UIColor.Black) }
-        };
+
 
         public override void Awake(NSObject context)
         {
@@ -42,6 +37,12 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
             if (_pair == null)
             {
                 return;
+            }
+
+            if (Pairs.NotificationCurrencyPair != null && Pairs.NotificationCurrencyPair.Matches(_pair))
+            {
+                BecomeCurrentPage();
+                Pairs.NotificationCurrencyPair = null;
             }
 
             SetTitle($"{_pair.BaseCurrency} / {_pair.CounterCurrency}");
@@ -64,24 +65,18 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 
                 buffered
                     .Where(_ => !_executingSell)
-                    .Select(price => price.ToBidPrice().ToAttributedString())
+                    .Select(price => FormattedPriceExtentions.ToAttributedString(price.ToBidPrice()))
                     .Subscribe(SellPriceLabel.SetText),
 
                 buffered
                     .Where(_ => !_executingBuy)
-                    .Select(price => price.ToAskPrice().ToAttributedString())
+                    .Select(price => FormattedPriceExtentions.ToAttributedString(price.ToAskPrice()))
                     .Subscribe(BuyPriceLabel.SetText),
 
                 buffered
                     .ToPriceMovementStream()
-                    .DistinctUntilChanged()
-                    .Select(movement => 
-                        {
-                            var spread = new NSAttributedString(_price.Spread.ToString("0.0") + "   ");
-                            var text = new NSMutableAttributedString(spread);
-                            text.Append(_movementText[movement]);
-                            return text;
-                        })
+                    .DistinctUntilChanged()                    
+                    .Select(movement => movement.ToAttributedString(_price))
                     .Subscribe(PriceLabel.SetText)                    
             };
         }

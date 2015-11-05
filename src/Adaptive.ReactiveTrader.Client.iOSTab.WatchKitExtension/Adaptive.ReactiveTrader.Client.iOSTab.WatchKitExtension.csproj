@@ -126,15 +126,16 @@
       <Project>{B954B5A9-ABD0-469B-9397-039675BEC8F0}</Project>
       <Name>Adaptive.ReactiveTrader.Shared</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Client.iOS.Shared\Adaptive.ReactiveTrader.Client.iOS.Shared.csproj">
+      <Project>{7882D2AC-BCC4-4C10-A62A-4EB5D1B797EC}</Project>
+      <Name>Adaptive.ReactiveTrader.Client.iOS.Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlanceController.cs" />
     <Compile Include="GlanceController.designer.cs" />
-    <Compile Include="InterfaceController.cs" />
-    <Compile Include="InterfaceController.designer.cs" />
     <Compile Include="NotificationController.cs" />
     <Compile Include="NotificationController.designer.cs" />
-    <Compile Include="PriceExtentions.cs" />
     <Compile Include="RowController.cs" />
     <Compile Include="RowController.designer.cs" />
     <Compile Include="UserModel.cs" />
@@ -150,5 +151,6 @@
     <Compile Include="TradeConfirmController.designer.cs">
       <DependentUpon>TradeConfirmController.cs</DependentUpon>
     </Compile>
+    <Compile Include="NotificationCurrencyPair.cs" />
   </ItemGroup>
 </Project>

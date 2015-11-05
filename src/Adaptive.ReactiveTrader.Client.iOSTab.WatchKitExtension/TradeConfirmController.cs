@@ -7,6 +7,7 @@ using WatchKit;
 using Adaptive.ReactiveTrader.Client.Domain.Models;
 using UIKit;
 using Adaptive.ReactiveTrader.Client.Domain.Models.Execution;
+using Adaptive.ReactiveTrader.Client.iOS.Shared;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 {
@@ -55,25 +56,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
             base.WillActivate();
 
             var trade = _trade;
-            var sold = trade.Direction == Direction.BUY ? "Bought" : "Sold";
             var currency = trade.CurrencyPair.Replace(trade.DealtCurrency, ""); // Hack
 
             SetTitle(trade.DealtCurrency + "/" + currency);
 
-
-            var text = new NSMutableAttributedString();
-
-            text.Append(new NSAttributedString($"{sold} ", _grey));
-            text.Append(new NSAttributedString(trade.DealtCurrency + " " + trade.Notional, _normal));
-            text.Append(new NSAttributedString("\n vs ", _grey));
-            text.Append(new NSAttributedString(currency, _normal));
-            text.Append(new NSAttributedString("\n at ", _grey));
-            text.Append(new NSAttributedString(trade.SpotRate.ToString(), _normal));
-
-            text.Append(new NSAttributedString("\n"));
-
-            text.Append(new NSAttributedString("\nTrade ID: ", _smallGrey));
-            text.Append(new NSAttributedString(trade.TradeId.ToString(), _small));
+            var text = trade.ToAttributedString();
 
             if (TradeDetailsLabel == null)
             {
@@ -88,4 +75,5 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
             DismissController();
         }
 	}
+
 }

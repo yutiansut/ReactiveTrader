@@ -11,6 +11,7 @@ using Adaptive.ReactiveTrader.Client.iOSTab.View;
 using Adaptive.ReactiveTrader.Client.Domain.Transport;
 using System.Runtime.InteropServices;
 using CoreAnimation;
+using System.Threading.Tasks;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
@@ -32,6 +33,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
         LoggerFactory _loggerFactory;
 
         ConcurrencyService _cs;
+
+        NotificationGenerator _notificationHandler;
 
 		//
 		// This method is invoked when the application has loaded and is ready to run. In this
@@ -82,11 +85,30 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
             tabBarController.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
 
+            _notificationHandler = new NotificationGenerator(_reactiveTrader, cs);
+            _notificationHandler.Initialise();
+
 			window.RootViewController = _startUpViewController;
             window.MakeKeyAndVisible ();
 
+            NotificationGenerator.RegisterNotifications();
+
+
 			return true;
 		}
+
+        public override void DidEnterBackground(UIApplication application)
+        {
+            nint taskID = UIApplication.SharedApplication.BeginBackgroundTask( () => {
+
+                Console.WriteLine("Background time expired");
+
+            });
+
+            var remaining = TimeSpan.FromSeconds(application.BackgroundTimeRemaining);
+
+            Console.WriteLine($"Background time remaining: {remaining.Minutes}m{remaining.Seconds}s");
+        }
 
         void Initalize()
         {

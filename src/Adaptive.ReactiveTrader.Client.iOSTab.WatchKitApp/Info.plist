@@ -24,6 +24,6 @@
 	<key>XSAppIconAssets</key>
 	<string>Resources/Images.xcassets/AppIcons.appiconset</string>
 	<key>CFBundleName</key>
-	<string>Reactive Trader</string>
+	<string>Trader</string>
 </dict>
 </plist>

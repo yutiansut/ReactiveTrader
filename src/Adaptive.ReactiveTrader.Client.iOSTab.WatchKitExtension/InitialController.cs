@@ -12,15 +12,17 @@ using Adaptive.ReactiveTrader.Client.Domain.Models.Execution;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 {
-    public static class Pairs
+    static class Pairs
     {
         public static List<ICurrencyPair> Shared = new List<ICurrencyPair>();
+        public static NotificationCurrencyPair NotificationCurrencyPair { get; set; }
     }
 
-    public static class Trades
+    static class Trades
     {
         public static Dictionary<long, ITrade> Shared = new Dictionary<long, ITrade>();
     }
+
 
 
 	partial class InitialController : WKInterfaceController
@@ -33,6 +35,20 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
         {
             base.WillActivate();
             Setup();
+        }
+
+//        string _jumpToBase;
+//        string _jumpToCounter;
+
+        public override void HandleLocalNotificationAction(string identifier, UIKit.UILocalNotification localNotification)
+        {
+            Console.WriteLine($"HandleLocalNotificationAction: {identifier}");
+
+            var baseCurrency = (string)(NSString)localNotification.UserInfo.ValueForKey((NSString)"baseCurrency");
+            var counterCurrency = (string)(NSString)localNotification.UserInfo.ValueForKey((NSString)"counterCurrency");
+            Pairs.NotificationCurrencyPair = new NotificationCurrencyPair(baseCurrency, counterCurrency);
+
+            base.HandleLocalNotificationAction(identifier, localNotification);
         }
 
         Adaptive.ReactiveTrader.Client.Domain.ReactiveTrader _reactiveTrader;
@@ -81,7 +97,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
                     .SelectMany(update => update);
 
             onCurrencyPair
-                .Where(update => update.UpdateType == UpdateType.Add)
+                .Where(update => update.UpdateType == UpdateType.Add)                
                 .Where(update => !Pairs.Shared.Any(x => x.Symbol == update.CurrencyPair.Symbol))
                 .Subscribe(update => Pairs.Shared.Add(update.CurrencyPair));
 
