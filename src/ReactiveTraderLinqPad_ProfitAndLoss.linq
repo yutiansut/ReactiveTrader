@@ -30,7 +30,7 @@ var prices = api.ReferenceData.GetCurrencyPairsStream()
 
 var tradesSets = api.TradeRepository.GetTradesStream()
 		.Select(trades=>trades.Where(t=>t.TradeStatus==TradeStatus.Done))
-		.Scan((t1, t2) => t1.Concat(t2));
+		.Scan((acc, cur) => acc.Concat(cur));
 		
 var pnlByTrade = tradesSets.CombineLatest(prices, (t, p) => {
 	var markedTrades = from trade in t 
@@ -50,8 +50,8 @@ var pnlByTrade = tradesSets.CombineLatest(prices, (t, p) => {
 	});
 
 var pnlByCurrency = pnlByTrade.Select(tradeSet=>tradeSet.GroupBy(trade=>trade.CCY)
-	.Select(byCCY => new { CCY = byCCY.Key, PNL = Math.Round(byCCY.Sum(t=>t.PNL),0) }));
+	.Select(byCCY => new { CCY = byCCY.Key, PNL = byCCY.Sum(t=>t.PNL) }));
 
-prices.Select(i=>i.Select(item=>new {Symbol = item.Key, Price = item.Value})).DumpLatest("Prices");
+//prices.Select(i=>i.Select(item=>new {Symbol = item.Key, Price = item.Value})).DumpLatest("Prices");
 pnlByCurrency.DumpLatest("Profit & Loss by Currency");
 pnlByTrade.DumpLatest("Profit & Loss by Trade");
