@@ -28,8 +28,6 @@ var prices = api.ReferenceData.GetCurrencyPairsStream()
     .Select(p => new { CurrencyPair = p.CurrencyPair.Symbol, p.Mid })
     .Scan(new ConcurrentDictionary<string, decimal>(), (acc, cur)=> { acc.AddOrUpdate(cur.CurrencyPair, cur.Mid, (k, u)=>cur.Mid); return acc; });
 
-				prices.DumpLatest("Prices");
-				
 var tradesSets = api.TradeRepository.GetTradesStream()
 		.Select(trades=>trades.Where(t=>t.TradeStatus==TradeStatus.Done))
 		.Scan((t1, t2) => t1.Concat(t2));
@@ -51,5 +49,6 @@ var pnlByTrade = tradesSets.CombineLatest(prices, (t, p) => {
 var pnlByCurrency = pnlByTrade.Select(tradeSet=>tradeSet.GroupBy(trade=>trade.CCY)
 	.Select(byCCY => new { CCY = byCCY.Key, PNL = Math.Round(byCCY.Sum(t=>t.PNL),0) }));
 
+prices.Select(i=>i.ToList()).DumpLatest("Prices");
 pnlByCurrency.DumpLatest("Profit & Loss by Currency");
 pnlByTrade.DumpLatest("Profit & Loss by Trade");
