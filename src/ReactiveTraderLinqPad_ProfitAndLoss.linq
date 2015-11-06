@@ -1,0 +1,53 @@
+<Query Kind="Statements">
+  <Reference Relative="Adaptive.ReactiveTrader.Client.Domain\bin\Debug\Adaptive.ReactiveTrader.Client.DomainPortable.dll">&lt;MyDocuments&gt;\GitHub\ReactiveTrader\src\Adaptive.ReactiveTrader.Client.Domain\bin\Debug\Adaptive.ReactiveTrader.Client.DomainPortable.dll</Reference>
+  <Reference Relative="Adaptive.ReactiveTrader.Client.Domain\bin\Debug\Adaptive.ReactiveTrader.Shared.dll">&lt;MyDocuments&gt;\GitHub\ReactiveTrader\src\Adaptive.ReactiveTrader.Client.Domain\bin\Debug\Adaptive.ReactiveTrader.Shared.dll</Reference>
+  <Reference Relative="Adaptive.ReactiveTrader.Client.Domain\bin\Debug\Microsoft.AspNet.SignalR.Client.dll">&lt;MyDocuments&gt;\GitHub\ReactiveTrader\src\Adaptive.ReactiveTrader.Client.Domain\bin\Debug\Microsoft.AspNet.SignalR.Client.dll</Reference>
+  <Reference Relative="Adaptive.ReactiveTrader.Client.Domain\bin\Debug\Newtonsoft.Json.dll">&lt;MyDocuments&gt;\GitHub\ReactiveTrader\src\Adaptive.ReactiveTrader.Client.Domain\bin\Debug\Newtonsoft.Json.dll</Reference>
+  <Reference Relative="Adaptive.ReactiveTrader.Client.Domain\bin\Debug\System.Reactive.Core.dll">&lt;MyDocuments&gt;\GitHub\ReactiveTrader\src\Adaptive.ReactiveTrader.Client.Domain\bin\Debug\System.Reactive.Core.dll</Reference>
+  <Reference Relative="Adaptive.ReactiveTrader.Client.Domain\bin\Debug\System.Reactive.Interfaces.dll">&lt;MyDocuments&gt;\GitHub\ReactiveTrader\src\Adaptive.ReactiveTrader.Client.Domain\bin\Debug\System.Reactive.Interfaces.dll</Reference>
+  <Reference Relative="Adaptive.ReactiveTrader.Client.Domain\bin\Debug\System.Reactive.Linq.dll">&lt;MyDocuments&gt;\GitHub\ReactiveTrader\src\Adaptive.ReactiveTrader.Client.Domain\bin\Debug\System.Reactive.Linq.dll</Reference>
+  <Reference Relative="Adaptive.ReactiveTrader.Client.Domain\bin\Debug\System.Reactive.PlatformServices.dll">&lt;MyDocuments&gt;\GitHub\ReactiveTrader\src\Adaptive.ReactiveTrader.Client.Domain\bin\Debug\System.Reactive.PlatformServices.dll</Reference>
+  <Namespace>Adaptive.ReactiveTrader.Client.Domain</Namespace>
+  <Namespace>Adaptive.ReactiveTrader.Client.Domain.Models</Namespace>
+  <Namespace>Adaptive.ReactiveTrader.Client.Domain.Models.Execution</Namespace>
+  <Namespace>System</Namespace>
+  <Namespace>System.Reactive</Namespace>
+  <Namespace>System.Reactive.Linq</Namespace>
+</Query>
+
+var api = new ReactiveTrader();
+api.Initialize("Trader1", new []{"http://localhost:8080"});
+
+api.ConnectionStatusStream.DumpLatest("Connection");
+
+var prices = api.ReferenceData.GetCurrencyPairsStream()
+		.SelectMany(_=>_)
+		.SelectMany(p=>p.CurrencyPair.PriceStream)
+		.Select(p=>new { CurrencyPair = p.CurrencyPair.Symbol, p.Mid })
+		.Buffer(TimeSpan.FromSeconds(3))
+			.Select(o=>o.GroupBy(i=>i.CurrencyPair)
+			.ToDictionary(item=>item.Key, value=>value.Last().Mid));
+
+var tradesSets = api.TradeRepository.GetTradesStream()
+		.Select(trades=>trades.Where(t=>t.TradeStatus==TradeStatus.Done))
+		.Scan((t1, t2) => t1.Concat(t2));
+		
+var pnlByTrade = tradesSets.CombineLatest(prices, (t, p) => {
+	var markedTrades = from trade in t 
+		let netPosition = (trade.Direction == Direction.SELL ? -1 : 1) * trade.Notional
+		let lastPrice = p.ContainsKey(trade.CurrencyPair) ? p[trade.CurrencyPair] : trade.SpotRate
+		select new { 
+		Trade = trade, 
+		LastPrice = lastPrice,
+		Cost = trade.SpotRate, 
+		NetPosition =  netPosition,
+		PNL = netPosition * (lastPrice - trade.SpotRate)/trade.SpotRate,
+		CCY = trade.DealtCurrency};
+	return markedTrades;
+	});
+
+var pnlByCurrency = pnlByTrade.Select(tradeSet=>tradeSet.GroupBy(trade=>trade.CCY)
+	.Select(byCCY => new { CCY = byCCY.Key, PNL = Math.Round(byCCY.Sum(t=>t.PNL),0) }));
+
+pnlByCurrency.DumpLatest("Profit & Loss by Currency");
+pnlByTrade.DumpLatest("Profit & Loss by Trade");
