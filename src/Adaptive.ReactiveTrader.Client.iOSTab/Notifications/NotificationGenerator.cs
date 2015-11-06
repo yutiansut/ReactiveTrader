@@ -1,14 +1,15 @@
 ﻿using System;
-using Adaptive.ReactiveTrader.Client.Domain;
+using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Collections.Generic;
-using Adaptive.ReactiveTrader.Client.Domain.Models.Execution;
-using UIKit;
+using System.Reactive.Subjects;
 using Adaptive.ReactiveTrader.Client.Concurrency;
+using Adaptive.ReactiveTrader.Client.Domain;
 using Adaptive.ReactiveTrader.Client.Domain.Models;
-using Foundation;
+using Adaptive.ReactiveTrader.Client.Domain.Models.Execution;
 using Adaptive.ReactiveTrader.Client.iOS.Shared;
+using Foundation;
+using UIKit;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
@@ -18,24 +19,37 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
         readonly IConcurrencyService _concurrencyService;
         readonly CompositeDisposable _disposables = new CompositeDisposable();
 
+        public ISubject<bool> NotificationsEnabled { get; } = new BoolUserDefault("notificationsEnabled");
+        bool _enabled;
+
         public NotificationGenerator(IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService)
         {
             _reactiveTrader = reactiveTrader;
             _concurrencyService = concurrencyService;
+
+            NotificationsEnabled
+                .Where(enabled => enabled)
+                .Subscribe(_ => RegisterNotifications())
+                .Add(_disposables);
         }
 
-        public void Initialise() {
-            _disposables.Add(
-                _reactiveTrader.TradeRepository
+        public void Initialise()
+        {
+            NotificationsEnabled
+                .Subscribe(enabled => _enabled = enabled)
+                .Add(_disposables);
+
+            _reactiveTrader.TradeRepository
                 .GetTradesStream()
                 .SubscribeOn(_concurrencyService.TaskPool)
                 .ObserveOn(_concurrencyService.Dispatcher)
-                .Skip(2) // Skip out past trades on start up
+                .Skip(2) // Skip over past trades on start up
+                .WhereLatest(NotificationsEnabled)
                 .Subscribe(OnTradeUpdates)
-            );
+                .Add(_disposables);
         }
 
-        public void Dispose ()
+        public void Dispose()
         {
             _disposables.Dispose();
         }
@@ -62,8 +76,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
         }
 
         void OnTradeUpdates(IEnumerable<ITrade> trades)
-        {                
-           
+        { 
             foreach (var trade in trades)
             {
                 var boughtOrSold = trade.Direction == Direction.BUY ? "bought" : "sold";

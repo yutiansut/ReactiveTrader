@@ -32,11 +32,19 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 		[Outlet]
 		UIKit.UILabel UIUpdateRate { get; set; }
 
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
+		UISwitch _notificationsSwitch { get; set; }
+
 		[Action ("LinkTouchUpInside:")]
 		partial void LinkTouchUpInside (Foundation.NSObject sender);
 
 		void ReleaseDesignerOutlets ()
 		{
+			if (_notificationsSwitch != null) {
+				_notificationsSwitch.Dispose ();
+				_notificationsSwitch = null;
+			}
 			if (ConnectionDetail != null) {
 				ConnectionDetail.Dispose ();
 				ConnectionDetail = null;

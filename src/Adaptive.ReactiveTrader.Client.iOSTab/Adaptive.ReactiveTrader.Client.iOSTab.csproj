@@ -72,6 +72,7 @@
     <MtouchUseSGen>true</MtouchUseSGen>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchProfiling>true</MtouchProfiling>
+    <OptimizePNGs>false</OptimizePNGs>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

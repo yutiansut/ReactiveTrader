@@ -68,9 +68,13 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
             _startUpViewController = new StartUpView (Initalize);
             Initalize();
 
+
+            _notificationHandler = new NotificationGenerator(_reactiveTrader, cs);
+            _notificationHandler.Initialise();
+
 			var tradesViewController = new TradesViewController (_reactiveTrader, cs);
 			var pricesViewController = new PriceTilesViewController (_reactiveTrader, cs);
-			var statusViewController = new StatusViewController (_reactiveTrader, cs);
+            var statusViewController = new StatusViewController (_reactiveTrader, cs, _notificationHandler.NotificationsEnabled);
 
 			tabBarController = new UITabBarController ();
 
@@ -85,14 +89,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
             tabBarController.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
 
-            _notificationHandler = new NotificationGenerator(_reactiveTrader, cs);
-            _notificationHandler.Initialise();
 
 			window.RootViewController = _startUpViewController;
             window.MakeKeyAndVisible ();
-
-            NotificationGenerator.RegisterNotifications();
-
 
 			return true;
 		}

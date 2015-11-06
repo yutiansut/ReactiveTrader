@@ -10,6 +10,8 @@ using Adaptive.ReactiveTrader.Client.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Runtime.InteropServices;
+using Adaptive.ReactiveTrader.Client.iOS.Shared;
+using System.Reactive.Subjects;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 {
@@ -21,8 +23,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 
 		private ConnectionInfo _lastConnectionInfo;
 
-		public StatusViewController (IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService) : base ("StatusViewController", null)
+        ISubject<bool> _notificationsEnabled;
+
+        public StatusViewController (IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService, ISubject<bool> notificationsEnabled) : base ("StatusViewController", null)
 		{
+            _notificationsEnabled = notificationsEnabled;
 			_reactiveTrader = reactiveTrader;
 			_concurrencyService = concurrencyService;
 
@@ -51,14 +56,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 			}
 		}
 
-		public override void DidReceiveMemoryWarning ()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
-			
-			// Release any cached data, images, etc that aren't in use.
-		}
-
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
@@ -75,6 +72,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 				OnStatusChange (_lastConnectionInfo);
 				_lastConnectionInfo = null;
 			}
+
+            _notificationsSwitch.Bind(_notificationsEnabled)
+                .Add(_disposables);
 		}
 
 		private void OnStatusChange(ConnectionInfo connectionInfo)
