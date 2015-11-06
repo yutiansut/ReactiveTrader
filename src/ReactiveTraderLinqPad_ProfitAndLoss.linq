@@ -11,6 +11,7 @@
   <Namespace>Adaptive.ReactiveTrader.Client.Domain.Models</Namespace>
   <Namespace>Adaptive.ReactiveTrader.Client.Domain.Models.Execution</Namespace>
   <Namespace>System</Namespace>
+  <Namespace>System.Collections.Concurrent</Namespace>
   <Namespace>System.Reactive</Namespace>
   <Namespace>System.Reactive.Linq</Namespace>
 </Query>
@@ -21,13 +22,14 @@ api.Initialize("Trader1", new []{"http://localhost:8080"});
 api.ConnectionStatusStream.DumpLatest("Connection");
 
 var prices = api.ReferenceData.GetCurrencyPairsStream()
-		.SelectMany(_=>_)
-		.SelectMany(p=>p.CurrencyPair.PriceStream)
-		.Select(p=>new { CurrencyPair = p.CurrencyPair.Symbol, p.Mid })
-		.Buffer(TimeSpan.FromSeconds(3))
-			.Select(o=>o.GroupBy(i=>i.CurrencyPair)
-			.ToDictionary(item=>item.Key, value=>value.Last().Mid));
+    .SelectMany(_ => _)
+    .SelectMany(p => p.CurrencyPair.PriceStream)
+    .Where(o => !o.IsStale)
+    .Select(p => new { CurrencyPair = p.CurrencyPair.Symbol, p.Mid })
+    .Scan(new ConcurrentDictionary<string, decimal>(), (acc, cur)=> { acc.AddOrUpdate(cur.CurrencyPair, cur.Mid, (k, u)=>cur.Mid); return acc; });
 
+				prices.DumpLatest("Prices");
+				
 var tradesSets = api.TradeRepository.GetTradesStream()
 		.Select(trades=>trades.Where(t=>t.TradeStatus==TradeStatus.Done))
 		.Scan((t1, t2) => t1.Concat(t2));
