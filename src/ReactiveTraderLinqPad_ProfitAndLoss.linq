@@ -37,7 +37,10 @@ var pnlByTrade = tradesSets.CombineLatest(prices, (t, p) => {
 		let netPosition = (trade.Direction == Direction.SELL ? -1 : 1) * trade.Notional
 		let lastPrice = p.ContainsKey(trade.CurrencyPair) ? p[trade.CurrencyPair] : trade.SpotRate
 		select new { 
-		Trade = trade, 
+		TradeId = trade.TradeId,
+		CCYPair = trade.CurrencyPair,
+		TradeDate = trade.TradeDate,
+		TraderName = trade.TraderName,
 		LastPrice = lastPrice,
 		Cost = trade.SpotRate, 
 		NetPosition =  netPosition,
@@ -49,6 +52,6 @@ var pnlByTrade = tradesSets.CombineLatest(prices, (t, p) => {
 var pnlByCurrency = pnlByTrade.Select(tradeSet=>tradeSet.GroupBy(trade=>trade.CCY)
 	.Select(byCCY => new { CCY = byCCY.Key, PNL = Math.Round(byCCY.Sum(t=>t.PNL),0) }));
 
-prices.Select(i=>i.ToList()).DumpLatest("Prices");
+prices.Select(i=>i.Select(item=>new {Symbol = item.Key, Price = item.Value})).DumpLatest("Prices");
 pnlByCurrency.DumpLatest("Profit & Loss by Currency");
 pnlByTrade.DumpLatest("Profit & Loss by Trade");
