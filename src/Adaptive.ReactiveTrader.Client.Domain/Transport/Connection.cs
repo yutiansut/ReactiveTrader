@@ -7,6 +7,9 @@ using Adaptive.ReactiveTrader.Shared;
 using Adaptive.ReactiveTrader.Shared.Extensions;
 using Adaptive.ReactiveTrader.Shared.Logging;
 using Microsoft.AspNet.SignalR.Client;
+using Microsoft.AspNet.SignalR.Client.Http;
+using System.Net.Http;
+using ModernHttpClient;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.Transport
 {
@@ -42,6 +45,14 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport
             ControlHubProxy = _hubConnection.CreateHubProxy(ServiceConstants.Server.ControlHub);
         }
 
+        class ModernHttpClientSignalR : DefaultHttpClient
+        {
+            protected override HttpMessageHandler CreateHandler()
+            {
+                return new NativeMessageHandler();
+            }
+        }
+
         public IObservable<Unit> Initialize()
         {
             if (_initialized)
@@ -57,7 +68,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain.Transport
                 try
                 {
                     _log.InfoFormat("Connecting to {0} via {1}", Address, TransportName);
-                    await _hubConnection.Start();
+                    await _hubConnection.Start(new ModernHttpClientSignalR());
                     _statusStream.OnNext(new ConnectionInfo(ConnectionStatus.Connected, Address, TransportName));
                     observer.OnNext(Unit.Default);
                 }
