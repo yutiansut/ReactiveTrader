@@ -12,6 +12,7 @@ using System.Reactive.Subjects;
 using Adaptive.ReactiveTrader.Shared.DTO.Pricing;
 using Adaptive.ReactiveTrader.Client.Domain;
 using Adaptive.ReactiveTrader.Client.Domain.Models.Pricing;
+using Adaptive.ReactiveTrader.Client.Domain.Models.ReferenceData;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 {
@@ -56,45 +57,58 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 
         public override void DidReceiveLocalNotification(UILocalNotification localNotification, Action<WKUserNotificationInterfaceType> completionHandler)
         {
-            Console.WriteLine("WatchNotification: DidReceiveLocalNotification");                 
-
             _compositeDisposable.Dispose();
             _compositeDisposable = new CompositeDisposable();
 
-            var tradeJson = (NSString) localNotification.UserInfo.ValueForKey(WormHoleConstants.TradeKey);
-            var trade = tradeJson.ToTrade();
+            var trade = GetTrade(localNotification);
+            var currencyPair = GetCurrencyPair(localNotification, _priceSubject.AsObservable());
 
             SetupWormholePriceStream(trade);
 
-            var currencyPairJson = (NSString)localNotification.UserInfo.ValueForKey(WormHoleConstants.CurrencyPairKey); 
-            Console.WriteLine("currencyPairJson: " + currencyPairJson);
-            var currencyPair = currencyPairJson.ToCurrencyPair(_priceSubject.AsObservable());
-            Console.WriteLine("currencyPairJson deserialized: " + currencyPair.RatePrecision + " " + currencyPair.PipsPosition);
-
-            var trader = new LimitedNotificationTrader();
-            trader.Initialize(_priceSubject.AsObservable(), currencyPair);
-            _trader = trader;
+            _trader = GetTrader(currencyPair, _priceSubject.AsObservable());
             _compositeDisposable.Add(_trader);
 
+            SetupInterface(trade);
+            SetupStreams(_trader);
+
+            completionHandler(WKUserNotificationInterfaceType.Custom);
+        }
+
+        static LimitedNotificationTrader GetTrader(ICurrencyPair currencyPair, IObservable<PriceDto> priceStream)
+        {
+            var trader = new LimitedNotificationTrader();
+            trader.Initialize(priceStream, currencyPair);
+            return trader;
+        }
+
+        static ITrade GetTrade(UILocalNotification localNotification)
+        {
+            var tradeJson = (NSString)localNotification.UserInfo.ValueForKey(WormHoleConstants.TradeKey);
+            return tradeJson.ToTrade();
+        }
+
+        static ICurrencyPair GetCurrencyPair(UILocalNotification localNotification, IObservable<PriceDto> priceStream)
+        {
+            var currencyPairJson = (NSString)localNotification.UserInfo.ValueForKey(WormHoleConstants.CurrencyPairKey); 
+            return currencyPairJson.ToCurrencyPair(priceStream);
+        }        
+
+        void SetupInterface(ITrade trade)
+        {
             _tradeDetailsLabel1.SetText(trade.ToAttributedStringLine1());
             _tradeDetailsLabel2.SetText(trade.ToAttributedStringLine2());
+        }
 
-            Console.WriteLine("WatchNotification: calling completionHandler");
-            completionHandler(WKUserNotificationInterfaceType.Custom);
-
+        void SetupStreams(LimitedNotificationTrader trader)
+        {
             trader.PriceStream
                 .Where(price => !price.IsStale)
                 .Subscribe(price =>
-                {
-                        Console.WriteLine("Watch: PriceStream fired: " + price.Bid.Rate + " / " + price.Ask.Rate + " " +
-                        
-                            price.CurrencyPair.RatePrecision + " "
-                            + price.CurrencyPair.PipsPosition);
-
-                    _price = price;
-                    _sellPriceLabel.SetText(price.ToBidPrice().ToAttributedNotificationString());
-                    _buyPriceLabel.SetText(price.ToAskPrice().ToAttributedNotificationString());
-                })
+                    {
+                        _price = price;
+                        _sellPriceLabel.SetText(price.ToBidPrice().ToAttributedNotificationString());
+                        _buyPriceLabel.SetText(price.ToAskPrice().ToAttributedNotificationString());
+                    })
                 .Add(_compositeDisposable);
 
             trader.PriceStream
@@ -111,11 +125,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
                 .Where(price => !price.IsStale)
                 .ToPriceMovementStream()
                 .Subscribe(priceMovement => 
-                {
-                    _arrowLabel.SetText(priceMovement.ToAttributedArrow(_price));
-                    _priceLabel.SetText(_price.Spread.ToString("0.0"));
-                    SetPricesHidden(false);
-                })
+                    {
+                        _arrowLabel.SetText(priceMovement.ToAttributedArrow(_price));
+                        _priceLabel.SetText(_price.Spread.ToString("0.0"));
+                        SetPricesHidden(false);
+                    })
                 .Add(_compositeDisposable);
         }
 
@@ -152,6 +166,4 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
             Dispose(true);
         }
     }
-
 }
-

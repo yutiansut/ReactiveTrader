@@ -1,5 +1,4 @@
 using System;
-using CoreGraphics;
 using Foundation;
 using UIKit;
 
@@ -9,8 +8,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 	{
 		public static readonly UINib Nib = UINib.FromName ("PriceTileErrorViewCell", NSBundle.MainBundle);
 		public static readonly NSString Key = new NSString ("PriceTileErrorViewCell");
-
-		private PriceTileModel _priceTileModel;
 
 		public PriceTileErrorViewCell (IntPtr handle) : base (handle)
 		{
@@ -25,8 +22,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.Tiles
 
 		public void UpdateFrom (PriceTileModel model)
 		{
-			_priceTileModel = model;
-
 			this.CurrencyPair.Text = model.Symbol;
 		}
 	}

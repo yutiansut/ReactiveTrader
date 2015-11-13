@@ -23,7 +23,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
         readonly Dictionary<string, ICurrencyPair> _currenyPairs = new Dictionary<string, ICurrencyPair>();
 
         public ISubject<bool> NotificationsEnabled { get; } = new BoolUserDefault("notificationsEnabled");
-        bool _enabled;
 
         public NotificationGenerator(IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService)
         {
@@ -38,10 +37,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
         public void Initialise()
         {
-            NotificationsEnabled
-                .Subscribe(enabled => _enabled = enabled)
-                .Add(_disposables);
-            
             _reactiveTrader
                 .TradeRepository
                 .GetTradesStream()
