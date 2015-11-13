@@ -76,6 +76,7 @@
     </Compile>
     <Compile Include="Client\PriceMovementExtentionsTests.cs" />
     <Compile Include="Shared\Extensions\ConflateTests.cs" />
+    <Compile Include="Shared\Extensions\DateTimeExtensions.cs" />
     <Compile Include="Shared\Extensions\DetectStaleTests.cs" />
     <Compile Include="Shared\Extensions\HeartbeatTests.cs" />
     <Compile Include="Client\UI\SpotTiles\PriceExtensionsTests.cs" />
