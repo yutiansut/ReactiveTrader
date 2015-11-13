@@ -1,14 +1,14 @@
 using System;
-using Foundation;
-using System.Reactive.Linq;
-using Adaptive.ReactiveTrader.Client.Domain.Transport;
-using System.Reactive.Concurrency;
-using WatchKit;
-using Adaptive.ReactiveTrader.Client.Domain.Models.ReferenceData;
 using System.Collections.Generic;
-using Adaptive.ReactiveTrader.Client.Domain.Models;
 using System.Linq;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
+using Adaptive.ReactiveTrader.Client.Domain.Models;
 using Adaptive.ReactiveTrader.Client.Domain.Models.Execution;
+using Adaptive.ReactiveTrader.Client.Domain.Models.ReferenceData;
+using Adaptive.ReactiveTrader.Client.Domain.Transport;
+using Foundation;
+using WatchKit;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 {
@@ -23,8 +23,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
         public static Dictionary<long, ITrade> Shared = new Dictionary<long, ITrade>();
     }
 
-
-
 	partial class InitialController : WKInterfaceController
 	{
 		public InitialController (IntPtr handle) : base (handle)
@@ -36,9 +34,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
             base.WillActivate();
             Setup();
         }
-
-//        string _jumpToBase;
-//        string _jumpToCounter;
 
         public override void HandleLocalNotificationAction(string identifier, UIKit.UILocalNotification localNotification)
         {

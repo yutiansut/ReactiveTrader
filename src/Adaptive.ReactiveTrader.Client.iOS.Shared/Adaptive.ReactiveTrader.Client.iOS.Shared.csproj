@@ -19,6 +19,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -27,6 +28,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -50,6 +52,7 @@
     <Folder Include="Resources\" />
     <Folder Include="Extentions\" />
     <Folder Include="UserDefaults\" />
+    <Folder Include="WormHoleSharp\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -61,6 +64,9 @@
     <Compile Include="Extentions\IObservableExtentions.cs" />
     <Compile Include="UserDefaults\ObservableUserDefault.cs" />
     <Compile Include="UserDefaults\BoolUserDefault.cs" />
+    <Compile Include="WormHoleSharp\CFNotificationCenter.cs" />
+    <Compile Include="WormHoleSharp\Wormhole.cs" />
+    <Compile Include="WormHoleConstants.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
@@ -71,6 +77,10 @@
     <ProjectReference Include="..\Adaptive.ReactiveTrader.Client\Adaptive.ReactiveTrader.Client.csproj">
       <Project>{E92115A5-D7BE-4A19-AF2B-9FB100B28CE4}</Project>
       <Name>Adaptive.ReactiveTrader.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Adaptive.ReactiveTrader.Shared\Adaptive.ReactiveTrader.Shared.csproj">
+      <Project>{B954B5A9-ABD0-469B-9397-039675BEC8F0}</Project>
+      <Name>Adaptive.ReactiveTrader.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -24,7 +24,7 @@
                 <notificationController id="YCC-NB-fut">
                     <items>
                         <label alignment="left" text="Trade Successful static" numberOfLines="0" id="XkS-y5-khE">
-                            <color key="textColor" red="1" green="0.29508340142590728" blue="0.77050859389103732" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="textColor" colorSpace="calibratedWhite" white="1" alpha="1"/>
                         </label>
                     </items>
                     <notificationCategory key="notificationCategory" identifier="trade" descriptionFormat="trade" wantsSashBlur="YES" id="JfB-70-Muf">
@@ -126,7 +126,7 @@
                             <group key="contentGroup" width="1" height="0.34000000000000002" alignment="left" radius="10" id="phn-zX-3Cd">
                                 <items>
                                     <label alignment="left" verticalAlignment="center" text="Sell" id="23"/>
-                                    <label alignment="right" verticalAlignment="center" textAlignment="right" id="RGW-nl-jvm"/>
+                                    <label alignment="right" verticalAlignment="center" textAlignment="right" id="RGW-nl-jvm" minimumScaleFactor="0.5"/>
                                 </items>
                                 <color key="backgroundColor" red="0.16113173629999999" green="0.26442886310000002" blue="0.39929486190000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <edgeInsets key="margins" left="10" right="10" top="0.0" bottom="0.0"/>

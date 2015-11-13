@@ -1,7 +1,4 @@
 using System;
-
-using WatchKit;
-using Foundation;
 using System.Diagnostics;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
@@ -10,7 +7,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
     public sealed class UserModel 
     {
         private static readonly UserModel instance = new UserModel();
-        private string _traderId; // Note that these IDs are random; not unique, yet!
+        private readonly string _traderId; // Note that these IDs are random; not unique, yet!
 
         //
         // Explicit static constructor to tell C# compiler not to mark type as beforefieldinit
@@ -46,19 +43,5 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
                 return _traderId;
             }
         }
-
-        /*public Boolean OneTouchTradingEnabled
-        {
-            get {
-                return (_oneTouchTradingEnabled);
-            }
-            set {
-                if (_oneTouchTradingEnabled != value) {
-                    _oneTouchTradingEnabled = value;
-                    NotifyOnChanged (this);
-                }
-            }
-        }*/
-
     }
 }

@@ -4,7 +4,6 @@ using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
 
 namespace Adaptive.ReactiveTrader.Client.iOS.Shared
 {
-
     public static class FormattedPriceExtentions
     {
         public static NSAttributedString ToAttributedString(this FormattedPrice price)

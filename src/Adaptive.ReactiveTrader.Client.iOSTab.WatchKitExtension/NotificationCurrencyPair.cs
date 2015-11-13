@@ -2,7 +2,6 @@ using Adaptive.ReactiveTrader.Client.Domain.Models.ReferenceData;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 {
-
     class NotificationCurrencyPair
     {
         readonly string _baseCurrency;
@@ -23,6 +22,5 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 
             return (pair.BaseCurrency == _baseCurrency && pair.CounterCurrency == _counterCurrency);
         }
-    }
-	
+    }	
 }

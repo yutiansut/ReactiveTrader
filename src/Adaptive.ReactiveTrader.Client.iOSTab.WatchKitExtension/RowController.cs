@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Foundation;
-using Adaptive.ReactiveTrader.Client.Domain.Models.ReferenceData;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using System.Reactive.Concurrency;
-using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
 using Adaptive.ReactiveTrader.Client.Domain.Models.Pricing;
+using Adaptive.ReactiveTrader.Client.Domain.Models.ReferenceData;
+using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
+using Foundation;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 {
@@ -50,22 +47,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 
         public void UpdatePrice(IPrice price)
         {
-            /*
-            var sellPrice = PriceFormatter.GetFormattedPrice(
-                price.Bid.Rate,
-                price.CurrencyPair.RatePrecision,
-                price.CurrencyPair.PipsPosition);
-
-            var buyPrice = PriceFormatter.GetFormattedPrice(
-                price.Ask.Rate,
-                price.CurrencyPair.RatePrecision,
-                price.CurrencyPair.PipsPosition);
-
-            
-
-            _sellLabel.SetText(sellPrice.ToNormalString());
-            _buyLabel.SetText(buyPrice.ToNormalString());
-        */
             _sellLabel.SetText(_count.ToString());
             _buyLabel.SetText(_count.ToString());
             _count++;
@@ -74,41 +55,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
         void Setup()
         {
             CurrenciesLabel.SetText(_currencyPair.BaseCurrency + " / " + _currencyPair.CounterCurrency);
-
-//            _subscription.Dispose();
-//            var buffered = _currencyPair.PriceStream
-//                .Where(price => !price.IsStale)
-//                //.Buffer(TimeSpan.FromMilliseconds(100))
-//                //.Where(x => x.Any())
-//                //.Select(x => x.Last())
-//                .SubscribeOn(new EventLoopScheduler());
-//
-//            _subscription = new CompositeDisposable
-//                {
-//                    buffered
-//                        .Subscribe(price =>
-//                        {
-//                            var sellPrice = PriceFormatter.GetFormattedPrice(
-//                                price.Bid.Rate,
-//                                price.CurrencyPair.RatePrecision,
-//                                price.CurrencyPair.PipsPosition);
-//
-//                            var buyPrice = PriceFormatter.GetFormattedPrice(
-//                                price.Ask.Rate,
-//                                price.CurrencyPair.RatePrecision,
-//                                price.CurrencyPair.PipsPosition);
-//
-//                            _sellLabel.SetText(sellPrice.ToAttributedString());
-//                            _buyLabel.SetText(buyPrice.ToAttributedString());
-//                        }),
-//                        
-//                    buffered
-//                        .ToPriceMovementStream()
-//                        .Subscribe(movement =>
-//                        {
-//                            DirectionLabel.SetText(_movementText[movement]);
-//                        })
-//                };
         }
     }
 }

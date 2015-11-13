@@ -3,7 +3,7 @@ using Adaptive.ReactiveTrader.Shared.DTO.Pricing;
 
 namespace Adaptive.ReactiveTrader.Client.Domain.ServiceClients
 {
-    internal interface IPricingServiceClient
+    public interface IPricingServiceClient
     {
         IObservable<PriceDto> GetSpotStream(string currencyPair);
     }

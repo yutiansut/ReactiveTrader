@@ -30,6 +30,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain
             var executionServiceClient = new ExecutionServiceClient(_connectionProvider);
             var blotterServiceClient = new BlotterServiceClient(_connectionProvider, _loggerFactory);
             var pricingServiceClient = new PricingServiceClient(_connectionProvider, _loggerFactory);
+            PricingServiceClient = pricingServiceClient;
 
             if (authToken != null)
             {
@@ -52,6 +53,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain
         public IReferenceDataRepository ReferenceData { get; private set; }
         public ITradeRepository TradeRepository { get; private set; }
         public IPriceLatencyRecorder PriceLatencyRecorder { get; private set; }
+        public IPricingServiceClient PricingServiceClient { get; private set; }
 
         public IControlRepository Control
         {

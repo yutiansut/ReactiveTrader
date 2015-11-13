@@ -12,6 +12,10 @@ using Adaptive.ReactiveTrader.Client.Domain.Transport;
 using System.Runtime.InteropServices;
 using CoreAnimation;
 using System.Threading.Tasks;
+using WormHoleSharp;
+using Adaptive.ReactiveTrader.Client.iOS.Shared;
+using System.Reactive.Disposables;
+using Adaptive.ReactiveTrader.Client.Domain.Models;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
@@ -89,20 +93,18 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 
             tabBarController.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
 
-
 			window.RootViewController = _startUpViewController;
             window.MakeKeyAndVisible ();
+
+            new WormholeSender(_reactiveTrader);
 
 			return true;
 		}
 
+
         public override void DidEnterBackground(UIApplication application)
         {
-            nint taskID = UIApplication.SharedApplication.BeginBackgroundTask( () => {
-
-                Console.WriteLine("Background time expired");
-
-            });
+            UIApplication.SharedApplication.BeginBackgroundTask(() => Console.WriteLine("Background time expired"));
 
             var remaining = TimeSpan.FromSeconds(application.BackgroundTimeRemaining);
 
@@ -121,8 +123,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
                     _ => _startUpViewController.PresentViewController(tabBarController, true, null),
                     ex => _startUpViewController.DisplayMessages (false, "Disconnected", "Unable to connect")
                 );
-
         }
 	}
+
 }
 

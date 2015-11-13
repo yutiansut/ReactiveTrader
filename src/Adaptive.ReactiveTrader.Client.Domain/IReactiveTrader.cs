@@ -2,6 +2,7 @@
 using Adaptive.ReactiveTrader.Client.Domain.Instrumentation;
 using Adaptive.ReactiveTrader.Client.Domain.Repositories;
 using Adaptive.ReactiveTrader.Shared.Logging;
+using Adaptive.ReactiveTrader.Client.Domain.ServiceClients;
 
 namespace Adaptive.ReactiveTrader.Client.Domain
 {
@@ -12,6 +13,7 @@ namespace Adaptive.ReactiveTrader.Client.Domain
         IObservable<ConnectionInfo> ConnectionStatusStream { get; }
         IPriceLatencyRecorder PriceLatencyRecorder { get; }
         IControlRepository Control { get; }
+        IPricingServiceClient PricingServiceClient { get; }
         void Initialize(string username, string[] servers, ILoggerFactory loggerFactory = null, string authToken = null);
     }
 }

@@ -1,16 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using Adaptive.ReactiveTrader.Client.Domain.Models.Execution;
 using Adaptive.ReactiveTrader.Client.Domain.Models.Pricing;
 using Adaptive.ReactiveTrader.Client.Domain.Models.ReferenceData;
+using Adaptive.ReactiveTrader.Client.iOS.Shared;
 using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
 using Foundation;
 using UIKit;
 using WatchKit;
-using System.Reactive.Concurrency;
-using Adaptive.ReactiveTrader.Client.Domain.Models.Execution;
-using Adaptive.ReactiveTrader.Client.iOS.Shared;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 {
@@ -25,8 +23,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
         bool _executingSell;
         bool _executingBuy;
         IDisposable _subscription = Disposable.Empty;
-
-
 
         public override void Awake(NSObject context)
         {
@@ -57,28 +53,56 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
                 return;
             }
 
-            var buffered = _pair.PriceStream.Where(price => !price.IsStale); //.Sample(TimeSpan.FromSeconds(.1));
+            var stream = _pair.PriceStream;
                 
             _subscription = new CompositeDisposable
             {
-                buffered.Subscribe(price => _price = price),
+                stream.Subscribe(price => _price = price),
 
-                buffered
-                    .Where(_ => !_executingSell)
-                    .Select(price => FormattedPriceExtentions.ToAttributedString(price.ToBidPrice()))
+                stream
+                    .Where(price => !price.IsStale && !_executingSell)
+                    .Select(price => price.ToBidPrice().ToAttributedString())
                     .Subscribe(SellPriceLabel.SetText),
 
-                buffered
-                    .Where(_ => !_executingBuy)
-                    .Select(price => FormattedPriceExtentions.ToAttributedString(price.ToAskPrice()))
+                stream
+                    .Where(price => !price.IsStale && !_executingBuy)
+                    .Select(price => price.ToAskPrice().ToAttributedString())
                     .Subscribe(BuyPriceLabel.SetText),
 
-                buffered
+                stream
+                    .Where(price => !price.IsStale)
                     .ToPriceMovementStream()
                     .DistinctUntilChanged()                    
                     .Select(movement => movement.ToAttributedString(_price))
-                    .Subscribe(PriceLabel.SetText)                    
+                    .Subscribe(PriceLabel.SetText),
+
+                stream
+                    .Where(price => price.IsStale)
+                    .Subscribe(_ => 
+                        {
+                            SetStale(BuyButton);
+                            SetStale(SellButton);
+                        }),
+
+                stream
+                    .Where(price => !price.IsStale)
+                    .Subscribe(_ => 
+                        {
+                            SetLive(BuyButton);
+                            SetLive(SellButton);
+                        })
             };
+        }
+
+        void SetLive(WKInterfaceButton button)
+        {
+            button.SetBackgroundColor(UIColor.FromRGBA(red: 0.16f, green: 0.26f, blue: 0.4f, alpha: 1f));
+        }
+
+        void SetStale(WKInterfaceButton button)
+        {
+            button.SetBackgroundColor(UIColor.Red);
+            button.SetTitle("-");
         }
 
         public override void DidDeactivate()

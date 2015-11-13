@@ -2,7 +2,7 @@
 
 namespace Adaptive.ReactiveTrader.Client.Domain.Models.Execution
 {
-    public class Trade : ITrade
+    internal class Trade : ITrade
     {
         public string CurrencyPair { get; private set; }
         public Direction Direction { get; private set; }

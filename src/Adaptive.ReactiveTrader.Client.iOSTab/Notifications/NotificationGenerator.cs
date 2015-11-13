@@ -9,7 +9,9 @@ using Adaptive.ReactiveTrader.Client.Domain.Models;
 using Adaptive.ReactiveTrader.Client.Domain.Models.Execution;
 using Adaptive.ReactiveTrader.Client.iOS.Shared;
 using Foundation;
+using System.Linq;
 using UIKit;
+using Adaptive.ReactiveTrader.Client.Domain.Models.ReferenceData;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab
 {
@@ -18,6 +20,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
         readonly IReactiveTrader _reactiveTrader;
         readonly IConcurrencyService _concurrencyService;
         readonly CompositeDisposable _disposables = new CompositeDisposable();
+        readonly Dictionary<string, ICurrencyPair> _currenyPairs = new Dictionary<string, ICurrencyPair>();
 
         public ISubject<bool> NotificationsEnabled { get; } = new BoolUserDefault("notificationsEnabled");
         bool _enabled;
@@ -38,8 +41,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
             NotificationsEnabled
                 .Subscribe(enabled => _enabled = enabled)
                 .Add(_disposables);
-
-            _reactiveTrader.TradeRepository
+            
+            _reactiveTrader
+                .TradeRepository
                 .GetTradesStream()
                 .SubscribeOn(_concurrencyService.TaskPool)
                 .ObserveOn(_concurrencyService.Dispatcher)
@@ -47,6 +51,13 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
                 .WhereLatest(NotificationsEnabled)
                 .Subscribe(OnTradeUpdates)
                 .Add(_disposables);
+
+            _reactiveTrader
+                .ReferenceData
+                .GetCurrencyPairsStream()
+                .SelectMany(x => x)
+                .Where(update => update.UpdateType == UpdateType.Add)
+                .Subscribe(update => _currenyPairs[update.CurrencyPair.BaseCurrency + update.CurrencyPair.CounterCurrency] = update.CurrencyPair);
         }
 
         public void Dispose()
@@ -58,7 +69,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
         {
             var action = new UIMutableUserNotificationAction
                 {
-                    Title = "Trade",
+                    Title = "Launch",
                     Identifier = "trade",
                     ActivationMode = UIUserNotificationActivationMode.Foreground,
                     AuthenticationRequired = false
@@ -79,14 +90,18 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
         { 
             foreach (var trade in trades)
             {
+                Console.WriteLine("WatchNotification: trade made");                 
+
                 var boughtOrSold = trade.Direction == Direction.BUY ? "bought" : "sold";
 
                 var currencyOne = trade.CurrencyPair.Substring(0, 3);
                 var currencyTwo = trade.CurrencyPair.Substring(3, 3);
+                var currentyPair = _currenyPairs[trade.CurrencyPair];
 
                 var userInfo = new NSMutableDictionary
                 {
                     { (NSString)"trade", trade.ToNSString() },
+                    { WormHoleConstants.CurrencyPairKey, currentyPair.ToNSString() },
                     { (NSString)"baseCurrency", (NSString)currencyOne },
                     { (NSString)"counterCurrency", (NSString)currencyTwo }
                 };
@@ -102,7 +117,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
                     SoundName = UILocalNotification.DefaultSoundName
                 };
                               
-                Console.WriteLine("Notification: " + notification.AlertBody);                 
+                Console.WriteLine("WatchNotification: sending from iPhone " + notification.AlertBody);                 
                 UIApplication.SharedApplication.PresentLocalNotificationNow(notification);
             }
         }
