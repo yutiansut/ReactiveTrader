@@ -116,7 +116,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
                     HasAction = true,
                     SoundName = UILocalNotification.DefaultSoundName
                 };
-                              
+                
                 Console.WriteLine("WatchNotification: sending from iPhone " + notification.AlertBody);                 
                 UIApplication.SharedApplication.PresentLocalNotificationNow(notification);
             }
