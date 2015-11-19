@@ -20,8 +20,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 
         ICurrencyPair _pair;
         IPrice _price;
-        bool _executingSell;
-        bool _executingBuy;
+        bool _executing;
         IDisposable _subscription = Disposable.Empty;
 
         public override void Awake(NSObject context)
@@ -60,12 +59,12 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
                 stream.Subscribe(price => _price = price),
 
                 stream
-                    .Where(price => !price.IsStale && !_executingSell)
+                    .Where(price => !price.IsStale && !_executing)
                     .Select(price => price.ToBidPrice().ToAttributedString())
                     .Subscribe(SellPriceLabel.SetText),
 
                 stream
-                    .Where(price => !price.IsStale && !_executingBuy)
+                    .Where(price => !price.IsStale && !_executing)
                     .Select(price => price.ToAskPrice().ToAttributedString())
                     .Subscribe(BuyPriceLabel.SetText),
 
@@ -74,6 +73,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
                     .ToPriceMovementStream()
                     .DistinctUntilChanged()                    
                     .Select(movement => movement.ToAttributedString(_price))
+                    .Where(_ => !_executing)
                     .Subscribe(PriceLabel.SetText),
 
                 stream
@@ -115,49 +115,53 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 
         partial void SellButtonTapped()
         {
-            var executePrice = _price;
-
-            if (executePrice.IsStale)
+            if (_price != null)
             {
-                return;
+                ExecuteTrade(_price, _price.Bid, SellPriceLabel, SellButton);
             }
-
-            SellPriceLabel.SetText("Executing...");
-            _executingSell = true;
-
-            executePrice.Bid.ExecuteRequest(50000, _pair.BaseCurrency)
-                .Where(result => !result.IsStale)
-                .Subscribe(result =>             
-                {
-                    Console.WriteLine("Executed");
-                    _executingSell = false;
-                    ShowConfirmation(result.Update);
-                });
         }
 
         partial void BuyButtonTapped()
-        {                       
-            var executePrice = _price;
+        {     
+            if (_price != null)
+            {
+                ExecuteTrade(_price, _price.Ask, BuyPriceLabel, BuyButton);
+            }
+        }
 
-            if (executePrice.IsStale)
+        void ExecuteTrade(IPrice price, IExecutablePrice executablePrice, WKInterfaceLabel label, WKInterfaceButton button)
+        {
+            if (price == null)
+            {
+                throw new ArgumentNullException("price");
+            }
+
+            if (price == null || price.IsStale || _executing)
             {
                 return;
             }
 
-            BuyPriceLabel.SetText("Executing...");
-            _executingBuy = true;
+            _executing = true;
+            label.SetText("Executing...");
+            button.SetEnabled(false);
 
-            executePrice.Ask.ExecuteRequest(50000, _pair.BaseCurrency)
+            executablePrice.ExecuteRequest(50000, _pair.BaseCurrency)
                 .Subscribe(result => 
-                {
-                    Console.WriteLine("Executed");
-                    _executingBuy = false;
-                    ShowConfirmation(result.Update);
-                });
+                    {
+                        ShowConfirmation(result.Update);
+                        button.SetEnabled(true);
+                        label.SetText("");
+                        _executing = false;
+                    });
         }
 
         void ShowConfirmation(ITrade trade)
         {
+            if (trade == null)
+            {
+                throw new ArgumentNullException("trade");
+            }
+
             Trades.Shared[trade.TradeId] = trade;
                  
             InvokeOnMainThread(() => 
