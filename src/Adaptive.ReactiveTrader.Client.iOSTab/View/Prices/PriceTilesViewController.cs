@@ -121,7 +121,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 				return (base.EdgesForExtendedLayout ^ UIRectEdge.Bottom);
 			}
 		}
-
 	}
 }
 

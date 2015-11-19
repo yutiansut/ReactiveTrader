@@ -80,8 +80,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
 			var pricesViewController = new PriceTilesViewController (_reactiveTrader, cs);
             var statusViewController = new StatusViewController (_reactiveTrader, cs, _notificationHandler.NotificationsEnabled);
 
-			tabBarController = new UITabBarController ();
-
+            tabBarController = new UITabBarController();
 			tabBarController.ViewControllers = new UIViewController [] {
 				pricesViewController,
 				tradesViewController,

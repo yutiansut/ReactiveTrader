@@ -1,17 +1,12 @@
-
 using System;
-using CoreGraphics;
-using System.Collections.Generic; // For List<T>
-
-using Foundation;
-using UIKit;
-using Adaptive.ReactiveTrader.Client.Domain;
-using Adaptive.ReactiveTrader.Client.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Runtime.InteropServices;
-using Adaptive.ReactiveTrader.Client.iOS.Shared;
 using System.Reactive.Subjects;
+using Adaptive.ReactiveTrader.Client.Concurrency;
+using Adaptive.ReactiveTrader.Client.Domain;
+using Adaptive.ReactiveTrader.Client.iOS.Shared;
+using Foundation;
+using UIKit;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 {
@@ -44,7 +39,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 				Observable.Interval (TimeSpan.FromSeconds(1), _concurrencyService.TaskPool)
 					.ObserveOn (_concurrencyService.Dispatcher)
 					.Subscribe(_ => OnTimer()));
-
 		}
 
 		protected override void Dispose (bool disposing)
@@ -59,12 +53,10 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			// Perform any additional setup after loading the view, typically from a nib.
 
-			// The connection detail text area wraps and is resizable.
-			// Note that this requires us to turn off Auto-layout for this view.
-
-			this.ConnectionDetail.LineBreakMode = UILineBreakMode.CharacterWrap;
+            UIEdgeInsets adjustForTabbarInsets = new UIEdgeInsets(UIApplication.SharedApplication.StatusBarFrame.Height, 0, TabBarController.TabBar.Frame.Height, 0);
+            _scrollView.ContentInset = adjustForTabbarInsets;
+            _scrollView.ScrollIndicatorInsets = adjustForTabbarInsets;
 
 			this.TraderId.Text = UserModel.Instance.TraderId;
 

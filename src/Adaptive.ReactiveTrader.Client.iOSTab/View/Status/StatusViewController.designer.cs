@@ -15,6 +15,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 	partial class StatusViewController
 	{
 		[Outlet]
+		UIKit.UISwitch _notificationsSwitch { get; set; }
+
+		[Outlet]
 		UIKit.UILabel ConnectionDetail { get; set; }
 
 		[Outlet]
@@ -34,7 +37,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 
 		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
-		UISwitch _notificationsSwitch { get; set; }
+		UIScrollView _scrollView { get; set; }
 
 		[Action ("LinkTouchUpInside:")]
 		partial void LinkTouchUpInside (Foundation.NSObject sender);
@@ -44,6 +47,10 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.View
 			if (_notificationsSwitch != null) {
 				_notificationsSwitch.Dispose ();
 				_notificationsSwitch = null;
+			}
+			if (_scrollView != null) {
+				_scrollView.Dispose ();
+				_scrollView = null;
 			}
 			if (ConnectionDetail != null) {
 				ConnectionDetail.Dispose ();
