@@ -44,7 +44,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
                 .ObserveOn(_concurrencyService.Dispatcher)
                 .Skip(2) // Skip over past trades on start up
                 .WhereLatest(NotificationsEnabled)
-                .Subscribe(OnTradeUpdates)
+                .SelectMany(trades => trades)
+                .Where(trade => trade.TradeStatus == TradeStatus.Done)
+                .Subscribe(OnTrade)
                 .Add(_disposables);
 
             _reactiveTrader
@@ -81,40 +83,37 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab
             UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
         }
 
-        void OnTradeUpdates(IEnumerable<ITrade> trades)
-        { 
-            foreach (var trade in trades)
+        void OnTrade(ITrade trade)
+        {
+            Console.WriteLine("WatchNotification: trade made");                 
+
+            var boughtOrSold = trade.Direction == Direction.BUY ? "bought" : "sold";
+
+            var currencyOne = trade.CurrencyPair.Substring(0, 3);
+            var currencyTwo = trade.CurrencyPair.Substring(3, 3);
+            var currentyPair = _currenyPairs[trade.CurrencyPair];
+
+            var userInfo = new NSMutableDictionary
             {
-                Console.WriteLine("WatchNotification: trade made");                 
+                { (NSString)"trade", trade.ToNSString() },
+                { WormHoleConstants.CurrencyPairKey, currentyPair.ToNSString() },
+                { (NSString)"baseCurrency", (NSString)currencyOne },
+                { (NSString)"counterCurrency", (NSString)currencyTwo }
+            };
 
-                var boughtOrSold = trade.Direction == Direction.BUY ? "bought" : "sold";
-
-                var currencyOne = trade.CurrencyPair.Substring(0, 3);
-                var currencyTwo = trade.CurrencyPair.Substring(3, 3);
-                var currentyPair = _currenyPairs[trade.CurrencyPair];
-
-                var userInfo = new NSMutableDictionary
-                {
-                    { (NSString)"trade", trade.ToNSString() },
-                    { WormHoleConstants.CurrencyPairKey, currentyPair.ToNSString() },
-                    { (NSString)"baseCurrency", (NSString)currencyOne },
-                    { (NSString)"counterCurrency", (NSString)currencyTwo }
-                };
-
-                var notification = new UILocalNotification
-                {
-                    AlertBody = $"'{trade.TraderName}' {boughtOrSold} {trade.Notional:n0} {trade.DealtCurrency} vs {currencyTwo} at {trade.SpotRate}",
-                    Category = "trade",
-                    UserInfo = userInfo,
-                    AlertTitle = "Trade Executed",
-                    AlertAction = $"Show {currencyOne} / {currencyTwo}",
-                    HasAction = true,
-                    SoundName = UILocalNotification.DefaultSoundName
-                };
-                
-                Console.WriteLine("WatchNotification: sending from iPhone " + notification.AlertBody);                 
-                UIApplication.SharedApplication.PresentLocalNotificationNow(notification);
-            }
+            var notification = new UILocalNotification
+            {
+                AlertBody = $"'{trade.TraderName}' {boughtOrSold} {trade.Notional:n0} {trade.DealtCurrency} vs {currencyTwo} at {trade.SpotRate}",
+                Category = "trade",
+                UserInfo = userInfo,
+                AlertTitle = "Trade Executed",
+                AlertAction = $"Show {currencyOne} / {currencyTwo}",
+                HasAction = true,
+                SoundName = UILocalNotification.DefaultSoundName
+            };
+            
+            Console.WriteLine("WatchNotification: sending from iPhone " + notification.AlertBody);                 
+            UIApplication.SharedApplication.PresentLocalNotificationNow(notification);
         }
     }
 }

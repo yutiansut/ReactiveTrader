@@ -22,12 +22,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 		{
 		}
 
-        static readonly UIStringAttributes _grey = new UIStringAttributes { ForegroundColor = UIColor.LightGray };
-        static readonly UIStringAttributes _normal = new UIStringAttributes();
-
-        static readonly UIStringAttributes _smallGrey = new UIStringAttributes { ForegroundColor = UIColor.LightGray, Font = UIFont.SystemFontOfSize(10) };
-        static readonly UIStringAttributes _small = new UIStringAttributes { Font = UIFont.SystemFontOfSize(10) };
-
         ITrade _trade;
 
         public override void Awake(NSObject context)
@@ -56,6 +50,12 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
             base.WillActivate();
 
             var trade = _trade;
+
+            if (trade.TradeStatus == TradeStatus.Rejected)
+            {
+
+            }
+
             var currency = trade.CurrencyPair.Replace(trade.DealtCurrency, ""); // Hack
 
             SetTitle(trade.DealtCurrency + "/" + currency);

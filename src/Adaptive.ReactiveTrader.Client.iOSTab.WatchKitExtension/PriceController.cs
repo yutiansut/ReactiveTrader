@@ -97,12 +97,14 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
         void SetLive(WKInterfaceButton button)
         {
             button.SetBackgroundColor(UIColor.FromRGBA(red: 0.16f, green: 0.26f, blue: 0.4f, alpha: 1f));
+            SellButton.SetEnabled(true);
         }
 
         void SetStale(WKInterfaceButton button)
         {
             button.SetBackgroundColor(UIColor.Red);
             button.SetTitle("-");
+            button.SetEnabled(false);
         }
 
         public override void DidDeactivate()
@@ -113,29 +115,39 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 
         partial void SellButtonTapped()
         {
+            var executePrice = _price;
+
+            if (executePrice.IsStale)
+            {
+                return;
+            }
+
             SellPriceLabel.SetText("Executing...");
             _executingSell = true;
 
-            _price.Bid
-                .ExecuteRequest(50000, _pair.BaseCurrency)
+            executePrice.Bid.ExecuteRequest(50000, _pair.BaseCurrency)
                 .Where(result => !result.IsStale)
                 .Subscribe(result =>             
                 {
                     Console.WriteLine("Executed");
                     _executingSell = false;
                     ShowConfirmation(result.Update);
-                });   
+                });
         }
 
         partial void BuyButtonTapped()
         {                       
-            
-            BuyPriceLabel.SetText("Executing...");
-            _executingSell = true;
+            var executePrice = _price;
 
-            _price.Ask
-                .ExecuteRequest(50000, _pair.BaseCurrency)
-                .Where(result => !result.IsStale)
+            if (executePrice.IsStale)
+            {
+                return;
+            }
+
+            BuyPriceLabel.SetText("Executing...");
+            _executingBuy = true;
+
+            executePrice.Ask.ExecuteRequest(50000, _pair.BaseCurrency)
                 .Subscribe(result => 
                 {
                     Console.WriteLine("Executed");
