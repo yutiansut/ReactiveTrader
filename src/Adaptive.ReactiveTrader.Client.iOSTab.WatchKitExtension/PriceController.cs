@@ -97,14 +97,12 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
         void SetLive(WKInterfaceButton button)
         {
             button.SetBackgroundColor(UIColor.FromRGBA(red: 0.16f, green: 0.26f, blue: 0.4f, alpha: 1f));
-            SellButton.SetEnabled(true);
         }
 
         void SetStale(WKInterfaceButton button)
         {
             button.SetBackgroundColor(UIColor.Red);
             button.SetTitle("-");
-            button.SetEnabled(false);
         }
 
         public override void DidDeactivate()
@@ -143,13 +141,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 
             _executing = true;
             label.SetText("Executing...");
-            button.SetEnabled(false);
 
-            executablePrice.ExecuteRequest(50000, _pair.BaseCurrency)
+            executablePrice.ExecuteRequest(100930, _pair.BaseCurrency)
                 .Subscribe(result => 
                     {
                         ShowConfirmation(result.Update);
-                        button.SetEnabled(true);
                         label.SetText("");
                         _executing = false;
                     });

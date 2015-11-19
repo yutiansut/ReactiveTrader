@@ -135,8 +135,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GlanceController.cs" />
-    <Compile Include="GlanceController.designer.cs" />
     <Compile Include="NotificationController.cs" />
     <Compile Include="NotificationController.designer.cs" />
     <Compile Include="RowController.cs" />
