@@ -21,7 +21,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
         ICurrencyPair _pair;
         IPrice _price;
         bool _executing;
-        IDisposable _subscription = Disposable.Empty;
+        CompositeDisposable _disposables = new CompositeDisposable();
 
         public override void Awake(NSObject context)
         {
@@ -53,69 +53,65 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
             }
 
             var stream = _pair.PriceStream;
-                
-            _subscription = new CompositeDisposable
-            {
-                stream.Subscribe(price => _price = price),
 
-                stream
-                    .Where(price => !price.IsStale && !_executing)
-                    .Select(price => price.ToBidPrice().ToAttributedString())
-                    .Subscribe(SellPriceLabel.SetText),
+            stream.Subscribe(price => _price = price).Add(_disposables);
 
-                stream
-                    .Where(price => !price.IsStale && !_executing)
-                    .Select(price => price.ToAskPrice().ToAttributedString())
-                    .Subscribe(BuyPriceLabel.SetText),
+            stream
+                .Where(price => !price.IsStale && !_executing)
+                .Select(price => price.ToBidPrice().ToAttributedString())
+                .Subscribe(SellPriceLabel.SetText)
+                .Add(_disposables);
 
-                stream
-                    .Where(price => !price.IsStale)
-                    .ToPriceMovementStream()
-                    .DistinctUntilChanged()                    
-                    .Select(movement => movement.ToAttributedString(_price))
-                    .Where(_ => !_executing)
-                    .Subscribe(PriceLabel.SetText),
+            stream
+                .Where(price => !price.IsStale && !_executing)
+                .Select(price => price.ToAskPrice().ToAttributedString())
+                .Subscribe(BuyPriceLabel.SetText)
+                .Add(_disposables);
 
-                stream
-                    .Where(price => price.IsStale)
-                    .Subscribe(_ => 
-                        {
-                            SetStale(BuyButton);
-                            SetStale(SellButton);
-                        }),
+            stream
+                .Where(price => !price.IsStale)
+                .ToPriceMovementStream()
+                .DistinctUntilChanged()                    
+                .Select(movement => movement.ToAttributedString(_price))
+                .Where(_ => !_executing)
+                .Subscribe(PriceLabel.SetText)
+                .Add(_disposables);
 
-                stream
-                    .Where(price => !price.IsStale)
-                    .Subscribe(_ => 
-                        {
-                            SetLive(BuyButton);
-                            SetLive(SellButton);
-                        })
-            };
-        }
-
-        void SetLive(WKInterfaceButton button)
-        {
-            button.SetBackgroundColor(UIColor.FromRGBA(red: 0.16f, green: 0.26f, blue: 0.4f, alpha: 1f));
-        }
-
-        void SetStale(WKInterfaceButton button)
-        {
-            button.SetBackgroundColor(UIColor.Red);
-            button.SetTitle("-");
+            stream
+                .Select(price => price.IsStale)
+                .DistinctUntilChanged()
+                .Subscribe(isStale => 
+                {
+                    SetStatus(isStale, BuyButton);
+                    SetStatus(isStale, SellButton);
+                })
+                .Add(_disposables);
         }
 
         public override void DidDeactivate()
         {
-            _subscription.Dispose();
+            _disposables.Dispose();
             base.DidDeactivate();
+        }
+
+        void SetStatus(bool isStale, WKInterfaceButton button)
+        {
+            if (isStale)
+            {
+                button.SetBackgroundColor(UIColor.Red);
+                button.SetTitle("-");
+            }
+            else
+            {
+                button.SetBackgroundColor(UIColor.FromRGBA(red: 0.16f, green: 0.26f, blue: 0.4f, alpha: 1f));
+            }
         }
 
         partial void SellButtonTapped()
         {
             if (_price != null)
             {
-                ExecuteTrade(_price, _price.Bid, SellPriceLabel, SellButton);
+                ExecuteTrade(_price, _price.Bid, SellPriceLabel);
             }
         }
 
@@ -123,11 +119,11 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
         {     
             if (_price != null)
             {
-                ExecuteTrade(_price, _price.Ask, BuyPriceLabel, BuyButton);
+                ExecuteTrade(_price, _price.Ask, BuyPriceLabel);
             }
         }
 
-        void ExecuteTrade(IPrice price, IExecutablePrice executablePrice, WKInterfaceLabel label, WKInterfaceButton button)
+        void ExecuteTrade(IPrice price, IExecutablePrice executablePrice, WKInterfaceLabel label)
         {
             if (price == null)
             {
@@ -148,7 +144,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
                         ShowConfirmation(result.Update);
                         label.SetText("");
                         _executing = false;
-                    });
+                    })
+                .Add(_disposables);
         }
 
         void ShowConfirmation(ITrade trade)
@@ -165,7 +162,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
             );
         }
 
-        ICurrencyPair PairFromContext(NSObject context)
+        static ICurrencyPair PairFromContext(NSObject context)
         {
             if (context == null)
             {

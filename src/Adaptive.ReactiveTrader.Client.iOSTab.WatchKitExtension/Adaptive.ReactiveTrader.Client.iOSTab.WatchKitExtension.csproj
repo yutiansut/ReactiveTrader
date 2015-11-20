@@ -137,8 +137,6 @@
   <ItemGroup>
     <Compile Include="NotificationController.cs" />
     <Compile Include="NotificationController.designer.cs" />
-    <Compile Include="RowController.cs" />
-    <Compile Include="RowController.designer.cs" />
     <Compile Include="UserModel.cs" />
     <Compile Include="InitialController.cs" />
     <Compile Include="InitialController.designer.cs">

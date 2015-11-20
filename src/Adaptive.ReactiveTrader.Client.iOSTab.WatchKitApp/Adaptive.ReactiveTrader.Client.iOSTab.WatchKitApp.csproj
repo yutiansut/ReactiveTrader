@@ -86,10 +86,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.WatchApp.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="RowController.cs" />
-    <Compile Include="RowController.designer.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <InterfaceDefinition Include="Interface.storyboard" />
   </ItemGroup>
   <ItemGroup>

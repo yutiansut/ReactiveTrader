@@ -137,7 +137,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
         {
             if (disposing)
             {
-                _trader.Dispose();
+                _trader?.Dispose();
                 _compositeDisposable.Dispose();
 
                 try
