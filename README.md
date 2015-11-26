@@ -9,7 +9,7 @@
  - [Documentation](https://github.com/AdaptiveConsulting/ReactiveTrader/wiki)
  - [Blogs](#blogs)
  - [Training](#training)
- - [Future Announcements](#future-annoucements)
+ - [Future Announcements](#future-announcements)
 
 # Overview
 
