@@ -81,6 +81,7 @@
     <Compile Include="Shared\Extensions\HeartbeatTests.cs" />
     <Compile Include="Client\UI\SpotTiles\PriceExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Fody\FodyHasRunTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -102,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dto\" />
+    <Folder Include="Fody\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
