@@ -6,18 +6,6 @@
     </dependencies>
     <scenes>
         <!--Glance Interface Controller-->
-        <scene sceneID="BOz-TT-tkC">
-            <objects>
-                <glanceController spacing="0.0" id="0uZ-2p-rRc" customClass="GlanceController">
-                    <items>
-                        <group alignment="left" id="t8f-Gd-c4y"/>
-                        <group alignment="left" id="uCw-4Q-Ouw"/>
-                    </items>
-                    <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="14"/>
-                </glanceController>
-            </objects>
-            <point key="canvasLocation" x="0.0" y="263"/>
-        </scene>
         <!--Static Notification Interface Controller-->
         <scene sceneID="AEw-b0-oYE">
             <objects>
@@ -30,6 +18,7 @@
                     <notificationCategory key="notificationCategory" identifier="trade" descriptionFormat="trade" wantsSashBlur="YES" id="JfB-70-Muf">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="sashColor" red="0.070588235289999995" green="0.2666666667" blue="0.4549019608" alpha="1" colorSpace="calibratedRGB"/>
+                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="0.0"/>
                     </notificationCategory>
                     <color key="backgroundColor" red="0.070588235289999995" green="0.2666666667" blue="0.4549019608" alpha="1" colorSpace="calibratedRGB"/>
                     <edgeInsets key="margins" left="5" right="5" top="5" bottom="5"/>
@@ -115,7 +104,7 @@
             <objects>
                 <controller hidesWhenLoading="NO" id="20" customClass="InitialController"/>
             </objects>
-            <point key="canvasLocation" x="304" y="599"/>
+            <point key="canvasLocation" x="329" y="308"/>
         </scene>
         <!--Trade-->
         <scene sceneID="21">
@@ -164,7 +153,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="563" y="599"/>
+            <point key="canvasLocation" x="534" y="310"/>
         </scene>
         <!-- -->
         <scene sceneID="QB6-FH-h7v">
@@ -189,7 +178,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="881" y="590"/>
+            <point key="canvasLocation" x="745" y="310"/>
         </scene>
     </scenes>
     <resources>

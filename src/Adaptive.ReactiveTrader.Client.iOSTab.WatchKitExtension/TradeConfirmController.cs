@@ -8,6 +8,7 @@ using Adaptive.ReactiveTrader.Client.Domain.Models;
 using UIKit;
 using Adaptive.ReactiveTrader.Client.Domain.Models.Execution;
 using Adaptive.ReactiveTrader.Client.iOS.Shared;
+using System.Diagnostics;
 
 namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 {
@@ -22,12 +23,6 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 		{
 		}
 
-        static readonly UIStringAttributes _grey = new UIStringAttributes { ForegroundColor = UIColor.LightGray };
-        static readonly UIStringAttributes _normal = new UIStringAttributes();
-
-        static readonly UIStringAttributes _smallGrey = new UIStringAttributes { ForegroundColor = UIColor.LightGray, Font = UIFont.SystemFontOfSize(10) };
-        static readonly UIStringAttributes _small = new UIStringAttributes { Font = UIFont.SystemFontOfSize(10) };
-
         ITrade _trade;
 
         public override void Awake(NSObject context)
@@ -36,7 +31,8 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 
             if (context == null)
             {
-                throw new ArgumentNullException("context");
+                Console.WriteLine("Error: null context passed to TradeConfirmController Awake");
+                return;
             }
 
             var tradeId = ((NSNumber)context).LongValue;
@@ -44,7 +40,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
 
             if (trade == null)
             {
-                throw new NullReferenceException("Couldn't find trade");
+                Console.WriteLine("Error: couldn't find trade in TradeConfirmController Awake");
             }
 
             _trade = trade;
@@ -55,18 +51,15 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
         {
             base.WillActivate();
 
-            var trade = _trade;
-            var currency = trade.CurrencyPair.Replace(trade.DealtCurrency, ""); // Hack
-
-            SetTitle(trade.DealtCurrency + "/" + currency);
-
-            var text = trade.ToAttributedString();
-
-            if (TradeDetailsLabel == null)
+            if (_trade == null)
             {
-                Console.WriteLine("label is null");
+                Console.WriteLine("Error: trade is null in TradeConfirmController WillActivate");
+                return;
             }
 
+            var currency = _trade.CurrencyPair.Replace(_trade.DealtCurrency, "");
+            SetTitle(_trade.DealtCurrency + "/" + currency);
+            var text = _trade.ToAttributedString();
             DetailsLabel.SetText(text);
         }
 
@@ -75,5 +68,4 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
             DismissController();
         }
 	}
-
 }
