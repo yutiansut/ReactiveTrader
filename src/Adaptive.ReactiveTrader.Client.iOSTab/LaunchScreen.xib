@@ -30,5 +30,12 @@
     </objects>
     <resources>
         <image name="Splash" width="392" height="357"/>
+        <image name="tab_status.png" width="30" height="30"/>
+        <image name="tab_trades.png" width="30" height="30"/>
+        <image name="adaptive-logo.png" width="72" height="76"/>
+        <image name="green-up.png" width="40" height="17"/>
+        <image name="red-down.png" width="40" height="17"/>
+        <image name="tab_prices.png" width="30" height="30"/>
+        <image name="adaptive.png" width="31" height="32"/>
     </resources>
 </document>
