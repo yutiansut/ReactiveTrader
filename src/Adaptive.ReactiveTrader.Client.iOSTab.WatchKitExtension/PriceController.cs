@@ -52,6 +52,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
                 return;
             }
 
+            _disposables = new CompositeDisposable();
             var stream = _pair.PriceStream;
 
             stream.Subscribe(price => _price = price).Add(_disposables);
@@ -141,9 +142,9 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
             executablePrice.ExecuteRequest(100930, _pair.BaseCurrency)
                 .Subscribe(result => 
                     {
+                        _executing = false;
                         ShowConfirmation(result.Update);
                         label.SetText("");
-                        _executing = false;
                     })
                 .Add(_disposables);
         }
