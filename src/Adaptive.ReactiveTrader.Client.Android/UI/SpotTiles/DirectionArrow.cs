@@ -53,8 +53,6 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
         {
             _mPath = Calculate(MeasuredWidth, _dir);
             canvas.DrawPath(_mPath, _mPaint);
-
-            var he= MeasuredHeight;
         }
 
         private Path Calculate(int size, Direction direction)
@@ -65,13 +63,13 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             {
                 p1 = new Point(0, size);
                 p2 = new Point(size, size);
-                p3 = new Point((size / 2), 0);
+                p3 = new Point(size / 2, 0);
             }
             else
             {
                 p1 = new Point(0, 0);
                 p2 = new Point(size, 0);
-                p3 = new Point((size / 2), size);
+                p3 = new Point(size / 2, size);
             }
 
             var path = new Path();

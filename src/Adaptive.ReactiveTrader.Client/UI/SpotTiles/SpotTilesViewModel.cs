@@ -41,7 +41,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
             _config = spotTileFactory(null, SpotTileSubscriptionMode.Conflate);
             _config.ToConfig();
 
-            SpotTiles.Add(_config);
+            // SpotTiles.Add(_config);
 
             _subscriptions.Add(
                 _config.Config.ObserveProperty(p => p.SubscriptionMode)

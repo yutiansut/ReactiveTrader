@@ -20,7 +20,7 @@ namespace Adaptive.ReactiveTrader.Client.Android
         {
             builder.RegisterType<ConfigurationProvider>().As<IConfigurationProvider>();
             builder.RegisterType<ConstantRateConfigurationProvider>().As<IConstantRateConfigurationProvider>();
-            builder.RegisterType<UserProvider>().As<IUserProvider>();
+            builder.RegisterType<UserProvider>().As<IUserProvider>().SingleInstance();
             builder.RegisterInstance(_uiScheduler);
             builder.RegisterType<ConcurrencyService>().As<IConcurrencyService>();
         }

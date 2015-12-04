@@ -6,70 +6,137 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/BlotterRowTradeDateTextView"
-            android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="20dp"
+        android:layout_marginLeft="30dp">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#FF151515"
-            android:textSize="14dp"
-            android:width="140dp" />
-        <TextView
-            android:id="@+id/BlotterRowDirectionTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#FF151515"
-            android:textSize="14dp"
-            android:width="50dp" />
-        <TextView
-            android:id="@+id/BlotterRowCurrencyPairTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#FF151515"
-            android:textSize="14dp"
-            android:width="130dp" />
-        <TextView
-            android:id="@+id/BlotterRowNotionalTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#FF151515"
-            android:textSize="14dp"
-            android:width="130dp" />
-        <TextView
-            android:id="@+id/BlotterRowSpotRateTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#FF151515"
-            android:textSize="14dp"
-            android:width="100dp" />
-        <TextView
-            android:id="@+id/BlotterRowStatusTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#FF151515"
-            android:textSize="14dp"
-            android:width="100dp" />
-        <TextView
-            android:id="@+id/BlotterRowValueDateTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#FF151515"
-            android:textSize="14dp"
-            android:width="120dp" />
-        <TextView
-            android:id="@+id/BlotterRowTraderNameTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#FF151515"
-            android:textSize="14dp"
-            android:width="100dp" />
-        <TextView
-            android:id="@+id/BlotterRowTradeIdTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#FF151515"
-            android:textSize="14dp"
-            android:width="130dp" />
+            android:id="@+id/linearLayout1">
+            <TextView
+                android:id="@+id/BlotterRowCurrencyPairTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="(USD / JPN)" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/BlotterRowTradeDateTextView"
+                android:textSize="14dp"
+                android:text="(date)"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/BlotterRowDirectionTextView"
+                android:textSize="14dp"
+                android:text="(BUY)"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:textColor="@color/traderLabel" />
+            <TextView
+                android:id="@+id/BlotterRowNotionalTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:text="(1,000,000 USD)" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="14dp"
+                android:text="Value Date "
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:textColor="@color/traderLabel" />
+            <TextView
+                android:id="@+id/BlotterRowValueDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:text="(29 Nov 15)" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="14dp"
+                android:layout_width="80dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/BlotterRowSpotRateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:text="100.345" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="14dp"
+                android:text="Trader "
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:textColor="@color/traderLabel" />
+            <TextView
+                android:id="@+id/BlotterRowTraderNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:text="(TRADER-ID)" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="14dp"
+                android:text="Trade ID "
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:textColor="@color/traderLabel" />
+            <TextView
+                android:id="@+id/BlotterRowTradeIdTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:text="(257)" />
+            <TextView
+                android:id="@+id/BlotterRowStatusTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:text="(Done)"
+                android:layout_marginLeft="8dp" />
+        </LinearLayout>
     </LinearLayout>
     <View
         android:layout_width="match_parent"
