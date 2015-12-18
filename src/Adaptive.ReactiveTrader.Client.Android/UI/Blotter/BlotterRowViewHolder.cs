@@ -1,6 +1,14 @@
+using System.Threading.Tasks;
+using Android.Content.Res;
+using Android.Graphics;
+using Android.Graphics.Drawables;
+using Android.Support.V4.Content;
+using Android.Support.V4.Content.Res;
+using Android.Support.V4.View;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
+using JP.Wasabeef.Recyclerview.Animators.Holder;
 
 namespace Adaptive.ReactiveTrader.Client.Android.UI.Blotter
 {
@@ -14,7 +22,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Blotter
         public TextView Status { get; private set; }
         public TextView ValueDate { get; private set; }
         public TextView TraderName { get; private set; }
-        public TextView TradeId { get; private set; }
+        public LinearLayout BlotterRow { get; private set; }
 
         public BlotterRowViewHolder(View itemView)
             : base(itemView)
@@ -27,7 +35,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Blotter
             Status = itemView.FindViewById<TextView>(Resource.Id.BlotterRowStatusTextView);
             ValueDate = itemView.FindViewById<TextView>(Resource.Id.BlotterRowValueDateTextView);
             TraderName = itemView.FindViewById<TextView>(Resource.Id.BlotterRowTraderNameTextView);
-            TradeId = itemView.FindViewById<TextView>(Resource.Id.BlotterRowTradeIdTextView);
+            BlotterRow = itemView.FindViewById<LinearLayout>(Resource.Id.BlotterRow);
         }
     }
 }

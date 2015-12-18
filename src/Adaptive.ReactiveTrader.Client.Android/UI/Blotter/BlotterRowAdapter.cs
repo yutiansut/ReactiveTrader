@@ -1,11 +1,16 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Globalization;
-using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Threading.Tasks;
+using System.Timers;
 using Adaptive.ReactiveTrader.Client.UI.Blotter;
 using Adaptive.ReactiveTrader.Shared.Extensions;
+using Android.Runtime;
 using Android.Support.V7.Widget;
 using Android.Views;
+using JP.Wasabeef.Recyclerview.Animators.Holder;
 
 namespace Adaptive.ReactiveTrader.Client.Android.UI.Blotter
 {
@@ -13,22 +18,46 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Blotter
     {
         private readonly ObservableCollection<ITradeViewModel> _tradesCollection;
         private readonly IDisposable _collectionChangedSubscription;
-        private readonly CompositeDisposable _allSubscriptions = new CompositeDisposable();
+        private bool _animationsEnabled;
 
-        public BlotterRowAdapter(ObservableCollection<ITradeViewModel> tradesCollection)
+        public BlotterRowAdapter(RecyclerView recyclerView, ObservableCollection<ITradeViewModel> tradesCollection)
         {
-            _tradesCollection = tradesCollection;
+            var animator = new BlotterRowAnimator();
+            recyclerView.SetItemAnimator(animator);
 
+            _tradesCollection = tradesCollection;
             _collectionChangedSubscription = _tradesCollection.ObserveCollection()
+                .Subscribe(changeArgs =>
+                {
+                    if (_animationsEnabled && changeArgs.Action == NotifyCollectionChangedAction.Add && changeArgs.NewItems.Count == 1)
+                    {
+                        Console.WriteLine($"Count: {_tradesCollection.Count}");
+                        NotifyItemInserted(changeArgs.NewStartingIndex);
+                        recyclerView.SmoothScrollToPosition(0);
+                    }
+                    else
+                    {
+                        NotifyDataSetChanged();
+
+                        if (!_animationsEnabled)
+                        {
+                            recyclerView.ScrollToPosition(0);
+                        }
+                    }
+                });
+
+            _tradesCollection.ObserveCollection()
+                .FirstAsync()
+                .Delay(TimeSpan.FromSeconds(1))
                 .Subscribe(_ =>
                 {
-                    _allSubscriptions.Clear();
-                    NotifyDataSetChanged(); // xamtodo - make the change details more explicit and move to some common code
+                    _animationsEnabled = true;
                 });
         }
-
+        
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
+            
             var tradeViewModel = _tradesCollection[position];
             var viewHolder = (BlotterRowViewHolder)holder;
             viewHolder.TradeDate.Text = tradeViewModel.TradeDate.ToString("dd MMM yy hh:mm");
@@ -39,7 +68,6 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Blotter
             viewHolder.Status.Text = tradeViewModel.TradeStatus;
             viewHolder.ValueDate.Text = tradeViewModel.ValueDate.ToString("dd MMM yy");
             viewHolder.TraderName.Text = tradeViewModel.TraderName;
-            viewHolder.TradeId.Text = tradeViewModel.TradeId;
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
@@ -49,17 +77,13 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Blotter
             return holder;
         }
 
-        public override int ItemCount
-        {
-            get { return _tradesCollection.Count; }
-        }
+        public override int ItemCount => _tradesCollection.Count;
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
                 _collectionChangedSubscription.Dispose();
-                _allSubscriptions.Dispose();
             }
         }
     }

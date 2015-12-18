@@ -38,8 +38,9 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Blotter
             var blotterRowsRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.BlotterRowsRecyclerView);
             blotterRowsRecyclerView.HasFixedSize = true;
             var blotterGridLayoutManager = new LinearLayoutManager(Activity);
+            blotterGridLayoutManager.StackFromEnd = true;
             blotterRowsRecyclerView.SetLayoutManager(blotterGridLayoutManager);
-            var blotterRowsAdapter = new BlotterRowAdapter(_shellViewModel.Blotter.Trades);
+            var blotterRowsAdapter = new BlotterRowAdapter(blotterRowsRecyclerView, _shellViewModel.Blotter.Trades);
             blotterRowsRecyclerView.SetAdapter(blotterRowsAdapter);
             
             return view;

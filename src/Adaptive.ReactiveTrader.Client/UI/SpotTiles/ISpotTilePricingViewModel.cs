@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Adaptive.ReactiveTrader.Client.Domain.Models.Execution;
 using Adaptive.ReactiveTrader.Shared.UI;
 
@@ -20,5 +21,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
         bool IsStale { get; }
         void OnTrade(ITrade trade);
         void OnExecutionError(string message);
+        decimal Mid { get; }
+        decimal[] HistoricalMid { get; }
     }
 }

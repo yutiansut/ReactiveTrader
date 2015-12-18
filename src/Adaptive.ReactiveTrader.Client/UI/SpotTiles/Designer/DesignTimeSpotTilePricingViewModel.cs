@@ -1,4 +1,5 @@
-﻿using Adaptive.ReactiveTrader.Client.Domain.Models;
+﻿using System.Collections.Generic;
+using Adaptive.ReactiveTrader.Client.Domain.Models;
 using Adaptive.ReactiveTrader.Client.Domain.Models.Execution;
 using Adaptive.ReactiveTrader.Shared.UI;
 
@@ -41,5 +42,8 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles.Designer
         public void OnExecutionError(string message)
         {
         }
+
+        public decimal Mid { get { return 5m; } }
+        public decimal[] HistoricalMid { get { return new decimal[0]; } }
     }
 }

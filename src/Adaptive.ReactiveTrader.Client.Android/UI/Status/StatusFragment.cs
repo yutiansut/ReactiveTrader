@@ -67,8 +67,8 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Status
         {
             if (View != null)
             {
-                View.FindViewById<TextView>(Resource.Id.server).Text = connectionInfo.Server;
-                View.FindViewById<TextView>(Resource.Id.status).Text = connectionInfo.ConnectionStatus.ToString();
+                //View.FindViewById<TextView>(Resource.Id.server).Text = connectionInfo.Server;
+                //View.FindViewById<TextView>(Resource.Id.status).Text = connectionInfo.ConnectionStatus.ToString();
             }
             else
             {

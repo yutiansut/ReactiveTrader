@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using Adaptive.ReactiveTrader.Client.Concurrency;
 using Adaptive.ReactiveTrader.Client.Domain;
 using Adaptive.ReactiveTrader.Client.Domain.Instrumentation;
@@ -27,7 +29,10 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
         public string SpotDate { get; private set; }
         public bool IsSubscribing { get; private set; }
         public bool IsStale { get; private set; }
+        public decimal Mid { get; private set; }
+        public decimal[] HistoricalMid => _historicalMid.ToArray();
 
+        private const int HistoricalPriceCount = 100;
         private readonly SerialDisposable _priceSubscription;
         private readonly ICurrencyPair _currencyPair;
         private readonly ISpotTileViewModel _parent;
@@ -40,6 +45,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
         private volatile IPrice _latestPrice;
         private IPrice _currentPrice;
         private readonly ILog _log;
+        private readonly List<decimal> _historicalMid = new List<decimal>(HistoricalPriceCount); 
 
         public SpotTilePricingViewModel(ICurrencyPair currencyPair, SpotTileSubscriptionMode spotTileSubscriptionMode, ISpotTileViewModel parent,
             Func<Direction, ISpotTilePricingViewModel, IOneWayPriceViewModel> oneWayPriceFactory,
@@ -187,19 +193,28 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
                     else
                         Movement = PriceMovement.None;
                 }
+                Mid = price.Mid;
                 _previousRate = price.Mid;
-
                 Bid.OnPrice(price.Bid);
                 Ask.OnPrice(price.Ask);
                 Spread = PriceFormatter.GetFormattedSpread(price.Spread, _currencyPair.RatePrecision, _currencyPair.PipsPosition);
                 SpotDate = "SP. " + price.ValueDate.ToString("dd MMM");
-
                 _priceLatencyRecorder.OnRendered(price);
 
+                AddHistoricalPrice(price);
             }
             _currentPrice = price;
         }
 
+        private void AddHistoricalPrice(IPrice price)
+        {
+            if (_historicalMid.Count > HistoricalPriceCount)
+            {
+                _historicalMid.RemoveAt(0);
+            }
+
+            _historicalMid.Add(price.Mid);
+        }
 
         private void OnError(Exception ex)
         {
@@ -215,5 +230,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
         {
             _parent.OnExecutionError(message);
         }
+
+        
     }
 }
