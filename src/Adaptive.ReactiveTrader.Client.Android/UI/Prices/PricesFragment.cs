@@ -44,7 +44,6 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Prices
 
             spotTilesRecyclerView.SetAdapter(spotTilesAdapter);
             spotTilesRecyclerView.HasFixedSize = true;
-            spotTilesRecyclerView.GetItemAnimator().SupportsChangeAnimations = false;
 
             return view;
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Android.Graphics;
 using Android.Graphics.Drawables;
@@ -30,5 +31,25 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Blotter
         protected override void AnimateRemoveImpl(RecyclerView.ViewHolder p0)
         {
         }
-    }
+
+		public override bool AnimateAppearance(RecyclerView.ViewHolder viewHolder, RecyclerView.ItemAnimator.ItemHolderInfo preLayoutInfo, RecyclerView.ItemAnimator.ItemHolderInfo postLayoutInfo)
+		{
+			return true;
+		}
+
+		public override bool AnimateChange(RecyclerView.ViewHolder oldHolder, RecyclerView.ViewHolder newHolder, ItemHolderInfo preInfo, ItemHolderInfo postInfo)
+		{
+			return true;
+		}
+
+		public override bool AnimateDisappearance(RecyclerView.ViewHolder viewHolder, ItemHolderInfo preLayoutInfo, ItemHolderInfo postLayoutInfo)
+		{
+			return true;
+		}
+
+		public override bool AnimatePersistence(RecyclerView.ViewHolder viewHolder, ItemHolderInfo preInfo, ItemHolderInfo postInfo)
+		{
+			return true;
+		}
+	}
 }
