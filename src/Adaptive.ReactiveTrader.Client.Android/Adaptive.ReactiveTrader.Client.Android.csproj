@@ -167,6 +167,7 @@
     <Compile Include="Concurrency\ConstantRateConfigurationProvider.cs" />
     <Compile Include="Configuration\ConfigurationProvider.cs" />
     <Compile Include="Configuration\UserProvider.cs" />
+    <Compile Include="Extentions\AndroidWidgetExtentions.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -263,15 +264,31 @@
     <AndroidResource Include="Resources\drawable\logo.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\anim\logo_down.xml" />
-    <AndroidResource Include="Resources\anim\logo_up.xml" />
-    <AndroidResource Include="Resources\drawable\animated_logo.xml" />
-    <AndroidResource Include="Resources\anim\logo_fade.xml" />
+    <AndroidResource Include="Resources\anim\logo_down.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\anim\logo_up.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\animated_logo.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\anim\logo_fade.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\toolbar_logo.png" />
     <AndroidResource Include="Resources\drawable-mdpi\toolbar_logo.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\toolbar_logo.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\toolbar_logo.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\toolbar_logo.png" />
+    <AndroidResource Include="Resources\drawable\logo_text.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\adaptive_logo.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\adaptive_logo.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\adaptive_logo.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\adaptive_logo.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\adaptive_logo.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Adaptive.ReactiveTrader.Client.Domain\Adaptive.ReactiveTrader.Client.Domain.csproj">

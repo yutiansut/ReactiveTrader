@@ -15,14 +15,15 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
         private readonly TextView _bigFiguresTextView;
         private readonly TextView _pipsTextView;
         private readonly TextView _tenthOfPipTextView;
+        private readonly ProgressBar _progressView;
+        private readonly LinearLayout _contentView;
 
         private readonly SerialDisposable _propertyChangedSubscription = new SerialDisposable();
         private readonly SerialDisposable _executingSubscription = new SerialDisposable();
         private readonly SerialDisposable _canExecuteSubscription = new SerialDisposable();
 
         private IOneWayPriceViewModel _viewModel;
-        private bool _isenabledOverride = true;
-
+        private bool _isEnabledOverride = true;
 
         public PriceButton(Context context, IAttributeSet attrs)
             : base(context, attrs)
@@ -32,6 +33,9 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             _bigFiguresTextView = FindViewById<TextView>(Resource.Id.PriceButtonBigFiguresTextView);
             _pipsTextView = FindViewById<TextView>(Resource.Id.PriceButtonPipsTextView);
             _tenthOfPipTextView = FindViewById<TextView>(Resource.Id.PriceButtonTenthOfPipTextView);
+            _progressView = FindViewById<ProgressBar>(Resource.Id.PriceButtonProgress);
+            _contentView = FindViewById<LinearLayout>(Resource.Id.PriceButtonContent);
+
             var directionLabelTextView = FindViewById<TextView>(Resource.Id.PriceButtonDirectionTextView);
             directionLabelTextView.Text = attrs.GetAttributeValue(null, "direction_label");
 
@@ -46,13 +50,15 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
                 .Subscribe(_ =>
                 {
                     var canExecute = viewModel.ExecuteCommand.CanExecute(null);
-                    Enabled =_isenabledOverride && canExecute;
+                    Enabled =_isEnabledOverride && canExecute;
                 });
 
             _executingSubscription.Disposable = _viewModel.ObserveProperty(vm => vm.IsExecuting)
                 .Subscribe(isExecuting =>
                 {
                     Selected = isExecuting;
+                    _progressView.Visibility = isExecuting ? ViewStates.Visible : ViewStates.Invisible;
+                    _contentView.Visibility = isExecuting ? ViewStates.Invisible : ViewStates.Visible;
                 });
 
             _propertyChangedSubscription.Disposable = viewModel.ObserveProperty().Subscribe(_ => Update(viewModel));
@@ -72,7 +78,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
                 Enabled = _viewModel.ExecuteCommand.CanExecute(null);
                 _pipsTextView.Selected = false;
             }
-            _isenabledOverride = isEnabled;
+            _isEnabledOverride = isEnabled;
         }
 
         private void Update(IOneWayPriceViewModel viewModel)

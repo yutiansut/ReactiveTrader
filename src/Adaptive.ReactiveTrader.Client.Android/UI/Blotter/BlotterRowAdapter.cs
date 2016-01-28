@@ -22,6 +22,8 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Blotter
 
         public BlotterRowAdapter(RecyclerView recyclerView, ObservableCollection<ITradeViewModel> tradesCollection)
         {
+            _tradesCollection = tradesCollection;
+            
             var animator = new BlotterRowAnimator();
             recyclerView.SetItemAnimator(animator);
 

@@ -1,14 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.Client.Android.Extentions;
+using Adaptive.ReactiveTrader.Client.Concurrency;
 using Adaptive.ReactiveTrader.Client.UI.SpotTiles;
 using Adaptive.ReactiveTrader.Shared.Extensions;
 using Android.Content;
+using Android.Runtime;
 using Android.Support.V7.Widget;
 using Android.Text;
 using Android.Views;
@@ -24,31 +29,42 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
 {
     public class SpotTileViewHolder : RecyclerView.ViewHolder, IDisposable
     {
-        private const int GraphLimit = 100;
-        private readonly PlotModel _plotModel;
-        private readonly AreaSeries _areaSeries;
+        const int GraphLimit = 100;
+        PlotModel _plotModel;
+        AreaSeries _areaSeries;
         private readonly CompositeDisposable _allSubscriptions = new CompositeDisposable();
         private CancellationTokenSource _cancelAnimationSource = new CancellationTokenSource();
         private readonly List<decimal> _historicalPrices = new List<decimal>();
 
-        TextView CurrencyPairLabel { get; }
-        PriceButton BidButton { get; }
-        PriceButton AskButton { get; }
-        TextView SpreadLabel { get; }
-        DirectionArrow UpArrow { get; }
-        DirectionArrow DownArrow { get; }
-        TextView DealtCurrencyLabel { get; }
-        EditText NotionalTextBox { get; }
-        TextView SpotDateLabel { get; }
-        LinearLayout Content { get; }
-        public CardView CardView { get; }
-        ViewAnimator ViewAnimator { get; }
-        PlotView PlotView { get; }
-        LinearLayout PriceNotAvailableOverlay { get; }
+        TextView CurrencyPairLabel { get; set; }
+        PriceButton BidButton { get; set; }
+        PriceButton AskButton { get; set; }
+        TextView SpreadLabel { get; set; }
+        DirectionArrow UpArrow { get; set; }
+        DirectionArrow DownArrow { get; set; }
+        TextView DealtCurrencyLabel { get; set; }
+        EditText NotionalTextBox { get; set; }
+        TextView SpotDateLabel { get; set; }
+        LinearLayout Content { get; set; }
+        CardView CardView { get; set; }
+        ViewAnimator ViewAnimator { get; set; }
+        PlotView PlotView { get; set; }
+        LinearLayout PriceNotAvailableOverlay { get; set; }
 
-        public SpotTileViewHolder(View itemView) 
+        public SpotTileViewHolder(IntPtr javaReference, JniHandleOwnership jniHandleOwnership)
+            : base(javaReference, jniHandleOwnership)
+        {
+            Setup(ItemView);
+        }
+
+        public SpotTileViewHolder(View itemView)
             : base(itemView)
         {
+            Setup(itemView);
+        }
+
+        void Setup(View itemView)
+        { 
             CurrencyPairLabel = itemView.FindViewById<TextView>(Resource.Id.SpotTileCurrencyPairTextView);
             BidButton = itemView.FindViewById<PriceButton>(Resource.Id.SpotTileBidPriceButton);
             AskButton = itemView.FindViewById<PriceButton>(Resource.Id.SpotTileAskPriceButton);
@@ -93,65 +109,86 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             PlotView.VerticalScrollBarEnabled = false;
         }
 
-        public void Bind(ISpotTileViewModel spotTileViewModel)
+        public void Bind(ISpotTileViewModel spotTileViewModel, IConcurrencyService concurrencyService)
         {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
             _allSubscriptions.Clear();
 
-            if (spotTileViewModel.State == TileState.Affirmation)
+            int i = 0;
+
+            concurrencyService.Dispatcher.Schedule(() =>
             {
-                spotTileViewModel.DismissAffirmation();
-            }
+                if (spotTileViewModel.State == TileState.Affirmation)
+                {
+                    spotTileViewModel.DismissAffirmation();
+                }
 
-            Reset();
-            CurrencyPairLabel.Text = spotTileViewModel.Pricing.Symbol;
-            BidButton.SetDataContext(spotTileViewModel.Pricing.Bid);
-            AskButton.SetDataContext(spotTileViewModel.Pricing.Ask);
-            SetHistoricPrices(spotTileViewModel.Pricing.HistoricalMid);
+                Reset();
+                CurrencyPairLabel.Text = spotTileViewModel.Pricing.Symbol;
+                BidButton.SetDataContext(spotTileViewModel.Pricing.Bid);
+                AskButton.SetDataContext(spotTileViewModel.Pricing.Ask);
+                SetHistoricPrices(spotTileViewModel.Pricing.HistoricalMid);
+            });
 
-            _allSubscriptions.Add(spotTileViewModel.Pricing.Bid.ObserveProperty(vm => vm.IsExecuting)
+            _allSubscriptions.Add(spotTileViewModel.Pricing.Bid
+                .ObserveProperty(vm => vm.IsExecuting)
+                .ObserveOn(concurrencyService.Dispatcher)
                 .Subscribe(s => AskButton.SetEnabledOverride(!s)));
 
-            _allSubscriptions.Add(spotTileViewModel.Pricing.Ask.ObserveProperty(vm => vm.IsExecuting)
+            _allSubscriptions.Add(spotTileViewModel.Pricing.Ask
+                .ObserveProperty(vm => vm.IsExecuting)
+                .ObserveOn(concurrencyService.Dispatcher)
                 .Subscribe(s => BidButton.SetEnabledOverride(!s)));
 
             _allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.Spread, true)
+                .ObserveOn(concurrencyService.Dispatcher)
                 .Subscribe(s => SpreadLabel.Text = s));
 
             _allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.DealtCurrency, true)
+                .ObserveOn(concurrencyService.Dispatcher)
                 .Subscribe(s => DealtCurrencyLabel.Text = s));
 
             _allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.SpotDate, true)
+                .ObserveOn(concurrencyService.Dispatcher)
                 .Subscribe(s => SpotDateLabel.Text = s));
 
             _allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.Mid, true)
+                .ObserveOn(concurrencyService.Dispatcher)
                 .Subscribe(AddPrice));
 
             _allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.IsStale)
+                .ObserveOn(concurrencyService.Dispatcher)
                 .Subscribe(SetIsStale));
+            Console.WriteLine($"PERF: SpotTileViewHolder:bind{i++} took {stopwatch.ElapsedMilliseconds}ms");
 
             // two way bind the notional
             _allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.Notional, true)
                 .Where(n => n != NotionalTextBox.Text)
+                .ObserveOn(concurrencyService.Dispatcher)
                 .Subscribe(s => NotionalTextBox.Text = s));
 
-            _allSubscriptions.Add(Observable.FromEventPattern<TextChangedEventArgs>(
-                h => NotionalTextBox.TextChanged += h,
-                h => NotionalTextBox.TextChanged -= h)
+            _allSubscriptions.Add(NotionalTextBox
+                .TextChangedStream()
                 .Where(_ => spotTileViewModel.Pricing.Notional != NotionalTextBox.Text)
+                .ObserveOn(concurrencyService.Dispatcher)
                 .Subscribe(_ =>
                 {
                     spotTileViewModel.Pricing.Notional = NotionalTextBox.Text;
                 }));
 
             _allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.Movement, true)
+                .ObserveOn(concurrencyService.Dispatcher)
                 .Subscribe(m =>
                 {
                     UpArrow.Visibility = m == PriceMovement.Up ? ViewStates.Visible : ViewStates.Invisible;
                     DownArrow.Visibility = m == PriceMovement.Down ? ViewStates.Visible : ViewStates.Invisible;
                 }));
+            Console.WriteLine($"PERF: SpotTileViewHolder:bind{i++} took {stopwatch.ElapsedMilliseconds}ms");
 
             _allSubscriptions.Add(spotTileViewModel.ObserveProperty(vm => vm.State, true)
                 .Where(m => m == TileState.Affirmation)
+                .SubscribeOn(concurrencyService.TaskPool)
                 .Subscribe(async m =>
                 {
                     try
@@ -172,7 +209,11 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
 
             _allSubscriptions.Add(spotTileViewModel.ObserveProperty(vm => vm.State, true)
                 .Where(m => m == TileState.Pricing)
+                .SubscribeOn(concurrencyService.TaskPool)
                 .Subscribe(_ => ShowPricing()));
+
+            Console.WriteLine($"PERF: SpotTileViewHolder:bind{i++} took {stopwatch.ElapsedMilliseconds}ms");
+
         }
 
         public void Unbind()
@@ -186,7 +227,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             CardView.ScaleX = 0;
             CardView
                 .Animate()
-                .SetStartDelay(position * 120)
+                .SetStartDelay(position * 120 + 1000)
                 .ScaleX(1).ScaleY(1)
                 .SetDuration(450)
                 .SetInterpolator(new OvershootInterpolator(3))
@@ -194,7 +235,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
                 .Start();
         }
 
-        public void SetHistoricPrices(decimal[] prices)
+        private void SetHistoricPrices(decimal[] prices)
         {
             ResetChart();
 
@@ -207,7 +248,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             DrawChart();
         }
 
-        public void AddPrice(decimal price)
+        private void AddPrice(decimal price)
         {
             if (price == 0)
             {
@@ -252,7 +293,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             _plotModel.InvalidatePlot(true);
         }
 
-        public void ShowAffirmation(ISpotTileAffirmationViewModel vm)
+        private void ShowAffirmation(ISpotTileAffirmationViewModel vm)
         {
             if (IsShowingAffirmation)
             {
@@ -270,19 +311,23 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             ItemView.FindViewById<TextView>(Resource.Id.ConfirmTradeIdTextView).Text = vm.TradeId.ToString();
         }
 
-        public void Reset()
+        private void Reset()
         {
             ViewAnimator.InAnimation = null;
             ViewAnimator.OutAnimation = null;
             ViewAnimator.DisplayedChild = 0;
+            AskButton.Selected = false;
+            AskButton.Pressed = false;
+            BidButton.Selected = false;
+            BidButton.Pressed = false;
             ResetChart();
             SetIsStale(false);
         }
 
-        public bool IsShowingAffirmation => ViewAnimator.CurrentView.Id == Resource.Id.CardViewBack;
+        private bool IsShowingAffirmation => ViewAnimator.CurrentView.Id == Resource.Id.CardViewBack;
 
 
-        public void SetIsStale(bool isStale)
+        private void SetIsStale(bool isStale)
         {
             if (isStale)
             {
@@ -296,7 +341,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             }
         }
 
-        public void ShowPricing()
+        private void ShowPricing()
         {
             if (!IsShowingAffirmation)
             {

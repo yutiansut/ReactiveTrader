@@ -62,7 +62,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
         private void LoadSpotTiles()
         {
             _referenceDataRepository.GetCurrencyPairsStream()
-                .ObserveOn(_concurrencyService.Dispatcher)
+                .ObserveOn(_concurrencyService.TaskPool)
                 .SubscribeOn(_concurrencyService.TaskPool)
                 .Subscribe(
                     currencyPairs => currencyPairs.ForEach(HandleCurrencyPairUpdate),

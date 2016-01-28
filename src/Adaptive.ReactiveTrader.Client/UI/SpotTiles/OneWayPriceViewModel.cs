@@ -22,7 +22,7 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
         private readonly DelegateCommand _executeCommand;
         private IExecutablePrice _executablePrice;
 
-        public Direction Direction { get; private set; }
+        public Direction Direction { get; }
         public string BigFigures { get; private set; }
         public string Pips { get; private set; }
         public string TenthOfPip { get; private set; }
@@ -39,9 +39,9 @@ namespace Adaptive.ReactiveTrader.Client.UI.SpotTiles
             _executeCommand = new DelegateCommand(OnExecute, CanExecute);
         }
 
-        public ICommand ExecuteCommand { get { return _executeCommand; } }
+        public ICommand ExecuteCommand => _executeCommand;
 
-        
+
         public void OnPrice(IExecutablePrice executablePrice)
         {
             _executablePrice = executablePrice;

@@ -23,14 +23,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Blotter
         {
             _shellViewModel = shellViewModel;
         }
-
-        public override void OnCreate(Bundle savedInstanceState)
-        {
-            base.OnCreate(savedInstanceState);
-
-            // Create your fragment here
-        }
-
+        
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             var view = inflater.Inflate(Resource.Layout.BlotterView, container, false);

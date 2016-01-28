@@ -1,8 +1,12 @@
+using System;
+using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Client.Android.UI.Blotter;
 using Adaptive.ReactiveTrader.Client.Android.UI.Prices;
 using Adaptive.ReactiveTrader.Client.Android.UI.Status;
 using Adaptive.ReactiveTrader.Client.Concurrency;
 using Adaptive.ReactiveTrader.Client.Domain;
+using Adaptive.ReactiveTrader.Client.Domain.Transport;
 using Adaptive.ReactiveTrader.Client.UI.Shell;
 using Android.App;
 using Android.Content;
@@ -24,16 +28,6 @@ using String = Java.Lang.String;
 
 namespace Adaptive.ReactiveTrader.Client.Android
 {
-
-    public static class AddFragmentExtention
-    {
-        public static void AddFragmentView(this FragmentActivity activity, ViewGroup container, Fragment fragment)
-        {
-            container.AddView(fragment.OnCreateView(activity.LayoutInflater, container, null));
-        }
-    }
-
-
     [Activity(MainLauncher = true, Icon = "@drawable/icon", Label = "Reactive Trader",
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
     public class MainActivity : AppCompatActivity
@@ -44,52 +38,85 @@ namespace Adaptive.ReactiveTrader.Client.Android
 
             if (App.IsTablet)
             {
-                SetContentView(Resource.Layout.TabletContainer);
-
-                var container = FindViewById<RelativeLayout>(Resource.Id.fragmentContainer);
-                var blotterViewId = View.GenerateViewId();
-                var pricesView = PricesListFragment.OnCreateView(LayoutInflater, container, null);
-                var pricesParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
-                pricesParams.AddRule(LayoutRules.Above, blotterViewId);
-                pricesView.LayoutParameters = pricesParams;
-                pricesView.Id = View.GenerateViewId();
-
-                container.AddView(pricesView);
-
-                var blotterView = BlotterFragment.OnCreateView(LayoutInflater, container, null);
-                var layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, 280);
-                blotterView.Id = blotterViewId;
-                layoutParams.AddRule(LayoutRules.AlignParentBottom);
-                blotterView.LayoutParameters = layoutParams;
-
-                container.AddView(blotterView);
+                InitTablet();
             }
             else
             {
-                SetContentView(Resource.Layout.PhoneContainer);
-
-                var adapter = new TabsAdapter(this, SupportFragmentManager);
-                var viewPager = FindViewById<ViewPager>(Resource.Id.viewPager);
-                viewPager.Adapter = adapter;
-
-                var tabLayout = FindViewById<TabLayout>(Resource.Id.tabLayout);
-                tabLayout.SetupWithViewPager(viewPager);
-
-                //var logo = (IAnimatable)FindViewById<ImageView>(Resource.Id.logo).Drawable;
-                //logo.Start();
+                InitPhone();
             }
         }
 
+        private void InitTablet()
+        {
+            SetContentView(Resource.Layout.TabletContainer);
+
+            var container = FindViewById<RelativeLayout>(Resource.Id.fragmentContainer);
+            var blotterViewId = View.GenerateViewId();
+            var pricesView = PricesListFragment.OnCreateView(LayoutInflater, container, null);
+            var pricesParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
+            pricesParams.AddRule(LayoutRules.Above, blotterViewId);
+            pricesView.LayoutParameters = pricesParams;
+            pricesView.Id = View.GenerateViewId();
+
+            container.AddView(pricesView);
+
+            var blotterView = BlotterFragment.OnCreateView(LayoutInflater, container, null);
+            var layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, 280);
+            blotterView.Id = blotterViewId;
+            layoutParams.AddRule(LayoutRules.AlignParentBottom);
+            blotterView.LayoutParameters = layoutParams;
+
+            container.AddView(blotterView);
+        }
+
+        private void InitPhone()
+        {
+            SetContentView(Resource.Layout.PhoneContainer);
+            var adapter = new TabsAdapter(SupportFragmentManager);
+            var viewPager = FindViewById<ViewPager>(Resource.Id.viewPager);
+            viewPager.Adapter = adapter;
+            var tabLayout = FindViewById<TabLayout>(Resource.Id.tabLayout);
+            tabLayout.SetupWithViewPager(viewPager);
+
+            var reactiveTrader = App.Container.Resolve<IReactiveTrader>();
+            reactiveTrader.ConnectionStatusStream
+                .Where(ci => ci.ConnectionStatus == ConnectionStatus.Connected)
+                .Timeout(TimeSpan.FromSeconds(15))
+                .ObserveOn(App.Container.Resolve<IConcurrencyService>().Dispatcher)
+                .Subscribe(
+                    _ =>
+                    {
+                        var spinner = FindViewById<ProgressBar>(Resource.Id.ProgressBar);
+                        spinner.Visibility = ViewStates.Invisible;
+                        var logo = FindViewById<FrameLayout>(Resource.Id.logo);
+                        logo.Animate()
+                            .SetDuration(1000)
+                            .Alpha(0)
+                            .WithLayer()
+                            .WithEndAction(new Runnable(() => logo.Visibility = ViewStates.Gone))
+                            .Start();
+                        
+                    },
+                    ex => Console.WriteLine("Failed")
+                );
+        }
+
         static BlotterFragment BlotterFragment => new BlotterFragment(App.Container.Resolve<IShellViewModel>());
-        static PricesListFragment PricesListFragment => new PricesListFragment(App.Container.Resolve<IShellViewModel>());
+        static PricesListFragment PricesListFragment => new PricesListFragment(
+            App.Container.Resolve<IShellViewModel>(),
+            App.Container.Resolve<IConcurrencyService>());
 
         static StatusFragment StatusFragment
             => new StatusFragment(App.Container.Resolve<IReactiveTrader>(), App.Container.Resolve<IConcurrencyService>());
 
         class TabsAdapter : FragmentPagerAdapter
         {
-            private readonly Context _context;
-            readonly string[] _tabName = {"Prices", "Trades", "Status"};
+            readonly string[] _tabName =
+            {
+                "Prices",
+                "Trades",
+                "Status"
+            };
 
             readonly Fragment[] _fragments =
             {
@@ -98,9 +125,8 @@ namespace Adaptive.ReactiveTrader.Client.Android
                 StatusFragment
             };
 
-            public TabsAdapter(Context context, FragmentManager fm) : base(fm)
+            public TabsAdapter(FragmentManager fm) : base(fm)
             {
-                _context = context;
             }
 
             public override int Count => _fragments.Length;

@@ -1783,61 +1783,67 @@ namespace Adaptive.ReactiveTrader.Client.Android
 			public const int abc_textfield_search_material = 2130837565;
 			
 			// aapt resource value: 0x7f02003e
-			public const int animated_logo = 2130837566;
+			public const int adaptive_logo = 2130837566;
 			
 			// aapt resource value: 0x7f02003f
-			public const int design_fab_background = 2130837567;
+			public const int animated_logo = 2130837567;
 			
 			// aapt resource value: 0x7f020040
-			public const int design_snackbar_background = 2130837568;
+			public const int design_fab_background = 2130837568;
 			
 			// aapt resource value: 0x7f020041
-			public const int dotted = 2130837569;
+			public const int design_snackbar_background = 2130837569;
 			
 			// aapt resource value: 0x7f020042
-			public const int icon = 2130837570;
+			public const int dotted = 2130837570;
 			
 			// aapt resource value: 0x7f020043
-			public const int logo = 2130837571;
-			
-			// aapt resource value: 0x7f020050
-			public const int notification_template_icon_bg = 2130837584;
+			public const int icon = 2130837571;
 			
 			// aapt resource value: 0x7f020044
-			public const int notional_background_focused = 2130837572;
+			public const int logo = 2130837572;
 			
 			// aapt resource value: 0x7f020045
-			public const int notional_background_normal = 2130837573;
+			public const int logo_text = 2130837573;
+			
+			// aapt resource value: 0x7f020052
+			public const int notification_template_icon_bg = 2130837586;
 			
 			// aapt resource value: 0x7f020046
-			public const int notional_background_selector = 2130837574;
+			public const int notional_background_focused = 2130837574;
 			
 			// aapt resource value: 0x7f020047
-			public const int notional_textcolor_selector = 2130837575;
+			public const int notional_background_normal = 2130837575;
 			
 			// aapt resource value: 0x7f020048
-			public const int pricebutton_background_normal = 2130837576;
+			public const int notional_background_selector = 2130837576;
 			
 			// aapt resource value: 0x7f020049
-			public const int pricebutton_background_pressed = 2130837577;
+			public const int notional_textcolor_selector = 2130837577;
 			
 			// aapt resource value: 0x7f02004a
-			public const int pricebutton_background_selector = 2130837578;
+			public const int pricebutton_background_normal = 2130837578;
 			
 			// aapt resource value: 0x7f02004b
-			public const int pricebutton_foreground_selector = 2130837579;
+			public const int pricebutton_background_pressed = 2130837579;
 			
 			// aapt resource value: 0x7f02004c
-			public const int spottile_background_focused = 2130837580;
+			public const int pricebutton_background_selector = 2130837580;
 			
 			// aapt resource value: 0x7f02004d
-			public const int spottile_background_normal = 2130837581;
+			public const int pricebutton_foreground_selector = 2130837581;
 			
 			// aapt resource value: 0x7f02004e
-			public const int spottile_background_selector = 2130837582;
+			public const int spottile_background_focused = 2130837582;
 			
 			// aapt resource value: 0x7f02004f
-			public const int toolbar_logo = 2130837583;
+			public const int spottile_background_normal = 2130837583;
+			
+			// aapt resource value: 0x7f020050
+			public const int spottile_background_selector = 2130837584;
+			
+			// aapt resource value: 0x7f020051
+			public const int toolbar_logo = 2130837585;
 			
 			static Drawable()
 			{
@@ -1851,6 +1857,9 @@ namespace Adaptive.ReactiveTrader.Client.Android
 		
 		public partial class Id
 		{
+			
+			// aapt resource value: 0x7f060081
+			public const int AppContent = 2131099777;
 			
 			// aapt resource value: 0x7f06006f
 			public const int BlotterRow = 2131099759;
@@ -1882,89 +1891,98 @@ namespace Adaptive.ReactiveTrader.Client.Android
 			// aapt resource value: 0x7f060070
 			public const int BlotterRowsRecyclerView = 2131099760;
 			
-			// aapt resource value: 0x7f06008a
-			public const int CardView = 2131099786;
-			
-			// aapt resource value: 0x7f060097
-			public const int CardViewBack = 2131099799;
-			
-			// aapt resource value: 0x7f06009b
-			public const int ConfirmAt = 2131099803;
-			
-			// aapt resource value: 0x7f060098
-			public const int ConfirmCurrencyPairTextView = 2131099800;
-			
-			// aapt resource value: 0x7f060099
-			public const int ConfirmDirectionTextView = 2131099801;
-			
-			// aapt resource value: 0x7f06009a
-			public const int ConfirmNotionalTextView = 2131099802;
+			// aapt resource value: 0x7f06008f
+			public const int CardView = 2131099791;
 			
 			// aapt resource value: 0x7f06009c
-			public const int ConfirmSpotRateTextView = 2131099804;
+			public const int CardViewBack = 2131099804;
 			
-			// aapt resource value: 0x7f06009e
-			public const int ConfirmStatusTextView = 2131099806;
+			// aapt resource value: 0x7f0600a0
+			public const int ConfirmAt = 2131099808;
 			
 			// aapt resource value: 0x7f06009d
-			public const int ConfirmTradeIdTextView = 2131099805;
+			public const int ConfirmCurrencyPairTextView = 2131099805;
 			
-			// aapt resource value: 0x7f060085
-			public const int PriceButtonBigFiguresTextView = 2131099781;
+			// aapt resource value: 0x7f06009e
+			public const int ConfirmDirectionTextView = 2131099806;
 			
-			// aapt resource value: 0x7f060084
-			public const int PriceButtonDirectionTextView = 2131099780;
+			// aapt resource value: 0x7f06009f
+			public const int ConfirmNotionalTextView = 2131099807;
 			
-			// aapt resource value: 0x7f060086
-			public const int PriceButtonPipsTextView = 2131099782;
+			// aapt resource value: 0x7f0600a1
+			public const int ConfirmSpotRateTextView = 2131099809;
+			
+			// aapt resource value: 0x7f0600a3
+			public const int ConfirmStatusTextView = 2131099811;
+			
+			// aapt resource value: 0x7f0600a2
+			public const int ConfirmTradeIdTextView = 2131099810;
+			
+			// aapt resource value: 0x7f060089
+			public const int PriceButtonBigFiguresTextView = 2131099785;
 			
 			// aapt resource value: 0x7f060087
-			public const int PriceButtonTenthOfPipTextView = 2131099783;
+			public const int PriceButtonContent = 2131099783;
+			
+			// aapt resource value: 0x7f060088
+			public const int PriceButtonDirectionTextView = 2131099784;
+			
+			// aapt resource value: 0x7f06008a
+			public const int PriceButtonPipsTextView = 2131099786;
+			
+			// aapt resource value: 0x7f06008c
+			public const int PriceButtonProgress = 2131099788;
+			
+			// aapt resource value: 0x7f06008b
+			public const int PriceButtonTenthOfPipTextView = 2131099787;
 			
 			// aapt resource value: 0x7f060073
 			public const int PriceNotAvailableOverlay = 2131099763;
 			
+			// aapt resource value: 0x7f060086
+			public const int ProgressBar = 2131099782;
+			
+			// aapt resource value: 0x7f060098
+			public const int SpotTileAskPriceButton = 2131099800;
+			
 			// aapt resource value: 0x7f060093
-			public const int SpotTileAskPriceButton = 2131099795;
-			
-			// aapt resource value: 0x7f06008e
-			public const int SpotTileBidPriceButton = 2131099790;
-			
-			// aapt resource value: 0x7f06008c
-			public const int SpotTileContent = 2131099788;
-			
-			// aapt resource value: 0x7f06008d
-			public const int SpotTileCurrencyPairTextView = 2131099789;
-			
-			// aapt resource value: 0x7f060094
-			public const int SpotTileDealtCurrencyTextView = 2131099796;
-			
-			// aapt resource value: 0x7f060092
-			public const int SpotTileDownArrow = 2131099794;
-			
-			// aapt resource value: 0x7f060095
-			public const int SpotTileNotionalEditText = 2131099797;
-			
-			// aapt resource value: 0x7f060096
-			public const int SpotTileSpotDateTextView = 2131099798;
-			
-			// aapt resource value: 0x7f06008f
-			public const int SpotTileSpreadLayout = 2131099791;
+			public const int SpotTileBidPriceButton = 2131099795;
 			
 			// aapt resource value: 0x7f060091
-			public const int SpotTileSpreadTextView = 2131099793;
+			public const int SpotTileContent = 2131099793;
 			
-			// aapt resource value: 0x7f060090
-			public const int SpotTileUpArrow = 2131099792;
+			// aapt resource value: 0x7f060092
+			public const int SpotTileCurrencyPairTextView = 2131099794;
 			
-			// aapt resource value: 0x7f060088
-			public const int SpotTilesRecyclerView = 2131099784;
+			// aapt resource value: 0x7f060099
+			public const int SpotTileDealtCurrencyTextView = 2131099801;
 			
-			// aapt resource value: 0x7f060089
-			public const int ViewAnimator = 2131099785;
+			// aapt resource value: 0x7f060097
+			public const int SpotTileDownArrow = 2131099799;
 			
-			// aapt resource value: 0x7f060081
-			public const int abl_top = 2131099777;
+			// aapt resource value: 0x7f06009a
+			public const int SpotTileNotionalEditText = 2131099802;
+			
+			// aapt resource value: 0x7f06009b
+			public const int SpotTileSpotDateTextView = 2131099803;
+			
+			// aapt resource value: 0x7f060094
+			public const int SpotTileSpreadLayout = 2131099796;
+			
+			// aapt resource value: 0x7f060096
+			public const int SpotTileSpreadTextView = 2131099798;
+			
+			// aapt resource value: 0x7f060095
+			public const int SpotTileUpArrow = 2131099797;
+			
+			// aapt resource value: 0x7f06008d
+			public const int SpotTilesRecyclerView = 2131099789;
+			
+			// aapt resource value: 0x7f06008e
+			public const int ViewAnimator = 2131099790;
+			
+			// aapt resource value: 0x7f060082
+			public const int abl_top = 2131099778;
 			
 			// aapt resource value: 0x7f060074
 			public const int action0 = 2131099764;
@@ -2110,8 +2128,8 @@ namespace Adaptive.ReactiveTrader.Client.Android
 			// aapt resource value: 0x7f060037
 			public const int @fixed = 2131099703;
 			
-			// aapt resource value: 0x7f0600a6
-			public const int fragmentContainer = 2131099814;
+			// aapt resource value: 0x7f0600ab
+			public const int fragmentContainer = 2131099819;
 			
 			// aapt resource value: 0x7f060005
 			public const int home = 2131099653;
@@ -2128,8 +2146,8 @@ namespace Adaptive.ReactiveTrader.Client.Android
 			// aapt resource value: 0x7f06003e
 			public const int image = 2131099710;
 			
-			// aapt resource value: 0x7f06009f
-			public const int imageView1 = 2131099807;
+			// aapt resource value: 0x7f0600a4
+			public const int imageView1 = 2131099812;
 			
 			// aapt resource value: 0x7f06007f
 			public const int info = 2131099775;
@@ -2154,6 +2172,9 @@ namespace Adaptive.ReactiveTrader.Client.Android
 			
 			// aapt resource value: 0x7f060040
 			public const int list_item = 2131099712;
+			
+			// aapt resource value: 0x7f060085
+			public const int logo = 2131099781;
 			
 			// aapt resource value: 0x7f060077
 			public const int media_actions = 2131099767;
@@ -2185,8 +2206,8 @@ namespace Adaptive.ReactiveTrader.Client.Android
 			// aapt resource value: 0x7f060028
 			public const int pin = 2131099688;
 			
-			// aapt resource value: 0x7f06008b
-			public const int plotView = 2131099787;
+			// aapt resource value: 0x7f060090
+			public const int plotView = 2131099792;
 			
 			// aapt resource value: 0x7f060006
 			public const int progress_circular = 2131099654;
@@ -2245,8 +2266,8 @@ namespace Adaptive.ReactiveTrader.Client.Android
 			// aapt resource value: 0x7f060064
 			public const int select_dialog_listview = 2131099748;
 			
-			// aapt resource value: 0x7f0600a2
-			public const int serverUpdates = 2131099810;
+			// aapt resource value: 0x7f0600a7
+			public const int serverUpdates = 2131099815;
 			
 			// aapt resource value: 0x7f06004f
 			public const int shortcut = 2131099727;
@@ -2287,8 +2308,8 @@ namespace Adaptive.ReactiveTrader.Client.Android
 			// aapt resource value: 0x7f060061
 			public const int submit_area = 2131099745;
 			
-			// aapt resource value: 0x7f060082
-			public const int tabLayout = 2131099778;
+			// aapt resource value: 0x7f060083
+			public const int tabLayout = 2131099779;
 			
 			// aapt resource value: 0x7f06000d
 			public const int tabMode = 2131099661;
@@ -2305,8 +2326,8 @@ namespace Adaptive.ReactiveTrader.Client.Android
 			// aapt resource value: 0x7f06006a
 			public const int textView1 = 2131099754;
 			
-			// aapt resource value: 0x7f0600a0
-			public const int textView2 = 2131099808;
+			// aapt resource value: 0x7f0600a5
+			public const int textView2 = 2131099813;
 			
 			// aapt resource value: 0x7f06007a
 			public const int time = 2131099770;
@@ -2317,8 +2338,8 @@ namespace Adaptive.ReactiveTrader.Client.Android
 			// aapt resource value: 0x7f060045
 			public const int title_template = 2131099717;
 			
-			// aapt resource value: 0x7f0600a5
-			public const int toolbar = 2131099813;
+			// aapt resource value: 0x7f0600aa
+			public const int toolbar = 2131099818;
 			
 			// aapt resource value: 0x7f060031
 			public const int top = 2131099697;
@@ -2326,14 +2347,14 @@ namespace Adaptive.ReactiveTrader.Client.Android
 			// aapt resource value: 0x7f060044
 			public const int topPanel = 2131099716;
 			
-			// aapt resource value: 0x7f0600a4
-			public const int traderId = 2131099812;
+			// aapt resource value: 0x7f0600a9
+			public const int traderId = 2131099817;
 			
-			// aapt resource value: 0x7f0600a3
-			public const int uiLatency = 2131099811;
+			// aapt resource value: 0x7f0600a8
+			public const int uiLatency = 2131099816;
 			
-			// aapt resource value: 0x7f0600a1
-			public const int uiUpdates = 2131099809;
+			// aapt resource value: 0x7f0600a6
+			public const int uiUpdates = 2131099814;
 			
 			// aapt resource value: 0x7f060009
 			public const int up = 2131099657;
@@ -2341,8 +2362,8 @@ namespace Adaptive.ReactiveTrader.Client.Android
 			// aapt resource value: 0x7f060014
 			public const int useLogo = 2131099668;
 			
-			// aapt resource value: 0x7f060083
-			public const int viewPager = 2131099779;
+			// aapt resource value: 0x7f060084
+			public const int viewPager = 2131099780;
 			
 			// aapt resource value: 0x7f06000a
 			public const int view_offset_helper = 2131099658;
