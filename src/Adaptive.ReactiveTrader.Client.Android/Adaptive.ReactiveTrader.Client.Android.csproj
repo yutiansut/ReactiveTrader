@@ -88,14 +88,6 @@
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
-    <Reference Include="OxyPlot, Version=2015.1.744.0, Culture=neutral, PublicKeyToken=638079a8f0bd61e9, processorArchitecture=MSIL">
-      <HintPath>..\packages\OxyPlot.Core.2015.1.744-alpha\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1+Xamarin.iOS10\OxyPlot.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="OxyPlot.Xamarin.Android, Version=2015.1.741.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OxyPlot.Mobile.2015.1.744-alpha\lib\MonoAndroid\OxyPlot.Xamarin.Android.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="RecyclerviewAnimators, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\JP.Wasabeef.RecyclerView-Animators.1.3.0-rc1\lib\MonoAndroid50\RecyclerviewAnimators.dll</HintPath>
       <Private>True</Private>
@@ -135,6 +127,12 @@
     </Reference>
     <Reference Include="Xamarin.Android.Support.v7.CardView">
       <HintPath>..\packages\Xamarin.Android.Support.v7.CardView.23.1.1.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.CardView.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot">
+      <HintPath>..\packages\OxyPlot.Core.1.0.0-unstable1974\lib\portable-net45+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1+Xamarin.iOS10\OxyPlot.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot.Xamarin.Android">
+      <HintPath>..\packages\OxyPlot.Xamarin.Android.1.0.0-unstable1974\lib\MonoAndroid10\OxyPlot.Xamarin.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -199,13 +197,12 @@
     <AndroidResource Include="Resources\layout\layout1.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="GeneratedBindingInfo.txt" />
-    <Content Include="Properties\AndroidManifest.xml" />
     <AndroidResource Include="Resources\values\attrs.xml" />
     <AndroidResource Include="Resources\drawable\pricebutton_background_selector.xml">
       <SubType>Designer</SubType>
