@@ -28,5 +28,7 @@
 	<string>Trader</string>
 	<key>CFBundleVersion</key>
 	<string>16</string>
+    
+    <dict> <key>UIRequiredDeviceCapabilities</key> <array> <string>watch-companion</string> </array> </dict>
 </dict>
 </plist>
