@@ -28,7 +28,7 @@ using String = Java.Lang.String;
 
 namespace Adaptive.ReactiveTrader.Client.Android
 {
-    [Activity(MainLauncher = true, Icon = "@drawable/icon", Label = "Reactive Trader",
+    [Activity(MainLauncher = true, Icon = "@drawable/icon", Label = "Trader",
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
     public class MainActivity : AppCompatActivity
     {
@@ -75,10 +75,12 @@ namespace Adaptive.ReactiveTrader.Client.Android
             var adapter = new TabsAdapter(SupportFragmentManager);
             var viewPager = FindViewById<ViewPager>(Resource.Id.viewPager);
             viewPager.Adapter = adapter;
+			viewPager.OffscreenPageLimit = 2;
+
             var tabLayout = FindViewById<TabLayout>(Resource.Id.tabLayout);
             tabLayout.SetupWithViewPager(viewPager);
 
-            var reactiveTrader = App.Container.Resolve<IReactiveTrader>();
+			var reactiveTrader = App.Container.Resolve<IReactiveTrader>();
             reactiveTrader.ConnectionStatusStream
                 .Where(ci => ci.ConnectionStatus == ConnectionStatus.Connected)
                 .Timeout(TimeSpan.FromSeconds(15))
@@ -89,13 +91,7 @@ namespace Adaptive.ReactiveTrader.Client.Android
                         var spinner = FindViewById<ProgressBar>(Resource.Id.ProgressBar);
                         spinner.Visibility = ViewStates.Invisible;
                         var logo = FindViewById<FrameLayout>(Resource.Id.logo);
-                        logo.Animate()
-                            .SetDuration(1000)
-                            .Alpha(0)
-                            .WithLayer()
-                            .WithEndAction(new Runnable(() => logo.Visibility = ViewStates.Gone))
-                            .Start();
-                        
+						logo.Visibility = ViewStates.Gone;
                     },
                     ex => Console.WriteLine("Failed")
                 );

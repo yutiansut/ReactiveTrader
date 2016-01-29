@@ -132,35 +132,34 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             });
 
             _allSubscriptions.Add(spotTileViewModel.Pricing.Bid
-                .ObserveProperty(vm => vm.IsExecuting)
+                .ObserveProperty(vm => vm.IsExecuting, false)
                 .ObserveOn(concurrencyService.Dispatcher)
                 .Subscribe(s => AskButton.SetEnabledOverride(!s)));
 
             _allSubscriptions.Add(spotTileViewModel.Pricing.Ask
-                .ObserveProperty(vm => vm.IsExecuting)
+			                      .ObserveProperty(vm => vm.IsExecuting, false)
                 .ObserveOn(concurrencyService.Dispatcher)
                 .Subscribe(s => BidButton.SetEnabledOverride(!s)));
 
-            _allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.Spread, true)
+			_allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.Spread, false)
                 .ObserveOn(concurrencyService.Dispatcher)
                 .Subscribe(s => SpreadLabel.Text = s));
 
-            _allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.DealtCurrency, true)
+			_allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.DealtCurrency, false)
                 .ObserveOn(concurrencyService.Dispatcher)
                 .Subscribe(s => DealtCurrencyLabel.Text = s));
 
-            _allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.SpotDate, true)
+			_allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.SpotDate, false)
                 .ObserveOn(concurrencyService.Dispatcher)
                 .Subscribe(s => SpotDateLabel.Text = s));
 
-            _allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.Mid, true)
+			_allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.Mid, false)
                 .ObserveOn(concurrencyService.Dispatcher)
                 .Subscribe(AddPrice));
 
             _allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.IsStale)
                 .ObserveOn(concurrencyService.Dispatcher)
                 .Subscribe(SetIsStale));
-            Console.WriteLine($"PERF: SpotTileViewHolder:bind{i++} took {stopwatch.ElapsedMilliseconds}ms");
 
             // two way bind the notional
             _allSubscriptions.Add(spotTileViewModel.Pricing.ObserveProperty(vm => vm.Notional, true)
@@ -184,7 +183,6 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
                     UpArrow.Visibility = m == PriceMovement.Up ? ViewStates.Visible : ViewStates.Invisible;
                     DownArrow.Visibility = m == PriceMovement.Down ? ViewStates.Visible : ViewStates.Invisible;
                 }));
-            Console.WriteLine($"PERF: SpotTileViewHolder:bind{i++} took {stopwatch.ElapsedMilliseconds}ms");
 
             _allSubscriptions.Add(spotTileViewModel.ObserveProperty(vm => vm.State, true)
                 .Where(m => m == TileState.Affirmation)
@@ -211,9 +209,6 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
                 .Where(m => m == TileState.Pricing)
                 .SubscribeOn(concurrencyService.TaskPool)
                 .Subscribe(_ => ShowPricing()));
-
-            Console.WriteLine($"PERF: SpotTileViewHolder:bind{i++} took {stopwatch.ElapsedMilliseconds}ms");
-
         }
 
         public void Unbind()
@@ -227,7 +222,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles
             CardView.ScaleX = 0;
             CardView
                 .Animate()
-                .SetStartDelay(position * 120 + 1000)
+                .SetStartDelay(position * 200)
                 .ScaleX(1).ScaleY(1)
                 .SetDuration(450)
                 .SetInterpolator(new OvershootInterpolator(3))
