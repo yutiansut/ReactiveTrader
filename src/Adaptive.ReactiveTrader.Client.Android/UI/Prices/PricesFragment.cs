@@ -2,8 +2,11 @@ using System;
 using Adaptive.ReactiveTrader.Client.Android.UI.SpotTiles;
 using Adaptive.ReactiveTrader.Client.Concurrency;
 using Adaptive.ReactiveTrader.Client.UI.Shell;
+using Android.Content;
 using Android.OS;
+using Android.Runtime;
 using Android.Support.V7.Widget;
+using Android.Util;
 using Android.Views;
 using Fragment = Android.Support.V4.App.Fragment;
 
@@ -34,7 +37,7 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Prices
 
             if (App.IsTablet)
             {
-                var gridLayoutManager = new GridLayoutManager(Activity, 1);
+                var gridLayoutManager = new BugFixGridLayoutManager(Activity, 1);
                 spotTilesRecyclerView.SetLayoutManager(gridLayoutManager);
 
                 spotTilesRecyclerView.ViewTreeObserver.GlobalLayout +=
@@ -59,6 +62,37 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Prices
             int newSpanCount = (int)Math.Floor(viewWidth / cardViewWidth);
             layoutManager.SpanCount = newSpanCount;
             layoutManager.RequestLayout();
+        }
+
+        class BugFixGridLayoutManager : GridLayoutManager // Work-around for Android SDK bug
+        {
+            public override void OnLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state)
+            {
+                try
+                {
+                    base.OnLayoutChildren(recycler, state);
+                }
+                catch (Java.Lang.IndexOutOfBoundsException)
+                {
+                    Console.WriteLine("Caught IndexOutOfBoundsException in GridLayoutManager");
+                }
+            }
+
+            public BugFixGridLayoutManager(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
+            {
+            }
+
+            public BugFixGridLayoutManager(Context context, int spanCount, int orientation, bool reverseLayout) : base(context, spanCount, orientation, reverseLayout)
+            {
+            }
+
+            public BugFixGridLayoutManager(Context context, int spanCount) : base(context, spanCount)
+            {
+            }
+
+            public BugFixGridLayoutManager(Context context, IAttributeSet attrs, int defStyleAttr, int defStyleRes) : base(context, attrs, defStyleAttr, defStyleRes)
+            {
+            }
         }
     }
 }

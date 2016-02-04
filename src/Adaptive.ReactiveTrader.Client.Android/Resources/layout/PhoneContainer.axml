@@ -26,24 +26,35 @@
             android:layout_weight="1"
             android:background="@android:color/white" />
     </LinearLayout>
-  <FrameLayout
+    <FrameLayout
         android:id="@+id/logo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffffff">
-    <ImageView xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@drawable/adaptive_logo" />
-    <ProgressBar
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:id="@+id/ProgressBar"
-        android:indeterminate="true"
-        android:layout_gravity="center"
-        android:layout_marginLeft="70dp"
-        android:indeterminateTint="#ffffffff"
-        android:layout_marginBottom="40dp" />
+        <ImageView xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:src="@drawable/adaptive_logo"
+            android:id="@+id/imageView1" />
+        <ProgressBar
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/ProgressBar"
+            android:indeterminate="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="70dp"
+            android:indeterminateTint="#ffffffff"
+            android:layout_marginBottom="40dp" />
+        <TextView
+            android:text="Waiting for an internet connection..."
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/connectingLabel"
+            android:textColor="@color/traderLabel"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="30dp"
+            android:visibility="invisible" />
     </FrameLayout>
 </FrameLayout>

@@ -32,9 +32,14 @@ namespace Adaptive.ReactiveTrader.Client.Android
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
     public class MainActivity : AppCompatActivity
     {
+        IDisposable _connectingSubscription;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
+            var reactiveTrader = App.Container.Resolve<IReactiveTrader>();
+            Connect(reactiveTrader);
 
             if (App.IsTablet)
             {
@@ -44,6 +49,7 @@ namespace Adaptive.ReactiveTrader.Client.Android
             {
                 InitPhone();
             }
+
         }
 
         private void InitTablet()
@@ -79,25 +85,48 @@ namespace Adaptive.ReactiveTrader.Client.Android
 
             var tabLayout = FindViewById<TabLayout>(Resource.Id.tabLayout);
             tabLayout.SetupWithViewPager(viewPager);
+        }
 
-			var reactiveTrader = App.Container.Resolve<IReactiveTrader>();
-            reactiveTrader.ConnectionStatusStream
+        private void Connect(IReactiveTrader reactiveTrader)
+        {
+            App.Initialize();
+
+            _connectingSubscription = reactiveTrader
+                .ConnectionStatusStream
                 .Where(ci => ci.ConnectionStatus == ConnectionStatus.Connected)
-                .Timeout(TimeSpan.FromSeconds(15))
+                .Timeout(TimeSpan.FromSeconds(10))
                 .ObserveOn(App.Container.Resolve<IConcurrencyService>().Dispatcher)
                 .Subscribe(
                     _ =>
                     {
-                        var spinner = FindViewById<ProgressBar>(Resource.Id.ProgressBar);
-                        spinner.Visibility = ViewStates.Invisible;
-                        var logo = FindViewById<FrameLayout>(Resource.Id.logo);
-						logo.Visibility = ViewStates.Gone;
+                        _connectingSubscription.Dispose();
+                        Spinner.Visibility = ViewStates.Gone;
+                        ConnectingLabel.Visibility = ViewStates.Gone;
+
+                        if (!App.IsTablet)
+                        {
+                            var logo = FindViewById<FrameLayout>(Resource.Id.logo);
+                            logo.Visibility = ViewStates.Gone;
+                        }
                     },
-                    ex => Console.WriteLine("Failed")
+                    ex =>
+                    {
+                        _connectingSubscription.Dispose();
+
+                        ConnectingLabel.Visibility = ViewStates.Visible;
+                        Connect(reactiveTrader);
+                    }
                 );
         }
 
+        TextView ConnectingLabel
+            => FindViewById<TextView>(App.IsTablet ? Resource.Id.TabletConnectingLabel : Resource.Id.connectingLabel);
+
+        ProgressBar Spinner
+            => FindViewById<ProgressBar>(App.IsTablet ? Resource.Id.TabletProgressBar : Resource.Id.ProgressBar);
+
         static BlotterFragment BlotterFragment => new BlotterFragment(App.Container.Resolve<IShellViewModel>());
+
         static PricesListFragment PricesListFragment => new PricesListFragment(
             App.Container.Resolve<IShellViewModel>(),
             App.Container.Resolve<IConcurrencyService>());

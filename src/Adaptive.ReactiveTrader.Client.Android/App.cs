@@ -21,18 +21,22 @@ namespace Adaptive.ReactiveTrader.Client.Android
                 {
                     var bootstrapper = new Bootstrapper(Application.Context);
                     _container = bootstrapper.Build();
-
-                    var reactiveTraderApi = _container.Resolve<IReactiveTrader>();
-                    var username = Username;
-                    var servers = _container.Resolve<IConfigurationProvider>().Servers;
-                    reactiveTraderApi.Initialize(username, servers);
                 }
 
                 return _container;
             }
         }
 
-        public static string _username;
+        public static void Initialize()
+        {
+            var reactiveTraderApi = Container.Resolve<IReactiveTrader>();
+            var username = Username;
+            var servers = Container.Resolve<IConfigurationProvider>().Servers;
+
+            reactiveTraderApi.Initialize(username, servers);
+        }
+
+        private static string _username;
 
         public static string Username
         {
