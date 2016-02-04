@@ -55,7 +55,7 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
             var contexts = Pairs.Shared.Select((pair, i) => new NSNumber(i)).ToArray();
 
             InvokeOnMainThread(
-                () => WKInterfaceController.ReloadRootControllers(names, contexts)
+                () => ReloadRootControllers(names, contexts)
             );
         }
 
@@ -63,22 +63,19 @@ namespace Adaptive.ReactiveTrader.Client.iOSTab.WatchKitExtension
         {
             SetTitle("Connecting");
 
-            _reactiveTrader = new Adaptive.ReactiveTrader.Client.Domain.ReactiveTrader();
+            _reactiveTrader = new Domain.ReactiveTrader();
             _reactiveTrader.Initialize (UserModel.Instance.TraderId, new [] { "https://reactivetrader.azurewebsites.net/signalr" });  
             _reactiveTrader.ConnectionStatusStream
                 .Where(ci => ci.ConnectionStatus == ConnectionStatus.Connected)
                 .Timeout(TimeSpan.FromSeconds (15))
                 .ObserveOn(new EventLoopScheduler())
                 .Subscribe(
-                    
                     _ => 
                     {
                         SetTitle("Connected");
                         Pairs.Shared.Clear();
                     },
-                    ex =>  
-
-                    SetTitle("Failed: " + ex)
+                    ex => SetTitle("No connection")
                 );
 
             _reactiveTrader
