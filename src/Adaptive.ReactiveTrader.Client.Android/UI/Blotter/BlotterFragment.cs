@@ -1,15 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Adaptive.ReactiveTrader.Client.UI.Shell;
-using Android.Content;
 using Android.OS;
-using Android.Runtime;
 using Android.Support.V7.Widget;
-using Android.Util;
 using Android.Views;
-using Android.Widget;
 using Fragment = Android.Support.V4.App.Fragment;
 
 namespace Adaptive.ReactiveTrader.Client.Android.UI.Blotter
@@ -18,6 +10,9 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Blotter
     {
         readonly IShellViewModel _shellViewModel;
 
+        public BlotterFragment() // Required by Android SDK
+        {
+        }
 
         public BlotterFragment(IShellViewModel shellViewModel)
         {

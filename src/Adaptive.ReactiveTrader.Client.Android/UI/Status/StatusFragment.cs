@@ -1,17 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Text;
 using Adaptive.ReactiveTrader.Client.Concurrency;
 using Adaptive.ReactiveTrader.Client.Domain;
-using Adaptive.ReactiveTrader.Client.UI.Shell;
-using Android.App;
-using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Fragment = Android.Support.V4.App.Fragment;
@@ -23,6 +15,10 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Status
         private readonly IReactiveTrader _reactiveTrader;
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
         private ConnectionInfo _lastConnectionInfo;
+
+        public StatusFragment() // Required by Android SDK
+        {
+        }
 
         public StatusFragment(IReactiveTrader reactiveTrader, IConcurrencyService concurrencyService)
         {

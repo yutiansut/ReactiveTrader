@@ -14,6 +14,10 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Prices
         readonly IShellViewModel _shellViewModel;
         readonly IConcurrencyService _concurrencyService;
 
+        public PricesListFragment() // Required by Android SDK
+        {
+        }
+
         public PricesListFragment(IShellViewModel shellViewModel, IConcurrencyService concurrencyService)
         {
             _shellViewModel = shellViewModel;
