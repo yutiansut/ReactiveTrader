@@ -1,14 +1,6 @@
-using System.Threading.Tasks;
-using Android.Content.Res;
-using Android.Graphics;
-using Android.Graphics.Drawables;
-using Android.Support.V4.Content;
-using Android.Support.V4.Content.Res;
-using Android.Support.V4.View;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using JP.Wasabeef.Recyclerview.Animators.Holder;
 
 namespace Adaptive.ReactiveTrader.Client.Android.UI.Blotter
 {

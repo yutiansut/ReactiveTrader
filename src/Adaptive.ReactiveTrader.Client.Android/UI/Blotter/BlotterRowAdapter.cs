@@ -3,14 +3,10 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
-using System.Timers;
 using Adaptive.ReactiveTrader.Client.UI.Blotter;
 using Adaptive.ReactiveTrader.Shared.Extensions;
-using Android.Runtime;
 using Android.Support.V7.Widget;
 using Android.Views;
-using JP.Wasabeef.Recyclerview.Animators.Holder;
 
 namespace Adaptive.ReactiveTrader.Client.Android.UI.Blotter
 {
@@ -24,8 +20,9 @@ namespace Adaptive.ReactiveTrader.Client.Android.UI.Blotter
         {
             _tradesCollection = tradesCollection;
             
-            var animator = new BlotterRowAnimator();
-            recyclerView.SetItemAnimator(animator);
+            // TODO QL
+            //var animator = new BlotterRowAnimator();
+            //recyclerView.SetItemAnimator(animator);
 
             _tradesCollection = tradesCollection;
             _collectionChangedSubscription = _tradesCollection.ObserveCollection()
