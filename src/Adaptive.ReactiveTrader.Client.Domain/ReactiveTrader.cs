@@ -9,6 +9,7 @@ using Adaptive.ReactiveTrader.Client.Domain.Models.ReferenceData;
 using Adaptive.ReactiveTrader.Client.Domain.Repositories;
 using Adaptive.ReactiveTrader.Client.Domain.ServiceClients;
 using Adaptive.ReactiveTrader.Client.Domain.Transport;
+using Adaptive.ReactiveTrader.Client.Domain.Transport.Wamp;
 using Adaptive.ReactiveTrader.Shared.Logging;
 
 namespace Adaptive.ReactiveTrader.Client.Domain
@@ -19,17 +20,22 @@ namespace Adaptive.ReactiveTrader.Client.Domain
         private ILoggerFactory _loggerFactory;
         private ILog _log;
         private IControlRepository _controlRepository;
+        private WampServiceClientContainer _serviceClientContainer;
 
         public void Initialize(string username, string[] servers, ILoggerFactory loggerFactory = null, string authToken = null) 
         {
             _loggerFactory = loggerFactory ?? new DebugLoggerFactory();
             _log = _loggerFactory.Create(typeof(ReactiveTrader));
             _connectionProvider = new ConnectionProvider(username, servers, _loggerFactory);
+            var concurrencyService = new ConcurrencyService();
 
-            var referenceDataServiceClient = new ReferenceDataServiceClient(_connectionProvider, _loggerFactory);
-            var executionServiceClient = new ExecutionServiceClient(_connectionProvider);
-            var blotterServiceClient = new BlotterServiceClient(_connectionProvider, _loggerFactory);
-            var pricingServiceClient = new PricingServiceClient(_connectionProvider, _loggerFactory);
+            _serviceClientContainer = new WampServiceClientContainer(servers[0], username, concurrencyService, _loggerFactory);
+            _serviceClientContainer.ConnectAsync().Wait();
+
+            var referenceDataServiceClient = new ReferenceDataServiceClient(_serviceClientContainer.Reference, _loggerFactory);
+            var executionServiceClient = new ExecutionServiceClient(_serviceClientContainer.Execution);
+            var blotterServiceClient = new BlotterServiceClient(_serviceClientContainer.Blotter, _loggerFactory);
+            var pricingServiceClient = new PricingServiceClient(_serviceClientContainer.Pricing, _loggerFactory);
             PricingServiceClient = pricingServiceClient;
 
             if (authToken != null)
@@ -39,7 +45,6 @@ namespace Adaptive.ReactiveTrader.Client.Domain
             }
 
             PriceLatencyRecorder = new PriceLatencyRecorder();
-            var concurrencyService = new ConcurrencyService();
 
             var tradeFactory = new TradeFactory();
             var executionRepository = new ExecutionRepository(executionServiceClient, tradeFactory, concurrencyService);
